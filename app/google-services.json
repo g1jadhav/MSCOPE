@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "400723698599",
+    "project_id": "mipl-aba01",
+    "storage_bucket": "mipl-aba01.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:400723698599:android:32819f5b9f3ee568fdcc82",
+        "android_client_info": {
+          "package_name": "mahyco.mipl.nxg"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "400723698599-c3d1qsd905iedfjd6k2ept39mrcgchlt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVnlfderQYLAYILWuIdEnjj2EaGj6g55Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "400723698599-c3d1qsd905iedfjd6k2ept39mrcgchlt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
