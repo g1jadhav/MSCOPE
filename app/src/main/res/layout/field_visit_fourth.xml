@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/field_visit_third"
+    android:id="@+id/field_visit_fourth"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/login_background"
@@ -189,64 +189,6 @@
                     android:paddingEnd="10dp" />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/seed_production_method_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:text="@string/seed_production_method"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <mahyco.mipl.nxg.spinner.CCFSerachSpinner
-                    android:id="@+id/seed_production_method_spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/login_spinner_style"
-                    android:entries="@array/select_seed_production"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/roguing_completed_and_validated_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:text="@string/roguing_completed_and_validated"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <mahyco.mipl.nxg.spinner.CCFSerachSpinner
-                    android:id="@+id/roguing_completed_and_validated_spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/login_spinner_style"
-                    android:entries="@array/yes_no_array_with_select"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/female_plants_per_line_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="vertical" />
 
             <LinearLayout
                 android:id="@+id/total_female_plants_layout"
@@ -310,40 +252,7 @@
 
 
             <LinearLayout
-                android:id="@+id/pollination_start_date_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:drawableEnd="@drawable/calendar"
-                    android:drawablePadding="2dp"
-                    android:text="@string/pollination_start_date"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/pollination_start_date"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/login_screen_edittext"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical"
-                    android:hint="@string/pollination_start_dates"
-                    android:maxLines="1"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/number_of_existing_layout"
+                android:id="@+id/number_existing_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -600,6 +509,35 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/unprocessed_seed_ready_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/unprocessed_seed_ready_kg"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/unprocessed_seed_ready_edittextview"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/login_screen_edittext"
+                    android:drawablePadding="20dp"
+                    android:hint="@string/enter_unprocessed_seed_ready_kg"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:padding="10dp"
+                    android:textColor="@color/black_color" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/yield_estimate_kg_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -609,7 +547,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:text="@string/yield_estimate_kg"
+                    android:text="@string/yield_estimate_kgs"
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -624,6 +562,103 @@
                     android:padding="10dp"
                     android:textColor="@color/black_color" />
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/pollination_end_date_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/calendar"
+                    android:drawablePadding="2dp"
+                    android:text="@string/pollination_end_date"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/pollination_end_date_textview"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/login_screen_edittext"
+                    android:ellipsize="end"
+                    android:gravity="center|start"
+                    android:maxLines="1"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/expected_date_of_harvesting_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/calendar"
+                    android:drawablePadding="2dp"
+                    android:text="@string/expected_date_of_harvesting"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/expected_date_of_harvesting_textview"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/login_screen_edittext"
+                    android:ellipsize="end"
+                    android:gravity="center|start"
+                    android:maxLines="1"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/expected_date_of_despatching_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/calendar"
+                    android:drawablePadding="2dp"
+                    android:text="@string/expected_date_of_despatching"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/expected_date_of_despatching_textview"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/login_screen_edittext"
+                    android:ellipsize="end"
+                    android:gravity="center|start"
+                    android:maxLines="1"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -648,6 +683,32 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/login_spinner_style"
                     android:entries="@array/select_crop_stage"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/male_parent_uprooted_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/male_parent_uprooted"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <mahyco.mipl.nxg.spinner.CCFSerachSpinner
+                    android:id="@+id/male_parent_uprooted_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/login_spinner_style"
+                    android:entries="@array/yes_no_array_with_select"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp" />
             </LinearLayout>
@@ -895,6 +956,33 @@
                     android:textColor="@color/black_color" />
             </LinearLayout>
 
+
+            <LinearLayout
+                android:id="@+id/field_ratings_for_quality_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/field_ratings_for_quality"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <mahyco.mipl.nxg.spinner.CCFSerachSpinner
+                    android:id="@+id/field_ratings_for_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/login_spinner_style"
+                    android:entries="@array/quality_a_b"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp" />
+            </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/date_of_field_visit_layout"
                 android:layout_width="match_parent"
@@ -1025,4 +1113,5 @@
                 android:textColor="@color/white_color" />
         </LinearLayout>
     </ScrollView>
+
 </LinearLayout>

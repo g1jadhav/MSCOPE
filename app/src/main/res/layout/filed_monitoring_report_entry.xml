@@ -100,6 +100,7 @@
 
         <include layout="@layout/optional_field_visit" />
         <include layout="@layout/field_visit_third" />
+        <include layout="@layout/field_visit_fourth" />
 
     </LinearLayout>
 

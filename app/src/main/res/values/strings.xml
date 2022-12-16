@@ -289,6 +289,7 @@
     <string name="national_id_number">National ID Number<font color='#FF0000'>*</font></string>
     <string name="area_loss_gain_ha">Area loss/Gain (Ha)<font color='#FF0000'>*</font></string>
     <string name="existing_area_ha">Existing Area (Ha)<font color='#FF0000'>*</font></string>
+    <string name="enter_existing_area_ha">Enter existing Area (Ha)</string>
     <string name="reason_for_total_area_lossed">Reason for total area lossed<font color='#FF0000'>*</font></string>
     <string name="female_sowing_date">Female sowing date</string>
     <string name="female_sowing_date_mandatory">Female sowing date<font color='#FF0000'>*</font></string>
@@ -342,6 +343,13 @@
     <string name="enter_number">Enter Number</string>
     <string name="average_weight_seed">Average weight of seed per boll/ fruit/ pod/ panicle/ ear head/ Cob of female (gms)<font color='#FF0000'>*</font></string>
     <string name="enter_average_weight_seed">Enter average weight seed</string>
+    <string name="unprocessed_seed_ready_kg">Unprocessed Seed ready (Kg)<font color='#FF0000'>*</font></string>
+    <string name="enter_unprocessed_seed_ready_kg">Enter unprocessed seed ready (Kg)</string>
+    <string name="pollination_end_date">Pollination end date<font color='#FF0000'>*</font></string>
+    <string name="expected_date_of_harvesting">Expected date of harvesting<font color='#FF0000'>*</font></string>
+    <string name="expected_date_of_despatching">Expected date of despatching<font color='#FF0000'>*</font></string>
+    <string name="male_parent_uprooted">Male parent uprooted<font color='#FF0000'>*</font></string>
+    <string name="field_ratings_for_quality">Field ratings for quality<font color='#FF0000'>*</font></string>
 
 
     <string-array name="country_array">
@@ -396,7 +404,7 @@
     </string-array>
 
     <string-array name="select_seed_production">
-        <item>Select Crop Stage</item>
+        <item>Seed production method</item>
         <item>GMS</item>
         <item>CMS</item>
         <item>Conventional</item>
@@ -404,7 +412,15 @@
 
     <string-array name="yes_no_array_with_select">
         <item>Select</item>
-        <item>No</item>
         <item>Yes</item>
+        <item>No</item>
     </string-array>
+
+    <string-array name="quality_a_b">
+        <item>Select</item>
+        <item>A</item>
+        <item>B</item>
+    </string-array>
+
+
 </resources>

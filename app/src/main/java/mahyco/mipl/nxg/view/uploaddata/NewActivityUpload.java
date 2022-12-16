@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -103,7 +102,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
         });
 
         mContext = this;
-       // Toast.makeText(mContext, "HI1", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(mContext, "HI1", Toast.LENGTH_SHORT).show();
         registrationAPI = new GrowerRegistrationAPI(mContext, this);
         mGrowerRegistrationBtn = findViewById(R.id.grower_registration_upload);
         mGrowerRegistrationBtn.setOnClickListener(this);
@@ -146,7 +145,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                        /* Log.e("temporary"," before SystemClock.elapsedRealtime() "+ SystemClock.elapsedRealtime() +
                                 " lastClickTimeOrganizer " + lastClickTimeGrower +" = " +
                                 (SystemClock.elapsedRealtime() - lastClickTimeGrower));*/
-                        if (SystemClock.elapsedRealtime() - lastClickTimeGrower < 3500){
+                        if (SystemClock.elapsedRealtime() - lastClickTimeGrower < 3500) {
                             return;
                         }
                         lastClickTimeGrower = SystemClock.elapsedRealtime();
@@ -186,7 +185,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                        /* Log.e("temporary"," before SystemClock.elapsedRealtime() "+ SystemClock.elapsedRealtime() +
                                 " lastClickTimeOrganizer " + lastClickTimeOrganizer +" = " +
                                 (SystemClock.elapsedRealtime() - lastClickTimeOrganizer));*/
-                        if (SystemClock.elapsedRealtime() - lastClickTimeOrganizer < 3500){
+                        if (SystemClock.elapsedRealtime() - lastClickTimeOrganizer < 3500) {
                             return;
                         }
                         lastClickTimeOrganizer = SystemClock.elapsedRealtime();
@@ -226,7 +225,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                       /*  Log.e("temporary"," before SystemClock.elapsedRealtime() "+ SystemClock.elapsedRealtime() +
                                 " lastClickTime " + lastClickTime +" = " +
                                 (SystemClock.elapsedRealtime() - lastClickTime));*/
-                        if (SystemClock.elapsedRealtime() - lastClickTime < 3500){
+                        if (SystemClock.elapsedRealtime() - lastClickTime < 3500) {
                             return;
                         }
                         lastClickTime = SystemClock.elapsedRealtime();
@@ -285,7 +284,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
             /*if (mGrowerClicked) {*/
 //            Log.e("temporary", "result.getStatus().equalsIgnoreCase(\"Success\")");
             mResponseString = result.getComment();
-          //  Log.e("temporary","onGrowerRegister mResponseString " + mResponseString);
+            //  Log.e("temporary","onGrowerRegister mResponseString " + mResponseString);
             new DeleteIfSyncSuccessfully().execute();
         } else {
             showNoInternetDialog(mContext, result.getComment());
@@ -329,6 +328,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                 }
                 mOrganizerSize = mOrganizerList.size();
                 mGrowerListSize = mGrowerList.size();
+            } catch (Exception e) {
             } finally {
                 if (database != null) {
                     database.close();
@@ -339,9 +339,12 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
 
         @Override
         protected void onPostExecute(Void unused) {
-            mGrowerRecords.setText(getString(R.string.no_of_records_for_upload, mGrowerList.size()));
-            mOrganizerRecords.setText(getString(R.string.no_of_records_for_upload, mOrganizerList.size()));
-            super.onPostExecute(unused);
+            try {
+                mGrowerRecords.setText(getString(R.string.no_of_records_for_upload, mGrowerList.size()));
+                mOrganizerRecords.setText(getString(R.string.no_of_records_for_upload, mOrganizerList.size()));
+                super.onPostExecute(unused);
+            } catch (Exception e) {
+            }
         }
     }
 
@@ -450,6 +453,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                     }
                     runOnUiThread(() -> Toast.makeText(mContext, "back Uploaded", Toast.LENGTH_SHORT).show());
                 }
+            } catch (Exception e) {
             } finally {
                 if (database != null) {
                     database.close();
@@ -526,6 +530,8 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                 } else {
                     b = database.deleteRegistration(mOrganizerList.get(0).getUniqueCode());
                 }
+            } catch (Exception e) {
+                return false;
             } finally {
                 if (database != null) {
                     database.close();
@@ -583,6 +589,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
 //                            "\ni "+ i+"\ngetFrontImageUpload ()" + list.get(i).getFrontImageUpload() +
 //                            "\ni "+ i+"\ngetBackImageUpload ()" + list.get(i).getBackImageUpload());
                 }
+            } catch (Exception e) {
             } finally {
                 if (database != null) {
                     database.close();
@@ -593,40 +600,43 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
 
         @Override
         protected void onPostExecute(Void unused) {
-            if (mGrowerClicked) {
+            try {
+                if (mGrowerClicked) {
 //                Log.e("temporary", "onGrowerRegister mGrowerUpload after growerlist size " +
 //                        mGrowerList.size());
-                if (mGrowerList.size() > 0) {
+                    if (mGrowerList.size() > 0) {
 //                    Log.e("temporary", "UploadFile() called");
-                    stid = 1;
-                    new UploadFile().execute(mGrowerList.get(0).getUploadPhoto());
-                } else {
-                  //  Log.e("temporary","mResponseString " + mResponseString);
-                    if (mResponseString.contains("Error")) {
-                        showNoInternetDialog(mContext, mResponseString);
+                        stid = 1;
+                        new UploadFile().execute(mGrowerList.get(0).getUploadPhoto());
                     } else {
-                        showNoInternetDialog(mContext, "New Grower Registration " + mGrowerListSize + " Record/s Uploaded Successfully");
-                    }
+                        //  Log.e("temporary","mResponseString " + mResponseString);
+                        if (mResponseString.contains("Error")) {
+                            showNoInternetDialog(mContext, mResponseString);
+                        } else {
+                            showNoInternetDialog(mContext, "New Grower Registration " + mGrowerListSize + " Record/s Uploaded Successfully");
+                        }
 //                    Log.e("temporary", "onGrowerRegister mGrowerUpload all data upload");
-                }
-                mGrowerRecords.setText(getString(R.string.no_of_records_for_upload, mGrowerList.size()));
-            } else {
+                    }
+                    mGrowerRecords.setText(getString(R.string.no_of_records_for_upload, mGrowerList.size()));
+                } else {
 //                Log.e("temporary", "onOrganizerRegister mOrganizerUpload after " + 0 + " mOrganizerList size " +
 //                        mOrganizerList.size());
-                if (mOrganizerList.size() > 0) {
+                    if (mOrganizerList.size() > 0) {
 //                    Log.e("temporary", "UploadFile() called");
-                    stid = 1;
-                    new UploadFile().execute(mOrganizerList.get(0).getUploadPhoto());
-                } else {
-                    if (mResponseString.contains("Error")) {
-                        showNoInternetDialog(mContext, mResponseString);
+                        stid = 1;
+                        new UploadFile().execute(mOrganizerList.get(0).getUploadPhoto());
                     } else {
-                        showNoInternetDialog(mContext, "New Coordinator Registration " + mOrganizerSize + "  Record/s Uploaded Successfully");
-                    }//                    Log.e("temporary", "onGrowerRegister mGrowerUpload all data upload");
+                        if (mResponseString.contains("Error")) {
+                            showNoInternetDialog(mContext, mResponseString);
+                        } else {
+                            showNoInternetDialog(mContext, "New Coordinator Registration " + mOrganizerSize + "  Record/s Uploaded Successfully");
+                        }//                    Log.e("temporary", "onGrowerRegister mGrowerUpload all data upload");
+                    }
+                    mOrganizerRecords.setText(getString(R.string.no_of_records_for_upload, mOrganizerList.size()));
                 }
-                mOrganizerRecords.setText(getString(R.string.no_of_records_for_upload, mOrganizerList.size()));
+                super.onPostExecute(unused);
+            } catch (Exception e) {
             }
-            super.onPostExecute(unused);
         }
     }
 
@@ -671,6 +681,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                             "\ni "+ i+"\ngetFrontImageUpload ()" + list.get(i).getFrontImageUpload() +
                             "\ni "+ i+"\ngetBackImageUpload ()" + list.get(i).getBackImageUpload());*/
                 }
+            } catch (Exception e) {
             } finally {
                 if (database != null) {
                     database.close();
@@ -681,27 +692,28 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
 
         @Override
         protected void onPostExecute(Void unused) {
-            if (stid < 4) {
-                if (mGrowerClicked && mGrowerList != null && mGrowerList.size() > 0) {
+            try {
+                if (stid < 4) {
+                    if (mGrowerClicked && mGrowerList != null && mGrowerList.size() > 0) {
                  /*   Log.e("temporary", "GetUpdatedListAfterUpdateAsyncTaskList onPostExecute mGrowerClicked " + mGrowerClicked + " mGrowerList " + mGrowerList + " mGrowerList size " + mGrowerList.size()
                             + "stid " + stid+" mGrowerPath " + mGrowerList.get(0).getUploadPhoto() + " mDocBack " + mGrowerList.get(0).getIdProofBackCopy() + " mDocFrontPath " + mGrowerList.get(0).getIdProofFrontCopy());*/
 
-                    if (stid == 2) {
-                        new UploadFile().execute(mGrowerList.get(0).getIdProofFrontCopy());
-                    } else {
-                        new UploadFile().execute(mGrowerList.get(0).getIdProofBackCopy());
-                    }
-                } else if (mOrganizerList != null && mOrganizerList.size() > 0) {
+                        if (stid == 2) {
+                            new UploadFile().execute(mGrowerList.get(0).getIdProofFrontCopy());
+                        } else {
+                            new UploadFile().execute(mGrowerList.get(0).getIdProofBackCopy());
+                        }
+                    } else if (mOrganizerList != null && mOrganizerList.size() > 0) {
 //                    Log.e("temporary", "GetUpdatedListAfterUpdateAsyncTaskList onPostExecute mGrowerClicked " + mGrowerClicked + " mGrowerList " + mOrganizerList + " mOrganizerList size " + mOrganizerList.size()
 //                            + "stid " + stid+" mGrowerPath " + mOrganizerList.get(0).getUploadPhoto() + " mDocBack " + mOrganizerList.get(0).getIdProofBackCopy() + " mDocFrontPath " + mOrganizerList.get(0).getIdProofFrontCopy());
 
-                    if (stid == 2) {
-                        new UploadFile().execute(mOrganizerList.get(0).getIdProofFrontCopy());
-                    } else {
-                        new UploadFile().execute(mOrganizerList.get(0).getIdProofBackCopy());
+                        if (stid == 2) {
+                            new UploadFile().execute(mOrganizerList.get(0).getIdProofFrontCopy());
+                        } else {
+                            new UploadFile().execute(mOrganizerList.get(0).getIdProofBackCopy());
+                        }
                     }
-                }
-            } else {
+                } else {
                 /*JsonObject jsonObject = new JsonObject();
                 if (mGrowerClicked) {
                     jsonObject.addProperty("CountryId", mGrowerList.get(0).getCountryId());
@@ -741,83 +753,88 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                     jsonObject.addProperty("UniqueId", mOrganizerList.get(0).getUniqueId());
                 }
                 registrationAPI.createGrower(jsonObject);*/
-                uploadDataAfterThreeImagesUpload(/*mGrowerPath, mDocBackPath, mDocFrontPath*/);
+                    uploadDataAfterThreeImagesUpload(/*mGrowerPath, mDocBackPath, mDocFrontPath*/);
+                }
+                super.onPostExecute(unused);
+            } catch (Exception e) {
             }
-            super.onPostExecute(unused);
         }
     }
 
     private void uploadDataAfterThreeImagesUpload(/*String dpPhotoPath, String docBackPath, String docFrontPath*/) {
-        JsonObject jsonObject = new JsonObject();
-        if (mGrowerClicked) {
-            jsonObject.addProperty("CountryId", mGrowerList.get(0).getCountryId());
-            jsonObject.addProperty("CountryMasterId", mGrowerList.get(0).getCountryMasterId());
-            jsonObject.addProperty("CreatedBy",/* mGrowerList.get(0).getCreatedBy()*/Preferences.get(mContext, Preferences.USER_ID));
-            jsonObject.addProperty("DOB", mGrowerList.get(0).getDOB());
-            jsonObject.addProperty("FullName", mGrowerList.get(0).getFullName());
-            jsonObject.addProperty("Gender", mGrowerList.get(0).getGender());
-            jsonObject.addProperty("IdProofBackCopy", mGrowerList.get(0).getIdProofBackCopy());
-            jsonObject.addProperty("IdProofFrontCopy", mGrowerList.get(0).getIdProofFrontCopy());
-            jsonObject.addProperty("LandMark", mGrowerList.get(0).getLandMark());
-            jsonObject.addProperty("LoginId", mGrowerList.get(0).getLoginId());
-            jsonObject.addProperty("MobileNo", mGrowerList.get(0).getMobileNo());
-            jsonObject.addProperty("RegDt", mGrowerList.get(0).getRegDt());
-            jsonObject.addProperty("StaffNameAndId", mGrowerList.get(0).getStaffNameAndId());
-            jsonObject.addProperty("UniqueCode", mGrowerList.get(0).getUniqueCode());
-            jsonObject.addProperty("UploadPhoto", mGrowerList.get(0).getUploadPhoto());
-            jsonObject.addProperty("UserType", mGrowerList.get(0).getUserType());
-            jsonObject.addProperty("UniqueId", mGrowerList.get(0).getUniqueId());
-            jsonObject.addProperty("Addr", mGrowerList.get(0).getAddr());
+        try {
+            JsonObject jsonObject = new JsonObject();
+            if (mGrowerClicked) {
+                jsonObject.addProperty("CountryId", mGrowerList.get(0).getCountryId());
+                jsonObject.addProperty("CountryMasterId", mGrowerList.get(0).getCountryMasterId());
+                jsonObject.addProperty("CreatedBy",/* mGrowerList.get(0).getCreatedBy()*/Preferences.get(mContext, Preferences.USER_ID));
+                jsonObject.addProperty("DOB", mGrowerList.get(0).getDOB());
+                jsonObject.addProperty("FullName", mGrowerList.get(0).getFullName());
+                jsonObject.addProperty("Gender", mGrowerList.get(0).getGender());
+                jsonObject.addProperty("IdProofBackCopy", mGrowerList.get(0).getIdProofBackCopy());
+                jsonObject.addProperty("IdProofFrontCopy", mGrowerList.get(0).getIdProofFrontCopy());
+                jsonObject.addProperty("LandMark", mGrowerList.get(0).getLandMark());
+                jsonObject.addProperty("LoginId", mGrowerList.get(0).getLoginId());
+                jsonObject.addProperty("MobileNo", mGrowerList.get(0).getMobileNo());
+                jsonObject.addProperty("RegDt", mGrowerList.get(0).getRegDt());
+                jsonObject.addProperty("StaffNameAndId", mGrowerList.get(0).getStaffNameAndId());
+                jsonObject.addProperty("UniqueCode", mGrowerList.get(0).getUniqueCode());
+                jsonObject.addProperty("UploadPhoto", mGrowerList.get(0).getUploadPhoto());
+                jsonObject.addProperty("UserType", mGrowerList.get(0).getUserType());
+                jsonObject.addProperty("UniqueId", mGrowerList.get(0).getUniqueId());
+                jsonObject.addProperty("Addr", mGrowerList.get(0).getAddr());
 
-        } else {
-            jsonObject.addProperty("CountryId", mOrganizerList.get(0).getCountryId());
-            jsonObject.addProperty("CountryMasterId", mOrganizerList.get(0).getCountryMasterId());
-            jsonObject.addProperty("CreatedBy", /*mOrganizerList.get(0).getCreatedBy()*/Preferences.get(mContext, Preferences.USER_ID));
-            jsonObject.addProperty("DOB", mOrganizerList.get(0).getDOB());
-            jsonObject.addProperty("FullName", mOrganizerList.get(0).getFullName());
-            jsonObject.addProperty("Gender", mOrganizerList.get(0).getGender());
-            jsonObject.addProperty("IdProofBackCopy", mOrganizerList.get(0).getIdProofBackCopy());
-            jsonObject.addProperty("IdProofFrontCopy", mOrganizerList.get(0).getIdProofFrontCopy());
-            jsonObject.addProperty("LandMark", mOrganizerList.get(0).getLandMark());
-            jsonObject.addProperty("LoginId", mOrganizerList.get(0).getLoginId());
-            jsonObject.addProperty("MobileNo", mOrganizerList.get(0).getMobileNo());
-            jsonObject.addProperty("RegDt", mOrganizerList.get(0).getRegDt());
-            jsonObject.addProperty("StaffNameAndId", mOrganizerList.get(0).getStaffNameAndId());
-            jsonObject.addProperty("UniqueCode", mOrganizerList.get(0).getUniqueCode());
-            jsonObject.addProperty("UploadPhoto", mOrganizerList.get(0).getUploadPhoto());
-            jsonObject.addProperty("UserType", mOrganizerList.get(0).getUserType());
-            jsonObject.addProperty("UniqueId", mOrganizerList.get(0).getUniqueId());
-            jsonObject.addProperty("Addr", mOrganizerList.get(0).getAddr());
+            } else {
+                jsonObject.addProperty("CountryId", mOrganizerList.get(0).getCountryId());
+                jsonObject.addProperty("CountryMasterId", mOrganizerList.get(0).getCountryMasterId());
+                jsonObject.addProperty("CreatedBy", /*mOrganizerList.get(0).getCreatedBy()*/Preferences.get(mContext, Preferences.USER_ID));
+                jsonObject.addProperty("DOB", mOrganizerList.get(0).getDOB());
+                jsonObject.addProperty("FullName", mOrganizerList.get(0).getFullName());
+                jsonObject.addProperty("Gender", mOrganizerList.get(0).getGender());
+                jsonObject.addProperty("IdProofBackCopy", mOrganizerList.get(0).getIdProofBackCopy());
+                jsonObject.addProperty("IdProofFrontCopy", mOrganizerList.get(0).getIdProofFrontCopy());
+                jsonObject.addProperty("LandMark", mOrganizerList.get(0).getLandMark());
+                jsonObject.addProperty("LoginId", mOrganizerList.get(0).getLoginId());
+                jsonObject.addProperty("MobileNo", mOrganizerList.get(0).getMobileNo());
+                jsonObject.addProperty("RegDt", mOrganizerList.get(0).getRegDt());
+                jsonObject.addProperty("StaffNameAndId", mOrganizerList.get(0).getStaffNameAndId());
+                jsonObject.addProperty("UniqueCode", mOrganizerList.get(0).getUniqueCode());
+                jsonObject.addProperty("UploadPhoto", mOrganizerList.get(0).getUploadPhoto());
+                jsonObject.addProperty("UserType", mOrganizerList.get(0).getUserType());
+                jsonObject.addProperty("UniqueId", mOrganizerList.get(0).getUniqueId());
+                jsonObject.addProperty("Addr", mOrganizerList.get(0).getAddr());
+            }
+            // Log.e("temporary"," jsonobject "+jsonObject);
+            registrationAPI.createGrower(jsonObject);
+        } catch (Exception e) {
         }
-       // Log.e("temporary"," jsonobject "+jsonObject);
-        registrationAPI.createGrower(jsonObject);
     }
 
     private void callSeedDistributionApi() {
+        try {
+            ArrayList<OldGrowerSeedDistributionModel> list = new ArrayList<>();
 
-        ArrayList<OldGrowerSeedDistributionModel> list = new ArrayList<>();
+            for (int i = 0; i < mSeedDistributionList.size(); i++) {
+                OldGrowerSeedDistributionModel old = new OldGrowerSeedDistributionModel();
+                old.setCountryId(mSeedDistributionList.get(i).getCountryId());
+                old.setPlantingYear(mSeedDistributionList.get(i).getPlantingYear());
+                old.setSeasonId(mSeedDistributionList.get(i).getSeasonId());
+                old.setCropId(mSeedDistributionList.get(i).getCropId());
+                old.setProductionClusterId(mSeedDistributionList.get(i).getProductionClusterId());
+                old.setOrganizerId(mSeedDistributionList.get(i).getOrganizerId());
+                old.setGrowerId(mSeedDistributionList.get(i).getGrowerId());
+                old.setParentSeedReceiptId(mSeedDistributionList.get(i).getParentSeedReceiptId());
+                old.setFemaleParentSeedBatchId(mSeedDistributionList.get(i).getFemaleParentSeedBatchId());
+                old.setMaleParentSeedBatchId(mSeedDistributionList.get(i).getMaleParentSeedBatchId());
+                old.setIssueDt(mSeedDistributionList.get(i).getIssueDt());
+                old.setSeedProductionArea(mSeedDistributionList.get(i).getSeedProductionArea());
+                old.setCreatedBy(mSeedDistributionList.get(i).getCreatedBy());
+                list.add(old);
+            }
+            ParentSeedDistributionParameter parentSeedDistributionParameter
+                    = new ParentSeedDistributionParameter(list);
 
-        for (int i = 0; i < mSeedDistributionList.size(); i++) {
-            OldGrowerSeedDistributionModel old = new OldGrowerSeedDistributionModel();
-            old.setCountryId(mSeedDistributionList.get(i).getCountryId());
-            old.setPlantingYear(mSeedDistributionList.get(i).getPlantingYear());
-            old.setSeasonId(mSeedDistributionList.get(i).getSeasonId());
-            old.setCropId(mSeedDistributionList.get(i).getCropId());
-            old.setProductionClusterId(mSeedDistributionList.get(i).getProductionClusterId());
-            old.setOrganizerId(mSeedDistributionList.get(i).getOrganizerId());
-            old.setGrowerId(mSeedDistributionList.get(i).getGrowerId());
-            old.setParentSeedReceiptId(mSeedDistributionList.get(i).getParentSeedReceiptId());
-            old.setFemaleParentSeedBatchId(mSeedDistributionList.get(i).getFemaleParentSeedBatchId());
-            old.setMaleParentSeedBatchId(mSeedDistributionList.get(i).getMaleParentSeedBatchId());
-            old.setIssueDt(mSeedDistributionList.get(i).getIssueDt());
-            old.setSeedProductionArea(mSeedDistributionList.get(i).getSeedProductionArea());
-            old.setCreatedBy(mSeedDistributionList.get(i).getCreatedBy());
-            list.add(old);
-        }
-        ParentSeedDistributionParameter parentSeedDistributionParameter
-                = new ParentSeedDistributionParameter(list);
-
-        // Log.e("temporary"," list "+parentSeedDistributionParameter.list);
+            // Log.e("temporary"," list "+parentSeedDistributionParameter.list);
 
         /*JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("CountryId", );
@@ -832,7 +849,9 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
         jsonObject.addProperty("IsDelete", false);
         jsonObject.addProperty("CreatedBy", "");*/
 
-        mOldGrowerSeedDistrAPI.createDistribution(parentSeedDistributionParameter);
+            mOldGrowerSeedDistrAPI.createDistribution(parentSeedDistributionParameter);
+        } catch (Exception e) {
+        }
     }
 
     private class GetParentSeedDistrAsyncTaskList extends AsyncTask<Void, Void, Void> {
@@ -848,6 +867,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                /* if (mSeedDistributionList != null && mSeedDistributionList.size() > 0) {
                     mTempIdForSeedDitri = mSeedDistributionList.get(0).getTempId();
                 }*/
+            } catch (Exception e) {
             } finally {
                 if (database != null) {
                     database.close();
@@ -872,6 +892,8 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
             try {
                 database = new SqlightDatabase(mContext);
                 b = database.deleteSeedDistribution(/*mTempIdForSeedDitri*/);
+            } catch (Exception e) {
+                return false;
             } finally {
                 if (database != null) {
                     database.close();
@@ -882,12 +904,15 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
 
         @Override
         protected void onPostExecute(Boolean deleted) {
-            if (deleted) {
-                Preferences.saveBool(mContext,Preferences.UPLOAD_DISTRIBUTION_DATA_AVAILABLE,false);
-                if (mSeedDistributionList != null && mSeedDistributionList.size() > 0) {
-                    mSeedDistributionList.clear();
+            try {
+                if (deleted) {
+                    Preferences.saveBool(mContext, Preferences.UPLOAD_DISTRIBUTION_DATA_AVAILABLE, false);
+                    if (mSeedDistributionList != null && mSeedDistributionList.size() > 0) {
+                        mSeedDistributionList.clear();
+                    }
+                    mSeedDistributionRecords.setText(getString(R.string.no_of_records_for_upload, 0));
                 }
-                mSeedDistributionRecords.setText(getString(R.string.no_of_records_for_upload, 0));
+            } catch (Exception e) {
             }
             new DeleteAreaDataAsyncTaskList().execute();
             super.onPostExecute(deleted);
@@ -927,7 +952,8 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
             try {
                 database = new SqlightDatabase(mContext);
                 boolean b = database.deleteAreaData();
-              //  Log.e("temporary","area database deleted " + b);
+                //  Log.e("temporary","area database deleted " + b);
+            } catch (Exception e) {
             } finally {
                 if (database != null) {
                     database.close();
@@ -991,7 +1017,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
         if (mGetAllSeedDistributionList != null) {
             mGetAllSeedDistributionList.clear();
         }
-       // Log.e("temporary","All Seed Distribution List result " + result);
+        // Log.e("temporary","All Seed Distribution List result " + result);
         mDatabaseName = "GetAllSeedDistributionMaster";
         mGetAllSeedDistributionList = result;
         new MasterAsyncTask().execute();
@@ -1002,7 +1028,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
         if (mParentSeedReceiptList != null) {
             mParentSeedReceiptList.clear();
         }
-      //  Log.e("temporary","Seed Receipt List Response lst " + lst);
+        //  Log.e("temporary","Seed Receipt List Response lst " + lst);
         mParentSeedReceiptList = lst;
         mDatabaseName = "ParentSeedReceiptMaster";
         new MasterAsyncTask().execute();
@@ -1013,7 +1039,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
         if (mSeedBatchNoList != null) {
             mSeedBatchNoList.clear();
         }
-      //  Log.e("temporary","Seed Batch  List Response lst " + lst);
+        //  Log.e("temporary","Seed Batch  List Response lst " + lst);
         mSeedBatchNoList = lst;
         mDatabaseName = "SeedBatchNoMaster";
         new MasterAsyncTask().execute();
@@ -1065,7 +1091,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                         for (SeedBatchNoModel param : mSeedBatchNoList) {
                             database.addSeedBatchNo(param);
                         }
-                    break;
+                        break;
                     case PARENT_SEED_RECEIPT_MASTER_DATABASE:
                         database = new SqlightDatabase(mContext);
                         database.trucateTable("tbl_seedreciptmaster");
@@ -1077,7 +1103,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                         database = new SqlightDatabase(mContext);
                         database.trucateTable("tbl_allseeddistributionmaster");
                         Preferences.save(mContext, Preferences.DISTRIBUTION_LIST_DOWNLOAD, "");
-                       // Log.e("temporary","before size " + mGetAllSeedDistributionList.size());
+                        // Log.e("temporary","before size " + mGetAllSeedDistributionList.size());
 
                         for (GetAllSeedDistributionModel param : mGetAllSeedDistributionList) {
                             database.addAllSeedDistributionList(param);
@@ -1092,6 +1118,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
 //                                " mGetAllSeedDistributionList.size() "+ mGetAllSeedDistributionList.size());
                         break;
                 }
+            } catch (Exception e) {
             } finally {
                 switch (mDatabaseName) {
                     case SEED_BATCH_NO_MASTER_DATABASE:
@@ -1119,7 +1146,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                     break;
                 case GET_ALL_SEED_DISTRIBUTION_MASTER_DATABASE:
                     // downloadSeedBatchNoMasterData();
-                  //  Log.e("temporary","");
+                    //  Log.e("temporary","");
                     new StoreDataAsyncTask().execute();
                     break;
             }
@@ -1133,7 +1160,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
             try {
                 SqlightDatabase database = new SqlightDatabase(mContext);
                 database.trucateTable("tbl_storestributiondata");
-              //  Log.e("temporary","doInBackground mGetAllSeedDistributionList "+ mGetAllSeedDistributionList.size());
+                //  Log.e("temporary","doInBackground mGetAllSeedDistributionList "+ mGetAllSeedDistributionList.size());
                 for (int i = 0; i < mGetAllSeedDistributionList.size(); i++) {
                     StoreAreaModel storeAreaModel = new StoreAreaModel(mGetAllSeedDistributionList.get(i).getPlantingYear(), mGetAllSeedDistributionList.get(i).getProductionCode(),
                             mGetAllSeedDistributionList.get(i).getFemaleBatchNo(), mGetAllSeedDistributionList.get(i).getMaleBatchNo(),
@@ -1148,8 +1175,9 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                             /*Added by Jeevan 9-12-2022 ended here*/);
                     database.addAreaData(storeAreaModel);
                 }
+            } catch (Exception e) {
             } finally {
-              //  Log.e("temporary","finally mGetAllSeedDistributionList "+ mGetAllSeedDistributionList.size());
+                //  Log.e("temporary","finally mGetAllSeedDistributionList "+ mGetAllSeedDistributionList.size());
                 mGetAllSeedDistributionList.clear();
             }
             return null;
@@ -1157,7 +1185,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
 
         @Override
         protected void onPostExecute(Void result) {
-         //   Log.e("temporary","StoreAreaAsyncTask result "+result);
+            //   Log.e("temporary","StoreAreaAsyncTask result "+result);
             downloadSeedBatchNoMasterData();
             super.onPostExecute(result);
         }
