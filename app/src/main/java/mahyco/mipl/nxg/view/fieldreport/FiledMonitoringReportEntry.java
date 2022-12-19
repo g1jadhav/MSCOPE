@@ -34,7 +34,7 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
         View.OnClickListener {
 
     private Context mContext;
-
+String Test="";
     private CCFSerachSpinner mSearchByIdNameSpinner;
 
     private ArrayList<GetAllSeedDistributionModel> mGrowerList = new ArrayList<>();
