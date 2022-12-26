@@ -1,6 +1,7 @@
 package mahyco.mipl.nxg.view.fieldreport;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.text.Html;
@@ -47,7 +48,7 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
 
     private LinearLayout mGrowerSearchLayout;
     private LinearLayout mFilterSearchLayout;
-    private LinearLayout mFieldVisitFirst;
+  //  private LinearLayout mFieldVisitFirst;
 
     private AppCompatTextView mGrowerName;
     private AppCompatTextView mIssuedSeedArea;
@@ -105,7 +106,7 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
             mBackButton = findViewById(R.id.back_btn);
             mBackButton.setOnClickListener(this);
 
-            mFieldVisitFirst = findViewById(R.id.field_visit_second);
+           // mFieldVisitFirst = findViewById(R.id.field_visit_second);
 
             mGrowerSearchLayout = findViewById(R.id.grower_search_layout);
             mFilterSearchLayout = findViewById(R.id.filter_search_layout);
@@ -126,7 +127,7 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.next_btn:
-                mGrowerSearchLayout.setVisibility(View.GONE);
+                /*mGrowerSearchLayout.setVisibility(View.GONE);
                 mFilterSearchLayout.setVisibility(View.GONE);
                 mBackButton.setVisibility(View.VISIBLE);
                 mNextButton.setVisibility(View.GONE);
@@ -135,7 +136,9 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
                     mFieldMonitoringReportAdapter = new FieldMonitoringReportAdapter(mContext, FiledMonitoringReportEntry.this, mGrowerList);
                     mRecyclerView.setAdapter(mFieldMonitoringReportAdapter);
                     mRecyclerView.setVisibility(View.VISIBLE);
-                }
+                }*/
+                Intent intent = new Intent(this, OptionalVisit.class);
+                startActivity(intent);
                 break;
             case R.id.back_btn:
                 mGrowerSearchLayout.setVisibility(View.VISIBLE);
@@ -214,12 +217,12 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
     }
 
     private void showFieldVisitFirstLayout(int position){
-        mGrowerSearchLayout.setVisibility(View.GONE);
+        /*mGrowerSearchLayout.setVisibility(View.GONE);
         mFilterSearchLayout.setVisibility(View.GONE);
         mBackButton.setVisibility(View.GONE);
         mNextButton.setVisibility(View.GONE);
-        mRecyclerView.setVisibility(View.GONE);
-        mFieldVisitFirst.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.GONE);*/
+       // mFieldVisitFirst.setVisibility(View.VISIBLE);
 
        /* mGrowerName.setText(mGrowerList.get(position).getGrowerFullName());
         mIssuedSeedArea.setText(""+mGrowerList.get(position).getSeedProductionArea());

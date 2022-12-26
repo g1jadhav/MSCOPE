@@ -94,13 +94,13 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp" />
 
-        <include layout="@layout/field_visit_first" />
+        <!--<include layout="@layout/field_visit_first" />
 
         <include layout="@layout/field_visit_second" />
 
         <include layout="@layout/optional_field_visit" />
         <include layout="@layout/field_visit_third" />
-        <include layout="@layout/field_visit_fourth" />
+        <include layout="@layout/field_visit_fourth" />-->
 
     </LinearLayout>
 

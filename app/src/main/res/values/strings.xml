@@ -323,7 +323,7 @@
     <string name="enter_no_of_rogued_plants_from_male">Enter no. of rogued plants from male</string>
     <string name="tag_area_location">Tag Area Location</string>
     <string name="clear_tag">Clear Tag</string>
-    <string name="capture_photo">Capture Photo<font color='#FF0000'>*</font></string>
+    <string name="capture_photo">Field Photo<font color='#FF0000'>*</font></string>
     <string name="off_type">Off Type<font color='#FF0000'>*</font></string>
     <string name="enter_female_off_type">Enter Off Type</string>
     <string name="enter_female_volunteer">Enter Volunteer</string>

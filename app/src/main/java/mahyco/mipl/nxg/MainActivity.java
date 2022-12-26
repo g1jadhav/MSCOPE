@@ -254,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             /*added by jeevan 7-12-2022*/
             case R.id.field_monitoring_report_entry_layout:{
-                if (!checkCategoryDataDownloaded()) {
+                /*if (!checkCategoryDataDownloaded()) {
                     Toast.makeText(context, "Please download category master data in download master data first", Toast.LENGTH_SHORT).show();
                 } else if (!checkLocationMasterDataDownloaded()) {
                     Toast.makeText(context, "Please download location master data in download master data first", Toast.LENGTH_SHORT).show();
@@ -278,7 +278,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     } else {
                         showAutomaticTimeMessage("Please update time setting to automatic");
                     }
-                }
+                }*/
             }
             break;
             /*added by jeevan 7-12-2022 ended here*/

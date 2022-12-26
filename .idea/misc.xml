@@ -4,7 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Android/LatestMIPL/MIPL/app/src/main/res/drawable-v24/calender.xml" value="0.105" />
+        <entry key="..\:/Android/LatestMIPL/MIPL/app/src/main/res/drawable-v24/dropdown_shape.xml" value="0.1" />
         <entry key="..\:/Android/LatestMIPL/MIPL/app/src/main/res/drawable/calendar.xml" value="0.105" />
+        <entry key="..\:/Android/LatestMIPL/MIPL/app/src/main/res/drawable/dropdown_shape.xml" value="0.105" />
+        <entry key="..\:/Android/LatestMIPL/MIPL/app/src/main/res/layout/activity_add_capa.xml" value="0.1" />
         <entry key="..\:/Android/LatestMIPL/MIPL/app/src/main/res/layout/activity_add_new_sowing_details.xml" value="0.17552083333333332" />
         <entry key="..\:/Android/LatestMIPL/MIPL/app/src/main/res/layout/activity_login.xml" value="0.17552083333333332" />
         <entry key="..\:/Android/LatestMIPL/MIPL/app/src/main/res/layout/activity_main.xml" value="0.17552083333333332" />
