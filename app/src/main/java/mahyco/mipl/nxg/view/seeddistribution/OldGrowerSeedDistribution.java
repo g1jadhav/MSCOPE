@@ -629,7 +629,63 @@ public class OldGrowerSeedDistribution extends BaseActivity implements View.OnCl
            // Log.e("temporary"," after "+ lastClickTime);
             /*14-12-2022 Added by Jeevan ended here*/
             storedAra = 0.0f;
-            new GetFemaleBatchStoredData().execute();
+
+
+            if (new SqlightDatabase(mContext).isSeedDistributionRegister(mGrowerList.get(mSearchByIdNameSpinner.getSelectedItemPosition()).getUserId(),mPlantingYearSpinner.getSelectedItem().toString())) {
+                Dialog mDialog = null;
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
+                alertDialog.setCancelable(false);
+                alertDialog.setTitle("MIPL");
+                alertDialog.setMessage("Already distributed to this grower,\n Do you want to distribute again?");
+                alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // finish();
+                        new GetFemaleBatchStoredData().execute();
+                        dialogInterface.dismiss();
+                    }
+                });
+                alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // finish();
+
+                        dialogInterface.dismiss();
+                    }
+                });
+                mDialog = alertDialog.create();
+                mDialog.show();
+            } else if (new SqlightDatabase(mContext).isSeedDistributionListDownloaded(mGrowerList.get(mSearchByIdNameSpinner.getSelectedItemPosition()).getUserId(),mPlantingYearSpinner.getSelectedItem().toString())) {
+                Dialog mDialog = null;
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
+                alertDialog.setCancelable(false);
+                alertDialog.setTitle("MIPL");
+                alertDialog.setMessage("Already distributed to this grower,\n Do you want to distribute again?");
+                alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // finish();
+                        new GetFemaleBatchStoredData().execute();
+                        dialogInterface.dismiss();
+                    }
+                });
+                alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // finish();
+
+                        dialogInterface.dismiss();
+                    }
+                });
+                mDialog = alertDialog.create();
+                mDialog.show();
+
+            }else {
+                new GetFemaleBatchStoredData().execute();
+            }
+
+          //  new GetFemaleBatchStoredData().execute();
+
             /*} else {
                 new GetStoredDataCount().execute();
             }*/

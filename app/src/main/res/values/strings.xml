@@ -150,6 +150,7 @@
     <string name="Please_enter_unique_code">Please enter unique code</string>
     <string name="Please_enter_national_id_number">Please enter National ID Number</string>
     <string name="Please_enter_valid_national_id_number">Please enter 16 digit National ID Number</string>
+    <string name="Please_enter_valid_national_id_number_malawi">Please enter 8 characters National ID</string>
     <string name="Please_enter_confirm_password">Please enter confirm password</string>
     <string name="password_confirm_password_not_match">Your password and confirmation password do not match.</string>
     <string name="Please_select_country">Please select country</string>

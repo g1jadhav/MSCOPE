@@ -615,7 +615,7 @@ public class NewGrowerRegistration extends BaseActivity implements Listener, Vie
                                     front_path = mDocFrontPhotoFile.getAbsolutePath();
                                     //Z Log.e("temporary", " front_path " + front_path);
                                     FileOutputStream out = new FileOutputStream(front_path);
-                                    r.getBitmap().compress(Bitmap.CompressFormat.PNG, 100, out);
+                                    r.getBitmap().compress(Bitmap.CompressFormat.PNG, 60, out);
                                     out.flush();
                                     out.close();
                                 } catch (Exception e) {
@@ -659,7 +659,7 @@ public class NewGrowerRegistration extends BaseActivity implements Listener, Vie
                                     back_path = mDocBackPhotoFile.getAbsolutePath();
                                     //   Log.e("temporary", " back_path " + back_path);
                                     FileOutputStream out = new FileOutputStream(back_path);
-                                    r.getBitmap().compress(Bitmap.CompressFormat.PNG, 100, out);
+                                    r.getBitmap().compress(Bitmap.CompressFormat.PNG, 60, out);
                                     out.flush();
                                     out.close();
                                 } catch (Exception e) {
@@ -702,7 +702,7 @@ public class NewGrowerRegistration extends BaseActivity implements Listener, Vie
                                     dp_path = mGrowerPhotoFile.getAbsolutePath();
                                     //  Log.e("temporary", " dp " + dp_path);
                                     FileOutputStream out = new FileOutputStream(dp_path);
-                                    r.getBitmap().compress(Bitmap.CompressFormat.PNG, 100, out);
+                                    r.getBitmap().compress(Bitmap.CompressFormat.PNG, 60, out);
                                     out.flush();
                                     out.close();
                                 } catch (Exception e) {
@@ -1532,6 +1532,10 @@ public class NewGrowerRegistration extends BaseActivity implements Listener, Vie
         } else if (counrtyId.equals("3") && (et_uniqcode.getText().toString().trim().length() < 16
                 || et_uniqcode.getText().toString().trim().length() > 16)) {
             showToast(getString(R.string.Please_enter_valid_national_id_number));
+        }
+        else if (counrtyId.equals("1") && (et_uniqcode.getText().toString().trim().length() < 8
+                || et_uniqcode.getText().toString().trim().length() > 8)) {
+            showToast(getString(R.string.Please_enter_valid_national_id_number_malawi));
         }
 
         /*else if (new SqlightDatabase(mContext).isGrowerRegister(et_uniqcode.getText().toString().trim())) {

@@ -176,6 +176,10 @@ public class Registration extends AppCompatActivity implements RegistrationListe
                 || et_userUniqueid.getText().toString().trim().length() > 16)) {
             showToast(getString(R.string.Please_enter_valid_national_id_number));
             return;
+        } else if (ccode == 1 && (et_userUniqueid.getText().toString().trim().length() < 8
+                || et_userUniqueid.getText().toString().trim().length() > 8)) {
+            showToast(getString(R.string.Please_enter_valid_national_id_number_malawi));
+            return;
         } else if (TextUtils.isEmpty(et_address.getText().toString().trim())) {
             Toast.makeText(this, "Please enter address", Toast.LENGTH_SHORT).show();
             return;
@@ -201,7 +205,7 @@ public class Registration extends AppCompatActivity implements RegistrationListe
         str_UniqueId=et_userUniqueid.getText().toString().trim();
         str_address=et_address.getText().toString().trim();
 
-        Toast.makeText(context, "" + str_countrycode, Toast.LENGTH_SHORT).show();
+   //     Toast.makeText(context, "" + str_countrycode, Toast.LENGTH_SHORT).show();
         jsonObject = new JsonObject();
         jsonObject.addProperty("CountryId", ccode);//: 0,
         jsonObject.addProperty("RoleId", selectedRoleId);//: 0,

@@ -50,6 +50,7 @@ import mahyco.mipl.nxg.util.Preferences;
 import mahyco.mipl.nxg.util.SqlightDatabase;
 import mahyco.mipl.nxg.view.downloadcategories.DownloadCategoryActivity;
 import mahyco.mipl.nxg.view.fieldreport.FiledMonitoringReportEntry;
+import mahyco.mipl.nxg.view.fieldreport.FiledReportDashboard;
 import mahyco.mipl.nxg.view.growerregistration.NewGrowerRegistration;
 import mahyco.mipl.nxg.view.login.Login;
 import mahyco.mipl.nxg.view.seeddistribution.OldGrowerSeedDistribution;
@@ -279,6 +280,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         showAutomaticTimeMessage("Please update time setting to automatic");
                     }
                 }*/
+                Intent intent = new Intent(context, FiledMonitoringReportEntry.class);
+                startActivity(intent);
             }
             break;
             /*added by jeevan 7-12-2022 ended here*/

@@ -1,35 +1,60 @@
 package mahyco.mipl.nxg.view.fieldreport;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.SystemClock;
 import android.text.Html;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.budiyev.android.codescanner.CodeScanner;
+import com.budiyev.android.codescanner.CodeScannerView;
+import com.google.gson.JsonObject;
+
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import mahyco.mipl.nxg.BuildConfig;
 import mahyco.mipl.nxg.R;
+import mahyco.mipl.nxg.adapter.CategoryLoadingAdapter;
+import mahyco.mipl.nxg.model.CategoryChildModel;
+import mahyco.mipl.nxg.model.CategoryModel;
 import mahyco.mipl.nxg.model.DownloadGrowerModel;
 import mahyco.mipl.nxg.model.GetAllSeedDistributionModel;
+import mahyco.mipl.nxg.model.GrowerModel;
 import mahyco.mipl.nxg.spinner.CCFSerachSpinner;
 import mahyco.mipl.nxg.util.BaseActivity;
+import mahyco.mipl.nxg.util.Preferences;
 import mahyco.mipl.nxg.util.SqlightDatabase;
+import mahyco.mipl.nxg.view.growerregistration.GrowerRegistrationAPI;
+import mahyco.mipl.nxg.view.growerregistration.NewGrowerRegistration;
 
 public class FiledMonitoringReportEntry extends BaseActivity implements RecyclerViewClickListener,
         View.OnClickListener {
@@ -49,10 +74,71 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
     private LinearLayout mGrowerSearchLayout;
     private LinearLayout mFilterSearchLayout;
   //  private LinearLayout mFieldVisitFirst;
+  JsonObject categoryJson;
 
-    private AppCompatTextView mGrowerName;
-    private AppCompatTextView mIssuedSeedArea;
-    private AppCompatTextView mProductionCode;
+    LinearLayoutManager mManager;
+    RecyclerView rc_list;
+    CategoryLoadingAdapter adapter;
+    EditText et_landmark, et_fullname, /*et_gender,*/ /*et_dob,*/
+            et_mobile, et_uniqcode /*et_regdate,*/
+            /*,et_satffname*/;
+    EditText et_address_edittext;
+    String str_et_landmark, str_et_fullname, str_et_gender, str_et_dob, str_et_mobile, str_et_uniqcode, str_et_regdate, str_et_satffname, str_et_address;
+    Button grower_registration_submit_btn, scan_qr_code_btn;
+    CircleImageView iv_dp;
+    ImageView imageView_front, imageView_back;
+    String str_Lable = "";
+    TextView txt_name, et_dob, et_regdate, et_satffname;
+    TextView txt_registration_country;
+    String dp_path, front_path, back_path;
+    static int stid = 0;
+    GrowerModel growerModel = new GrowerModel();
+    String counrtyId = "0", countryName = "";
+
+    private CCFSerachSpinner mSpinnerArray[];
+    private int[] mSpinnerHeadingTextView;
+
+    private CCFSerachSpinner mSearchableSpinner1;
+    private CCFSerachSpinner mSearchableSpinner2;
+    private CCFSerachSpinner mSearchableSpinner3;
+    private CCFSerachSpinner mSearchableSpinner4;
+    private CCFSerachSpinner mSearchableSpinner5;
+    private CCFSerachSpinner mSearchableSpinner6;
+    private CCFSerachSpinner mSearchableSpinner7;
+    private CCFSerachSpinner mSearchableSpinner8;
+    private CCFSerachSpinner mSearchableSpinner9;
+    private CCFSerachSpinner mSearchableSpinner10;
+
+    private DatePickerDialog mDatePickerDialog = null;
+
+    private ArrayList<CategoryChildModel> mSpinner1List;
+    private ArrayList<CategoryChildModel> mSpinner2List;
+    private ArrayList<CategoryChildModel> mSpinner3List;
+    private ArrayList<CategoryChildModel> mSpinner4List;
+    private ArrayList<CategoryChildModel> mSpinner5List;
+    private ArrayList<CategoryChildModel> mSpinner6List;
+    private ArrayList<CategoryChildModel> mSpinner7List;
+    private ArrayList<CategoryChildModel> mSpinner8List;
+    private ArrayList<CategoryChildModel> mSpinner9List;
+    private ArrayList<CategoryChildModel> mSpinner10List;
+
+    private CodeScanner mCodeScanner;
+    private CodeScannerView mCodeScannerView;
+    private ScrollView mScrollView;
+
+    private int mCountryMasterIdAsPerSelection = 0;
+    private int mSpinnerPosition = 1;
+
+    private File mDocFrontPhotoFile = null;
+    private File mGrowerPhotoFile = null;
+    private File mDocBackPhotoFile = null;
+
+    private RadioButton mMaleRadioButton;
+    private RadioButton mFemaleRadioButton;
+
+    private androidx.appcompat.widget.Toolbar toolbar;
+    String str_address = "";
+    int total_active_spinners = 0;
 
     @Override
     protected int getLayout() {
@@ -112,6 +198,36 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
             mFilterSearchLayout = findViewById(R.id.filter_search_layout);
 
             new GetGrowerMasterAsyncTask().execute();
+            new GetCategoriesAsyncTask().execute();
+            mSearchableSpinner1 = findViewById(R.id.sp1);
+            mSearchableSpinner2 = findViewById(R.id.sp2);
+            mSearchableSpinner3 = findViewById(R.id.sp3);
+            mSearchableSpinner4 = findViewById(R.id.sp4);
+            mSearchableSpinner5 = findViewById(R.id.sp5);
+            mSearchableSpinner6 = findViewById(R.id.sp6);
+            mSearchableSpinner7 = findViewById(R.id.sp7);
+            mSearchableSpinner8 = findViewById(R.id.sp8);
+            mSearchableSpinner9 = findViewById(R.id.sp9);
+            mSearchableSpinner10 = findViewById(R.id.sp10);
+
+            mSpinnerArray = new CCFSerachSpinner[]{mSearchableSpinner1, mSearchableSpinner2, mSearchableSpinner3, mSearchableSpinner4, mSearchableSpinner5, mSearchableSpinner6, mSearchableSpinner7, mSearchableSpinner8, mSearchableSpinner9, mSearchableSpinner10};
+            mSpinnerHeadingTextView = new int[]{R.id.textview1, R.id.textview2, R.id.textview3, R.id.textview4, R.id.textview5, R.id.textview6, R.id.textview7, R.id.textview8, R.id.textview9, R.id.textview10};
+
+            mSearchableSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    if (mSpinner1List != null && mSpinner1List.size() > 0) {
+                        mSpinnerPosition = 2;
+                        mCountryMasterIdAsPerSelection = mSpinner1List.get(i).getCountryMasterId();
+                        new GetLocationMasterAsyncTask().execute();
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
 
             /*mGrowerName = findViewById(R.id.grower_name_textview);
             mIssuedSeedArea = findViewById(R.id.issued_seed_area_textview);
@@ -137,7 +253,7 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
                     mRecyclerView.setAdapter(mFieldMonitoringReportAdapter);
                     mRecyclerView.setVisibility(View.VISIBLE);
                 }*/
-                Intent intent = new Intent(this, OptionalVisit.class);
+                Intent intent = new Intent(this, FiledReportDashboard.class);
                 startActivity(intent);
                 break;
             case R.id.back_btn:
@@ -228,4 +344,665 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
         mIssuedSeedArea.setText(""+mGrowerList.get(position).getSeedProductionArea());
         mProductionCode.setText(mGrowerList.get(position).getProductionCode());*/
     }
+
+
+
+    private class GetCategoriesAsyncTask extends AsyncTask<Void, Void, ArrayList<CategoryModel>> {
+        @Override
+        protected final ArrayList<CategoryModel> doInBackground(Void... voids) {
+            SqlightDatabase database = null;
+            ArrayList<CategoryModel> actionModels;
+            try {
+                database = new SqlightDatabase(mContext);
+                actionModels = database.getAllCategories();
+            } finally {
+                if (database != null) {
+                    database.close();
+                }
+            }
+            return actionModels;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<CategoryModel> result) {
+
+            if (result != null && result.size() > 0) {
+                total_active_spinners = result.size();
+              //  et_address_edittext.setText("" + total_active_spinners);
+                for (int i = 0; i < result.size(); i++) {
+//                    SearchableSpinner searchableSpinner = findViewById(mSpinnerArray[i]);
+                    mSpinnerArray[i].setVisibility(View.VISIBLE);
+                    mSpinnerArray[i].setTitle("Select " + result.get(i).getDisplayTitle());
+
+                    TextView textView = findViewById(mSpinnerHeadingTextView[i]);
+                    textView.setVisibility(View.VISIBLE);
+                    textView.setText(Html.fromHtml(result.get(i).getDisplayTitle() + "<font color='#FF0000'>*</font>"));
+                }
+                mSpinnerPosition = 1;
+                mCountryMasterIdAsPerSelection = Integer.parseInt(Preferences.get(mContext, Preferences.COUNTRY_MASTER_ID));
+                new GetLocationMasterAsyncTask().execute();
+            } /*else {
+                Log.e("temporary", "onPostExecute result null ");
+            }*/
+            super.onPostExecute(result);
+        }
+    }
+
+    private class GetLocationMasterAsyncTask extends AsyncTask<Void, Void, ArrayList<CategoryChildModel>> {
+        @Override
+        protected final ArrayList<CategoryChildModel> doInBackground(Void... voids) {
+            SqlightDatabase database = null;
+            ArrayList<CategoryChildModel> mCategoryChildModelsList = null;
+            try {
+                database = new SqlightDatabase(mContext);
+                mCategoryChildModelsList = database.getLocationCategories(/*Integer.parseInt(Preferences.get(mContext, Preferences.COUNTRY_MASTER_ID))*/mCountryMasterIdAsPerSelection);
+            } finally {
+                if (database != null) {
+                    database.close();
+                }
+            }
+            return mCategoryChildModelsList;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<CategoryChildModel> result) {
+            if (result != null && result.size() > 0) {
+                /*Added by jeevan 12-12-2022*/
+                if(mCountryMasterIdAsPerSelection != 0) {
+                    /*Added by jeevan 12-12-2022 ended here*/
+                    callLocationAdapter(result);
+                    /*Added by jeevan 12-12-2022*/
+                } else {
+                   /* CategoryChildModel categoryChildModel = new CategoryChildModel();
+                    categoryChildModel.setKeyValue("");
+                    categoryChildModel.setCountryMasterId(0);
+                    categoryChildModel.setCategoryId(0);
+                    ArrayList<CategoryChildModel> result1 = new ArrayList<>();
+                    result1.add(categoryChildModel);*/
+                    result.clear();
+                    callLocationAdapter(result);
+                }
+                /*Added by jeevan 12-12-2022 ended here*/
+            } else {
+                clearSpinnerData(mSpinnerPosition);
+            }
+            super.onPostExecute(result);
+        }
+    }
+
+    private void callLocationAdapter(ArrayList<CategoryChildModel> result) {
+        CategoryChildModel categoryChildModel = new CategoryChildModel();
+        categoryChildModel.setKeyValue("Select");
+        categoryChildModel.setCountryMasterId(0);
+        categoryChildModel.setCategoryId(0);
+        result.add(0, categoryChildModel);
+        switch (mSpinnerPosition) {
+            case 1: {
+                mSpinner1List = result;
+//                Spinner1Adapter adapter = new Spinner1Adapter(mContext, R.layout.spinner_rows,
+//                        result);
+                ArrayAdapter<CategoryChildModel> adapter = new ArrayAdapter<>(mContext, R.layout.spinner_rows,
+                        result);
+                mSearchableSpinner1.setAdapter(adapter);
+            }
+            break;
+            case 2: {
+                mSpinner2List = result;
+                //Spinner2Adapter adapter = new Spinner2Adapter(mContext, R.layout.spinner_rows, result);
+                ArrayAdapter<CategoryChildModel> adapter = new ArrayAdapter<>(mContext, R.layout.spinner_rows,
+                        result);
+                mSearchableSpinner2.setAdapter(adapter);
+                mSearchableSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        if (mSpinner2List != null && mSpinner2List.size() > 0) {
+                            mSpinnerPosition = 3;
+                            mCountryMasterIdAsPerSelection = mSpinner2List.get(i).getCountryMasterId();
+                            new GetLocationMasterAsyncTask().execute();
+
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+            }
+            break;
+            case 3: {
+                mSpinner3List = result;
+                // Spinner3Adapter adapter = new Spinner3Adapter(mContext, R.layout.spinner_rows, result);
+                ArrayAdapter<CategoryChildModel> adapter = new ArrayAdapter<>(mContext, R.layout.spinner_rows,
+                        result);
+                mSearchableSpinner3.setAdapter(adapter);
+
+                mSearchableSpinner3.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        if (mSpinner3List != null && mSpinner3List.size() > 0) {
+                            mSpinnerPosition = 4;
+                            mCountryMasterIdAsPerSelection = mSpinner3List.get(i).getCountryMasterId();
+                            new GetLocationMasterAsyncTask().execute();
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+            }
+            break;
+            case 4: {
+                mSpinner4List = result;
+                //Spinner4Adapter adapter = new Spinner4Adapter(mContext, R.layout.spinner_rows, result);
+                ArrayAdapter<CategoryChildModel> adapter = new ArrayAdapter<>(mContext, R.layout.spinner_rows,
+                        result);
+                mSearchableSpinner4.setAdapter(adapter);
+
+                mSearchableSpinner4.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        if (mSpinner4List != null && mSpinner4List.size() > 0) {
+                            mSpinnerPosition = 5;
+                            mCountryMasterIdAsPerSelection = mSpinner4List.get(i).getCountryMasterId();
+                            new GetLocationMasterAsyncTask().execute();
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+            }
+            break;
+            case 5: {
+                mSpinner5List = result;
+                //Spinner5Adapter adapter = new Spinner5Adapter(mContext, R.layout.spinner_rows, result);
+                ArrayAdapter<CategoryChildModel> adapter = new ArrayAdapter<>(mContext, R.layout.spinner_rows,
+                        result);
+                mSearchableSpinner5.setAdapter(adapter);
+
+                mSearchableSpinner5.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        if (mSpinner5List != null && mSpinner5List.size() > 0) {
+                            mSpinnerPosition = 6;
+                            mCountryMasterIdAsPerSelection = mSpinner5List.get(i).getCountryMasterId();
+                            new GetLocationMasterAsyncTask().execute();
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+            }
+            break;
+            case 6: {
+                mSpinner6List = result;
+                // Spinner6Adapter adapter = new Spinner6Adapter(mContext, R.layout.spinner_rows, result);
+                ArrayAdapter<CategoryChildModel> adapter = new ArrayAdapter<>(mContext, R.layout.spinner_rows,
+                        result);
+                mSearchableSpinner6.setAdapter(adapter);
+
+                mSearchableSpinner6.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        if (mSpinner6List != null && mSpinner6List.size() > 0) {
+                            mSpinnerPosition = 7;
+                            mCountryMasterIdAsPerSelection = mSpinner6List.get(i).getCountryMasterId();
+                            new GetLocationMasterAsyncTask().execute();
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+            }
+            break;
+            case 7: {
+                mSpinner7List = result;
+                //Spinner7Adapter adapter = new Spinner7Adapter(mContext, R.layout.spinner_rows, result);
+                ArrayAdapter<CategoryChildModel> adapter = new ArrayAdapter<>(mContext, R.layout.spinner_rows,
+                        result);
+                mSearchableSpinner7.setAdapter(adapter);
+
+                mSearchableSpinner7.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        if (mSpinner7List != null && mSpinner7List.size() > 0) {
+                            mSpinnerPosition = 8;
+                            mCountryMasterIdAsPerSelection = mSpinner7List.get(i).getCountryMasterId();
+                            new GetLocationMasterAsyncTask().execute();
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+            }
+            break;
+            case 8: {
+                mSpinner8List = result;
+                // Spinner8Adapter adapter = new Spinner8Adapter(mContext, R.layout.spinner_rows, result);
+                ArrayAdapter<CategoryChildModel> adapter = new ArrayAdapter<>(mContext, R.layout.spinner_rows,
+                        result);
+                mSearchableSpinner8.setAdapter(adapter);
+
+                mSearchableSpinner8.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        if (mSpinner8List != null && mSpinner8List.size() > 0) {
+                            mSpinnerPosition = 9;
+                            mCountryMasterIdAsPerSelection = mSpinner8List.get(i).getCountryMasterId();
+                            new GetLocationMasterAsyncTask().execute();
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+            }
+            break;
+            case 9: {
+                mSpinner9List = result;
+                // Spinner9Adapter adapter = new Spinner9Adapter(mContext, R.layout.spinner_rows, result);
+                ArrayAdapter<CategoryChildModel> adapter = new ArrayAdapter<>(mContext, R.layout.spinner_rows,
+                        result);
+                mSearchableSpinner9.setAdapter(adapter);
+
+                mSearchableSpinner9.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        if (mSpinner9List != null && mSpinner9List.size() > 0) {
+                            mSpinnerPosition = 10;
+                            mCountryMasterIdAsPerSelection = mSpinner9List.get(i).getCountryMasterId();
+                            new GetLocationMasterAsyncTask().execute();
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+            }
+            break;
+            case 10: {
+                mSpinner10List = result;
+                // Spinner10Adapter adapter = new Spinner10Adapter(mContext, R.layout.spinner_rows, result);
+                ArrayAdapter<CategoryChildModel> adapter = new ArrayAdapter<>(mContext, R.layout.spinner_rows,
+                        result);
+                mSearchableSpinner10.setAdapter(adapter);
+                mSearchableSpinner10.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        if (mSpinner10List != null && mSpinner10List.size() > 0) {
+                            mSpinnerPosition = 11;
+                            mCountryMasterIdAsPerSelection = mSpinner10List.get(i).getCountryMasterId();
+                            new GetLocationMasterAsyncTask().execute();
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+            }
+            break;
+        }
+    }
+
+    private void clearSpinnerData(int mSpinnerPosition) {
+        switch (mSpinnerPosition) {
+            case 2: {
+
+                if (mSpinner2List != null) {
+                    mSpinner2List.clear();
+                }
+                if (mSpinner3List != null) {
+                    mSpinner3List.clear();
+                }
+                if (mSpinner4List != null) {
+                    mSpinner4List.clear();
+                }
+                if (mSpinner5List != null) {
+                    mSpinner5List.clear();
+                }
+                if (mSpinner6List != null) {
+                    mSpinner6List.clear();
+                }
+                if (mSpinner7List != null) {
+                    mSpinner7List.clear();
+                }
+                if (mSpinner8List != null) {
+                    mSpinner8List.clear();
+                }
+                if (mSpinner9List != null) {
+                    mSpinner9List.clear();
+                }
+                if (mSpinner10List != null) {
+                    mSpinner10List.clear();
+                }
+
+                mSearchableSpinner2.setAdapter(null);
+                mSearchableSpinner3.setAdapter(null);
+                mSearchableSpinner4.setAdapter(null);
+                mSearchableSpinner5.setAdapter(null);
+                mSearchableSpinner6.setAdapter(null);
+                mSearchableSpinner7.setAdapter(null);
+                mSearchableSpinner8.setAdapter(null);
+                mSearchableSpinner9.setAdapter(null);
+                mSearchableSpinner10.setAdapter(null);
+            }
+            break;
+            case 3: {
+
+                if (mSpinner3List != null) {
+                    mSpinner3List.clear();
+                }
+                if (mSpinner4List != null) {
+                    mSpinner4List.clear();
+                }
+                if (mSpinner5List != null) {
+                    mSpinner5List.clear();
+                }
+                if (mSpinner6List != null) {
+                    mSpinner6List.clear();
+                }
+                if (mSpinner7List != null) {
+                    mSpinner7List.clear();
+                }
+                if (mSpinner8List != null) {
+                    mSpinner8List.clear();
+                }
+                if (mSpinner9List != null) {
+                    mSpinner9List.clear();
+                }
+                if (mSpinner10List != null) {
+                    mSpinner10List.clear();
+                }
+
+                mSearchableSpinner3.setAdapter(null);
+                mSearchableSpinner4.setAdapter(null);
+                mSearchableSpinner5.setAdapter(null);
+                mSearchableSpinner6.setAdapter(null);
+                mSearchableSpinner7.setAdapter(null);
+                mSearchableSpinner8.setAdapter(null);
+                mSearchableSpinner9.setAdapter(null);
+                mSearchableSpinner10.setAdapter(null);
+            }
+            break;
+            case 4: {
+                if (mSpinner4List != null) {
+                    mSpinner4List.clear();
+                }
+                if (mSpinner5List != null) {
+                    mSpinner5List.clear();
+                }
+                if (mSpinner6List != null) {
+                    mSpinner6List.clear();
+                }
+                if (mSpinner7List != null) {
+                    mSpinner7List.clear();
+                }
+                if (mSpinner8List != null) {
+                    mSpinner8List.clear();
+                }
+                if (mSpinner9List != null) {
+                    mSpinner9List.clear();
+                }
+                if (mSpinner10List != null) {
+                    mSpinner10List.clear();
+                }
+
+                mSearchableSpinner4.setAdapter(null);
+                mSearchableSpinner5.setAdapter(null);
+                mSearchableSpinner6.setAdapter(null);
+                mSearchableSpinner7.setAdapter(null);
+                mSearchableSpinner8.setAdapter(null);
+                mSearchableSpinner9.setAdapter(null);
+                mSearchableSpinner10.setAdapter(null);
+            }
+            break;
+            case 5: {
+                if (mSpinner5List != null) {
+                    mSpinner5List.clear();
+                }
+                if (mSpinner6List != null) {
+                    mSpinner6List.clear();
+                }
+                if (mSpinner7List != null) {
+                    mSpinner7List.clear();
+                }
+                if (mSpinner8List != null) {
+                    mSpinner8List.clear();
+                }
+                if (mSpinner9List != null) {
+                    mSpinner9List.clear();
+                }
+                if (mSpinner10List != null) {
+                    mSpinner10List.clear();
+                }
+
+                mSearchableSpinner5.setAdapter(null);
+                mSearchableSpinner6.setAdapter(null);
+                mSearchableSpinner7.setAdapter(null);
+                mSearchableSpinner8.setAdapter(null);
+                mSearchableSpinner9.setAdapter(null);
+                mSearchableSpinner10.setAdapter(null);
+            }
+            break;
+            case 6: {
+                if (mSpinner6List != null) {
+                    mSpinner6List.clear();
+                }
+                if (mSpinner7List != null) {
+                    mSpinner7List.clear();
+                }
+                if (mSpinner8List != null) {
+                    mSpinner8List.clear();
+                }
+                if (mSpinner9List != null) {
+                    mSpinner9List.clear();
+                }
+                if (mSpinner10List != null) {
+                    mSpinner10List.clear();
+                }
+
+                mSearchableSpinner6.setAdapter(null);
+                mSearchableSpinner7.setAdapter(null);
+                mSearchableSpinner8.setAdapter(null);
+                mSearchableSpinner9.setAdapter(null);
+                mSearchableSpinner10.setAdapter(null);
+            }
+            break;
+            case 7: {
+                if (mSpinner7List != null) {
+                    mSpinner7List.clear();
+                }
+                if (mSpinner8List != null) {
+                    mSpinner8List.clear();
+                }
+                if (mSpinner9List != null) {
+                    mSpinner9List.clear();
+                }
+                if (mSpinner10List != null) {
+                    mSpinner10List.clear();
+                }
+                mSearchableSpinner7.setAdapter(null);
+                mSearchableSpinner8.setAdapter(null);
+                mSearchableSpinner9.setAdapter(null);
+                mSearchableSpinner10.setAdapter(null);
+            }
+            break;
+            case 8: {
+
+                if (mSpinner8List != null) {
+                    mSpinner8List.clear();
+                }
+                if (mSpinner9List != null) {
+                    mSpinner9List.clear();
+                }
+                if (mSpinner10List != null) {
+                    mSpinner10List.clear();
+                }
+                mSearchableSpinner8.setAdapter(null);
+                mSearchableSpinner9.setAdapter(null);
+                mSearchableSpinner10.setAdapter(null);
+            }
+            break;
+            case 9: {
+                if (mSpinner9List != null) {
+                    mSpinner9List.clear();
+                }
+                if (mSpinner10List != null) {
+                    mSpinner10List.clear();
+                }
+                mSearchableSpinner9.setAdapter(null);
+                mSearchableSpinner10.setAdapter(null);
+            }
+            break;
+            case 10: {
+                if (mSpinner10List != null) {
+                    mSpinner10List.clear();
+                }
+                mSearchableSpinner10.setAdapter(null);
+            }
+            break;
+        }
+    }
+
+    /*private boolean validation() {
+        if (mGrowerPhotoFile == null) {
+            showToast(getString(R.string.please_grower_photo));
+            return false;
+        } else if (mSearchableSpinner5.getSelectedItemPosition() == -1) {
+            showToast("Data not found");
+            return false;
+        } else if (TextUtils.isEmpty(et_landmark.getText().toString())) {
+            showToast(getString(R.string.Please_enter_landmark));
+            return false;
+        } else if (TextUtils.isEmpty(et_fullname.getText().toString())) {
+            if (str_Lable.equalsIgnoreCase("Grower")) {
+                showToast(getString(R.string.Please_enter_farmer_name));
+            } else {
+                showToast(getString(R.string.Please_enter_organizer_name));
+            }
+            return false;
+        } else if (*//*TextUtils.isEmpty(et_gender.getText().toString())*//*
+                !mMaleRadioButton.isChecked() && !mFemaleRadioButton.isChecked()) {
+            showToast(getString(R.string.Please_select_gender));
+            return false;
+        } else if (TextUtils.isEmpty(et_dob.getText().toString().trim())) {
+            showToast(getString(R.string.Please_enter_date_of_birth));
+            return false;
+        } else if (TextUtils.isEmpty(et_mobile.getText().toString().trim())) {
+            showToast(getString(R.string.Please_enter_mobile_no));
+            return false;
+        } else if (mDocFrontPhotoFile == null) {
+            showToast(getString(R.string.please_capture_national_id_photo_front));
+            return false;
+        } else if (mDocBackPhotoFile == null) {
+            showToast(getString(R.string.please_capture_national_id_photo_back));
+            return false;
+        } else if (TextUtils.isEmpty(et_uniqcode.getText().toString().trim())) {
+            showToast(getString(R.string.Please_enter_unique_code));
+            return false;
+        } else {
+            *//*return if (checkInternetConnection()) {*//*
+            return true;
+            *//*} else {
+                setEnableOrDisable(true)
+                showToast(getString(R.string.err_internet))
+                false
+            }*//*
+        }
+    }*/
+    private /*boolean*/void validation() {
+       
+        /*Added by jeevan 28-11-2022*/
+         if (mSearchableSpinner1.getVisibility() == View.VISIBLE &&
+                (mSearchableSpinner1.getSelectedItemPosition() == 0 ||
+                        mSearchableSpinner1.getSelectedItemPosition() == -1)) {
+            TextView textView = findViewById(mSpinnerHeadingTextView[0]);
+            showToast("Please select " + textView.getText().toString());
+            // return false;
+        } else if (mSearchableSpinner2.getVisibility() == View.VISIBLE &&
+                (mSearchableSpinner2.getSelectedItemPosition() == 0 ||
+                        mSearchableSpinner2.getSelectedItemPosition() == -1)) {
+            TextView textView = findViewById(mSpinnerHeadingTextView[1]);
+            showToast("Please select " + textView.getText().toString());
+            // return false;
+        } else if (mSearchableSpinner3.getVisibility() == View.VISIBLE &&
+                (mSearchableSpinner3.getSelectedItemPosition() == 0 ||
+                        mSearchableSpinner3.getSelectedItemPosition() == -1)) {
+            TextView textView = findViewById(mSpinnerHeadingTextView[2]);
+            showToast("Please select " + textView.getText().toString());
+            // return false;
+        } else if (mSearchableSpinner4.getVisibility() == View.VISIBLE &&
+                (mSearchableSpinner4.getSelectedItemPosition() == 0 ||
+                        mSearchableSpinner4.getSelectedItemPosition() == -1)) {
+            TextView textView = findViewById(mSpinnerHeadingTextView[3]);
+            showToast("Please select " + textView.getText().toString());
+            // return false;
+        } else if (mSearchableSpinner5.getVisibility() == View.VISIBLE &&
+                (mSearchableSpinner5.getSelectedItemPosition() == 0 ||
+                        mSearchableSpinner5.getSelectedItemPosition() == -1)) {
+            TextView textView = findViewById(mSpinnerHeadingTextView[4]);
+            showToast("Please select " + textView.getText().toString());
+            // return false;
+        } else if (mSearchableSpinner6.getVisibility() == View.VISIBLE &&
+                (mSearchableSpinner6.getSelectedItemPosition() == 0 ||
+                        mSearchableSpinner6.getSelectedItemPosition() == -1)) {
+            TextView textView = findViewById(mSpinnerHeadingTextView[5]);
+            showToast("Please select " + textView.getText().toString());
+            // return false;
+        } else if (mSearchableSpinner7.getVisibility() == View.VISIBLE &&
+                (mSearchableSpinner7.getSelectedItemPosition() == 0 ||
+                        mSearchableSpinner7.getSelectedItemPosition() == -1)) {
+            TextView textView = findViewById(mSpinnerHeadingTextView[6]);
+            showToast("Please select " + textView.getText().toString());
+            // return false;
+        } else if (mSearchableSpinner8.getVisibility() == View.VISIBLE &&
+                (mSearchableSpinner8.getSelectedItemPosition() == 0 ||
+                        mSearchableSpinner8.getSelectedItemPosition() == -1)) {
+            TextView textView = findViewById(mSpinnerHeadingTextView[7]);
+            showToast("Please select " + textView.getText().toString());
+            // return false;
+        } else if (mSearchableSpinner9.getVisibility() == View.VISIBLE &&
+                (mSearchableSpinner9.getSelectedItemPosition() == 0 ||
+                        mSearchableSpinner9.getSelectedItemPosition() == -1)) {
+            TextView textView = findViewById(mSpinnerHeadingTextView[8]);
+            showToast("Please select " + textView.getText().toString());
+            // return false;
+        } else if (mSearchableSpinner10.getVisibility() == View.VISIBLE &&
+                (mSearchableSpinner10.getSelectedItemPosition() == 0 ||
+                        mSearchableSpinner10.getSelectedItemPosition() == -1)) {
+            TextView textView = findViewById(mSpinnerHeadingTextView[9]);
+            showToast("Please select " + textView.getText().toString());
+            // return false;
+        }
+        /*Added by jeevan ended here 28-11-2022*/
+
+       
+    }
+
+
+
+
+
+
+
 }
