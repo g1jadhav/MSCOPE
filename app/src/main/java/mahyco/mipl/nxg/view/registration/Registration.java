@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.MenuItem;
 import android.view.View;
@@ -170,6 +171,10 @@ public class Registration extends AppCompatActivity implements RegistrationListe
             return;
         } else if (TextUtils.isEmpty(et_userUniqueid.getText().toString().trim())) {
             Toast.makeText(this, "Please enter national id number", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (ccode == 3 && (et_userUniqueid.getText().toString().trim().length() < 16
+                || et_userUniqueid.getText().toString().trim().length() > 16)) {
+            showToast(getString(R.string.Please_enter_valid_national_id_number));
             return;
         } else if (TextUtils.isEmpty(et_address.getText().toString().trim())) {
             Toast.makeText(this, "Please enter address", Toast.LENGTH_SHORT).show();

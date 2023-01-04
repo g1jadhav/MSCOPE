@@ -900,8 +900,8 @@ public class NewGrowerRegistration extends BaseActivity implements Listener, Vie
         @Override
         protected void onPostExecute(ArrayList<CategoryChildModel> result) {
             if (result != null && result.size() > 0) {
-               /*Added by jeevan 12-12-2022*/
-                if(mCountryMasterIdAsPerSelection != 0) {
+                /*Added by jeevan 12-12-2022*/
+                if (mCountryMasterIdAsPerSelection != 0) {
                     /*Added by jeevan 12-12-2022 ended here*/
                     callLocationAdapter(result);
                     /*Added by jeevan 12-12-2022*/
@@ -1529,7 +1529,12 @@ public class NewGrowerRegistration extends BaseActivity implements Listener, Vie
         } else if (TextUtils.isEmpty(et_uniqcode.getText().toString().trim())) {
             showToast(getString(R.string.Please_enter_national_id_number));
             // return false;
-        } /*else if (new SqlightDatabase(mContext).isGrowerRegister(et_uniqcode.getText().toString().trim())) {
+        } else if (counrtyId.equals("3") && (et_uniqcode.getText().toString().trim().length() < 16
+                || et_uniqcode.getText().toString().trim().length() > 16)) {
+            showToast(getString(R.string.Please_enter_valid_national_id_number));
+        }
+
+        /*else if (new SqlightDatabase(mContext).isGrowerRegister(et_uniqcode.getText().toString().trim())) {
             Dialog mDialog = null;
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
             alertDialog.setCancelable(false);
@@ -1561,13 +1566,14 @@ public class NewGrowerRegistration extends BaseActivity implements Listener, Vie
             mDialog = alertDialog.create();
             mDialog.show();
             return false;
-        } */ else {
+        } */
+        else {
             // Log.e("temporary", " validation true");
             /*14-12-2022 Added by Jeevan*/
            /* Log.e("temporary"," before SystemClock.elapsedRealtime() "+ SystemClock.elapsedRealtime() +
                     " lastClickTime " + lastClickTime +" = " +
                     (SystemClock.elapsedRealtime() - lastClickTime));*/
-            if (SystemClock.elapsedRealtime() - lastClickTime < 3500){
+            if (SystemClock.elapsedRealtime() - lastClickTime < 3500) {
                 return;
             }
             lastClickTime = SystemClock.elapsedRealtime();
