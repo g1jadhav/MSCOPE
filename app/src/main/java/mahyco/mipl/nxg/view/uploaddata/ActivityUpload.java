@@ -99,7 +99,7 @@ public class ActivityUpload extends BaseActivity implements View.OnClickListener
             case R.id.grower_registration_upload: {
                 if (checkInternetConnection(mContext)) {
 
-                    uploadData();
+                    uploadData(1);
 
 //                    if (mGrowerList.size() > 0) {
 //                        mGrowerClicked = true;
@@ -134,60 +134,45 @@ public class ActivityUpload extends BaseActivity implements View.OnClickListener
             break;
         }
     }
-
-    private void uploadData() {
+//   type =  1 = grower, 2 = organizer(co-ordinator)
+    private void uploadData(int type) {
         try{
 
-//
-//                    Log.e("temporary", "farmer photo " + list.get(i).getUploadPhoto() + "\n country id " + list.get(i).getCountryId() +
-//                            "\n CountryMasterId() " + list.get(i).getCountryMasterId() +
-//                            "\nLandMark()" + list.get(i).getLandMark() +
-//                            "\nLandFullName()" + list.get(i).getFullName() +
-//                            "\nLandGender()" + list.get(i).getGender() +
-//                            "\nLandDOB()()" + list.get(i).getDOB() +
-//                            "\nLandMobileNo()" + list.get(i).getMobileNo() +
-//                            "\nLandUniqueCode()" + list.get(i).getUniqueCode() +
-//                            "\nLandRegDt()" + list.get(i).getRegDt() +
-//                            "\nLandStaffNameAndI()" + list.get(i).getStaffNameAndId() +
-//                            "\nLandFrontCopy()" + list.get(i).getIdProofFrontCopy() +
-//                            "\nIsSync()" + list.get(i).getIsSync() +
-//                            "\nreatedBy()" + list.get(i).getCreatedBy() +
-//                            "\nUserType()" + list.get(i).getUserType() +
-//                            "\nBackCopy()" + list.get(i).getIdProofBackCopy() +
-//                            "\ntempid ()" + list.get(i).getTempId() +
-//                            "\nloginId ()" + list.get(i).getLoginId());
-//                }
-//            } finally {
-//                if (database != null) {
-//                    database.close();
-//                }
-//            }
+            List<GrowerModel> lst_temp=new ArrayList<>();
+
+            if(type==1)
+            {
+                lst_temp=mGrowerList;
+            }else if(type==2)
+            {
+                lst_temp=mOrganizerList;
+            }
 
              JsonArray jsonArray=new JsonArray();
 
-             if(mGrowerList.size()>0) {
+             if(lst_temp.size()>0) {
 
-                 for (int i = 0; i < mGrowerList.size(); i++) {
+                 for (int i = 0; i < lst_temp.size(); i++) {
 
                      JsonObject jsonObject = new JsonObject();
-                     jsonObject.addProperty("CountryId", mGrowerList.get(i).getCountryId());
-                     jsonObject.addProperty("CountryMasterId", mGrowerList.get(i).getCountryMasterId());
-                     jsonObject.addProperty("CreatedBy", mGrowerList.get(i).getCreatedBy());
-                     jsonObject.addProperty("DOB", mGrowerList.get(i).getDOB());
-                     jsonObject.addProperty("FullName", mGrowerList.get(i).getFullName());
-                     jsonObject.addProperty("Gender", mGrowerList.get(i).getGender());
-                     jsonObject.addProperty("IdProofBackCopy", mGrowerList.get(i).getIdProofBackCopy());
-                     jsonObject.addProperty("IdProofFrontCopy", mGrowerList.get(i).getIdProofFrontCopy());
-                     jsonObject.addProperty("LandMark", mGrowerList.get(i).getLandMark());
-                     jsonObject.addProperty("LoginId", mGrowerList.get(i).getLoginId());
-                     jsonObject.addProperty("MobileNo", mGrowerList.get(i).getMobileNo());
-                     jsonObject.addProperty("RegDt", mGrowerList.get(i).getRegDt());
-                     jsonObject.addProperty("StaffNameAndId", mGrowerList.get(i).getStaffNameAndId());
-                     jsonObject.addProperty("UniqueCode", mGrowerList.get(i).getUniqueCode());
-                     jsonObject.addProperty("UploadPhoto", mGrowerList.get(i).getUploadPhoto());
-                     jsonObject.addProperty("UserType", mGrowerList.get(i).getUserType());
-                     jsonObject.addProperty("UniqueId", mGrowerList.get(i).getUniqueId());
-                     jsonObject.addProperty("Addr", mGrowerList.get(i).getAddr());
+                     jsonObject.addProperty("CountryId", lst_temp.get(i).getCountryId());
+                     jsonObject.addProperty("CountryMasterId", lst_temp.get(i).getCountryMasterId());
+                     jsonObject.addProperty("CreatedBy", lst_temp.get(i).getCreatedBy());
+                     jsonObject.addProperty("DOB", lst_temp.get(i).getDOB());
+                     jsonObject.addProperty("FullName", lst_temp.get(i).getFullName());
+                     jsonObject.addProperty("Gender", lst_temp.get(i).getGender());
+                     jsonObject.addProperty("IdProofBackCopy", lst_temp.get(i).getIdProofBackCopy());
+                     jsonObject.addProperty("IdProofFrontCopy", lst_temp.get(i).getIdProofFrontCopy());
+                     jsonObject.addProperty("LandMark", lst_temp.get(i).getLandMark());
+                     jsonObject.addProperty("LoginId", lst_temp.get(i).getLoginId());
+                     jsonObject.addProperty("MobileNo", lst_temp.get(i).getMobileNo());
+                     jsonObject.addProperty("RegDt", lst_temp.get(i).getRegDt());
+                     jsonObject.addProperty("StaffNameAndId", lst_temp.get(i).getStaffNameAndId());
+                     jsonObject.addProperty("UniqueCode", lst_temp.get(i).getUniqueCode());
+                     jsonObject.addProperty("UploadPhoto", lst_temp.get(i).getUploadPhoto());
+                     jsonObject.addProperty("UserType", lst_temp.get(i).getUserType());
+                     jsonObject.addProperty("UniqueId", lst_temp.get(i).getUniqueId());
+                     jsonObject.addProperty("Addr", lst_temp.get(i).getAddr());
 
                      jsonArray.add(jsonObject);
 

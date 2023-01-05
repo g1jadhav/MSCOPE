@@ -144,13 +144,13 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.grower_registration_upload:
 
-                uploadData();
+                uploadData(1);
 
                 /*{
                 if (checkInternetConnection(mContext)) {
                     if (mGrowerList.size() > 0) {
                         *//*14-12-2022 Added by Jeevan*//*
-                       *//* Log.e("temporary"," before SystemClock.elapsedRealtime() "+ SystemClock.elapsedRealtime() +
+             *//* Log.e("temporary"," before SystemClock.elapsedRealtime() "+ SystemClock.elapsedRealtime() +
                                 " lastClickTimeOrganizer " + lastClickTimeGrower +" = " +
                                 (SystemClock.elapsedRealtime() - lastClickTimeGrower));*//*
                         if (SystemClock.elapsedRealtime() - lastClickTimeGrower < 3500) {
@@ -185,7 +185,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                     showNoInternetDialog(mContext, "Please check your internet connection");
                 }
             }*/
-            break;
+                break;
             case R.id.organizer_registration_upload: {
                 if (checkInternetConnection(mContext)) {
                     if (mOrganizerList.size() > 0) {
@@ -1199,88 +1199,72 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
         }
     }
 
+   // type     1=grower  2=organizer
+    private void uploadData(int type) {
+        try {
 
-    private void uploadData() {
-        try{
+            List<GrowerModel> lst_temp=new ArrayList<>();
 
-//
-//                    Log.e("temporary", "farmer photo " + list.get(i).getUploadPhoto() + "\n country id " + list.get(i).getCountryId() +
-//                            "\n CountryMasterId() " + list.get(i).getCountryMasterId() +
-//                            "\nLandMark()" + list.get(i).getLandMark() +
-//                            "\nLandFullName()" + list.get(i).getFullName() +
-//                            "\nLandGender()" + list.get(i).getGender() +
-//                            "\nLandDOB()()" + list.get(i).getDOB() +
-//                            "\nLandMobileNo()" + list.get(i).getMobileNo() +
-//                            "\nLandUniqueCode()" + list.get(i).getUniqueCode() +
-//                            "\nLandRegDt()" + list.get(i).getRegDt() +
-//                            "\nLandStaffNameAndI()" + list.get(i).getStaffNameAndId() +
-//                            "\nLandFrontCopy()" + list.get(i).getIdProofFrontCopy() +
-//                            "\nIsSync()" + list.get(i).getIsSync() +
-//                            "\nreatedBy()" + list.get(i).getCreatedBy() +
-//                            "\nUserType()" + list.get(i).getUserType() +
-//                            "\nBackCopy()" + list.get(i).getIdProofBackCopy() +
-//                            "\ntempid ()" + list.get(i).getTempId() +
-//                            "\nloginId ()" + list.get(i).getLoginId());
-//                }
-//            } finally {
-//                if (database != null) {
-//                    database.close();
-//                }
-//            }
-JsonObject json_UploadGrower=new JsonObject();
-            JsonArray jj=new JsonArray();
- String base64_dp="";
- String base64_front="";
- String base64_back="";
-            if(mGrowerList.size()>0) {
-                Log.i("Tag:","Passin");
+            if(type==1)
+            {
+                lst_temp=mGrowerList;
+            }else if(type==2)
+            {
+                lst_temp=mOrganizerList;
+            }
+
+
+            JsonObject json_UploadGrower = new JsonObject();
+            JsonArray jj = new JsonArray();
+            String base64_dp = "";
+            String base64_front = "";
+            String base64_back = "";
+            if (mGrowerList.size() > 0) {
+                Log.i("Tag:", "Passin");
                 for (int i = 0; i < mGrowerList.size(); i++) {
 
-                    Log.i("Tag:","pass "+i);
-                   base64_dp= MyApplicationUtil.getImageDatadetail(mGrowerList.get(i).getUploadPhoto());
-                   base64_back=MyApplicationUtil.getImageDatadetail(mGrowerList.get(i).getIdProofFrontCopy());
-                   base64_front=MyApplicationUtil.getImageDatadetail(mGrowerList.get(i).getIdProofBackCopy());
+                    Log.i("Tag:", "pass " + i);
+                    base64_dp = MyApplicationUtil.getImageDatadetail(lst_temp.get(i).getUploadPhoto());
+                    base64_back = MyApplicationUtil.getImageDatadetail(lst_temp.get(i).getIdProofFrontCopy());
+                    base64_front = MyApplicationUtil.getImageDatadetail(lst_temp.get(i).getIdProofBackCopy());
 
 
                     // Log.i("Base",base64_dp);
 
 
                     JsonObject jsonObject = new JsonObject();
-                    jsonObject.addProperty("CountryId", mGrowerList.get(i).getCountryId());
-                    jsonObject.addProperty("CountryMasterId", mGrowerList.get(i).getCountryMasterId());
-                    jsonObject.addProperty("CreatedBy", mGrowerList.get(i).getCreatedBy());
-                    jsonObject.addProperty("DOB", mGrowerList.get(i).getDOB());
-                    jsonObject.addProperty("FullName", mGrowerList.get(i).getFullName());
-                    jsonObject.addProperty("Gender", mGrowerList.get(i).getGender());
+                    jsonObject.addProperty("CountryId", lst_temp.get(i).getCountryId());
+                    jsonObject.addProperty("CountryMasterId", lst_temp.get(i).getCountryMasterId());
+                    jsonObject.addProperty("CreatedBy", lst_temp.get(i).getCreatedBy());
+                    jsonObject.addProperty("DOB", lst_temp.get(i).getDOB());
+                    jsonObject.addProperty("FullName", lst_temp.get(i).getFullName());
+                    jsonObject.addProperty("Gender", lst_temp.get(i).getGender());
                     jsonObject.addProperty("IdProofBackCopy", base64_back);
                     jsonObject.addProperty("IdProofFrontCopy", base64_front);
-                    jsonObject.addProperty("LandMark", mGrowerList.get(i).getLandMark());
-                    jsonObject.addProperty("LoginId", mGrowerList.get(i).getLoginId());
-                    jsonObject.addProperty("MobileNo", mGrowerList.get(i).getMobileNo());
-                    jsonObject.addProperty("RegDt", mGrowerList.get(i).getRegDt());
-                    jsonObject.addProperty("StaffNameAndId", mGrowerList.get(i).getStaffNameAndId());
-                    jsonObject.addProperty("UniqueCode", mGrowerList.get(i).getUniqueCode());
+                    jsonObject.addProperty("LandMark", lst_temp.get(i).getLandMark());
+                    jsonObject.addProperty("LoginId", lst_temp.get(i).getLoginId());
+                    jsonObject.addProperty("MobileNo", lst_temp.get(i).getMobileNo());
+                    jsonObject.addProperty("RegDt", lst_temp.get(i).getRegDt());
+                    jsonObject.addProperty("StaffNameAndId", lst_temp.get(i).getStaffNameAndId());
+                    jsonObject.addProperty("UniqueCode", lst_temp.get(i).getUniqueCode());
                     jsonObject.addProperty("UploadPhoto", base64_dp);
-                    jsonObject.addProperty("UserType", mGrowerList.get(i).getUserType());
-                    jsonObject.addProperty("UniqueId", mGrowerList.get(i).getUniqueId());
-                    jsonObject.addProperty("Addr", mGrowerList.get(i).getAddr());
-                    Log.i("Tag:","pass out"+jsonObject);
+                    jsonObject.addProperty("UserType", lst_temp.get(i).getUserType());
+                    jsonObject.addProperty("UniqueId", lst_temp.get(i).getUniqueId());
+                    jsonObject.addProperty("Addr", lst_temp.get(i).getAddr());
+                    Log.i("Tag:", "pass out" + jsonObject);
                     jj.add(jsonObject);
 
                 }
-                Log.i("Tag:",jj.toString());
-              //  registrationAPI.createGrower(jsonObject);
-                json_UploadGrower.add("createUsersModel",jj);
+                Log.i("Tag:", jj.toString());
+                //  registrationAPI.createGrower(jsonObject);
+                json_UploadGrower.add("createUsersModel", jj);
                 registrationAPI.createGrower(json_UploadGrower);
             }
-            Log.i("Final Json",""+json_UploadGrower.toString());
-        }
-        catch (Exception e)
-        {
-            Log.i("Tag:Error: ",e.getMessage()+mGrowerList.size());
+            Log.i("Final Json", "" + json_UploadGrower.toString());
+        } catch (Exception e) {
+            Log.i("Tag:Error: ", e.getMessage() + mGrowerList.size());
         }
     }
-
 
 
 }
