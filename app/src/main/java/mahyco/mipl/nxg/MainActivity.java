@@ -292,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Toast.makeText(context, "Please download location master data in download master data first", Toast.LENGTH_SHORT).show();
                 } else if (Preferences.get(context, Preferences.GROWER_DOWNLOAD).equalsIgnoreCase("")) {
                     Toast.makeText(context, "Please download grower master data in download master data first", Toast.LENGTH_SHORT).show();
-                } else if (Preferences.get(context, Preferences.GROWER_DOWNLOAD).equalsIgnoreCase("emptyList")) {
+                } /*else if (Preferences.get(context, Preferences.GROWER_DOWNLOAD).equalsIgnoreCase("emptyList")) {
                     if (!Preferences.get(context, Preferences.CURRENT_DATE_FOR_GROWER_DOWNLOAD).equalsIgnoreCase(getCurrentDate())) {
                         Toast.makeText(context, "Please download grower master data in download master data first", Toast.LENGTH_SHORT).show();
                     } else if (checkAutoTimeEnabledOrNot()) {
@@ -304,7 +304,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
                 } else if (!Preferences.get(context, Preferences.CURRENT_DATE_FOR_GROWER_DOWNLOAD).equalsIgnoreCase(getCurrentDate())) {
                     Toast.makeText(context, "Please download grower master data in download master data first", Toast.LENGTH_SHORT).show();
-                } else {
+                } */else {
                     if (checkAutoTimeEnabledOrNot()) {
                         Intent intent = new Intent(context, NewGrowerRegistration.class);
                         intent.putExtra("title", "Grower");
@@ -320,7 +320,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Toast.makeText(context, "Please download category master data in download master data first", Toast.LENGTH_SHORT).show();
                 } else if (!checkLocationMasterDataDownloaded()) {
                     Toast.makeText(context, "Please download location master data in download master data first", Toast.LENGTH_SHORT).show();
-                } else if (Preferences.get(context, Preferences.GROWER_DOWNLOAD).equalsIgnoreCase("")) {
+                } /*else if (Preferences.get(context, Preferences.GROWER_DOWNLOAD).equalsIgnoreCase("")) {
                     Toast.makeText(context, "Please download grower master data in download master data first", Toast.LENGTH_SHORT).show();
                 } else if (Preferences.get(context, Preferences.GROWER_DOWNLOAD).equalsIgnoreCase("emptyList")) {
                     if (!Preferences.get(context, Preferences.CURRENT_DATE_FOR_GROWER_DOWNLOAD).equalsIgnoreCase(getCurrentDate())) {
@@ -334,7 +334,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
                 } else if (!Preferences.get(context, Preferences.CURRENT_DATE_FOR_GROWER_DOWNLOAD).equalsIgnoreCase(getCurrentDate())) {
                     Toast.makeText(context, "Please download grower master data in download master data first", Toast.LENGTH_SHORT).show();
-                } else {
+                } */else {
                     if (checkAutoTimeEnabledOrNot()) {
                         Intent intent = new Intent(context, NewGrowerRegistration.class);
                         intent.putExtra("title", "Organizer");

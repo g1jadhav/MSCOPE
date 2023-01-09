@@ -24,6 +24,7 @@ import mahyco.mipl.nxg.R;
 import mahyco.mipl.nxg.model.CategoryChildModel;
 import mahyco.mipl.nxg.model.CategoryModel;
 import mahyco.mipl.nxg.util.Preferences;
+import mahyco.mipl.nxg.view.changepassword.ChangePasswordActivity;
 import mahyco.mipl.nxg.view.registration.Registration;
 
 public class Login extends AppCompatActivity implements LoginAPIListener {
@@ -59,7 +60,19 @@ public class Login extends AppCompatActivity implements LoginAPIListener {
             public void onClick(View view) {
                 str_usercode = et_usercode.getText().toString().trim();
                 str_password = et_password.getText().toString().trim();
-                ValidateLogin(str_usercode, str_password);
+                if(str_password.trim().equals("Mahyco@23#"))
+                {
+                    if( validateUI()) {
+                        Intent intent = new Intent(context, ChangePasswordActivity.class);
+                        intent.putExtra("countryid", ""+countrycode);
+                        intent.putExtra("usercode", ""+str_usercode);
+                        startActivity(intent);
+                    }
+
+                }else
+                {
+                    ValidateLogin(str_usercode, str_password);
+                }
             }
         });
         // Toast.makeText(context, ""+Preferences.get(context,Preferences.USER_ID), Toast.LENGTH_SHORT).show();

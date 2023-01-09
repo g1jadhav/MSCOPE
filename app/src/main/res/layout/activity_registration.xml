@@ -65,17 +65,43 @@
                 android:paddingEnd="10dp"
                 android:spinnerMode="dropdown" />
 
+            <TextView
+                android:id="@+id/textView20"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="2dp"
+                android:text="User Role" />
+
             <com.toptoche.searchablespinnerlibrary.SearchableSpinner
                 android:id="@+id/usertype"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="3dp"
                 android:background="@drawable/login_spinner_style"
                 android:entries="@array/usertype"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:spinnerMode="dropdown" />
 
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="2dp"
+                android:text="User Type" />
+
+            <com.toptoche.searchablespinnerlibrary.SearchableSpinner
+                android:id="@+id/sp_usertype_company"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/login_spinner_style"
+                android:entries="@array/usertype_company"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:spinnerMode="dropdown" />
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

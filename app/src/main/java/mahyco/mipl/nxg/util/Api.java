@@ -39,6 +39,10 @@ public interface Api {
     @POST(Constants.CHECK_LOGIN)
     Call<String> checkLogin(@Body JsonObject jsonObject);
 
+    @POST(Constants.CHANAGE_PASSWORD)
+    Call<String> changePassword(@Body JsonObject jsonObject);
+
+
     @POST(Constants.CREATEUSER)
     Call<String> createUser(@Body JsonObject jsonObject);
 

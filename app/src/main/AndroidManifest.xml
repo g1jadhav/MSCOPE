@@ -24,8 +24,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MahycoMarketDemo"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.fieldreport.FiledReportDashboard" android:exported="false"></activity>
-        <activity android:name=".view.AreaTagingActivity" android:exported="false"></activity>
+        <activity android:name=".view.changepassword.ChangePasswordActivity"></activity>
+        <activity
+            android:name=".view.fieldreport.FiledReportDashboard"
+            android:exported="false" />
+        <activity
+            android:name=".view.AreaTagingActivity"
+            android:exported="false" />
         <activity
             android:name=".view.growerregistration.NewGrowerRegistration"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"

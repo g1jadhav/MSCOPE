@@ -80,7 +80,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
 
     private int mGrowerListSize;
     private int mOrganizerSize;
-
+    int userType = 0;
     private androidx.appcompat.widget.Toolbar toolbar;
 
     @Override
@@ -142,23 +142,19 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.grower_registration_upload:
-
-                uploadData(1);
-
-                /*{
+            case R.id.grower_registration_upload: {
                 if (checkInternetConnection(mContext)) {
                     if (mGrowerList.size() > 0) {
-                        *//*14-12-2022 Added by Jeevan*//*
-             *//* Log.e("temporary"," before SystemClock.elapsedRealtime() "+ SystemClock.elapsedRealtime() +
-                                " lastClickTimeOrganizer " + lastClickTimeGrower +" = " +
-                                (SystemClock.elapsedRealtime() - lastClickTimeGrower));*//*
+                        //      14-12-2022 Added by Jeevan
+                        Log.e("temporary", " before SystemClock.elapsedRealtime() " + SystemClock.elapsedRealtime() +
+                                " lastClickTimeOrganizer " + lastClickTimeGrower + " = " +
+                                (SystemClock.elapsedRealtime() - lastClickTimeGrower));
                         if (SystemClock.elapsedRealtime() - lastClickTimeGrower < 3500) {
                             return;
                         }
                         lastClickTimeGrower = SystemClock.elapsedRealtime();
                         //Log.e("temporary"," after "+ lastClickTimeGrower);
-                        *//*14-12-2022 Added by Jeevan ended here*//*
+                        //           14-12-2022 Added by Jeevan ended here
                         mGrowerClicked = true;
 //                        Log.e("temporary", "on cllick  mGrowerList.get(0).getGrowerImageUpload() " +  mGrowerList.get(0).getGrowerImageUpload() +
 //                                " mGrowerList.get(0).FrontImageUpload() " + mGrowerList.get(0).getFrontImageUpload() +
@@ -166,26 +162,16 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
 //                                " mGrowerList.get(0).getUploadPhoto() " + mGrowerList.get(0).getUploadPhoto() +
 //                                " mGrowerList.get(0).getIdProofFrontCopy() " + mGrowerList.get(0).getIdProofFrontCopy()+
 //                                " mGrowerList.get(0).getIdProofBackCopy() " + mGrowerList.get(0).getIdProofBackCopy());
-                        if (mGrowerList.get(0).getGrowerImageUpload() == 0) {
-                            stid = 1;
-                            new UploadFile().execute(mGrowerList.get(0).getUploadPhoto());
-                        } else if (mGrowerList.get(0).getFrontImageUpload() == 0) {
-                            stid = 2;
-                            new UploadFile().execute(mGrowerList.get(0).getIdProofFrontCopy());
-                        } else if (mGrowerList.get(0).getBackImageUpload() == 0) {
-                            stid = 3;
-                            new UploadFile().execute(mGrowerList.get(0).getIdProofBackCopy());
-                        } else {
-                            uploadDataAfterThreeImagesUpload(*//*mGrowerList.get(0).getUploadPhoto(), mGrowerList.get(0).getIdProofBackCopy(), mGrowerList.get(0).getIdProofFrontCopy()*//*);
-                        }
+                        userType = 1;
+                        uploadData();
                     } else {
                         showNoInternetDialog(mContext, "No data available to upload");
                     }
                 } else {
                     showNoInternetDialog(mContext, "Please check your internet connection");
                 }
-            }*/
-                break;
+            }
+            break;
             case R.id.organizer_registration_upload: {
                 if (checkInternetConnection(mContext)) {
                     if (mOrganizerList.size() > 0) {
@@ -206,18 +192,9 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
 //                                " mOrganizerList.get(0).getIdProofBackCopy() " + mOrganizerList.get(0).getIdProofBackCopy());
                        /* stid = 1;
                         new UploadFile().execute(mOrganizerList.get(0).getUploadPhoto());*/
-                        if (mOrganizerList.get(0).getGrowerImageUpload() == 0) {
-                            stid = 1;
-                            new UploadFile().execute(mOrganizerList.get(0).getUploadPhoto());
-                        } else if (mOrganizerList.get(0).getFrontImageUpload() == 0) {
-                            stid = 2;
-                            new UploadFile().execute(mOrganizerList.get(0).getIdProofFrontCopy());
-                        } else if (mOrganizerList.get(0).getBackImageUpload() == 0) {
-                            stid = 3;
-                            new UploadFile().execute(mOrganizerList.get(0).getIdProofBackCopy());
-                        } else {
-                            uploadDataAfterThreeImagesUpload(/*mOrganizerList.get(0).getUploadPhoto(), mOrganizerList.get(0).getIdProofBackCopy(), mOrganizerList.get(0).getIdProofFrontCopy()*/);
-                        }
+                        userType = 2;
+                        uploadData();
+
                     } else {
                         showNoInternetDialog(mContext, "No data available to upload");
                     }
@@ -293,7 +270,30 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
 //            Log.e("temporary", "result.getStatus().equalsIgnoreCase(\"Success\")");
             mResponseString = result.getComment();
             //  Log.e("temporary","onGrowerRegister mResponseString " + mResponseString);
-            new DeleteIfSyncSuccessfully().execute();
+          //  new DeleteIfSyncSuccessfully().execute();
+            SqlightDatabase database = null;
+            boolean b;
+            try {
+                int cnt=0;
+                database = new SqlightDatabase(mContext);
+                if(userType==1) {
+                    cnt = mGrowerList.size();
+                    mGrowerList.clear();
+                }else if(userType==2) {
+                    cnt = mOrganizerList.size();
+                    mOrganizerList.clear();
+                }
+                b = database.updateAllUserType(userType);
+                if(b)
+                {
+                    showNoInternetDialog(mContext, cnt+ " Records Uploaded Successfully.");
+                }
+                new GetRegistrationAsyncTaskList().execute();
+            }catch(Exception e)
+            {
+
+            }
+
         } else {
             showNoInternetDialog(mContext, result.getComment());
         }
@@ -533,11 +533,14 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
             boolean b;
             try {
                 database = new SqlightDatabase(mContext);
-                if (mGrowerClicked) {
+
+                b = database.updateAllUserType(userType);
+
+               /* if (mGrowerClicked) {
                     b = database.deleteRegistration(mGrowerList.get(0).getUniqueCode());
                 } else {
                     b = database.deleteRegistration(mOrganizerList.get(0).getUniqueCode());
-                }
+                }*/
             } catch (Exception e) {
                 return false;
             } finally {
@@ -1199,18 +1202,16 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
         }
     }
 
-   // type     1=grower  2=organizer
-    private void uploadData(int type) {
+    // type     1=grower  2=organizer
+    private void uploadData() {
         try {
 
-            List<GrowerModel> lst_temp=new ArrayList<>();
+            List<GrowerModel> lst_temp = new ArrayList<>();
 
-            if(type==1)
-            {
-                lst_temp=mGrowerList;
-            }else if(type==2)
-            {
-                lst_temp=mOrganizerList;
+            if (userType == 1) {
+                lst_temp = mGrowerList;
+            } else if (userType == 2) {
+                lst_temp = mOrganizerList;
             }
 
 

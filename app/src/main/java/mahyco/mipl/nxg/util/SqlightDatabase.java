@@ -758,6 +758,25 @@ public class SqlightDatabase extends SQLiteOpenHelper {
             mydb.close();
         }
     }
+    public boolean updateAllUserType(int userType) {
+        SQLiteDatabase mydb = null;
+        try {
+            mydb = this.getReadableDatabase();
+            String q="";
+            if(userType==1)
+             q = "update  tbl_registrationmaster set IsSync=1  where UserType='Grower'";
+            else
+              q=  "update  tbl_registrationmaster set IsSync=1  where UserType='Organizer'";
+            // Log.e("temporary", " deleted Query is -------> " + q);
+            mydb.execSQL(q);
+            return true;
+        } catch (Exception e) {
+            // Log.e("temporary", " deleted Error is Clear List " + e.getMessage());
+            return false;
+        } finally {
+            mydb.close();
+        }
+    }
 
     public boolean updateRegistrationImagePath(String uniqueCode, String imageType, String path, int isInsertedValue) {
         SQLiteDatabase mydb = null;

@@ -48,6 +48,7 @@ public class Registration extends AppCompatActivity implements RegistrationListe
     EditText et_staffname, et_staffid, et_mobileno, et_password, et_confirmpassword, et_email;
     SearchableSpinner sp_country;
     SearchableSpinner sp_usertype;
+    SearchableSpinner sp_usertype_company;
     Context context;
     String str_staffname, str_staffid, str_mobile, str_password, str_confirmpassword, str_countrycode;
     JsonObject jsonObject;
@@ -104,6 +105,7 @@ public class Registration extends AppCompatActivity implements RegistrationListe
         et_confirmpassword = findViewById(R.id.registration_confirm_password);
         sp_country = findViewById(R.id.registration_country_drop_down);
         sp_usertype = findViewById(R.id.usertype);
+        sp_usertype_company = findViewById(R.id.sp_usertype_company);
         et_email = findViewById(R.id.emailid);
         et_userUniqueid = findViewById(R.id.unique_code_edittext);
         et_address = findViewById(R.id.et_address);
@@ -135,6 +137,7 @@ public class Registration extends AppCompatActivity implements RegistrationListe
     }
 
     public void register() {
+        String str_usertype=sp_usertype_company.getSelectedItem().toString().trim();
         if (sp_country.getSelectedItemPosition() == -1) {
             Toast.makeText(this, "Please select country", Toast.LENGTH_SHORT).show();
             return;
@@ -146,6 +149,13 @@ public class Registration extends AppCompatActivity implements RegistrationListe
         else if (selectedRoleId == 0) {
             Toast.makeText(this, "Please select user role", Toast.LENGTH_SHORT).show();
         return;
+        }
+        else if (sp_usertype_company.getSelectedItemPosition() == 0) {
+            Toast.makeText(this, "Please select user type", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (str_usertype.trim().contains("Select")) {
+            Toast.makeText(this, "Please select user type", Toast.LENGTH_SHORT).show();
+            return;
         }
         else if (TextUtils.isEmpty(et_staffname.getText().toString().trim())) {
             Toast.makeText(this, "Please enter staff name", Toast.LENGTH_SHORT).show();
@@ -209,7 +219,7 @@ public class Registration extends AppCompatActivity implements RegistrationListe
         jsonObject = new JsonObject();
         jsonObject.addProperty("CountryId", ccode);//: 0,
         jsonObject.addProperty("RoleId", selectedRoleId);//: 0,
-        jsonObject.addProperty("UserType", selectedRoleName);//: "string",
+        jsonObject.addProperty("UserType", str_usertype);//: "string",
         jsonObject.addProperty("UserName", str_staffname);//: "string",
         jsonObject.addProperty("UserCode", str_staffid);//: "string",
         jsonObject.addProperty("EmailId", et_email.getText().toString().trim());//: "string",
@@ -355,7 +365,7 @@ public class Registration extends AppCompatActivity implements RegistrationListe
                                     front_path = mDocFrontPhotoFile.getAbsolutePath();
                                     //Z Log.e("temporary", " front_path " + front_path);
                                     FileOutputStream out = new FileOutputStream(front_path);
-                                    r.getBitmap().compress(Bitmap.CompressFormat.PNG, 100, out);
+                                    r.getBitmap().compress(Bitmap.CompressFormat.PNG, 60, out);
                                     out.flush();
                                     out.close();
                                     base64_image_front = MyApplicationUtil.getImageDatadetail(front_path);
@@ -400,7 +410,7 @@ public class Registration extends AppCompatActivity implements RegistrationListe
                                     back_path = mDocBackPhotoFile.getAbsolutePath();
                                     //   Log.e("temporary", " back_path " + back_path);
                                     FileOutputStream out = new FileOutputStream(back_path);
-                                    r.getBitmap().compress(Bitmap.CompressFormat.PNG, 100, out);
+                                    r.getBitmap().compress(Bitmap.CompressFormat.PNG, 60, out);
                                     out.flush();
                                     out.close();
                                     base64_image_back = MyApplicationUtil.getImageDatadetail(back_path);
@@ -445,7 +455,7 @@ public class Registration extends AppCompatActivity implements RegistrationListe
                                     dp_path = mGrowerPhotoFile.getAbsolutePath();
                                     //  Log.e("temporary", " dp " + dp_path);
                                     FileOutputStream out = new FileOutputStream(dp_path);
-                                    r.getBitmap().compress(Bitmap.CompressFormat.PNG, 100, out);
+                                    r.getBitmap().compress(Bitmap.CompressFormat.PNG, 60, out);
                                     out.flush();
                                     out.close();
                                     base64_image_dp = MyApplicationUtil.getImageDatadetail(dp_path);
