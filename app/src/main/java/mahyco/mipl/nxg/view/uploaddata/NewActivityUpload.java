@@ -280,6 +280,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                     cnt = mGrowerList.size();
                     mGrowerList.clear();
                 }else if(userType==2) {
+
                     cnt = mOrganizerList.size();
                     mOrganizerList.clear();
                 }
@@ -306,33 +307,14 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
             try {
                 database = new SqlightDatabase(mContext);
                 List<GrowerModel> list = database.getAllRegistration();
+                mGrowerList=new ArrayList<>();
+                mOrganizerList=new ArrayList<>();
                 for (int i = 0; i < list.size(); i++) {
                     if (list.get(i).getUserType().equalsIgnoreCase("Grower")) {
                         mGrowerList.add(list.get(i));
                     } else {
                         mOrganizerList.add(list.get(i));
                     }
-//                    Log.e("temporary", "\n at starting" +
-//                            "\nfarmer photo " + list.get(i).getUploadPhoto() + "\n country id " + list.get(i).getCountryId() +
-//                            "\n CountryMasterId() " + list.get(i).getCountryMasterId() +
-//                            "\nLandMark()" + list.get(i).getLandMark() +
-//                            "\nLandFullName()" + list.get(i).getFullName() +
-//                            "\nLandGender()" + list.get(i).getGender() +
-//                            "\nLandDOB()()" + list.get(i).getDOB() +
-//                            "\nLandMobileNo()" + list.get(i).getMobileNo() +
-//                            "\nLandUniqueCode()" + list.get(i).getUniqueCode() +
-//                            "\nLandRegDt()" + list.get(i).getRegDt() +
-//                            "\nLandStaffNameAndI()" + list.get(i).getStaffNameAndId() +
-//                            "\nLandFrontCopy()" + list.get(i).getIdProofFrontCopy() +
-//                            "\nIsSync()" + list.get(i).getIsSync() +
-//                            "\nreatedBy()" + list.get(i).getCreatedBy() +
-//                            "\nUserType()" + list.get(i).getUserType() +
-//                            "\nBackCopy()" + list.get(i).getIdProofBackCopy() +
-//                            "\ntempid ()" + list.get(i).getTempId() +
-//                            "\nloginId ()" + list.get(i).getLoginId() +
-//                            "\ngetGrowerImageUpload ()" + list.get(i).getGrowerImageUpload() +
-//                            "\ngetFrontImageUpload ()" + list.get(i).getFrontImageUpload() +
-//                            "\ngetBackImageUpload ()" + list.get(i).getBackImageUpload());
                 }
                 mOrganizerSize = mOrganizerList.size();
                 mGrowerListSize = mGrowerList.size();
@@ -1209,23 +1191,25 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
             List<GrowerModel> lst_temp = new ArrayList<>();
 
             if (userType == 1) {
-                lst_temp = mGrowerList;
+               // lst_temp = mGrowerList;
+                lst_temp =new ArrayList<>(mGrowerList);
             } else if (userType == 2) {
-                lst_temp = mOrganizerList;
+                lst_temp =new ArrayList<>(mOrganizerList);
+             //   lst_temp = mOrganizerList;
             }
 
 
             JsonObject json_UploadGrower = new JsonObject();
             JsonArray jj = new JsonArray();
-            String base64_dp = "";
+            String base64_dp = "";//
             String base64_front = "";
             String base64_back = "";
-            if (mGrowerList.size() > 0) {
-                Log.i("Tag:", "Passin");
-                for (int i = 0; i < mGrowerList.size(); i++) {
+            if (lst_temp.size() > 0) {
+                Log.i("Tag:", lst_temp.size()+" Passin "+userType);
+                for (int i = 0; i < lst_temp.size(); i++) {
 
                     Log.i("Tag:", "pass " + i);
-                    base64_dp = MyApplicationUtil.getImageDatadetail(lst_temp.get(i).getUploadPhoto());
+                   base64_dp = MyApplicationUtil.getImageDatadetail(lst_temp.get(i).getUploadPhoto());
                     base64_back = MyApplicationUtil.getImageDatadetail(lst_temp.get(i).getIdProofFrontCopy());
                     base64_front = MyApplicationUtil.getImageDatadetail(lst_temp.get(i).getIdProofBackCopy());
 

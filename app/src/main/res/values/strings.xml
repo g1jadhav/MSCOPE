@@ -359,7 +359,6 @@
         <item>Zimbabwe</item>
         <item>Malawi</item>
         <item>India</item>
-
     </string-array>
 
     <string-array name="usertype">
@@ -372,9 +371,8 @@
 
     <string-array name="usertype_company">
         <item>Select</item>
-        <item>On Role</item>
-        <item>Off Role</item>
-
+        <item>OnRole</item>
+        <item>OffRole</item>
     </string-array>
 
     <string-array name="filter_options">

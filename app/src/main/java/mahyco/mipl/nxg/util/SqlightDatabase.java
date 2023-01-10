@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 //import android.util.Log;
 
 import java.util.ArrayList;
@@ -764,10 +765,10 @@ public class SqlightDatabase extends SQLiteOpenHelper {
             mydb = this.getReadableDatabase();
             String q="";
             if(userType==1)
-             q = "update  tbl_registrationmaster set IsSync=1  where UserType='Grower'";
+             q = "Delete from tbl_registrationmaster where UserType='Grower'";
             else
-              q=  "update  tbl_registrationmaster set IsSync=1  where UserType='Organizer'";
-            // Log.e("temporary", " deleted Query is -------> " + q);
+              q=  "Delete from tbl_registrationmaster where UserType='Organizer'";
+             Log.e("temporary", " deleted Query is -------> " + q);
             mydb.execSQL(q);
             return true;
         } catch (Exception e) {
