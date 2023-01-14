@@ -45,7 +45,7 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/grower_name_textview"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -68,7 +68,7 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/issued_seed_area_textview"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -82,7 +82,7 @@
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
@@ -114,7 +114,7 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/village_textview"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -139,7 +139,7 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/female_date_sowing"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -165,7 +165,7 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/male_date_sowing"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -285,7 +285,7 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/tagged_area_location_textview"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -325,7 +325,7 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/total_tagged_area_below_location_textview"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -355,7 +355,7 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/area_loss_or_gain_textview"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -385,7 +385,7 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/existing_area_ha_textview"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -890,7 +890,7 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/date_of_field_visit_textview"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -920,7 +920,7 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/staff_name_textview"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
