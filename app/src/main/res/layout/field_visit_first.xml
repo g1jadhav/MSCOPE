@@ -740,7 +740,7 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/total_female_plants_textview"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -771,7 +771,7 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/total_male_plants_textview"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -950,7 +950,7 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/geotag_location_textview"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"

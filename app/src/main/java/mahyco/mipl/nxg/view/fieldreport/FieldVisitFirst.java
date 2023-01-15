@@ -3,14 +3,25 @@ package mahyco.mipl.nxg.view.fieldreport;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 
+import com.vansuita.pickimage.bean.PickResult;
+import com.vansuita.pickimage.bundle.PickSetup;
+import com.vansuita.pickimage.dialog.PickImageDialog;
+import com.vansuita.pickimage.listeners.IPickCancel;
+import com.vansuita.pickimage.listeners.IPickResult;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -26,6 +37,10 @@ AppCompatButton tag_area_location;
 AppCompatEditText female_date_sowing,male_date_sowing,staff_name_textview,date_of_field_visit_textview;
     int mYear, mMonth, mDay;
     Context context;
+    AppCompatButton national_id_photo_front_side_btn;
+    private File mDocFrontPhotoFile = null;
+    String front_path;
+    ImageView capture_photo_image_view;
 
     @Override
     protected int getLayout() {
@@ -60,7 +75,8 @@ AppCompatEditText female_date_sowing,male_date_sowing,staff_name_textview,date_o
         female_date_sowing=findViewById(R.id.female_date_sowing);
         male_date_sowing=findViewById(R.id.male_date_sowing);
         date_of_field_visit_textview=findViewById(R.id.date_of_field_visit_textview);
-
+        national_id_photo_front_side_btn=findViewById(R.id.national_id_photo_front_side_btn);
+        capture_photo_image_view=findViewById(R.id.capture_photo_image_view);
         female_date_sowing.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -143,7 +159,50 @@ AppCompatEditText female_date_sowing,male_date_sowing,staff_name_textview,date_o
         } catch (Exception e) {
             e.printStackTrace();
         }
+        national_id_photo_front_side_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    PickImageDialog.build(new PickSetup())
+                            .setOnPickResult(new IPickResult() {
+                                @Override
+                                public void onPickResult(PickResult r) {
+                                    //TODO: do what you have to...
+                                    capture_photo_image_view.setVisibility(View.VISIBLE);
+                                    capture_photo_image_view.setImageBitmap(r.getBitmap());
+                                    // front_path = r.getPath();
+                                    try {
+                                        mDocFrontPhotoFile = createImageFile("FirstFieldVisit");
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                    if (mDocFrontPhotoFile != null && r.getBitmap() != null) {
+                                        try {
+                                            front_path = mDocFrontPhotoFile.getAbsolutePath();
+                                            //Z Log.e("temporary", " front_path " + front_path);
+                                            FileOutputStream out = new FileOutputStream(front_path);
+                                            r.getBitmap().compress(Bitmap.CompressFormat.PNG, 60, out);
+                                            out.flush();
+                                            out.close();
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    } else {
+                                        showToast(getString(R.string.went_wrong));
+                                    }
+                                }
+                            })
+                            .setOnPickCancel(new IPickCancel() {
+                                @Override
+                                public void onCancelClick() {
+                                    //TODO: do what you have to if user clicked cancel
+                                }
+                            }).show(getSupportFragmentManager());
+                } catch (Exception e) {
 
+                }
+            }
+        });
 
     }
 }

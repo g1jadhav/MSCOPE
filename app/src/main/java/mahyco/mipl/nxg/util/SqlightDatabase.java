@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.service.autofill.FieldClassification;
 import android.util.Log;
 //import android.util.Log;
 
@@ -16,6 +17,8 @@ import mahyco.mipl.nxg.model.CategoryModel;
 import mahyco.mipl.nxg.model.CropModel;
 import mahyco.mipl.nxg.model.CropTypeModel;
 import mahyco.mipl.nxg.model.DownloadGrowerModel;
+import mahyco.mipl.nxg.model.FieldLocation;
+import mahyco.mipl.nxg.model.FieldMaster;
 import mahyco.mipl.nxg.model.GetAllSeedDistributionModel;
 import mahyco.mipl.nxg.model.GrowerModel;
 import mahyco.mipl.nxg.model.OldGrowerSeedDistributionModel;
@@ -30,7 +33,7 @@ import mahyco.mipl.nxg.model.StoreAreaModel;
 public class SqlightDatabase extends SQLiteOpenHelper {
 
     final static String DBName = "mipl";
-    final static int version = 9;
+    final static int version =11;
     long count = 0;
     final String tbl_categorymaster = "tbl_categorymaster";
     final String tbl_locationmaster = "tbl_locationmaster";
@@ -46,7 +49,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // TODO Auto-generated method stub
 
-        String createCategoryMaster = "Create table tbl_categorymaster(\n" +
+        String createCategoryMaster = "Create table IF NOT EXISTS tbl_categorymaster(\n" +
                 "    TempId  INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
                 "    CategoryId integer,\n" +
                 "    CountryName text,\n" +
@@ -61,7 +64,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                 ")";
         db.execSQL(createCategoryMaster);
 
-        String createlocationmaster = " Create table tbl_locationmaster(\n" +
+        String createlocationmaster = " Create table IF NOT EXISTS tbl_locationmaster(\n" +
                 "    TempId  INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
                 "    CountryMasterId INTEGER,\n" +
                 "    CategoryId INTEGER,\n" +
@@ -80,7 +83,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
 
         db.execSQL(createlocationmaster);
 
-        String createseasonmaster = "Create table tbl_seasonmaster(" +
+        String createseasonmaster = "Create table IF NOT EXISTS tbl_seasonmaster(" +
                 "TempID Integer PRIMARY KEY AUTOINCREMENT,\n" +
                 "SeasonId INTEGER,\n" +
                 "    CountryId INTEGER,\n" +
@@ -94,7 +97,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
 
         db.execSQL(createseasonmaster);
 
-        String creategrowermaster = " Create table tbl_growermaster(\n" +
+        String creategrowermaster = " Create table IF NOT EXISTS tbl_growermaster(\n" +
                 "    TempId  INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
                 "    UserId INTEGER,\n" +
                 "    LoginId INTEGER,\n" +
@@ -171,7 +174,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
 
         db.execSQL(parentSeedDistribution);
 
-        String createcropnmaster = "Create table tbl_cropmaster(\n" +
+        String createcropnmaster = "Create table IF NOT EXISTS tbl_cropmaster(\n" +
                 "TempID Integer PRIMARY KEY AUTOINCREMENT,\n" +
                 "    CropId INTEGER,\n" +
                 "    CropCode TEXT,\n" +
@@ -183,7 +186,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
 
         db.execSQL(createcropnmaster);
 
-        String createclustermaster = "Create table tbl_clustermaster(\n" +
+        String createclustermaster = "Create table IF NOT EXISTS tbl_clustermaster(\n" +
                 "TempID Integer PRIMARY KEY AUTOINCREMENT,\n" +
                 "    ProductionClusterId INTEGER,\n" +
                 "    CountryId INTEGER,\n" +
@@ -197,7 +200,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
 
         db.execSQL(createclustermaster);
 
-        String createproductcodemaster = "Create table tbl_productcodemaster(\n" +
+        String createproductcodemaster = "Create table  IF NOT EXISTS tbl_productcodemaster(\n" +
                 "TempID Integer PRIMARY KEY AUTOINCREMENT,\n" +
                 "    ProductId INTEGER,\n" +
                 "    CropId INTEGER,\n" +
@@ -213,7 +216,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
 
         db.execSQL(createproductcodemaster);
 
-        String createseedreceiptmaster = "Create table tbl_seedreciptmaster(\n" +
+        String createseedreceiptmaster = "Create table IF NOT EXISTS tbl_seedreciptmaster(\n" +
                 "TempID Integer PRIMARY KEY AUTOINCREMENT,\n" +
                 "  ParentSeedReceiptId INTEGER,\n" +
                 "  SeedProductionTargetId INTEGER,\n" +
@@ -258,7 +261,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
 
         db.execSQL(createseedreceiptmaster);
 
-        String createseedbatchnomaster = "Create table tbl_seedbatchnomaster(\n" +
+        String createseedbatchnomaster = "Create table IF NOT EXISTS tbl_seedbatchnomaster(\n" +
                 "TempID Integer PRIMARY KEY AUTOINCREMENT,\n" +
                 "    ParentSeedBatchId INTEGER,\n" +
                 "    ParentSeedReceiptId INTEGER,\n" +
@@ -277,7 +280,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
 
         db.execSQL(createseedbatchnomaster);
 
-        String createcroptypemaster = "Create table tbl_croptypemaster(\n" +
+        String createcroptypemaster = "Create table IF NOT EXISTS tbl_croptypemaster(\n" +
                 "TempID Integer PRIMARY KEY AUTOINCREMENT,\n" +
                 "    CropTypeId INTEGER,\n" +
                 "    CropType TEXT,\n" +
@@ -288,7 +291,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
 
         db.execSQL(createcroptypemaster);
 
-        String createallseeddistributionmaster = "Create table tbl_allseeddistributionmaster(\n" +
+        String createallseeddistributionmaster = "Create table IF NOT EXISTS tbl_allseeddistributionmaster(\n" +
                 " TempID Integer PRIMARY KEY AUTOINCREMENT,\n" +
                 "    ParentSeedDistributionId INTEGER,\n" +
                 " GrowerId INTEGER,\n" +
@@ -355,6 +358,23 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                 " SeedProductionArea REAL)";
 
         db.execSQL(storeAreaDistributionData);
+
+        String tbl_field_master = "Create table IF NOT EXISTS tbl_field_master(\n" +
+                " TempID Integer PRIMARY KEY AUTOINCREMENT,\n" +
+                " FieldId int,\n" +
+                " TotalArea text)";
+
+        db.execSQL(tbl_field_master);
+
+        String tbl_field_location = "Create table IF NOT EXISTS tbl_field_location(\n" +
+                " TempID Integer PRIMARY KEY AUTOINCREMENT,\n" +
+                " FieldId int,\n" +
+                " Latitude text,\n" +
+                " Longitude text)";
+
+        db.execSQL(tbl_field_location);
+
+
 
     }
 
@@ -493,6 +513,125 @@ public class SqlightDatabase extends SQLiteOpenHelper {
             mydb.close();
         }
 
+    }
+
+    public boolean addFieldLocation(FieldLocation fieldLocation) {
+
+        SQLiteDatabase mydb = null;
+        try {
+            mydb = this.getReadableDatabase();
+            String q = "insert into tbl_field_location" +
+                    "(" +
+                    "FieldId," +
+                    "Latitude," +
+                    "Longitude" +
+                    ") values" +
+                    "(" + fieldLocation.getFieldId() + "," +
+                    "'" + fieldLocation.getLatitude() + "'," +
+                    "'" + fieldLocation.getLongitude() + "')";
+            // Log.i("Query is -------> ", "" + q);
+            mydb.execSQL(q);
+            return true;
+        } catch (Exception e) {
+            // Log.i("Error is Product Added ", "" + e.getMessage());
+            return false;
+        } finally {
+            mydb.close();
+        }
+
+    }
+
+
+    public boolean updateFieldMaster(int fieldid,String total) {
+
+        SQLiteDatabase mydb = null;
+        try {
+            mydb = this.getReadableDatabase();
+            String q = "update tbl_field_master set TotalArea='"+total+"' where FieldId="+fieldid;
+            // Log.i("Query is -------> ", "" + q);
+            mydb.execSQL(q);
+            return true;
+        } catch (Exception e) {
+            // Log.i("Error is Product Added ", "" + e.getMessage());
+            return false;
+        } finally {
+            mydb.close();
+        }
+
+    }
+
+
+    public boolean addFieldMaster(FieldMaster fieldMaster) {
+
+        SQLiteDatabase mydb = null;
+        try {
+            mydb = this.getReadableDatabase();
+            String q = "insert into tbl_field_master" +
+                    "(" +
+                    "FieldId," +
+                    "TotalArea" +
+                    ") values" +
+                    "(" + fieldMaster.getFieldId() + "," +
+                    "'" + fieldMaster.getTotalArea() + "')";
+            // Log.i("Query is -------> ", "" + q);
+            mydb.execSQL(q);
+            return true;
+        } catch (Exception e) {
+            // Log.i("Error is Product Added ", "" + e.getMessage());
+            return false;
+        } finally {
+            mydb.close();
+        }
+
+    }
+
+    public ArrayList<FieldMaster> getAllFieldMaster() {
+        SQLiteDatabase myDb = null;
+        try {
+            myDb = this.getReadableDatabase();
+            String q = "SELECT  * FROM tbl_field_master";
+            Cursor cursorCourses = myDb.rawQuery(q, null);
+            ArrayList<FieldMaster> fieldLocationArrayList = new ArrayList<>();
+            if (cursorCourses.moveToFirst()) {
+                do {
+                    FieldMaster fieldLocation=new FieldMaster();
+                    fieldLocation.setFieldId(cursorCourses.getInt(1));
+                    fieldLocation.setTotalArea(cursorCourses.getString(2));
+
+                    fieldLocationArrayList.add(fieldLocation);
+                } while (cursorCourses.moveToNext());
+            }
+            return fieldLocationArrayList;
+        } catch (Exception e) {
+            return null;
+        } finally {
+            myDb.close();
+        }
+    }
+
+
+    public ArrayList<FieldLocation> getAllFieldDetails(int fieldId) {
+        SQLiteDatabase myDb = null;
+        try {
+            myDb = this.getReadableDatabase();
+            String q = "SELECT  * FROM tbl_field_location where FieldId="+fieldId;
+            Cursor cursorCourses = myDb.rawQuery(q, null);
+            ArrayList<FieldLocation> fieldLocationArrayList = new ArrayList<>();
+            if (cursorCourses.moveToFirst()) {
+                do {
+                    FieldLocation fieldLocation=new FieldLocation();
+                    fieldLocation.setFieldId(cursorCourses.getInt(1));
+                    fieldLocation.setLatitude(cursorCourses.getString(2));
+                    fieldLocation.setLongitude(cursorCourses.getString(3));
+                    fieldLocationArrayList.add(fieldLocation);
+                } while (cursorCourses.moveToNext());
+            }
+            return fieldLocationArrayList;
+        } catch (Exception e) {
+            return null;
+        } finally {
+            myDb.close();
+        }
     }
 
     public boolean addRegistration(GrowerModel growerModel) {

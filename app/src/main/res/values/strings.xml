@@ -416,6 +416,14 @@
         <item>CMS</item>
         <item>Conventional</item>
     </string-array>
+    <string-array name="fieldList">
+        <item>Select Field</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
 
     <string-array name="yes_no_array_with_select">
         <item>Select</item>
