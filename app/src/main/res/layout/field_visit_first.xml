@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/field_visit_first"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -36,7 +37,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
@@ -45,7 +46,7 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <EditText
                 android:id="@+id/grower_name_textview"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -59,7 +60,7 @@
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
@@ -68,7 +69,7 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <EditText
                 android:id="@+id/issued_seed_area_textview"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -82,7 +83,7 @@
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
@@ -91,7 +92,7 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <EditText
                 android:id="@+id/production_code_textview"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -105,7 +106,7 @@
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
@@ -114,7 +115,7 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <EditText
                 android:id="@+id/village_textview"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -128,7 +129,7 @@
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
@@ -139,7 +140,7 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <EditText
                 android:id="@+id/female_date_sowing"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -154,7 +155,7 @@
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
@@ -165,7 +166,7 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <EditText
                 android:id="@+id/male_date_sowing"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -179,7 +180,7 @@
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
@@ -198,7 +199,7 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
@@ -207,14 +208,27 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <mahyco.mipl.nxg.spinner.CCFSerachSpinner
+            <EditText
+                android:id="@+id/reason_for_total_area_loss"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/login_screen_edittext"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:hint="@string/reason_for_total_area_lossed"
+                android:maxLines="1"
+                android:paddingStart="10dp"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+<!--            <mahyco.mipl.nxg.spinner.CCFSerachSpinner
                 android:id="@+id/reason_for_total_area_loss_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/login_spinner_style"
                 android:paddingStart="10dp"
-                android:paddingEnd="10dp" />
+                android:paddingEnd="10dp" />-->
 
             <LinearLayout
                 android:id="@+id/seed_production_area_tagging_layout"
@@ -222,7 +236,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -231,32 +245,13 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:text="@string/field_no"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <mahyco.mipl.nxg.spinner.CCFSerachSpinner
-                    android:id="@+id/field_no_spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/login_spinner_style"
-                    android:entries="@array/one_to_five_numbers_array"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:weightSum="2">
 
-                    <androidx.appcompat.widget.AppCompatButton
+                    <Button
                         android:id="@+id/tag_area_location"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -265,48 +260,7 @@
                         android:text="@string/tag_area_location"
                         android:textColor="@color/black_color" />
 
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/clear_tag"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_weight="1"
-                        android:background="@color/light_yellow"
-                        android:text="@string/clear_tag"
-                        android:textColor="@color/black_color" />
                 </LinearLayout>
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:text="@string/tagged_area_ha"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/tagged_area_location_textview"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/login_screen_edittext"
-                    android:ellipsize="end"
-                    android:gravity="center|start"
-                    android:maxLines="1"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/save_geo_tag"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/login_btn"
-                    android:text="@string/save" />
 
             </LinearLayout>
 
@@ -316,7 +270,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -325,7 +279,7 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <EditText
                     android:id="@+id/total_tagged_area_below_location_textview"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -346,7 +300,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -355,7 +309,7 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <EditText
                     android:id="@+id/area_loss_or_gain_textview"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -376,7 +330,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -385,7 +339,7 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <EditText
                     android:id="@+id/existing_area_ha_textview"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -406,7 +360,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -434,7 +388,7 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -469,7 +423,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -495,7 +449,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -504,23 +458,46 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <com.google.android.material.textfield.TextInputLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundMode="none">
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/total_nos_female_lines"
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:background="@drawable/login_screen_edittext"
-                        android:drawablePadding="20dp"
-                        android:hint="@string/enter_female_lines"
-                        android:inputType="number"
-                        android:maxLines="1"
-                        android:padding="10dp"
-                        android:textColor="@color/black_color" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:boxBackgroundMode="none">
+
+                        <EditText
+                            android:id="@+id/total_nos_female_lines"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:background="@drawable/login_screen_edittext"
+                            android:drawablePadding="20dp"
+                            android:hint="@string/enter_female_lines"
+                            android:inputType="number"
+                            android:maxLines="1"
+                            android:padding="10dp"
+                            android:textColor="@color/black_color" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+                    <Button
+                        android:id="@+id/buttonfemalelines"
+                        android:layout_width="wrap_content"
+                        android:textColor="@color/white"
+                        android:background="@drawable/login_btn"
+                        android:layout_height="match_parent"
+                        android:text="Add" />
+
+                </LinearLayout>
+
+
+
+
             </LinearLayout>
 
             <LinearLayout
@@ -529,7 +506,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -538,23 +515,40 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <com.google.android.material.textfield.TextInputLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundMode="none">
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/total_nos_male_lines"
+                    <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:background="@drawable/login_screen_edittext"
-                        android:drawablePadding="20dp"
-                        android:hint="@string/enter_male_lines"
-                        android:inputType="number"
-                        android:maxLines="1"
-                        android:padding="10dp"
-                        android:textColor="@color/black_color" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:boxBackgroundMode="none">
+
+                        <EditText
+                            android:id="@+id/total_nos_male_lines"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/login_screen_edittext"
+                            android:drawablePadding="20dp"
+                            android:hint="@string/enter_female_lines"
+                            android:inputType="number"
+                            android:layout_weight="1"
+                            android:maxLines="1"
+                            android:padding="10dp"
+                            android:textColor="@color/black_color" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <Button
+                        android:id="@+id/buttonmalelines"
+                        android:layout_width="wrap_content"
+                        android:background="@drawable/login_btn"
+                        android:textColor="@color/white"
+                        android:layout_height="match_parent"
+                        android:text="Add" />
+
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -578,7 +572,7 @@
                 android:layout_marginTop="10dp"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/female_spacing_cm"
@@ -629,7 +623,7 @@
                 android:layout_marginTop="10dp"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/male_spacing_cm"
@@ -681,7 +675,7 @@
                 android:layout_marginTop="10dp"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/planting_ratio"
@@ -731,7 +725,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -740,7 +734,7 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <EditText
                     android:id="@+id/total_female_plants_textview"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -762,7 +756,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -771,7 +765,7 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <EditText
                     android:id="@+id/total_male_plants_textview"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -792,7 +786,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -821,7 +815,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <TextView
                     android:id="@+id/edit_grower_mobile_no_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -853,7 +847,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -882,7 +876,7 @@
                 android:layout_marginTop="10dp"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/date_of_field_visit"
@@ -890,7 +884,7 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <EditText
                     android:id="@+id/date_of_field_visit_textview"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -912,7 +906,7 @@
                 android:layout_marginTop="10dp"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/staff_name_and_id"
@@ -920,7 +914,7 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <EditText
                     android:id="@+id/staff_name_textview"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -942,7 +936,7 @@
                 android:layout_marginTop="10dp"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/geotag_of_location"
@@ -950,7 +944,7 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <EditText
                     android:id="@+id/geotag_location_textview"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -972,7 +966,7 @@
                 android:layout_marginTop="10dp"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatButton
+                <Button
                     android:id="@+id/national_id_photo_front_side_btn"
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="match_parent"

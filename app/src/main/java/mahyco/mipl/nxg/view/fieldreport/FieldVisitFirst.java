@@ -1,17 +1,28 @@
 package mahyco.mipl.nxg.view.fieldreport;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.text.InputType;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.gridlayout.widget.GridLayout;
 
 import com.vansuita.pickimage.bean.PickResult;
 import com.vansuita.pickimage.bundle.PickSetup;
@@ -24,23 +35,61 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import mahyco.mipl.nxg.R;
 import mahyco.mipl.nxg.util.BaseActivity;
+import mahyco.mipl.nxg.util.SqlightDatabase;
 import mahyco.mipl.nxg.view.AreaTagingActivity;
 
 public class FieldVisitFirst extends BaseActivity {
-AppCompatButton tag_area_location;
-AppCompatEditText female_date_sowing,male_date_sowing,staff_name_textview,date_of_field_visit_textview;
+    Button tag_area_location;
+  //  AppCompatEditText female_date_sowing, male_date_sowing, staff_name_textview, date_of_field_visit_textview;
     int mYear, mMonth, mDay;
     Context context;
     AppCompatButton national_id_photo_front_side_btn;
     private File mDocFrontPhotoFile = null;
     String front_path;
     ImageView capture_photo_image_view;
+    SqlightDatabase database;
+ //   EditText total_nos_female_lines, total_nos_male_lines, total_female_plants_textview, total_male_plants_textview;
+    Button buttonfemalelines, buttonmalelines;
+    private Dialog lineDialog;
+    List<EditText> allEds;
+
+    EditText
+
+            grower_name_textview,
+            issued_seed_area_textview,
+            production_code_textview,
+            village_textview,
+            female_date_sowing,
+            male_date_sowing,
+            reason_for_total_area_loss,
+            total_tagged_area_below_location_textview,
+            area_loss_or_gain_textview,
+            existing_area_ha_textview,
+            total_nos_female_lines,
+            total_nos_male_lines,
+            female_spacing_rr,
+            female_spacing_pp,
+            male_spacing_rr,
+            male_spacing_pp,
+            female_planting_ratio,
+            male_planting_ratio,
+            total_female_plants_textview,
+            total_male_plants_textview,
+            yield_estimate_kg_edittext,
+            grower_mobile_no_edittext,
+            recommendations_observations_edittext,
+            date_of_field_visit_textview,
+            staff_name_textview,
+            geotag_location_textview
+            ;
 
     @Override
     protected int getLayout() {
@@ -50,11 +99,14 @@ AppCompatEditText female_date_sowing,male_date_sowing,staff_name_textview,date_o
     @Override
     protected void init() {
         Toolbar mToolbar = findViewById(R.id.toolbar);
-        mToolbar.setTitle("Field Visit First");
+        mToolbar.setTitle("Field Visit First ");
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        context=FieldVisitFirst.this;
+        context = FieldVisitFirst.this;
+        database = new SqlightDatabase(context);
+        database.trucateTable("tbl_field_location");
+        database.trucateTable("tbl_field_master");
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,20 +115,27 @@ AppCompatEditText female_date_sowing,male_date_sowing,staff_name_textview,date_o
         });
 
 
-        tag_area_location=findViewById(R.id.tag_area_location);
+        tag_area_location = findViewById(R.id.tag_area_location);
         tag_area_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(FieldVisitFirst.this, AreaTagingActivity.class);
+                Intent intent = new Intent(FieldVisitFirst.this, AreaTagingActivity.class);
                 startActivity(intent);
             }
         });
 
-        female_date_sowing=findViewById(R.id.female_date_sowing);
-        male_date_sowing=findViewById(R.id.male_date_sowing);
-        date_of_field_visit_textview=findViewById(R.id.date_of_field_visit_textview);
-        national_id_photo_front_side_btn=findViewById(R.id.national_id_photo_front_side_btn);
-        capture_photo_image_view=findViewById(R.id.capture_photo_image_view);
+        female_date_sowing = findViewById(R.id.female_date_sowing);
+        male_date_sowing = findViewById(R.id.male_date_sowing);
+        date_of_field_visit_textview = findViewById(R.id.date_of_field_visit_textview);
+        national_id_photo_front_side_btn = findViewById(R.id.national_id_photo_front_side_btn);
+        capture_photo_image_view = findViewById(R.id.capture_photo_image_view);
+        total_nos_female_lines = findViewById(R.id.total_nos_female_lines);
+        total_nos_male_lines = findViewById(R.id.total_nos_male_lines);
+        buttonfemalelines = findViewById(R.id.buttonfemalelines);
+        buttonmalelines = findViewById(R.id.buttonmalelines);
+        total_female_plants_textview = findViewById(R.id.total_female_plants_textview);
+        total_male_plants_textview = findViewById(R.id.total_male_plants_textview);
+
         female_date_sowing.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -134,8 +193,8 @@ AppCompatEditText female_date_sowing,male_date_sowing,staff_name_textview,date_o
                         String ssm = "", ssd = "";
                         if ((selectedmonth + 1) < 10)
                             ssm = "0" + (selectedmonth + 1);
-                       else
-                             ssm = "" + (selectedmonth + 1);
+                        else
+                            ssm = "" + (selectedmonth + 1);
                         if ((selectedday) < 10)
                             ssd = "0" + selectedday;
                         else
@@ -155,7 +214,7 @@ AppCompatEditText female_date_sowing,male_date_sowing,staff_name_textview,date_o
 
 
         try {
-                date_of_field_visit_textview.setText(new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date().getDate()));
+            date_of_field_visit_textview.setText(new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date().getDate()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -203,6 +262,100 @@ AppCompatEditText female_date_sowing,male_date_sowing,staff_name_textview,date_o
                 }
             }
         });
+
+        buttonfemalelines.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Female " + total_nos_female_lines.getText(), Toast.LENGTH_SHORT).show();
+
+                int total = Integer.parseInt(total_nos_female_lines.getText().toString().trim());
+                showLineDialog("Enter No of plants per female line", total, 1);
+            }
+        });
+        buttonmalelines.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, " Male  " + total_nos_male_lines.getText(), Toast.LENGTH_SHORT).show();
+                int total = Integer.parseInt(total_nos_male_lines.getText().toString().trim());
+                showLineDialog("Enter No of plants per male line", total, 2);
+            }
+        });
+
+    }
+
+    void showLineDialog(String s, int total, int type) {
+        try {
+            lineDialog = new Dialog(context);
+            lineDialog.setContentView(R.layout.line_dialog_entry);
+
+            TextView txt_title, btnclose;
+            Button btn_save;
+            GridLayout grid;
+            allEds = new ArrayList<>();
+            txt_title = lineDialog.findViewById(R.id.txt_title);
+            btnclose = lineDialog.findViewById(R.id.btnclose);
+            btn_save = lineDialog.findViewById(R.id.btn_save);
+            grid = lineDialog.findViewById(R.id.grid);
+            txt_title.setText("" + s);
+            btnclose.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    lineDialog.dismiss();
+                }
+            });
+            for (int i = 0; i < total; i++) {
+                LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(150, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f); // Width , height
+                EditText editText = new EditText(this);
+                editText.setBackgroundResource(R.drawable.login_screen_edittext);
+                editText.setInputType(InputType.TYPE_NUMBER_FLAG_SIGNED);
+                editText.setLayoutParams(lparams);
+                editText.setGravity(Gravity.CENTER);
+                editText.setHint("Line " + (i + 1));
+                editText.setId(i + 1);
+                allEds.add(editText);
+                grid.addView(editText);
+
+            }
+            btn_save.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int cnt = 0;
+                    int total = 0;
+                    for (EditText et : allEds) {
+                        Log.i("Test : ", et.getText().toString());
+                        if (et.getText().toString().trim().equals("")) {
+                            et.setError("Missing");
+                            cnt++;
+                        } else {
+                            try {
+                                total += Integer.parseInt(et.getText().toString().trim());
+
+                            } catch (Exception e) {
+                                cnt++;
+                                et.setError("Invalid");
+                            }
+
+                        }
+
+                    }
+                    if (cnt == 0) {
+                        if (type == 1) {
+                            total_female_plants_textview.setText("" + total);
+
+                        } else {
+                            total_male_plants_textview.setText("" + total);
+
+                        }
+                    }
+                }
+            });
+
+
+            lineDialog.show();
+
+        } catch (Exception e) {
+            Toast.makeText(context, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
 
     }
 }

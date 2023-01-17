@@ -8,10 +8,17 @@
     tools:context=".view.AreaTagingActivity">
 
 
+    <TextView
+        android:id="@+id/txt_fieldnumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Field Number" />
+
     <com.toptoche.searchablespinnerlibrary.SearchableSpinner
         android:id="@+id/sp_field"
         android:layout_width="match_parent"
         android:layout_height="45dp"
+        android:layout_below="@id/txt_fieldnumber"
         android:layout_marginTop="3dp"
         android:background="@drawable/login_spinner_style"
         android:entries="@array/fieldList"
@@ -33,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="addlocation"
-            android:text="Add Location" />
+            android:text="Add \nLocation" />
 
         <TextView
             android:id="@+id/textView19"
@@ -47,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="showrecords"
-            android:text="Save Data" />
+            android:text="Save \n4Data" />
 
         <TextView
             android:id="@+id/textView19we"
@@ -61,7 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="clearall"
-            android:text="Clear All" />
+            android:text="Clear \nAll" />
     </LinearLayout>
 
     <TextView
