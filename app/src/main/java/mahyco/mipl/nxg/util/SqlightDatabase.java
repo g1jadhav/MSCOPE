@@ -614,7 +614,11 @@ public class SqlightDatabase extends SQLiteOpenHelper {
         SQLiteDatabase myDb = null;
         try {
             myDb = this.getReadableDatabase();
-            String q = "SELECT  * FROM tbl_field_location where FieldId="+fieldId;
+            String q;
+            if(fieldId==-1)
+                q="SELECT  * FROM tbl_field_location";
+            else
+                q = "SELECT  * FROM tbl_field_location where FieldId="+fieldId;
             Cursor cursorCourses = myDb.rawQuery(q, null);
             ArrayList<FieldLocation> fieldLocationArrayList = new ArrayList<>();
             if (cursorCourses.moveToFirst()) {
