@@ -12,6 +12,7 @@ public class Constants {
     public static final String GETCATEGORY_BY_PARENT = "countryMaster/getall";
   //  public static final String SUBMIT_GROWER = "users/create";
     public static final String SUBMIT_GROWER = "users/newCreate";
+    public static final String SUBMIT_FISRTVISIT = "fieldMonitoringVisit/create";
     public static final String CHANAGE_PASSWORD ="staffUser/changePassword" ;
     static final String CHECK_LOGIN="customToken/customToken";
     public static final String GET_SEASON = "season/getall";

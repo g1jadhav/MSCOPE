@@ -1,13 +1,18 @@
 package mahyco.mipl.nxg.view.fieldreport;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.location.Location;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -25,8 +30,12 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.gridlayout.widget.GridLayout;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -56,6 +65,7 @@ import mahyco.mipl.nxg.model.FieldMonitoringModels;
 import mahyco.mipl.nxg.model.FieldPlantLaneModels;
 import mahyco.mipl.nxg.model.FieldVisitLocationModel;
 import mahyco.mipl.nxg.model.FieldVisitModel;
+import mahyco.mipl.nxg.model.FirstVisitLocalModel;
 import mahyco.mipl.nxg.spinner.CCFSerachSpinner;
 import mahyco.mipl.nxg.util.BaseActivity;
 import mahyco.mipl.nxg.util.Preferences;
@@ -73,12 +83,15 @@ public class FieldVisitFirst extends BaseActivity {
     SqlightDatabase database;
     //   EditText total_nos_female_lines, total_nos_male_lines, total_female_plants_textview, total_male_plants_textview;
     private Dialog lineDialog;
-    List<EditText> allEds;
+    List<EditText> allEds; // Female
+    List<EditText> allEds_male; //male
+    List<EditText> allEds_female; //male
     int countryId=0;
+    Double lati=0.0,longi=0.0;
+    Double totalTaggedArea=0.0;
 
 
     EditText
-
             grower_name_textview,
             issued_seed_area_textview,
             production_code_textview,
@@ -104,7 +117,8 @@ public class FieldVisitFirst extends BaseActivity {
             recommendations_observations_edittext,
             date_of_field_visit_textview,
             staff_name_textview,
-            geotag_location_textview;
+            geotag_location_textview,
+    isolation_meter_textview;
 
     CCFSerachSpinner area_lost_spinner,
             isolation_spinner,
@@ -146,7 +160,7 @@ public class FieldVisitFirst extends BaseActivity {
             str_geotag_location_textview,
             str_area_lost_spinner,
             str_isolation_spinner,
-            str_crop_stage_spinner;
+            str_crop_stage_spinner,str_isolation_meter_textview;
 
 
     FieldVisitModel fieldVisitModel;
@@ -155,8 +169,9 @@ public class FieldVisitFirst extends BaseActivity {
     JsonArray jsonArrayFieldVisitModel;
     JsonArray jsonArray_location;
     JsonArray jsonArray_linecount;
-
-
+    int userid;
+    int countryCode;
+    private FusedLocationProviderClient fusedLocationClient;
     @Override
     protected int getLayout() {
         return R.layout.field_visit_first;
@@ -229,6 +244,7 @@ public class FieldVisitFirst extends BaseActivity {
         date_of_field_visit_textview = findViewById(R.id.date_of_field_visit_textview);
         staff_name_textview = findViewById(R.id.staff_name_textview);
         geotag_location_textview = findViewById(R.id.geotag_location_textview);
+        isolation_meter_textview = findViewById(R.id.isolation_meter_textview);
 
         //Spinners
         area_lost_spinner = findViewById(R.id.area_lost_spinner);
@@ -240,6 +256,30 @@ public class FieldVisitFirst extends BaseActivity {
         buttonfemalelines = findViewById(R.id.buttonfemalelines);
         buttonmalelines = findViewById(R.id.buttonmalelines);
         save_login = findViewById(R.id.save_login);
+
+        staff_name_textview.setText("" + Preferences.get(context, Preferences.USER_ID));
+        grower_name_textview.setText("" + Preferences.get(context, Preferences.SELECTED_GROWERNAME));
+        grower_mobile_no_edittext.setText("" + Preferences.get(context, Preferences.SELECTED_GROWERMOBILE));
+        userid=Integer.parseInt(Preferences.get(context, Preferences.SELECTED_GROWERID).toString().trim());
+        issued_seed_area_textview.setText("" + Preferences.get(context, Preferences.SELECTED_GROWERAREA));
+        production_code_textview.setText("" + Preferences.get(context, Preferences.SELECTED_GROWERPRODUCTIONCODE));
+        try {
+            String str[]=database.getGetGrowerCountryMasterId(Preferences.get(context, Preferences.SELECTED_GROWERUNIQUECODE)).split("~");
+           if(str.length>1) {
+               countryCode = Integer.parseInt(str[0].trim());
+               village_textview.setText(str[1].trim());
+
+            Toast.makeText(context, "Selected ."+countryCode, Toast.LENGTH_SHORT).show();
+           }else
+           {
+               Toast.makeText(context, "Missing Country Master Id.", Toast.LENGTH_SHORT).show();
+           }
+        }catch (Exception e)
+        {
+            Toast.makeText(context, "Missing Country Master Id.", Toast.LENGTH_SHORT).show();
+            countryCode=0;
+        }
+
 
         fieldVisitModel = new FieldVisitModel();
         fieldMonitoringModels = new FieldMonitoringModels();
@@ -322,7 +362,12 @@ public class FieldVisitFirst extends BaseActivity {
 
 
         try {
-            date_of_field_visit_textview.setText(new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date().getDate()));
+            Date c = Calendar.getInstance().getTime();
+            System.out.println("Current time => " + c);
+
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            String formattedDate = df.format(c);
+            date_of_field_visit_textview.setText(formattedDate);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -396,7 +441,56 @@ public class FieldVisitFirst extends BaseActivity {
             }
         });
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+
+        fusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                // Got last known location. In some rare situations this can be null.
+                if (location != null) {
+                    // Logic to handle location object
+
+                    lati = location.getLatitude();
+                    longi = location.getLongitude();
+                    String cordinates = String.valueOf(lati) + "," + String.valueOf(longi);
+                    Log.i("Coordinates",cordinates);
+                    geotag_location_textview.setText(cordinates);
+                    //      Toast.makeText(context, "Location Latitude : " + location.getLatitude() + " Longitude :" + location.getLongitude()+" Hello :" +address, Toast.LENGTH_SHORT).show();
+                    //  edGeoTagging.setText(location.getLatitude() + "," + location.getLongitude());
+                }
+            }
+        });
+
+        total_tagged_area_below_location_textview.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+
+                 if(total_tagged_area_below_location_textview.getText().toString().trim().equals(""))
+                 {
+                     setAreaAfterOnChange(0.0);
+                 }else {
+                  double d=Double.parseDouble(total_tagged_area_below_location_textview.getText().toString().trim());
+                     setAreaAfterOnChange(d);
+                 }
+                }
+            }
+        });
+
+
     }
+
+
 
     private void submitRecord() {
 
@@ -427,14 +521,15 @@ public class FieldVisitFirst extends BaseActivity {
             str_date_of_field_visit_textview = date_of_field_visit_textview.getText().toString().trim();
             str_staff_name_textview = staff_name_textview.getText().toString().trim();
             str_geotag_location_textview = geotag_location_textview.getText().toString().trim();
+            str_isolation_meter_textview = isolation_meter_textview.getText().toString().trim();
             str_area_lost_spinner = area_lost_spinner.getSelectedItem().toString().trim();
             str_isolation_spinner = isolation_spinner.getSelectedItem().toString().trim();
             str_crop_stage_spinner = crop_stage_spinner.getSelectedItem().toString().trim();
 
 
-            fieldVisitModel.setUserId(1);// 1,
+            fieldVisitModel.setUserId(userid);// 1,
             fieldVisitModel.setCountryId(countryId);// 1,
-            fieldVisitModel.setCountryMasterId(90);// 90,
+            fieldVisitModel.setCountryMasterId(countryCode);// 90,
             fieldVisitModel.setMandatoryFieldVisitId(1);// 1,
             fieldVisitModel.setFieldVisitType("Mandatory Field Visit");// Mandatory Field Visit,
             fieldVisitModel.setTotalSeedAreaLost(Double.parseDouble(str_area_loss_or_gain_textview));// 0.02,
@@ -444,7 +539,7 @@ public class FieldVisitFirst extends BaseActivity {
             fieldVisitModel.setFemaleSowingDt(str_female_date_sowing);// 2023-01-15T05;//35;//13.528Z,
             fieldVisitModel.setMaleSowingDt(str_male_date_sowing);// 2023-01-15T05;//35;//13.528Z,
             fieldVisitModel.setIsolationM(str_isolation_spinner);// Yes,
-            fieldVisitModel.setIsolationMeter(Integer.parseInt("2"));// 2,
+            fieldVisitModel.setIsolationMeter(Integer.parseInt(str_isolation_meter_textview));// 2,
             fieldVisitModel.setCropStage(str_crop_stage_spinner);// For Field Crop,
             fieldVisitModel.setTotalNoOfFemaleLines(Integer.parseInt(str_total_nos_female_lines));// 10,
             fieldVisitModel.setTotalNoOfMaleLines(Integer.parseInt(str_total_nos_male_lines));// 10,
@@ -460,10 +555,13 @@ public class FieldVisitFirst extends BaseActivity {
             fieldVisitModel.setYieldEstimateInKg(Integer.parseInt(str_yield_estimate_kg_edittext));// 50,
             fieldVisitModel.setObservations(str_recommendations_observations_edittext);// Observations Here,
             fieldVisitModel.setFieldVisitDt(str_date_of_field_visit_textview);// 2023-01-15T05;//35;//13.529Z,
-            fieldVisitModel.setLatitude("19.886857");// 19.886857,
-            fieldVisitModel.setLongitude("75.3514908");// 75.3514908,
-            fieldVisitModel.setCapturePhoto("");// ,
-            fieldVisitModel.setCreatedBy("55000066");
+            fieldVisitModel.setLatitude(""+lati);// 19.886857,
+            fieldVisitModel.setLongitude(""+longi);// 75.3514908,
+            fieldVisitModel.setCapturePhoto(front_path);// ,
+            fieldVisitModel.setCreatedBy(str_staff_name_textview);
+
+
+
             fieldMonitoringModels.setFieldVisitModel(fieldVisitModel);
             ArrayList<FieldVisitLocationModel> lst_location = new ArrayList<>();
             try {
@@ -484,7 +582,7 @@ public class FieldVisitFirst extends BaseActivity {
 
             int cnt = 0;
             int total = 0;
-            for (EditText et : allEds) {
+            for (EditText et : allEds_female) {
                 FieldPlantLaneModels fieldPlantLaneModels = new FieldPlantLaneModels();
                 try {
                     fieldPlantLaneModels.setLaneNo(cnt + 1);
@@ -497,7 +595,29 @@ public class FieldVisitFirst extends BaseActivity {
                 }
 
             }
+            cnt = 0;
+            for (EditText et : allEds_male) {
+                FieldPlantLaneModels fieldPlantLaneModels = new FieldPlantLaneModels();
+                try {
+                    fieldPlantLaneModels.setLaneNo(cnt + 1);
+                    fieldPlantLaneModels.setNoOfPlants(Integer.parseInt(et.getText().toString().trim()));
+                    fieldPlantLaneModels.setPlantType("Male");
+                    cnt++;
+                    lst_FieldPlantLaneModels.add(fieldPlantLaneModels);
+                } catch (Exception e) {
+
+                }
+
+            }
             fieldMonitoringModels.setFieldPlantLaneModels(lst_FieldPlantLaneModels);
+
+            JsonArray jsonObjectLocation=new JsonParser().parse(new Gson().toJson(lst_location)).getAsJsonArray();
+            JsonArray jsonObjectLine=new JsonParser().parse(new Gson().toJson(lst_FieldPlantLaneModels)).getAsJsonArray();
+
+             Log.i("Location JSON",""+jsonObjectLocation.toString());
+             Log.i("Line JSON",""+jsonObjectLine.toString());
+            fieldVisitModel.setLineData(jsonObjectLine.toString());
+            fieldVisitModel.setLocationData(jsonObjectLocation.toString());
 
             JsonObject jsonObject=new JsonParser().parse(new Gson().toJson(fieldMonitoringModels)).getAsJsonObject();
             JsonArray jsonArray=new JsonArray();
@@ -508,10 +628,66 @@ public class FieldVisitFirst extends BaseActivity {
             Log.i("Data : ",jsonObject1.toString());
 
 
+
+
+
+            FirstVisitLocalModel firstVisitLocalModel=new FirstVisitLocalModel();
+            firstVisitLocalModel.setUserid(userid);
+            firstVisitLocalModel.setPath(front_path);
+            firstVisitLocalModel.setData(jsonObject.toString());
+            if(database.addFirstVisit1(fieldVisitModel))
+            {
+                Toast.makeText(context, "Local Data Saved.", Toast.LENGTH_SHORT).show();
+                finish();
+            }else
+            {
+                Toast.makeText(context, "Local Data Not Saved.", Toast.LENGTH_SHORT).show();
+            }
+
+
         } catch (Exception e) {
             Log.i("Error Save Data : ",e.getMessage());
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setArea();
+
+    }
+
+    private void setArea() {
+        try{
+            totalTaggedArea=0.0;
+            for (FieldMaster f : database.getAllFieldMaster()) {
+                totalTaggedArea+=Double.parseDouble(f.getTotalArea());
+            }
+            total_tagged_area_below_location_textview.setText(""+totalTaggedArea);
+            double totalArea=Double.parseDouble(issued_seed_area_textview.getText().toString());
+            double loss=totalTaggedArea-totalArea;
+            area_loss_or_gain_textview.setText(""+loss);
+            double existingarea=totalArea-loss;
+            existing_area_ha_textview.setText(""+existingarea);
+        }catch(Exception e)
+        {
+
+        }
+    }
+    private void setAreaAfterOnChange(Double s) {
+        try{
+            totalTaggedArea=s;
+            total_tagged_area_below_location_textview.setText(""+totalTaggedArea);
+            double totalArea=Double.parseDouble(issued_seed_area_textview.getText().toString());
+            double loss=totalTaggedArea-totalArea;
+            area_loss_or_gain_textview.setText(""+loss);
+            double existingarea=totalArea+loss;
+            existing_area_ha_textview.setText(""+existingarea);
+        }catch(Exception e)
+        {
+
+        }
     }
 
     void showLineDialog(String s, int total, int type) {
@@ -550,6 +726,7 @@ public class FieldVisitFirst extends BaseActivity {
             btn_save.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     int cnt = 0;
                     int total = 0;
                     for (EditText et : allEds) {
@@ -571,9 +748,11 @@ public class FieldVisitFirst extends BaseActivity {
                     }
                     if (cnt == 0) {
                         if (type == 1) {
+                            allEds_female=new ArrayList<>(allEds);
                             total_female_plants_textview.setText("" + total);
 
                         } else {
+                            allEds_male=new ArrayList<>(allEds);
                             total_male_plants_textview.setText("" + total);
 
                         }

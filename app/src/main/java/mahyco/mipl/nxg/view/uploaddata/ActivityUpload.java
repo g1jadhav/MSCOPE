@@ -47,12 +47,14 @@ public class ActivityUpload extends BaseActivity implements View.OnClickListener
     private TextView mGrowerRecords;
     private TextView mOrganizerRecords;
     private TextView mSeedDistributionRecords;
+    private TextView field_visit_1st_no_of_records;
 
     private int stid = 0;
     private GrowerRegistrationAPI registrationAPI;
     private int mIndexForGrowerList = 0;
     private int mIndexForOrganizerList = 0;
     private boolean mGrowerClicked;
+
 
     @Override
     protected int getLayout() {
@@ -79,10 +81,12 @@ public class ActivityUpload extends BaseActivity implements View.OnClickListener
         mGrowerRecords = findViewById(R.id.grower_registration_no_of_records);
         mOrganizerRecords = findViewById(R.id.organizer_registration_no_of_records);
         mSeedDistributionRecords = findViewById(R.id.seed_distribution_no_of_records);
+        field_visit_1st_no_of_records = findViewById(R.id.field_visit_1st_no_of_records);
 
         mGrowerRecords.setText(getString(R.string.no_of_records_for_upload, 0));
         mOrganizerRecords.setText(getString(R.string.no_of_records_for_upload, 0));
         mSeedDistributionRecords.setText(getString(R.string.no_of_records_for_upload, 0));
+        field_visit_1st_no_of_records.setText(getString(R.string.no_of_records_for_upload, 0));
 
         AppCompatTextView mVersionTextView = findViewById(R.id.upload_data_version_code);
         mVersionTextView.setText(getString(R.string.version_code, BuildConfig.VERSION_CODE));
@@ -216,6 +220,11 @@ public class ActivityUpload extends BaseActivity implements View.OnClickListener
             Log.e("temporary", "result.getStatus().equalsIgnoreCase(\"Success\")");
             new DeleteIfSyncSuccessfully().execute();
         }
+    }
+
+    @Override
+    public void onFirstVisitRegister(SuccessModel result) {
+
     }
 
     private class GetRegistrationAsyncTaskList extends AsyncTask<Void, Void, Void> {

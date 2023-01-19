@@ -172,9 +172,16 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     //   Log.e("temporary", " mSearchByIdNameSpinner.setOnItemSelectedListener");
-                    if (l != 0) {
-                       showFieldVisitFirstLayout(i);
-                    }
+
+                    GetAllSeedDistributionModel m=(GetAllSeedDistributionModel) adapterView.getSelectedItem();
+                    Log.i("GetAll",m.getGrowerId()+" "+m.getGrowerFullName());
+                    Preferences.save(mContext,Preferences.SELECTED_GROWERNAME,m.getGrowerFullName());
+                    Preferences.save(mContext,Preferences.SELECTED_GROWERMOBILE,m.getGrowerMobileNo());
+                    Preferences.save(mContext,Preferences.SELECTED_GROWERID,""+m.getGrowerId());
+                    Preferences.save(mContext,Preferences.SELECTED_GROWERAREA,""+m.getSeedProductionArea());
+                    Preferences.save(mContext,Preferences.SELECTED_GROWERPRODUCTIONCODE,""+m.getProductionCode());
+                    Preferences.save(mContext,Preferences.SELECTED_GROWERUNIQUECODE,""+m.getGrowerUniqueCode());
+
                 }
 
                 @Override

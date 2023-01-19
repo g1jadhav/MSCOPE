@@ -14,8 +14,11 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import org.json.JSONObject;
@@ -31,6 +34,9 @@ import mahyco.mipl.nxg.model.CategoryModel;
 import mahyco.mipl.nxg.model.CropModel;
 import mahyco.mipl.nxg.model.CropTypeModel;
 import mahyco.mipl.nxg.model.DownloadGrowerModel;
+import mahyco.mipl.nxg.model.FieldMonitoringModels;
+import mahyco.mipl.nxg.model.FieldVisitModel;
+import mahyco.mipl.nxg.model.FirstVisitLocalModel;
 import mahyco.mipl.nxg.model.GetAllSeedDistributionModel;
 import mahyco.mipl.nxg.model.GrowerModel;
 import mahyco.mipl.nxg.model.OldGrowerSeedDistributionModel;
@@ -61,6 +67,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
     private AppCompatButton mGrowerRegistrationBtn;
     private AppCompatButton mOrganizerRegistrationBtn;
     private AppCompatButton mDistributionUploadBtn;
+    private AppCompatButton field_visit_1st_upload;
 
     private Context mContext;
     private List<GrowerModel> mGrowerList;
@@ -71,6 +78,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
     private TextView mGrowerRecords;
     private TextView mOrganizerRecords;
     private TextView mSeedDistributionRecords;
+    private TextView field_visit_1st_no_of_records;
 
     private int stid = 0;
     private GrowerRegistrationAPI registrationAPI;
@@ -82,6 +90,8 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
     private int mOrganizerSize;
     int userType = 0;
     private androidx.appcompat.widget.Toolbar toolbar;
+    SqlightDatabase database;
+    int totalFirstVisit=0;
 
     @Override
     protected int getLayout() {
@@ -106,10 +116,14 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
         });
 
         mContext = this;
+        database=new SqlightDatabase(mContext);
         // Toast.makeText(mContext, "HI1", Toast.LENGTH_SHORT).show();
         registrationAPI = new GrowerRegistrationAPI(mContext, this);
         mGrowerRegistrationBtn = findViewById(R.id.grower_registration_upload);
         mGrowerRegistrationBtn.setOnClickListener(this);
+
+        field_visit_1st_upload = findViewById(R.id.field_visit_1st_upload);
+        field_visit_1st_upload.setOnClickListener(this);
 
         mOrganizerRegistrationBtn = findViewById(R.id.organizer_registration_upload);
         mOrganizerRegistrationBtn.setOnClickListener(this);
@@ -121,10 +135,13 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
         mGrowerRecords = findViewById(R.id.grower_registration_no_of_records);
         mOrganizerRecords = findViewById(R.id.organizer_registration_no_of_records);
         mSeedDistributionRecords = findViewById(R.id.seed_distribution_no_of_records);
+        field_visit_1st_no_of_records = findViewById(R.id.field_visit_1st_no_of_records);
+
 
         mGrowerRecords.setText(getString(R.string.no_of_records_for_upload, 0));
         mOrganizerRecords.setText(getString(R.string.no_of_records_for_upload, 0));
         mSeedDistributionRecords.setText(getString(R.string.no_of_records_for_upload, 0));
+        field_visit_1st_no_of_records.setText(getString(R.string.no_of_records_for_upload, database.getAllFirstFieldVisit1().size()));
 
         AppCompatTextView mVersionTextView = findViewById(R.id.upload_data_version_code);
         mVersionTextView.setText(getString(R.string.version_code, BuildConfig.VERSION_CODE));
@@ -225,6 +242,88 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                 }
             }
             break;
+
+            case  R.id.field_visit_1st_upload:
+                totalFirstVisit=database.getAllFirstFieldVisit1().size();
+                uploadFirstVisit();
+                break;
+        }
+    }
+
+    private void uploadFirstVisit() {
+        if (totalFirstVisit > 0) {
+        try {
+
+                ArrayList<FieldVisitModel> f = database.getAllFirstFieldVisit1();
+     /*       JsonObject jsonObject=new JsonParser().parse(f.get(0).getData()).getAsJsonObject();
+            Gson gson = new Gson();
+            FieldMonitoringModels monitoringModels = gson.fromJson(jsonObject, FieldMonitoringModels.class);
+            monitoringModels.getFieldVisitModel().setCapturePhoto("Tests Changes");
+            JsonObject jsonObjectFinal=new JsonParser().parse(new Gson().toJson(monitoringModels)).getAsJsonObject();
+
+            Log.i("JsonData",jsonObjectFinal.toString());*/
+                JsonObject jsonObject_Visit = new JsonObject();
+                JsonArray jsonArray = new JsonArray();
+                for (FieldVisitModel fieldVisitModel : f) {
+                    JsonObject jsonObjectFinale = new JsonObject();
+                    String base64 = MyApplicationUtil.getImageDatadetail(fieldVisitModel.getCapturePhoto());
+                    Log.i("Final base64 R :", base64);
+                    JsonArray jsonObject_location = new JsonParser().parse(f.get(0).getLocationData()).getAsJsonArray();
+                    JsonArray jsonObject_line = new JsonParser().parse(f.get(0).getLineData()).getAsJsonArray();
+                    JsonObject json_visitModel = new JsonObject();
+                    json_visitModel.addProperty("UserId", fieldVisitModel.getUserId());
+                    json_visitModel.addProperty("CountryId", fieldVisitModel.getCountryId());
+                    json_visitModel.addProperty("CountryMasterId", fieldVisitModel.getCountryMasterId());
+                    json_visitModel.addProperty("MandatoryFieldVisitId", fieldVisitModel.getMandatoryFieldVisitId());
+                    json_visitModel.addProperty("FieldVisitType", fieldVisitModel.getFieldVisitType());
+                    json_visitModel.addProperty("TotalSeedAreaLost", fieldVisitModel.getTotalSeedAreaLost());
+                    json_visitModel.addProperty("TaggedAreaInHA", fieldVisitModel.getTaggedAreaInHA());
+                    json_visitModel.addProperty("ExistingAreaInHA", fieldVisitModel.getExistingAreaInHA());
+                    json_visitModel.addProperty("ReasonForTotalLossed", fieldVisitModel.getReasonForTotalLossed());
+                    json_visitModel.addProperty("FemaleSowingDt", fieldVisitModel.getFemaleSowingDt());
+                    json_visitModel.addProperty("MaleSowingDt", fieldVisitModel.getMaleSowingDt());
+                    json_visitModel.addProperty("IsolationM", fieldVisitModel.getIsolationM());
+                    json_visitModel.addProperty("IsolationMeter", fieldVisitModel.getIsolationMeter());
+                    json_visitModel.addProperty("CropStage", fieldVisitModel.getCropStage());
+                    json_visitModel.addProperty("TotalNoOfFemaleLines", fieldVisitModel.getTotalNoOfFemaleLines());
+                    json_visitModel.addProperty("TotalNoOfMaleLines", fieldVisitModel.getTotalNoOfMaleLines());
+                    json_visitModel.addProperty("FemaleSpacingRRinCM", fieldVisitModel.getFemaleSpacingRRinCM());
+                    json_visitModel.addProperty("FemaleSpacingPPinCM", fieldVisitModel.getFemaleSpacingPPinCM());
+                    json_visitModel.addProperty("MaleSpacingRRinCM", fieldVisitModel.getMaleSpacingRRinCM());
+                    json_visitModel.addProperty("MaleSpacingPPinCM", fieldVisitModel.getMaleSpacingPPinCM());
+                    json_visitModel.addProperty("PlantingRatioFemale", fieldVisitModel.getPlantingRatioFemale());
+                    json_visitModel.addProperty("PlantingRatioMale", fieldVisitModel.getPlantingRatioMale());
+                    json_visitModel.addProperty("CropCategoryType", fieldVisitModel.getCropCategoryType());
+                    json_visitModel.addProperty("TotalFemalePlants", fieldVisitModel.getTotalFemalePlants());
+                    json_visitModel.addProperty("TotalMalePlants", fieldVisitModel.getTotalMalePlants());
+                    json_visitModel.addProperty("YieldEstimateInKg", fieldVisitModel.getYieldEstimateInKg());
+                    json_visitModel.addProperty("Observations", fieldVisitModel.getObservations());
+                    json_visitModel.addProperty("FieldVisitDt", fieldVisitModel.getFieldVisitDt());
+                    json_visitModel.addProperty("Latitude", fieldVisitModel.getLatitude());
+                    json_visitModel.addProperty("Longitude", fieldVisitModel.getLongitude());
+                    json_visitModel.addProperty("CapturePhoto", base64);
+                    json_visitModel.addProperty("CreatedBy", fieldVisitModel.getCreatedBy());
+
+                    jsonObjectFinale.add("fieldVisitModel", json_visitModel);
+                    jsonObjectFinale.add("fieldVisitLocationModels", jsonObject_location);
+                    jsonObjectFinale.add("fieldPlantLaneModels", jsonObject_line);
+
+                    jsonArray.add(jsonObjectFinale);
+                }
+                jsonObject_Visit.add("fieldMonitoringModels", jsonArray);
+
+                registrationAPI.createFirstVisit(jsonObject_Visit);
+                Log.i("Final Json R :", jsonObject_Visit.toString());
+
+
+            }catch(Exception e)
+            {
+                Log.i("JsonDataError : ", e.getMessage());
+            }
+        }else
+        {
+            showNoInternetDialog(mContext, "No Records Found.");
+
         }
     }
 
@@ -297,6 +396,24 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
 
         } else {
             showNoInternetDialog(mContext, result.getComment());
+        }
+    }
+
+    @Override
+    public void onFirstVisitRegister(SuccessModel result) {
+        try{
+
+            database.trucateTable("tbl_firstVisit");
+
+            showNoInternetDialog(mContext, totalFirstVisit+ " Records Uploaded Successfully.");
+            totalFirstVisit=database.getAllFirstFieldVisit1().size();
+            field_visit_1st_no_of_records.setText(getString(R.string.no_of_records_for_upload,totalFirstVisit));
+
+
+            Log.i("Result",result.getStatus()+""+result.toString());
+        }catch(Exception e)
+        {
+            Toast.makeText(mContext, "error"+e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 

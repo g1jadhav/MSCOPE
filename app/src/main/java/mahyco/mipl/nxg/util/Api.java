@@ -90,6 +90,9 @@ public interface Api {
     @POST(Constants.SUBMIT_GROWER)
     Call<SuccessModel> submitGrowerDetails(@Body JsonObject jsonObject);
 
+    @POST(Constants.SUBMIT_FISRTVISIT)
+    Call<SuccessModel> submitFirstDetails(@Body JsonObject jsonObject);
+
     //@Body list: List<TourEventParamItem>
     @POST(Constants.CREATE_DISTRIBUTION)
     Call<SuccessModel> seedDistribution(@Body /*ArrayList<OldGrowerSeedDistributionModel>*/ParentSeedDistributionParameter jsonObject);
@@ -100,5 +103,7 @@ public interface Api {
     /*Added by jeevan 28-11-2022*/
     @POST("https://feedbackapi.mahyco.com/api/Feedback/getAppFeedbackStatus")
     Call<ForceUpdateModel> getForceFullyUpdate(@Query("packageName") String packageName);
+
+
     /*Added by jeevan ended here 28-11-2022*/
 }

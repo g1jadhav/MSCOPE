@@ -19,6 +19,8 @@ import mahyco.mipl.nxg.model.CropTypeModel;
 import mahyco.mipl.nxg.model.DownloadGrowerModel;
 import mahyco.mipl.nxg.model.FieldLocation;
 import mahyco.mipl.nxg.model.FieldMaster;
+import mahyco.mipl.nxg.model.FieldVisitModel;
+import mahyco.mipl.nxg.model.FirstVisitLocalModel;
 import mahyco.mipl.nxg.model.GetAllSeedDistributionModel;
 import mahyco.mipl.nxg.model.GrowerModel;
 import mahyco.mipl.nxg.model.OldGrowerSeedDistributionModel;
@@ -374,6 +376,44 @@ public class SqlightDatabase extends SQLiteOpenHelper {
 
         db.execSQL(tbl_field_location);
 
+        String tbl_firstVisit = "Create table IF NOT EXISTS tbl_firstVisit(\n" +
+                "     TempID Integer PRIMARY KEY AUTOINCREMENT,\n" +
+                "     UserId INTEGER,\n" +
+                "     CountryId INTEGER,\n" +
+                "     CountryMasterId INTEGER,\n" +
+                "     MandatoryFieldVisitId INTEGER,\n" +
+                "     FieldVisitType  TEXT,\n" +
+                "     TotalSeedAreaLost  TEXT,\n" +
+                "     TaggedAreaInHA  TEXT,\n" +
+                "     ExistingAreaInHA  TEXT,\n" +
+                "     ReasonForTotalLossed  TEXT,\n" +
+                "     FemaleSowingDt  TEXT,\n" +
+                "     MaleSowingDt  TEXT,\n" +
+                "     IsolationM  TEXT,\n" +
+                "     IsolationMeter  TEXT,\n" +
+                "     CropStage  TEXT,\n" +
+                "     TotalNoOfFemaleLines  TEXT,\n" +
+                "     TotalNoOfMaleLines  TEXT,\n" +
+                "     FemaleSpacingRRinCM  TEXT,\n" +
+                "     FemaleSpacingPPinCM  TEXT,\n" +
+                "     MaleSpacingRRinCM  TEXT,\n" +
+                "     MaleSpacingPPinCM  TEXT,\n" +
+                "     PlantingRatioFemale  TEXT,\n" +
+                "     PlantingRatioMale  TEXT,\n" +
+                "     CropCategoryType  TEXT,\n" +
+                "     TotalFemalePlants  TEXT,\n" +
+                "     TotalMalePlants  TEXT,\n" +
+                "     YieldEstimateInKg  TEXT,\n" +
+                "     Observations  TEXT,\n" +
+                "     FieldVisitDt  TEXT,\n" +
+                "     Latitude  TEXT,\n" +
+                "     Longitude  TEXT,\n" +
+                "     CapturePhoto  TEXT,\n" +
+                "     CreatedBy  TEXT,\n" +
+                "     LocationData text,\n" +
+                "     LineData text)";
+
+        db.execSQL(tbl_firstVisit);
 
 
     }
@@ -541,6 +581,132 @@ public class SqlightDatabase extends SQLiteOpenHelper {
 
     }
 
+    public boolean addFirstVisit1(FieldVisitModel visitModel) {
+
+        SQLiteDatabase mydb = null;
+        try {
+            mydb = this.getReadableDatabase();
+            String q = "insert into tbl_firstVisit" +
+                    "(UserId, CountryId, CountryMasterId, MandatoryFieldVisitId, FieldVisitType, TotalSeedAreaLost, TaggedAreaInHA, ExistingAreaInHA, ReasonForTotalLossed, FemaleSowingDt, MaleSowingDt, IsolationM, IsolationMeter, CropStage, TotalNoOfFemaleLines, TotalNoOfMaleLines, FemaleSpacingRRinCM, FemaleSpacingPPinCM, MaleSpacingRRinCM, MaleSpacingPPinCM, PlantingRatioFemale, PlantingRatioMale, CropCategoryType, TotalFemalePlants, TotalMalePlants, YieldEstimateInKg, Observations, FieldVisitDt, Latitude, Longitude, CapturePhoto, CreatedBy, LocationData, LineData) values" +
+                    "('"+visitModel.getUserId()+"','"+visitModel.getCountryId()+"','"+visitModel.getCountryMasterId()+"','"+visitModel.getMandatoryFieldVisitId()+"','"+visitModel.getFieldVisitType()+"','"+visitModel.getTotalSeedAreaLost()+"','"+visitModel.getTaggedAreaInHA()+"','"+visitModel.getExistingAreaInHA()+"','"+visitModel.getReasonForTotalLossed()+"','"+visitModel.getFemaleSowingDt()+"','"+visitModel.getMaleSowingDt()+"','"+visitModel.getIsolationM()+"','"+visitModel.getIsolationMeter()+"','"+visitModel.getCropStage()+"','"+visitModel.getTotalNoOfFemaleLines()+"','"+visitModel.getTotalNoOfMaleLines()+"','"+visitModel.getFemaleSpacingRRinCM()+"','"+visitModel.getFemaleSpacingPPinCM()+"','"+visitModel.getMaleSpacingRRinCM()+"','"+visitModel.getMaleSpacingPPinCM()+"','"+visitModel.getPlantingRatioFemale()+"','"+visitModel.getPlantingRatioMale()+"','"+visitModel.getCropCategoryType()+"','"+visitModel.getTotalFemalePlants()+"','"+visitModel.getTotalMalePlants()+"','"+visitModel.getYieldEstimateInKg()+"','"+visitModel.getObservations()+"','"+visitModel.getFieldVisitDt()+"','"+visitModel.getLatitude()+"','"+visitModel.getLongitude()+"','"+visitModel.getCapturePhoto()+"','"+visitModel.getCreatedBy()+"','"+visitModel.getLocationData()+"','"+visitModel.getLineData()+"')";
+
+            // Log.i("Query is -------> ", "" + q);
+            mydb.execSQL(q);
+            return true;
+        } catch (Exception e) {
+            // Log.i("Error is Product Added ", "" + e.getMessage());
+            return false;
+        } finally {
+            mydb.close();
+        }
+
+    }
+
+    public boolean addFirstVisit(FirstVisitLocalModel firstVisitLocalModel) {
+
+        SQLiteDatabase mydb = null;
+        try {
+            mydb = this.getReadableDatabase();
+            String q = "insert into tbl_firstVisit" +
+                    "(" +
+                    "UserId," +
+                    "PhotoPath," +
+                    "Data" +
+                    ") values" +
+                    "(" + firstVisitLocalModel.getUserid() + "," +
+                    "'" + firstVisitLocalModel.getPath() + "'," +
+                    "'" + firstVisitLocalModel.getData() + "')";
+            // Log.i("Query is -------> ", "" + q);
+            mydb.execSQL(q);
+            return true;
+        } catch (Exception e) {
+            // Log.i("Error is Product Added ", "" + e.getMessage());
+            return false;
+        } finally {
+            mydb.close();
+        }
+
+    }
+    public ArrayList<FieldVisitModel> getAllFirstFieldVisit1() {
+        SQLiteDatabase myDb = null;
+        try {
+            myDb = this.getReadableDatabase();
+            String q = "SELECT  * FROM tbl_firstVisit";
+            Cursor cursorCourses = myDb.rawQuery(q, null);
+            ArrayList<FieldVisitModel> fieldLocationArrayList = new ArrayList<>();
+            if (cursorCourses.moveToFirst()) {
+                do {
+                    FieldVisitModel f=new FieldVisitModel();
+                    f.setUserId(cursorCourses.getInt(1));
+                    f.setCountryId(cursorCourses.getInt(2));
+                    f.setCountryMasterId(cursorCourses.getInt(3));
+                    f.setMandatoryFieldVisitId(cursorCourses.getInt(4));
+                    f.setFieldVisitType(cursorCourses.getString(5));
+                    f.setTotalSeedAreaLost(cursorCourses.getDouble(6));
+                    f.setTaggedAreaInHA(cursorCourses.getDouble(7));
+                    f.setExistingAreaInHA(cursorCourses.getDouble(8));
+                    f.setReasonForTotalLossed(cursorCourses.getString(9));
+                    f.setFemaleSowingDt(cursorCourses.getString(10));
+                    f.setMaleSowingDt(cursorCourses.getString(11));
+                    f.setIsolationM(cursorCourses.getString(12));
+                    f.setIsolationMeter(cursorCourses.getInt(13));
+                    f.setCropStage(cursorCourses.getString(14));
+                    f.setTotalNoOfFemaleLines(cursorCourses.getInt(15));
+                    f.setTotalNoOfMaleLines(cursorCourses.getInt(16));
+                    f.setFemaleSpacingRRinCM(cursorCourses.getInt(17));
+                    f.setFemaleSpacingPPinCM(cursorCourses.getInt(18));
+                    f.setMaleSpacingRRinCM(cursorCourses.getInt(19));
+                    f.setMaleSpacingPPinCM(cursorCourses.getInt(20));
+                    f.setPlantingRatioFemale(cursorCourses.getInt(21));
+                    f.setPlantingRatioMale(cursorCourses.getInt(22));
+                    f.setCropCategoryType(cursorCourses.getString(23));
+                    f.setTotalFemalePlants(cursorCourses.getInt(24));
+                    f.setTotalMalePlants(cursorCourses.getInt(25));
+                    f.setYieldEstimateInKg(cursorCourses.getInt(26));
+                    f.setObservations(cursorCourses.getString(27));
+                    f.setFieldVisitDt(cursorCourses.getString(28));
+                    f.setLatitude(cursorCourses.getString(29));
+                    f.setLongitude(cursorCourses.getString(30));
+                    f.setCapturePhoto(cursorCourses.getString(31));
+                    f.setCreatedBy(cursorCourses.getString(32));
+                    f.setLocationData(cursorCourses.getString(33));
+                    f.setLineData(cursorCourses.getString(34));
+
+                    fieldLocationArrayList.add(f);
+                } while (cursorCourses.moveToNext());
+            }
+            return fieldLocationArrayList;
+        } catch (Exception e) {
+            return null;
+        } finally {
+            myDb.close();
+        }
+    }
+
+    public ArrayList<FirstVisitLocalModel> getAllFirstFieldVisit() {
+        SQLiteDatabase myDb = null;
+        try {
+            myDb = this.getReadableDatabase();
+            String q = "SELECT  * FROM tbl_firstVisit";
+            Cursor cursorCourses = myDb.rawQuery(q, null);
+            ArrayList<FirstVisitLocalModel> fieldLocationArrayList = new ArrayList<>();
+            if (cursorCourses.moveToFirst()) {
+                do {
+                    FirstVisitLocalModel f=new FirstVisitLocalModel();
+                    f.setUserid(cursorCourses.getInt(1));
+                    f.setPath(cursorCourses.getString(2));
+                    f.setData(cursorCourses.getString(3));
+
+                    fieldLocationArrayList.add(f);
+                } while (cursorCourses.moveToNext());
+            }
+            return fieldLocationArrayList;
+        } catch (Exception e) {
+            return null;
+        } finally {
+            myDb.close();
+        }
+    }
 
     public boolean updateFieldMaster(int fieldid,String total) {
 
@@ -1589,6 +1755,29 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                 } while (cursorCourses.moveToNext());
             }
             return courseModalArrayList;
+        } catch (Exception e) {
+            return null;
+        } finally {
+            myDb.close();
+        }
+    }
+
+    public String getGetGrowerCountryMasterId(String uniqueid) {
+        SQLiteDatabase myDb = null;
+        try {
+            myDb = this.getReadableDatabase();
+            String q = "select CountryMasterId,LandMark from tbl_growermaster where UniqueCode='"+uniqueid+"'";
+            Cursor cursorCourses = myDb.rawQuery(q, null);
+
+            if (cursorCourses.moveToFirst()) {
+                Log.i("QQ",q+""+cursorCourses.getString(0));
+                cursorCourses.getString(0);
+                return cursorCourses.getString(0)+"~"+cursorCourses.getString(1);
+            }else{
+                return " ~ ";
+
+            }
+
         } catch (Exception e) {
             return null;
         } finally {

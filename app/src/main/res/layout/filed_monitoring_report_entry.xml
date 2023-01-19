@@ -237,25 +237,6 @@
                 android:background="@drawable/login_spinner_style"
                 android:visibility="gone" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/filter"
-                android:textAllCaps="false"
-                android:textColor="@color/black"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/filter_options"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/login_spinner_style"
-                android:entries="@array/filter_options"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="parent" />
         </LinearLayout>
 
         <LinearLayout

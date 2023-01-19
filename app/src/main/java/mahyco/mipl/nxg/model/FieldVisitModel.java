@@ -3,20 +3,20 @@ package mahyco.mipl.nxg.model;
 import java.util.List;
 
 public class FieldVisitModel {
-     int UserId;//": 1,
+    int UserId;//": 1,
     int CountryId;//": 1,
     int CountryMasterId;//": 90,
     int MandatoryFieldVisitId;//": 1,
-             String FieldVisitType;//": "Mandatory Field Visit",
-             double TotalSeedAreaLost;//": 0.02,
-             double TaggedAreaInHA;//": 0.1,
-             double ExistingAreaInHA;//": 0.1,
-             String ReasonForTotalLossed;//": "Reason For Total Lossed",
-             String FemaleSowingDt;//": "2023-01-15T05:35:13.528Z",
-             String MaleSowingDt;//": "2023-01-15T05:35:13.528Z",
-             String IsolationM;//": "Yes",
-             int IsolationMeter;//": 2,
-             String CropStage;//": "For Field Crop",
+    String FieldVisitType;//": "Mandatory Field Visit",
+    double TotalSeedAreaLost;//": 0.02,
+    double TaggedAreaInHA;//": 0.1,
+    double ExistingAreaInHA;//": 0.1,
+    String ReasonForTotalLossed;//": "Reason For Total Lossed",
+    String FemaleSowingDt;//": "2023-01-15T05:35:13.528Z",
+    String MaleSowingDt;//": "2023-01-15T05:35:13.528Z",
+    String IsolationM;//": "Yes",
+    int IsolationMeter;//": 2,
+    String CropStage;//": "For Field Crop",
     int TotalNoOfFemaleLines;//": 10,
     int TotalNoOfMaleLines;//": 10,
     int FemaleSpacingRRinCM;//": 2,
@@ -25,13 +25,35 @@ public class FieldVisitModel {
     int MaleSpacingPPinCM;//": 3,
     int PlantingRatioFemale;//": 5,
     int PlantingRatioMale;//": 4,
-             String CropCategoryType;//": "For Field Crop",
+    String CropCategoryType;//": "For Field Crop",
     int TotalFemalePlants;//": 20,
     int TotalMalePlants;//": 20,
     int YieldEstimateInKg;//": 50,
-             String Observations;//": "Observations Here",
-             String FieldVisitDt;//": "2023-01-15T05:35:13.529Z",
+    String Observations;//": "Observations Here",
+    String FieldVisitDt;//": "2023-01-15T05:35:13.529Z",
+    String Latitude;//": "19.886857",
+    String Longitude;//": "75.3514908",
+    String CapturePhoto;//": "",
+    String CreatedBy;//": "55000066"
 
+    public String getLocationData() {
+        return LocationData;
+    }
+
+    public void setLocationData(String locationData) {
+        LocationData = locationData;
+    }
+
+    public String getLineData() {
+        return LineData;
+    }
+
+    public void setLineData(String lineData) {
+        LineData = lineData;
+    }
+
+    String LocationData;
+    String LineData;
     public int getUserId() {
         return UserId;
     }
@@ -287,13 +309,6 @@ public class FieldVisitModel {
     public void setCreatedBy(String createdBy) {
         CreatedBy = createdBy;
     }
-
-
-
-    String Latitude;//": "19.886857",
-             String Longitude;//": "75.3514908",
-             String CapturePhoto;//": "",
-             String CreatedBy;//": "55000066"
 
 
 }

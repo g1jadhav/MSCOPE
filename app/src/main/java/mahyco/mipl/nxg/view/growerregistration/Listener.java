@@ -16,4 +16,5 @@ public interface Listener {
     void loadChildSpinner(List<CategoryChildModel> result, SearchableSpinner spinner);
 
     void onGrowerRegister(SuccessModel result);
+    void onFirstVisitRegister(SuccessModel result);
 }

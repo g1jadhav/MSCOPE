@@ -47,6 +47,12 @@ public class Preferences {
     public static final String LOGINID = "LOGINID";
     public static final String COUNTRYCODE ="COUNTRYCODE" ;
     public static final String COUNTRYNAME = "CountryName";
+    public static final String SELECTED_GROWERNAME = "Sgrowername";
+    public static final String SELECTED_GROWERID = "SGrowerid";
+    public static final String SELECTED_GROWERMOBILE = "SgrowerMObile";
+    public static final String SELECTED_GROWERAREA = "SArea";
+    public static final String SELECTED_GROWERPRODUCTIONCODE = "SProductionCode";
+    public static final String SELECTED_GROWERUNIQUECODE = "SELECTEDUNIQUECODE";
     public static String IQCPlantId="IQCPlantId";
     public static final String COUNTRY_MASTER_ID = "CountryParentId";
     public static final String STORED_CATEGORY_SIZE = "CategorySize";
