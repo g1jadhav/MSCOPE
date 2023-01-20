@@ -181,6 +181,7 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
                     Preferences.save(mContext,Preferences.SELECTED_GROWERAREA,""+m.getSeedProductionArea());
                     Preferences.save(mContext,Preferences.SELECTED_GROWERPRODUCTIONCODE,""+m.getProductionCode());
                     Preferences.save(mContext,Preferences.SELECTED_GROWERUNIQUECODE,""+m.getGrowerUniqueCode());
+                    Preferences.save(mContext,Preferences.SELECTEDCROPECODE,""+m.getCropCode());
 
                 }
 
