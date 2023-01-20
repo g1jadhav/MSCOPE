@@ -73,6 +73,28 @@
         <entry key="..\:/Android/MIPL/app/src/main/res/layout/spinner_rows.xml" value="0.17552083333333332" />
         <entry key="..\:/Android/MIPL/app/src/main/res/menu/activity_main_drawer.xml" value="0.17552083333333332" />
         <entry key="..\:/Android/MIPL/app/src/main/res/menu/main.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/drawable-v24/border_btn.xml" value="0.193" />
+        <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/drawable-v24/border_btn_green.xml" value="0.193" />
+        <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/drawable-v24/border_style.xml" value="0.193" />
+        <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/drawable-v24/buttonbordet.xml" value="0.193" />
+        <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/drawable-v24/edit_text_selector.xml" value="0.193" />
+        <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/drawable/add_user.xml" value="0.193" />
+        <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/drawable/calendar.xml" value="0.193" />
+        <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/drawable/edit.xml" value="0.193" />
+        <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/drawable/email.xml" value="0.193" />
+        <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/drawable/login_btn.xml" value="0.193" />
+        <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/drawable/login_screen_edittext.xml" value="0.2115" />
+        <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/drawable/login_spinner_style.xml" value="0.193" />
+        <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/drawable/password.xml" value="0.193" />
+        <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/drawable/phone_android.xml" value="0.193" />
+        <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/layout/activity_area_taging.xml" value="0.17074275362318841" />
+        <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/layout/activity_change_password.xml" value="0.1" />
+        <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/layout/activity_new_grower_registration.xml" value="0.17074275362318841" />
+        <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/layout/activity_registration.xml" value="0.11277173913043478" />
+        <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/layout/activity_upload_layout.xml" value="0.14628623188405798" />
+        <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/layout/field_visit_first.xml" value="0.22" />
+        <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/layout/filed_monitoring_report_entry.xml" value="0.14628623188405798" />
+        <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/layout/line_dialog_entry.xml" value="0.20416666666666666" />
       </map>
     </option>
   </component>
