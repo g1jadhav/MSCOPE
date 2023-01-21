@@ -39,8 +39,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/border_btn_green"
             android:onClick="addlocation"
-            android:text="Add \nLocation" />
+            android:text="Add \nLocation"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/textView19"
@@ -53,8 +55,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/border_btn_green"
             android:onClick="showrecords"
-            android:text="Save \n4Data" />
+            android:text="Save \nData"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/textView19we"
@@ -67,8 +71,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/border_btn_green"
             android:onClick="clearall"
-            android:text="Clear \nAll" />
+            android:text="Clear \nAll"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <TextView
@@ -90,7 +96,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="4"
+            android:layout_weight="3"
             android:orientation="vertical">
 
             <EditText
@@ -128,6 +134,22 @@
                         android:stretchColumns="*" />
                 </LinearLayout>
             </ScrollView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_done"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/border_btn_green"
+                android:onClick="done"
+                android:text="Done" />
+
         </LinearLayout>
 
     </LinearLayout>

@@ -35,21 +35,34 @@
                 android:padding="5dp" />
         </LinearLayout>
 
-        <androidx.gridlayout.widget.GridLayout
-            android:id="@+id/grid"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            app:columnCount="3" >
+            android:layout_weight="1">
 
-        </androidx.gridlayout.widget.GridLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <androidx.gridlayout.widget.GridLayout
+                    android:id="@+id/grid"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    app:columnCount="3">
+
+                </androidx.gridlayout.widget.GridLayout>
+            </LinearLayout>
+        </ScrollView>
 
         <Button
             android:id="@+id/btn_save"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Save Data" />
+            android:background="@drawable/border_btn_green"
+            android:text="Done" />
 
     </LinearLayout>
 </RelativeLayout>

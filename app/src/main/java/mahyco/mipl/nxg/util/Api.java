@@ -12,6 +12,7 @@ import mahyco.mipl.nxg.model.CategoryModel;
 import mahyco.mipl.nxg.model.CropModel;
 import mahyco.mipl.nxg.model.CropTypeModel;
 import mahyco.mipl.nxg.model.DownloadGrowerModel;
+import mahyco.mipl.nxg.model.FieldVisitServerModel;
 import mahyco.mipl.nxg.model.ForceUpdateModel;
 import mahyco.mipl.nxg.model.GetAllSeedDistributionModel;
 import mahyco.mipl.nxg.model.OldGrowerSeedDistributionModel;
@@ -103,6 +104,9 @@ public interface Api {
     /*Added by jeevan 28-11-2022*/
     @POST("https://feedbackapi.mahyco.com/api/Feedback/getAppFeedbackStatus")
     Call<ForceUpdateModel> getForceFullyUpdate(@Query("packageName") String packageName);
+
+    @POST(Constants.GETALL_FISRTVISIT)
+    Call<FieldVisitServerModel> getVisitData(@Body JsonObject jsonObject);
 
 
     /*Added by jeevan ended here 28-11-2022*/

@@ -18,6 +18,7 @@ import mahyco.mipl.nxg.model.CategoryModel;
 import mahyco.mipl.nxg.model.CropModel;
 import mahyco.mipl.nxg.model.CropTypeModel;
 import mahyco.mipl.nxg.model.DownloadGrowerModel;
+import mahyco.mipl.nxg.model.FieldVisitServerModel;
 import mahyco.mipl.nxg.model.GetAllSeedDistributionModel;
 import mahyco.mipl.nxg.model.ProductCodeModel;
 import mahyco.mipl.nxg.model.ProductionClusterModel;
@@ -489,5 +490,48 @@ public class DownloadCategoryApi {
         } catch (Exception e) {
 
         }
+    }
+
+    public void getAllVisitList(JsonObject jsonObject) {
+
+        try {
+            if (!progressDialog.isShowing())
+                progressDialog.show();
+
+            Call<FieldVisitServerModel> call = null;
+            call = RetrofitClient.getInstance().getMyApi().getVisitData(jsonObject);
+            call.enqueue(new Callback<FieldVisitServerModel>() {
+                @Override
+                public void onResponse(Call<FieldVisitServerModel> call, Response<FieldVisitServerModel> response) {
+
+                    if (progressDialog.isShowing())
+                        progressDialog.dismiss();
+
+                    if (response.body() != null) {
+                        FieldVisitServerModel result = response.body();
+                        try {
+                            resultOutput.onListAllVisitData(result);
+                        } catch (NullPointerException e) {
+                            Toast.makeText(context, "Error is " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            Toast.makeText(context, "Error is " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    } else {
+                        Preferences.save(context,Preferences.DISTRIBUTION_LIST_DOWNLOAD,"emptyList");
+                        Toast.makeText(context, "Parent Seed distribution list is empty", Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<FieldVisitServerModel> call, Throwable t) {
+                    if (progressDialog.isShowing())
+                        progressDialog.dismiss();
+                    Log.e("Error is", t.getMessage());
+                }
+            });
+        } catch (Exception e) {
+
+        }
+
     }
 }

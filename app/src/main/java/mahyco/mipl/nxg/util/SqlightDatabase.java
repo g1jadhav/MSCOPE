@@ -20,6 +20,7 @@ import mahyco.mipl.nxg.model.DownloadGrowerModel;
 import mahyco.mipl.nxg.model.FieldLocation;
 import mahyco.mipl.nxg.model.FieldMaster;
 import mahyco.mipl.nxg.model.FieldVisitModel;
+import mahyco.mipl.nxg.model.FieldVisitModel_Server;
 import mahyco.mipl.nxg.model.FirstVisitLocalModel;
 import mahyco.mipl.nxg.model.GetAllSeedDistributionModel;
 import mahyco.mipl.nxg.model.GrowerModel;
@@ -415,6 +416,18 @@ public class SqlightDatabase extends SQLiteOpenHelper {
 
         db.execSQL(tbl_firstVisit);
 
+        String tbl_visit_master = "Create table IF NOT EXISTS tbl_visit_master(\n" +
+                "      TEMPID INTEGER PRIMARY KEY AUTOINCREMENT ,\n" +
+                "      FieldVisitId Integer,\n" +
+                "      UserId Integer,\n" +
+                "      CountryId  Integer,\n" +
+                "      CountryMasterId  Integer,\n" +
+                "      MandatoryFieldVisitId  Integer,\n" +
+                "      FieldVisitType TEXT\n" +
+                "\n" +
+                ");";
+
+        db.execSQL(tbl_visit_master);
 
     }
 
@@ -1602,6 +1615,12 @@ public class SqlightDatabase extends SQLiteOpenHelper {
             ArrayList<GetAllSeedDistributionModel> courseModalArrayList = new ArrayList<>();
             if (cursorCourses.moveToFirst()) {
                 do {
+                    boolean b=isFirstFieldVisitDone(cursorCourses.getInt(2));
+                    String ss="";
+                    if(b)
+                    {
+                        ss="1st Visit.";
+                    }
                     courseModalArrayList.add(new GetAllSeedDistributionModel(cursorCourses.getInt(1),
                             cursorCourses.getInt(2),
                             cursorCourses.getInt(3),
@@ -1626,7 +1645,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                             cursorCourses.getString(22),
                             cursorCourses.getString(23),
                             cursorCourses.getString(24),
-                            cursorCourses.getString(25),
+                            cursorCourses.getString(25)+"("+ss+")",
                             cursorCourses.getString(26),
                             cursorCourses.getString(27),
                             cursorCourses.getString(28),
@@ -1857,6 +1876,54 @@ public class SqlightDatabase extends SQLiteOpenHelper {
             return false;
         } finally {
             mydb.close();
+        }
+    }
+
+    public boolean addVisitMaster(FieldVisitModel_Server f) {
+        SQLiteDatabase mydb = null;
+        try {
+            mydb = this.getReadableDatabase();
+            String q = "insert into tbl_visit_master" +
+                    "(" +
+                    "" +
+                    "FieldVisitId," +
+                    "UserId," +
+                    "CountryId," +
+                    "CountryMasterId," +
+                    "MandatoryFieldVisitId," +
+                    "FieldVisitType"+
+
+                    ") values" +
+                    "(" + f.getFieldVisitId() + "," +
+                    "" + f.getUserId() + "," +
+                    "" + f.getCountryId() + "," +
+                    "" + f.getCountryId() + "," +
+                    "" + f.getMandatoryFieldVisitId() + "," +
+                    "'" + f.getFieldVisitType() + "')" ;
+            // Log.i("Query is -------> ", "" + q);
+            mydb.execSQL(q);
+            return true;
+        } catch (Exception e) {
+            // Log.i("Error is Product Added ", "" + e.getMessage());
+            return false;
+        } finally {
+            mydb.close();
+        }
+    }
+    public boolean isFirstFieldVisitDone(int userid) {
+        SQLiteDatabase myDb = null;
+        try {
+            myDb = this.getReadableDatabase();
+            String q = "SELECT  * FROM tbl_visit_master where UserId="+userid;
+            Cursor cursorCourses = myDb.rawQuery(q, null);
+            if (cursorCourses.moveToFirst()) {
+              return true;
+            }
+            return false;
+        } catch (Exception e) {
+            return false;
+        } finally {
+            myDb.close();
         }
     }
 

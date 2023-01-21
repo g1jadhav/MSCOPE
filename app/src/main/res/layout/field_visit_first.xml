@@ -414,6 +414,7 @@
                 >
 
                 <TextView
+                    android:id="@+id/lbl_meters"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -422,10 +423,7 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:boxBackgroundMode="none">
+
 
                     <EditText
                         android:id="@+id/isolation_meter_textview"
@@ -437,8 +435,9 @@
                         android:inputType="number"
                         android:maxLines="1"
                         android:padding="10dp"
-                        android:textColor="@color/black_color" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:textColor="@color/black_color"
+                        tools:visibility="gone" />
+
 
             </LinearLayout>
 
@@ -577,11 +576,11 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/female_plants_per_line_layout"
+                android:id="@+id/female_spacinglayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:orientation="vertical" />
+                android:orientation="vertical" >
 
             <LinearLayout
                 android:id="@+id/male_plants_per_line_layout"
@@ -744,37 +743,38 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/total_female_plants_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:text="@string/total_female_plants"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/total_female_plants_textview"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/login_screen_edittext"
-                    android:ellipsize="end"
-                    android:gravity="center|start"
-                    android:maxLines="1"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:textColor="@color/black"
-                    android:textSize="18sp" />
 
             </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/total_female_plants_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:text="@string/total_female_plants"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/total_female_plants_textview"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/login_screen_edittext"
+                        android:ellipsize="end"
+                        android:gravity="center|start"
+                        android:maxLines="1"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
             <LinearLayout
                 android:id="@+id/total_male_plants_layout"
                 android:layout_width="match_parent"

@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         context = MainActivity.this;
         mainActivityAPI = new MainActivityAPI(context, this);
         init();
+        requestStoragePermission();
 
     }
 

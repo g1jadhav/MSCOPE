@@ -1,10 +1,12 @@
 package mahyco.mipl.nxg.view.downloadcategories;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 
@@ -20,6 +22,8 @@ import mahyco.mipl.nxg.model.CategoryModel;
 import mahyco.mipl.nxg.model.CropModel;
 import mahyco.mipl.nxg.model.CropTypeModel;
 import mahyco.mipl.nxg.model.DownloadGrowerModel;
+import mahyco.mipl.nxg.model.FieldVisitModel_Server;
+import mahyco.mipl.nxg.model.FieldVisitServerModel;
 import mahyco.mipl.nxg.model.GetAllSeedDistributionModel;
 import mahyco.mipl.nxg.model.GrowerModel;
 import mahyco.mipl.nxg.model.ProductCodeModel;
@@ -46,6 +50,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
     private CardView mCropTypeMaster;
     private CardView mParentSeedReceiptMaster;
     private CardView mGetAllSeedDistributionMaster;
+    private CardView mGetAllVisitMaster;
 
     private JsonObject mJsonObjectCategory;
 
@@ -62,6 +67,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
     private List<CropTypeModel> mCropTypeList;
     private List<SeedReceiptModel> mParentSeedReceiptList;
     private List<GetAllSeedDistributionModel> mGetAllSeedDistributionList;
+    private List<FieldVisitServerModel> mGetAllVisitDetails;
 
     private String mDatabaseName = "";
     final String LOCATION_MASTER_DATABASE = "LocationMaster";
@@ -112,6 +118,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
         mCropTypeMaster = findViewById(R.id.download_crop_type_master_layout);
         mParentSeedReceiptMaster = findViewById(R.id.download_parent_seed_receipt_master_layout);
         mGetAllSeedDistributionMaster = findViewById(R.id.download_parent_seed_distribution_master_layout);
+        mGetAllVisitMaster = findViewById(R.id.download_visit_master_layout);
 
         mCategoryMaster.setOnClickListener(this);
         mLocationMaster.setOnClickListener(this);
@@ -124,6 +131,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
         mCropTypeMaster.setOnClickListener(this);
         mParentSeedReceiptMaster.setOnClickListener(this);
         mGetAllSeedDistributionMaster.setOnClickListener(this);
+        mGetAllVisitMaster.setOnClickListener(this);
 
         mDownloadCategoryApi = new DownloadCategoryApi(mContext, this);
     }
@@ -173,6 +181,11 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
                 } else {
                     showNoInternetDialog(mContext, "You have stored data in Parent Seed Distribution, first upload that data and then download.");
                 }
+                break;
+            case R.id.download_visit_master_layout:
+
+                    downloadVistMsaterData();
+
                 break;
         }
     }
@@ -338,6 +351,27 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
         mDatabaseName = "GetAllSeedDistributionMaster";
         showNoInternetDialog(mContext, "Parent Seed Distribution Downloaded Successfully");
         new MasterAsyncTask().execute();
+    }
+
+    @Override
+    public void onListAllVisitData(FieldVisitServerModel result) {
+        try{
+            if(result!=null)
+            {
+
+                   new AddVisitMasterDataLocally(mContext,result.getFieldVisitModel()).execute();
+                    Toast.makeText(mContext, ""+result.getFieldVisitModel().size(), Toast.LENGTH_SHORT).show();
+                }else
+                {
+                    Toast.makeText(mContext, "Data Not Available.", Toast.LENGTH_SHORT).show();
+                }
+
+            
+            
+        }catch (Exception e)
+        {
+            
+        }
     }
 
 
@@ -506,6 +540,22 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
         }
     }
 
+
+
+    private void downloadVistMsaterData() {
+        if (checkInternetConnection(mContext)) {
+            try {
+                mJsonObjectCategory = null;
+                mJsonObjectCategory = new JsonObject();
+                mJsonObjectCategory.addProperty("filterValue", Preferences.get(mContext, Preferences.COUNTRYCODE));
+                mJsonObjectCategory.addProperty("FilterOption", "CountryId");
+                mDownloadCategoryApi.getAllVisitList(mJsonObjectCategory);
+            } catch (Exception e) {
+            }
+        } else {
+            showNoInternetDialog(mContext, "Please check your internet connection");
+        }
+    }
 
     private class MasterAsyncTask extends AsyncTask<Void, Void, Void> {
         @Override
@@ -750,5 +800,55 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
         hideKeyboard(mContext);
         dismissNoInternetDialog();
         super.onDestroy();
+    }
+
+
+
+
+}
+class AddVisitMasterDataLocally extends AsyncTask
+{
+    ProgressDialog progressDialog;
+    List<FieldVisitModel_Server> fieldVisitModel_server;
+    Context context;
+    SqlightDatabase database;
+    AddVisitMasterDataLocally(Context context,List<FieldVisitModel_Server> fieldVisitModel_server)
+    {
+        this.context=context;
+        this.fieldVisitModel_server=fieldVisitModel_server;
+    }
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        database=new SqlightDatabase(context);
+        progressDialog=new ProgressDialog(context);
+        progressDialog.setMessage("Sync data in progress.Please wait..");
+        progressDialog.show();
+    }
+
+    @Override
+    protected String doInBackground(Object[] objects) {
+
+       try{
+           database.trucateTable("tbl_visit_master");
+           for(FieldVisitModel_Server f:fieldVisitModel_server)
+           {
+               Log.i("Data",""+f.getFieldVisitId());
+               Log.i("Saved Status",""+database.addVisitMaster(f));
+           }
+
+       }catch (Exception exception)
+       {
+
+       }
+
+
+        return null;
+    }
+
+    @Override
+    protected void onPostExecute(Object o) {
+        super.onPostExecute(o);
+        progressDialog.dismiss();
     }
 }

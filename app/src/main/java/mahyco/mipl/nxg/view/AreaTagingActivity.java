@@ -321,4 +321,12 @@ public class AreaTagingActivity extends AppCompatActivity {
         }
     }
 
+    public void done(View view) {
+        try{
+            finish();
+        }catch (Exception e)
+        {
+
+        }
+    }
 }

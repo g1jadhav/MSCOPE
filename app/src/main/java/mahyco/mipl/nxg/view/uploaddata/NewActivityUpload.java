@@ -36,6 +36,7 @@ import mahyco.mipl.nxg.model.CropTypeModel;
 import mahyco.mipl.nxg.model.DownloadGrowerModel;
 import mahyco.mipl.nxg.model.FieldMonitoringModels;
 import mahyco.mipl.nxg.model.FieldVisitModel;
+import mahyco.mipl.nxg.model.FieldVisitServerModel;
 import mahyco.mipl.nxg.model.FirstVisitLocalModel;
 import mahyco.mipl.nxg.model.GetAllSeedDistributionModel;
 import mahyco.mipl.nxg.model.GrowerModel;
@@ -1131,6 +1132,11 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
         mDatabaseName = "GetAllSeedDistributionMaster";
         mGetAllSeedDistributionList = result;
         new MasterAsyncTask().execute();
+    }
+
+    @Override
+    public void onListAllVisitData(FieldVisitServerModel result) {
+
     }
 
     @Override

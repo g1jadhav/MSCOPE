@@ -16,30 +16,34 @@
             android:id="@+id/btn_stage1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Stage 1" />
+            android:text="First Mandetory Visit" />
 
         <Button
             android:id="@+id/btn_stage2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Stage 2" />
+            android:text="Stage 2"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/btn_stage3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Stage 3" />
+            android:text="Stage 3"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/btn_stage4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Stage 4" />
+            android:text="Stage 4"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/btn_optional"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Optional Visit" />
+            android:text="Optional Visit"
+            android:visibility="gone" />
     </LinearLayout>
 </RelativeLayout>

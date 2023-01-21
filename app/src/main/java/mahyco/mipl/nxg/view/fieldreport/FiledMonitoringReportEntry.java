@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
@@ -139,7 +140,7 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
     private androidx.appcompat.widget.Toolbar toolbar;
     String str_address = "";
     int total_active_spinners = 0;
-
+SqlightDatabase database;
     @Override
     protected int getLayout() {
         return R.layout.filed_monitoring_report_entry;
@@ -152,6 +153,7 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
             mVersionTextView.setText(getString(R.string.version_code, BuildConfig.VERSION_CODE));
 
             mContext = this;
+            database=new SqlightDatabase(mContext);
 
             Toolbar mToolbar = findViewById(R.id.toolbar);
             mToolbar.setTitle("Field Monitoring Report Entry");
@@ -175,14 +177,22 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
 
                     GetAllSeedDistributionModel m=(GetAllSeedDistributionModel) adapterView.getSelectedItem();
                     Log.i("GetAll",m.getGrowerId()+" "+m.getGrowerFullName());
-                    Preferences.save(mContext,Preferences.SELECTED_GROWERNAME,m.getGrowerFullName());
-                    Preferences.save(mContext,Preferences.SELECTED_GROWERMOBILE,m.getGrowerMobileNo());
-                    Preferences.save(mContext,Preferences.SELECTED_GROWERID,""+m.getGrowerId());
-                    Preferences.save(mContext,Preferences.SELECTED_GROWERAREA,""+m.getSeedProductionArea());
-                    Preferences.save(mContext,Preferences.SELECTED_GROWERPRODUCTIONCODE,""+m.getProductionCode());
-                    Preferences.save(mContext,Preferences.SELECTED_GROWERUNIQUECODE,""+m.getGrowerUniqueCode());
-                    Preferences.save(mContext,Preferences.SELECTEDCROPECODE,""+m.getCropCode());
-
+                  if(i!=0) {
+                      if (database.isFirstFieldVisitDone(m.getGrowerId())) {
+                          showNoInternetDialog(mContext, "First visit is done with this grower.");
+                      } else {
+                          Preferences.save(mContext, Preferences.SELECTED_GROWERNAME, m.getGrowerFullName());
+                          Preferences.save(mContext, Preferences.SELECTED_GROWERMOBILE, m.getGrowerMobileNo());
+                          Preferences.save(mContext, Preferences.SELECTED_GROWERID, "" + m.getGrowerId());
+                          Preferences.save(mContext, Preferences.SELECTED_GROWERAREA, "" + m.getSeedProductionArea());
+                          Preferences.save(mContext, Preferences.SELECTED_GROWERPRODUCTIONCODE, "" + m.getProductionCode());
+                          Preferences.save(mContext, Preferences.SELECTED_GROWERUNIQUECODE, "" + m.getGrowerUniqueCode());
+                          Preferences.save(mContext, Preferences.SELECTEDCROPECODE, "" + m.getCropCode());
+                      }
+                  }else
+                  {
+                      Toast.makeText(mContext, "Please choose grower.", Toast.LENGTH_SHORT).show();
+                  }
                 }
 
                 @Override

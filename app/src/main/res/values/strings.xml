@@ -282,6 +282,7 @@
     <string name="download_product_code">Download Product Code</string>
     <string name="download_seed_batch_no">Download Seed Batch No</string>
     <string name="download_crop_type_master">Download Crop Type Master</string>
+    <string name="download_visit_master">Download Visit Master</string>
     <string name="download_parent_seed_receipt">Download Parent Seed Receipt</string>
     <string name="download_parent_seed_distribution">Download Parent Seed Distribution</string>
     <string name="Please_enter_address">Please enter address.</string>
