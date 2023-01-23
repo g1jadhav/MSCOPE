@@ -2,6 +2,7 @@ package mahyco.mipl.nxg.view.fieldreport;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -74,8 +75,8 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
 
     private LinearLayout mGrowerSearchLayout;
     private LinearLayout mFilterSearchLayout;
-  //  private LinearLayout mFieldVisitFirst;
-  JsonObject categoryJson;
+    //  private LinearLayout mFieldVisitFirst;
+    JsonObject categoryJson;
 
     LinearLayoutManager mManager;
     RecyclerView rc_list;
@@ -95,7 +96,7 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
     static int stid = 0;
     GrowerModel growerModel = new GrowerModel();
     String counrtyId = "0", countryName = "";
-
+    String strFilterName = "",strFilterValue="";
     private CCFSerachSpinner mSpinnerArray[];
     private int[] mSpinnerHeadingTextView;
 
@@ -122,7 +123,7 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
     private ArrayList<CategoryChildModel> mSpinner8List;
     private ArrayList<CategoryChildModel> mSpinner9List;
     private ArrayList<CategoryChildModel> mSpinner10List;
-
+   AppCompatTextView lbl_search_filter_result;
     private CodeScanner mCodeScanner;
     private CodeScannerView mCodeScannerView;
     private ScrollView mScrollView;
@@ -140,7 +141,10 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
     private androidx.appcompat.widget.Toolbar toolbar;
     String str_address = "";
     int total_active_spinners = 0;
-SqlightDatabase database;
+    SqlightDatabase database;
+    AppCompatButton btn_search;
+    int selectedGrowerId=0;
+
     @Override
     protected int getLayout() {
         return R.layout.filed_monitoring_report_entry;
@@ -153,13 +157,15 @@ SqlightDatabase database;
             mVersionTextView.setText(getString(R.string.version_code, BuildConfig.VERSION_CODE));
 
             mContext = this;
-            database=new SqlightDatabase(mContext);
+            database = new SqlightDatabase(mContext);
 
             Toolbar mToolbar = findViewById(R.id.toolbar);
             mToolbar.setTitle("Field Monitoring Report Entry");
 
             setSupportActionBar(mToolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+            lbl_search_filter_result=findViewById(R.id.lbl_search_filter_result);
 
             mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
@@ -175,24 +181,24 @@ SqlightDatabase database;
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     //   Log.e("temporary", " mSearchByIdNameSpinner.setOnItemSelectedListener");
 
-                    GetAllSeedDistributionModel m=(GetAllSeedDistributionModel) adapterView.getSelectedItem();
-                    Log.i("GetAll",m.getGrowerId()+" "+m.getGrowerFullName());
-                  if(i!=0) {
-                      if (database.isFirstFieldVisitDone(m.getGrowerId())) {
-                          showNoInternetDialog(mContext, "First visit is done with this grower.");
-                      } else {
-                          Preferences.save(mContext, Preferences.SELECTED_GROWERNAME, m.getGrowerFullName());
-                          Preferences.save(mContext, Preferences.SELECTED_GROWERMOBILE, m.getGrowerMobileNo());
-                          Preferences.save(mContext, Preferences.SELECTED_GROWERID, "" + m.getGrowerId());
-                          Preferences.save(mContext, Preferences.SELECTED_GROWERAREA, "" + m.getSeedProductionArea());
-                          Preferences.save(mContext, Preferences.SELECTED_GROWERPRODUCTIONCODE, "" + m.getProductionCode());
-                          Preferences.save(mContext, Preferences.SELECTED_GROWERUNIQUECODE, "" + m.getGrowerUniqueCode());
-                          Preferences.save(mContext, Preferences.SELECTEDCROPECODE, "" + m.getCropCode());
-                      }
-                  }else
-                  {
-                      Toast.makeText(mContext, "Please choose grower.", Toast.LENGTH_SHORT).show();
-                  }
+                    GetAllSeedDistributionModel m = (GetAllSeedDistributionModel) adapterView.getSelectedItem();
+                    Log.i("GetAll", m.getGrowerId() + " " + m.getGrowerFullName());
+                    if (i != 0) {
+                        selectedGrowerId=m.getGrowerId();
+                        if (database.isFirstFieldVisitDone(m.getGrowerId())) {
+                            showNoInternetDialog(mContext, "First visit is done with this grower.");
+                        } else {
+                            Preferences.save(mContext, Preferences.SELECTED_GROWERNAME, m.getGrowerFullName());
+                            Preferences.save(mContext, Preferences.SELECTED_GROWERMOBILE, m.getGrowerMobileNo());
+                            Preferences.save(mContext, Preferences.SELECTED_GROWERID, "" + m.getGrowerId());
+                            Preferences.save(mContext, Preferences.SELECTED_GROWERAREA, "" + m.getSeedProductionArea());
+                            Preferences.save(mContext, Preferences.SELECTED_GROWERPRODUCTIONCODE, "" + m.getProductionCode());
+                            Preferences.save(mContext, Preferences.SELECTED_GROWERUNIQUECODE, "" + m.getGrowerUniqueCode());
+                            Preferences.save(mContext, Preferences.SELECTEDCROPECODE, "" + m.getCropCode());
+                        }
+                    } else {
+                        Toast.makeText(mContext, "Please choose grower.", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
                 @Override
@@ -210,12 +216,15 @@ SqlightDatabase database;
             mBackButton = findViewById(R.id.back_btn);
             mBackButton.setOnClickListener(this);
 
-           // mFieldVisitFirst = findViewById(R.id.field_visit_second);
+            btn_search = findViewById(R.id.btn_search);
+            btn_search.setOnClickListener(this);
+
+            // mFieldVisitFirst = findViewById(R.id.field_visit_second);
 
             mGrowerSearchLayout = findViewById(R.id.grower_search_layout);
             mFilterSearchLayout = findViewById(R.id.filter_search_layout);
 
-            new GetGrowerMasterAsyncTask().execute();
+         //   new GetGrowerMasterAsyncTask().execute();
             new GetCategoriesAsyncTask().execute();
             mSearchableSpinner1 = findViewById(R.id.sp1);
             mSearchableSpinner2 = findViewById(R.id.sp2);
@@ -234,10 +243,18 @@ SqlightDatabase database;
             mSearchableSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    strFilterName="";
+                    strFilterValue="";
                     if (mSpinner1List != null && mSpinner1List.size() > 0) {
                         mSpinnerPosition = 2;
                         mCountryMasterIdAsPerSelection = mSpinner1List.get(i).getCountryMasterId();
-                        new GetLocationMasterAsyncTask().execute();
+                        CategoryChildModel d = (CategoryChildModel) adapterView.getSelectedItem();
+                        if (d.getCategoryName() != null &&  !d.getCategoryName().contains("Select")&& !d.getKeyValue().contains("Select")) {
+                              strFilterName = "" + d.getCategoryName();
+                            strFilterValue=""+d.getKeyValue();
+
+                        }
+                            new GetLocationMasterAsyncTask().execute();
                     }
                 }
 
@@ -271,8 +288,13 @@ SqlightDatabase database;
                     mRecyclerView.setAdapter(mFieldMonitoringReportAdapter);
                     mRecyclerView.setVisibility(View.VISIBLE);
                 }*/
-                Intent intent = new Intent(this, FiledReportDashboard.class);
-                startActivity(intent);
+                if(database.isFirstFieldVisitDone(selectedGrowerId))
+                {
+                 showNoInternetDialog(mContext,"First visit is done with this grower.");
+                }else {
+                    Intent intent = new Intent(this, FiledReportDashboard.class);
+                    startActivity(intent);
+                }
                 break;
             case R.id.back_btn:
                 mGrowerSearchLayout.setVisibility(View.VISIBLE);
@@ -281,18 +303,42 @@ SqlightDatabase database;
                 mNextButton.setVisibility(View.VISIBLE);
                 mRecyclerView.setVisibility(View.GONE);
                 break;
+            case R.id.btn_search:
+                searchGrower();
+                break;
+
         }
 
     }
 
+    private void searchGrower() {
+        try{
+           // Toast.makeText(mContext, "Grower Location "+strFilterName+" FilterName :"+strFilterValue, Toast.LENGTH_SHORT).show();
+           new GetGrowerMasterAsyncTask().execute();
+        }catch (Exception exception)
+        {
+
+        }
+    }
+
 
     private class GetGrowerMasterAsyncTask extends AsyncTask<Void, Void, ArrayList<GetAllSeedDistributionModel>> {
-
+ProgressDialog progressDialog;
         @Override
         protected void onPreExecute() {
-            showProgressDialog(mContext);
+
             super.onPreExecute();
-        }
+            progressDialog=new ProgressDialog(mContext);
+            if(strFilterValue.trim().equals(""))
+            {
+                progressDialog.setMessage("Searching all grower");
+                lbl_search_filter_result.setText("Result for all grower.");
+            }else {
+                progressDialog.setMessage("Searching grower by " + strFilterName + " = " + strFilterValue);
+                lbl_search_filter_result.setText("Result for all grower where " + strFilterName + " = " + strFilterValue);
+            }
+            progressDialog.show();
+            }
 
         @Override
         protected final ArrayList<GetAllSeedDistributionModel> doInBackground(Void... voids) {
@@ -300,7 +346,7 @@ SqlightDatabase database;
             ArrayList<GetAllSeedDistributionModel> actionModels;
             try {
                 database = new SqlightDatabase(mContext);
-                actionModels = database.getAllSeedDistributionListNo();
+                actionModels = database.getAllSeedDistributionListNo(strFilterValue);
             } finally {
                 if (database != null) {
                     database.close();
@@ -311,11 +357,11 @@ SqlightDatabase database;
 
         @Override
         protected void onPostExecute(ArrayList<GetAllSeedDistributionModel> result) {
-            hideProgressDialog();
+         //   hideProgressDialog();
             if (mGrowerList != null) {
                 mGrowerList.clear();
             }
-
+            progressDialog.dismiss();
             GetAllSeedDistributionModel model = new GetAllSeedDistributionModel();
             model.setGrowerFullName("Select");
             model.setGrowerUniqueCode("");
@@ -330,9 +376,9 @@ SqlightDatabase database;
                 }
 
                 if (mGrowerList.size() > 0) {*/
-                    ArrayAdapter<GetAllSeedDistributionModel> adapter = new ArrayAdapter<>(mContext, R.layout.spinner_rows, mGrowerList);
-                    mSearchByIdNameSpinner.setAdapter(adapter);
-               /* }*/
+                ArrayAdapter<GetAllSeedDistributionModel> adapter = new ArrayAdapter<>(mContext, R.layout.spinner_rows, mGrowerList);
+                mSearchByIdNameSpinner.setAdapter(adapter);
+                /* }*/
                 super.onPostExecute(result);
             }
 
@@ -350,19 +396,18 @@ SqlightDatabase database;
         showFieldVisitFirstLayout(position);
     }
 
-    private void showFieldVisitFirstLayout(int position){
+    private void showFieldVisitFirstLayout(int position) {
         /*mGrowerSearchLayout.setVisibility(View.GONE);
         mFilterSearchLayout.setVisibility(View.GONE);
         mBackButton.setVisibility(View.GONE);
         mNextButton.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.GONE);*/
-       // mFieldVisitFirst.setVisibility(View.VISIBLE);
+        // mFieldVisitFirst.setVisibility(View.VISIBLE);
 
        /* mGrowerName.setText(mGrowerList.get(position).getGrowerFullName());
         mIssuedSeedArea.setText(""+mGrowerList.get(position).getSeedProductionArea());
         mProductionCode.setText(mGrowerList.get(position).getProductionCode());*/
     }
-
 
 
     private class GetCategoriesAsyncTask extends AsyncTask<Void, Void, ArrayList<CategoryModel>> {
@@ -386,7 +431,7 @@ SqlightDatabase database;
 
             if (result != null && result.size() > 0) {
                 total_active_spinners = result.size();
-              //  et_address_edittext.setText("" + total_active_spinners);
+                //  et_address_edittext.setText("" + total_active_spinners);
                 for (int i = 0; i < result.size(); i++) {
 //                    SearchableSpinner searchableSpinner = findViewById(mSpinnerArray[i]);
                     mSpinnerArray[i].setVisibility(View.VISIBLE);
@@ -426,7 +471,7 @@ SqlightDatabase database;
         protected void onPostExecute(ArrayList<CategoryChildModel> result) {
             if (result != null && result.size() > 0) {
                 /*Added by jeevan 12-12-2022*/
-                if(mCountryMasterIdAsPerSelection != 0) {
+                if (mCountryMasterIdAsPerSelection != 0) {
                     /*Added by jeevan 12-12-2022 ended here*/
                     callLocationAdapter(result);
                     /*Added by jeevan 12-12-2022*/
@@ -476,6 +521,11 @@ SqlightDatabase database;
                         if (mSpinner2List != null && mSpinner2List.size() > 0) {
                             mSpinnerPosition = 3;
                             mCountryMasterIdAsPerSelection = mSpinner2List.get(i).getCountryMasterId();
+
+                            CategoryChildModel d = (CategoryChildModel) adapterView.getSelectedItem();
+                            if (d.getCategoryName() != null &&  !d.getCategoryName().contains("Select")&& !d.getKeyValue().contains("Select")){
+                                  strFilterName = "" + d.getCategoryName();
+                            strFilterValue=""+d.getKeyValue();}
                             new GetLocationMasterAsyncTask().execute();
 
                         }
@@ -501,6 +551,11 @@ SqlightDatabase database;
                         if (mSpinner3List != null && mSpinner3List.size() > 0) {
                             mSpinnerPosition = 4;
                             mCountryMasterIdAsPerSelection = mSpinner3List.get(i).getCountryMasterId();
+
+                            CategoryChildModel d = (CategoryChildModel) adapterView.getSelectedItem();
+                            if (d.getCategoryName() != null &&  !d.getCategoryName().contains("Select")&& !d.getKeyValue().contains("Select")){
+                                  strFilterName = "" + d.getCategoryName();
+                            strFilterValue=""+d.getKeyValue();}
                             new GetLocationMasterAsyncTask().execute();
                         }
                     }
@@ -525,6 +580,11 @@ SqlightDatabase database;
                         if (mSpinner4List != null && mSpinner4List.size() > 0) {
                             mSpinnerPosition = 5;
                             mCountryMasterIdAsPerSelection = mSpinner4List.get(i).getCountryMasterId();
+
+                            CategoryChildModel d = (CategoryChildModel) adapterView.getSelectedItem();
+                            if (d.getCategoryName() != null &&  !d.getCategoryName().contains("Select")&& !d.getKeyValue().contains("Select")){
+                                  strFilterName = "" + d.getCategoryName();
+                            strFilterValue=""+d.getKeyValue();}
                             new GetLocationMasterAsyncTask().execute();
                         }
                     }
@@ -549,6 +609,11 @@ SqlightDatabase database;
                         if (mSpinner5List != null && mSpinner5List.size() > 0) {
                             mSpinnerPosition = 6;
                             mCountryMasterIdAsPerSelection = mSpinner5List.get(i).getCountryMasterId();
+
+                            CategoryChildModel d = (CategoryChildModel) adapterView.getSelectedItem();
+                            if (d.getCategoryName() != null &&  !d.getCategoryName().contains("Select")&& !d.getKeyValue().contains("Select")){
+                                  strFilterName = "" + d.getCategoryName();
+                            strFilterValue=""+d.getKeyValue();}
                             new GetLocationMasterAsyncTask().execute();
                         }
                     }
@@ -573,6 +638,11 @@ SqlightDatabase database;
                         if (mSpinner6List != null && mSpinner6List.size() > 0) {
                             mSpinnerPosition = 7;
                             mCountryMasterIdAsPerSelection = mSpinner6List.get(i).getCountryMasterId();
+
+                            CategoryChildModel d = (CategoryChildModel) adapterView.getSelectedItem();
+                            if (d.getCategoryName() != null &&  !d.getCategoryName().contains("Select")&& !d.getKeyValue().contains("Select")){
+                                  strFilterName = "" + d.getCategoryName();
+                            strFilterValue=""+d.getKeyValue();}
                             new GetLocationMasterAsyncTask().execute();
                         }
                     }
@@ -597,6 +667,10 @@ SqlightDatabase database;
                         if (mSpinner7List != null && mSpinner7List.size() > 0) {
                             mSpinnerPosition = 8;
                             mCountryMasterIdAsPerSelection = mSpinner7List.get(i).getCountryMasterId();
+                            CategoryChildModel d = (CategoryChildModel) adapterView.getSelectedItem();
+                            if (d.getCategoryName() != null &&  !d.getCategoryName().contains("Select")&& !d.getKeyValue().contains("Select")){
+                                strFilterName = "" + d.getCategoryName();
+                                strFilterValue=""+d.getKeyValue();}
                             new GetLocationMasterAsyncTask().execute();
                         }
                     }
@@ -621,6 +695,10 @@ SqlightDatabase database;
                         if (mSpinner8List != null && mSpinner8List.size() > 0) {
                             mSpinnerPosition = 9;
                             mCountryMasterIdAsPerSelection = mSpinner8List.get(i).getCountryMasterId();
+                            CategoryChildModel d = (CategoryChildModel) adapterView.getSelectedItem();
+                            if (d.getCategoryName() != null &&  !d.getCategoryName().contains("Select")&& !d.getKeyValue().contains("Select")){
+                                strFilterName = "" + d.getCategoryName();
+                                strFilterValue=""+d.getKeyValue();}
                             new GetLocationMasterAsyncTask().execute();
                         }
                     }
@@ -645,6 +723,10 @@ SqlightDatabase database;
                         if (mSpinner9List != null && mSpinner9List.size() > 0) {
                             mSpinnerPosition = 10;
                             mCountryMasterIdAsPerSelection = mSpinner9List.get(i).getCountryMasterId();
+                            CategoryChildModel d = (CategoryChildModel) adapterView.getSelectedItem();
+                            if (d.getCategoryName() != null &&  !d.getCategoryName().contains("Select")&& !d.getKeyValue().contains("Select")){
+                                strFilterName = "" + d.getCategoryName();
+                                strFilterValue=""+d.getKeyValue();}
                             new GetLocationMasterAsyncTask().execute();
                         }
                     }
@@ -668,6 +750,10 @@ SqlightDatabase database;
                         if (mSpinner10List != null && mSpinner10List.size() > 0) {
                             mSpinnerPosition = 11;
                             mCountryMasterIdAsPerSelection = mSpinner10List.get(i).getCountryMasterId();
+                            CategoryChildModel d = (CategoryChildModel) adapterView.getSelectedItem();
+                            if (d.getCategoryName() != null &&  !d.getCategoryName().contains("Select")&& !d.getKeyValue().contains("Select")){
+                                strFilterName = "" + d.getCategoryName();
+                                strFilterValue=""+d.getKeyValue();}
                             new GetLocationMasterAsyncTask().execute();
                         }
                     }
@@ -949,9 +1035,9 @@ SqlightDatabase database;
         }
     }*/
     private /*boolean*/void validation() {
-       
+
         /*Added by jeevan 28-11-2022*/
-         if (mSearchableSpinner1.getVisibility() == View.VISIBLE &&
+        if (mSearchableSpinner1.getVisibility() == View.VISIBLE &&
                 (mSearchableSpinner1.getSelectedItemPosition() == 0 ||
                         mSearchableSpinner1.getSelectedItemPosition() == -1)) {
             TextView textView = findViewById(mSpinnerHeadingTextView[0]);
@@ -1014,13 +1100,8 @@ SqlightDatabase database;
         }
         /*Added by jeevan ended here 28-11-2022*/
 
-       
+
     }
-
-
-
-
-
 
 
 }

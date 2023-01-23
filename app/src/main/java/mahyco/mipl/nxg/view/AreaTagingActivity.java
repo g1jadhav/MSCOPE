@@ -215,8 +215,12 @@ public class AreaTagingActivity extends AppCompatActivity {
                 i++;
             }
             Double ar = Math.round((area * 0.00024711) * 100.0) / 100.0;//area(arrayPoints);
-            txtLocationDetails.setText(data + " \n Total : " + area + "\n\n Area is(in Acre) : " + ar);
-            if (database.updateFieldMaster(fieldId, "" + ar))
+
+            double acre=(area / 4046.860107422);
+            double hec=acre * 0.404686011;
+
+            txtLocationDetails.setText(data + " \n Total : " + area + "\n\n Area is(in Acre) : " + ar+" \nnew Area in Acre :"+acre+" \nnew Area Hec :"+hec);
+            if (database.updateFieldMaster(fieldId, "" + hec))
                 Toast.makeText(context, "Master Updated.", Toast.LENGTH_SHORT).show();
             Log.i(TAG, "addLocation: " + data);
             showLocationData();

@@ -1676,6 +1676,82 @@ public class SqlightDatabase extends SQLiteOpenHelper {
         }
     }
 
+    public ArrayList<GetAllSeedDistributionModel> getAllSeedDistributionListNo(String value) {
+        SQLiteDatabase myDb = null;
+        try {
+            myDb = this.getReadableDatabase();
+            String q="select * from tbl_allseeddistributionmaster";
+            if(value.trim().equals(""))
+            {
+                q="select * from tbl_allseeddistributionmaster";
+            }else {
+                q = "select * from tbl_allseeddistributionmaster where upper((select LandMark from tbl_growermaster where UserId=GrowerId limit 1)) like '%" + value.toLowerCase() + "%'";
+            }
+            Cursor cursorCourses = myDb.rawQuery(q, null);
+            ArrayList<GetAllSeedDistributionModel> courseModalArrayList = new ArrayList<>();
+            if (cursorCourses.moveToFirst()) {
+                do {
+                    boolean b=isFirstFieldVisitDone(cursorCourses.getInt(2));
+                    String ss="";
+                    if(b)
+                    {
+                        ss="1st Visit.";
+                    }
+                    courseModalArrayList.add(new GetAllSeedDistributionModel(cursorCourses.getInt(1),
+                            cursorCourses.getInt(2),
+                            cursorCourses.getInt(3),
+                            cursorCourses.getString(4),
+                            cursorCourses.getInt(5),
+                            cursorCourses.getInt(6),
+                            cursorCourses.getInt(7),
+                            cursorCourses.getInt(8),
+                            cursorCourses.getFloat(9),
+                            cursorCourses.getInt(10),
+                            cursorCourses.getInt(11),
+                            cursorCourses.getInt(12),
+                            cursorCourses.getString(13),
+                            cursorCourses.getString(14),
+                            cursorCourses.getString(15),
+                            cursorCourses.getString(16),
+                            cursorCourses.getString(17),
+                            cursorCourses.getString(18),
+                            cursorCourses.getString(19),
+                            cursorCourses.getString(20),
+                            cursorCourses.getString(21),
+                            cursorCourses.getString(22),
+                            cursorCourses.getString(23),
+                            cursorCourses.getString(24),
+                            cursorCourses.getString(25)+"("+ss+")",
+                            cursorCourses.getString(26),
+                            cursorCourses.getString(27),
+                            cursorCourses.getString(28),
+                            cursorCourses.getString(29),
+                            cursorCourses.getString(30),
+                            cursorCourses.getString(31),
+                            cursorCourses.getString(32),
+                            cursorCourses.getString(33),
+                            cursorCourses.getString(34),
+                            cursorCourses.getString(35),
+                            cursorCourses.getString(36),
+                            cursorCourses.getString(37),
+                            cursorCourses.getString(38),
+                            cursorCourses.getString(39),
+                            cursorCourses.getString(40),
+                            cursorCourses.getString(41),
+                            cursorCourses.getString(42),
+                            cursorCourses.getString(43),
+                            cursorCourses.getString(44),
+                            cursorCourses.getString(45)));
+                } while (cursorCourses.moveToNext());
+            }
+            return courseModalArrayList;
+        } catch (Exception e) {
+            return null;
+        } finally {
+            myDb.close();
+        }
+    }
+
     public boolean addSeedBatchNo(SeedBatchNoModel categoryModel) {
 
         SQLiteDatabase mydb = null;

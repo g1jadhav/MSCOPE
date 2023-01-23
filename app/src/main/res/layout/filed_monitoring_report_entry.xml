@@ -246,6 +246,26 @@
             android:layout_margin="10dp"
             android:orientation="vertical">
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_search"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="5dp"
+
+                android:background="@color/background_color"
+                android:text="Search"
+                android:textColor="@color/white" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/lbl_search_filter_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textAllCaps="false"
+                android:textColor="@color/colorAccent"
+                android:textSize="15sp"
+                android:textStyle="bold" />
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -273,7 +293,6 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp" />
-
         <!--<include layout="@layout/field_visit_first" />
 
         <include layout="@layout/field_visit_second" />

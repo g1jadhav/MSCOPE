@@ -45,6 +45,7 @@ import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 import com.vansuita.pickimage.bean.PickResult;
 import com.vansuita.pickimage.bundle.PickSetup;
 import com.vansuita.pickimage.dialog.PickImageDialog;
+import com.vansuita.pickimage.enums.EPickType;
 import com.vansuita.pickimage.listeners.IPickCancel;
 import com.vansuita.pickimage.listeners.IPickResult;
 
@@ -174,6 +175,7 @@ public class FieldVisitFirst extends BaseActivity {
     JsonArray jsonArray_linecount;
     int userid;
     int countryCode;
+    String staffcode="";
     private FusedLocationProviderClient fusedLocationClient;
     int cropcode = 0, cropcategory = 0;
     String croptype = "";
@@ -274,7 +276,8 @@ public class FieldVisitFirst extends BaseActivity {
         ll_yes.setVisibility(View.GONE);
 
 
-        staff_name_textview.setText("" + Preferences.get(context, Preferences.USER_ID));
+        staff_name_textview.setText("" + Preferences.get(context, Preferences.USER_NAME));
+        staffcode= Preferences.get(context, Preferences.USER_ID);
         grower_name_textview.setText("" + Preferences.get(context, Preferences.SELECTED_GROWERNAME));
         grower_mobile_no_edittext.setText("" + Preferences.get(context, Preferences.SELECTED_GROWERMOBILE));
         userid = Integer.parseInt(Preferences.get(context, Preferences.SELECTED_GROWERID).toString().trim());
@@ -391,7 +394,7 @@ public class FieldVisitFirst extends BaseActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    PickImageDialog.build(new PickSetup())
+                    PickImageDialog.build(new PickSetup().setPickTypes(EPickType.CAMERA))
                             .setOnPickResult(new IPickResult() {
                                 @Override
                                 public void onPickResult(PickResult r) {
@@ -571,7 +574,7 @@ public class FieldVisitFirst extends BaseActivity {
             }
         });
 
-        cropcode=111;
+       // cropcode=111;
         if (cropcode == 113 || cropcode == 115 ||
                 cropcode == 201 || cropcode == 202 ||
                 cropcode == 203 || cropcode == 204 ||
@@ -658,7 +661,8 @@ public class FieldVisitFirst extends BaseActivity {
             str_grower_mobile_no_edittext = grower_mobile_no_edittext.getText().toString().trim();
             str_recommendations_observations_edittext = recommendations_observations_edittext.getText().toString().trim();
             str_date_of_field_visit_textview = date_of_field_visit_textview.getText().toString().trim();
-            str_staff_name_textview = staff_name_textview.getText().toString().trim();
+            str_staff_name_textview = staffcode;
+          //  str_staff_name_textview = staff_name_textview.getText().toString().trim();
             str_geotag_location_textview = geotag_location_textview.getText().toString().trim();
             str_isolation_meter_textview = isolation_meter_textview.getText().toString().trim();
             str_area_lost_spinner = area_lost_spinner.getSelectedItem().toString().trim();
