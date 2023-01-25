@@ -32,6 +32,7 @@ import mahyco.mipl.nxg.model.SeasonModel;
 import mahyco.mipl.nxg.model.SeedBatchNoModel;
 import mahyco.mipl.nxg.model.SeedReceiptModel;
 import mahyco.mipl.nxg.model.StoreAreaModel;
+import mahyco.mipl.nxg.model.VillageModel;
 import mahyco.mipl.nxg.util.BaseActivity;
 import mahyco.mipl.nxg.util.Preferences;
 import mahyco.mipl.nxg.util.SqlightDatabase;
@@ -51,6 +52,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
     private CardView mParentSeedReceiptMaster;
     private CardView mGetAllSeedDistributionMaster;
     private CardView mGetAllVisitMaster;
+    private CardView mGetAllVillageMaster;
 
     private JsonObject mJsonObjectCategory;
 
@@ -119,6 +121,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
         mParentSeedReceiptMaster = findViewById(R.id.download_parent_seed_receipt_master_layout);
         mGetAllSeedDistributionMaster = findViewById(R.id.download_parent_seed_distribution_master_layout);
         mGetAllVisitMaster = findViewById(R.id.download_visit_master_layout);
+        mGetAllVillageMaster = findViewById(R.id.download_village_master_layout);
 
         mCategoryMaster.setOnClickListener(this);
         mLocationMaster.setOnClickListener(this);
@@ -132,6 +135,8 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
         mParentSeedReceiptMaster.setOnClickListener(this);
         mGetAllSeedDistributionMaster.setOnClickListener(this);
         mGetAllVisitMaster.setOnClickListener(this);
+        mGetAllVisitMaster.setOnClickListener(this);
+        mGetAllVillageMaster.setOnClickListener(this);
 
         mDownloadCategoryApi = new DownloadCategoryApi(mContext, this);
     }
@@ -187,8 +192,38 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
                     downloadVistMsaterData();
 
                 break;
+            case R.id.download_village_master_layout:
+
+                downloadVillageMasterData();
+
+                break;
         }
     }
+
+    private void downloadVillageMasterData() {
+        try{
+
+
+            if (checkInternetConnection(mContext)) {
+                try {
+                    mJsonObjectCategory = null;
+                    mJsonObjectCategory = new JsonObject();
+                    mJsonObjectCategory.addProperty("filterValue", 6);
+                    mJsonObjectCategory.addProperty("FilterOption", "LoginId");
+                    mDownloadCategoryApi.getAllVillageList(mJsonObjectCategory);
+                } catch (Exception e) {
+                }
+            } else {
+                showNoInternetDialog(mContext, "Please check your internet connection");
+            }
+
+
+        }catch(Exception e)
+        {
+
+        }
+    }
+
     /*Added by jeevan 28-11-2022*/
     private class GetRegistrationAsyncTaskList extends AsyncTask<Void, Void, Integer> {
         @Override
@@ -371,6 +406,33 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
         }catch (Exception e)
         {
             
+        }
+    }
+
+    @Override
+    public void onListAllVillageData(List<VillageModel> result) {
+        try{
+
+            Toast.makeText(mContext, "Length : "+result.size(), Toast.LENGTH_SHORT).show();
+            try{
+                if(result!=null)
+                {
+                    new AddVillageMasterDataLocally(mContext,result).execute();
+                    Toast.makeText(mContext, ""+result.size(), Toast.LENGTH_SHORT).show();
+                }else
+                {
+                    Toast.makeText(mContext, "Data Not Available.", Toast.LENGTH_SHORT).show();
+                }
+
+
+
+            }catch (Exception e)
+            {
+
+            }
+        }catch (Exception e)
+        {
+
         }
     }
 
@@ -850,5 +912,53 @@ class AddVisitMasterDataLocally extends AsyncTask
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
         progressDialog.dismiss();
+    }
+}
+
+class AddVillageMasterDataLocally extends AsyncTask
+{
+    ProgressDialog progressDialog;
+    List<VillageModel> villageModel;
+    Context context;
+    SqlightDatabase database;
+    AddVillageMasterDataLocally(Context context,List<VillageModel> villageModel)
+    {
+        this.context=context;
+        this.villageModel=villageModel;
+    }
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        database=new SqlightDatabase(context);
+        progressDialog=new ProgressDialog(context);
+        progressDialog.setMessage("Sync data in progress.Please wait..");
+        progressDialog.show();
+    }
+
+    @Override
+    protected String doInBackground(Object[] objects) {
+
+        try{
+            database.trucateTable("tbl_focusedvillage");
+            for(VillageModel f:villageModel)
+            {
+                Log.i("Data",""+f.getADD());
+                Log.i("Saved Status",""+database.addFocusVillage(f));
+            }
+
+        }catch (Exception exception)
+        {
+
+        }
+
+
+        return null;
+    }
+
+    @Override
+    protected void onPostExecute(Object o) {
+        super.onPostExecute(o);
+        progressDialog.dismiss();
+
     }
 }

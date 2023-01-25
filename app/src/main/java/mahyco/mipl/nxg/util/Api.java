@@ -23,6 +23,7 @@ import mahyco.mipl.nxg.model.SeedBatchNoModel;
 import mahyco.mipl.nxg.model.SeedReceiptModel;
 import mahyco.mipl.nxg.model.SuccessModel;
 import mahyco.mipl.nxg.model.UserTypeModel;
+import mahyco.mipl.nxg.model.VillageModel;
 import mahyco.mipl.nxg.view.seeddistribution.ParentSeedDistributionParameter;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -108,6 +109,7 @@ public interface Api {
     @POST(Constants.GETALL_FISRTVISIT)
     Call<FieldVisitServerModel> getVisitData(@Body JsonObject jsonObject);
 
-
+    @POST(Constants.GETALL_VILLAGEVISIT)
+    Call<List<VillageModel>> getVillageData(@Body JsonObject jsonObject);
     /*Added by jeevan ended here 28-11-2022*/
 }

@@ -25,6 +25,7 @@ import mahyco.mipl.nxg.model.ProductionClusterModel;
 import mahyco.mipl.nxg.model.SeasonModel;
 import mahyco.mipl.nxg.model.SeedBatchNoModel;
 import mahyco.mipl.nxg.model.SeedReceiptModel;
+import mahyco.mipl.nxg.model.VillageModel;
 import mahyco.mipl.nxg.util.Preferences;
 import mahyco.mipl.nxg.util.RetrofitClient;
 import retrofit2.Call;
@@ -533,5 +534,46 @@ public class DownloadCategoryApi {
 
         }
 
+    }
+
+    public void getAllVillageList(JsonObject jsonObject) {
+        try {
+            if (!progressDialog.isShowing())
+                progressDialog.show();
+
+            Call<List<VillageModel>> call = null;
+            call = RetrofitClient.getInstance().getMyApi().getVillageData(jsonObject);
+            call.enqueue(new Callback<List<VillageModel>>() {
+                @Override
+                public void onResponse(Call<List<VillageModel>> call, Response<List<VillageModel>> response) {
+
+                    if (progressDialog.isShowing())
+                        progressDialog.dismiss();
+
+                    if (response.body() != null) {
+                        List<VillageModel> result = response.body();
+                        try {
+                            resultOutput.onListAllVillageData(result);
+                        } catch (NullPointerException e) {
+                            Toast.makeText(context, "Error is " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            Toast.makeText(context, "Error is " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    } else {
+                        Preferences.save(context,Preferences.DISTRIBUTION_LIST_DOWNLOAD,"emptyList");
+                        Toast.makeText(context, "Parent Seed distribution list is empty", Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<VillageModel>> call, Throwable t) {
+                    if (progressDialog.isShowing())
+                        progressDialog.dismiss();
+                    Log.e("Error is", t.getMessage());
+                }
+            });
+        } catch (Exception e) {
+
+        }
     }
 }

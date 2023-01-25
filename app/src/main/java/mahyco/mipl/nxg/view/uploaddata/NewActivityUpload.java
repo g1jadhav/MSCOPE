@@ -48,6 +48,7 @@ import mahyco.mipl.nxg.model.SeedBatchNoModel;
 import mahyco.mipl.nxg.model.SeedReceiptModel;
 import mahyco.mipl.nxg.model.StoreAreaModel;
 import mahyco.mipl.nxg.model.SuccessModel;
+import mahyco.mipl.nxg.model.VillageModel;
 import mahyco.mipl.nxg.util.BaseActivity;
 import mahyco.mipl.nxg.util.Constants;
 import mahyco.mipl.nxg.util.MultipartUtility;
@@ -375,6 +376,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
             if(result.isResultFlag()){
             SqlightDatabase database = null;
             boolean b;
+
             try {
                 int cnt = 0;
                 database = new SqlightDatabase(mContext);
@@ -1139,6 +1141,11 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
 
     @Override
     public void onListAllVisitData(FieldVisitServerModel result) {
+
+    }
+
+    @Override
+    public void onListAllVillageData(List<VillageModel> result) {
 
     }
 

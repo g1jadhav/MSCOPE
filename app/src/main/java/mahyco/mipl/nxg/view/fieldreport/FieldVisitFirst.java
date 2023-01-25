@@ -381,7 +381,6 @@ public class FieldVisitFirst extends BaseActivity {
         try {
             Date c = Calendar.getInstance().getTime();
             System.out.println("Current time => " + c);
-
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
             String formattedDate = df.format(c);
             date_of_field_visit_textview.setText(formattedDate);

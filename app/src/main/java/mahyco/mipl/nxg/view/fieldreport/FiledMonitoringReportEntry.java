@@ -51,6 +51,7 @@ import mahyco.mipl.nxg.model.CategoryModel;
 import mahyco.mipl.nxg.model.DownloadGrowerModel;
 import mahyco.mipl.nxg.model.GetAllSeedDistributionModel;
 import mahyco.mipl.nxg.model.GrowerModel;
+import mahyco.mipl.nxg.model.VillageModel;
 import mahyco.mipl.nxg.spinner.CCFSerachSpinner;
 import mahyco.mipl.nxg.util.BaseActivity;
 import mahyco.mipl.nxg.util.Preferences;
@@ -97,6 +98,7 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
     GrowerModel growerModel = new GrowerModel();
     String counrtyId = "0", countryName = "";
     String strFilterName = "",strFilterValue="";
+    String strFilterName_PC = "",strFilterValue_PC="";
     private CCFSerachSpinner mSpinnerArray[];
     private int[] mSpinnerHeadingTextView;
 
@@ -110,10 +112,14 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
     private CCFSerachSpinner mSearchableSpinner8;
     private CCFSerachSpinner mSearchableSpinner9;
     private CCFSerachSpinner mSearchableSpinner10;
+    private CCFSerachSpinner sp_focusvillage;
+    private CCFSerachSpinner sp_productioncode;
 
     private DatePickerDialog mDatePickerDialog = null;
 
     private ArrayList<CategoryChildModel> mSpinner1List;
+    private ArrayList<VillageModel> mSpinnerFocussVillageList;
+    private ArrayList<String> mSpinnerProductionCodeList;
     private ArrayList<CategoryChildModel> mSpinner2List;
     private ArrayList<CategoryChildModel> mSpinner3List;
     private ArrayList<CategoryChildModel> mSpinner4List;
@@ -226,6 +232,8 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
 
          //   new GetGrowerMasterAsyncTask().execute();
             new GetCategoriesAsyncTask().execute();
+            sp_focusvillage = findViewById(R.id.sp_focusvillage);
+            sp_productioncode = findViewById(R.id.sp_productioncode);
             mSearchableSpinner1 = findViewById(R.id.sp1);
             mSearchableSpinner2 = findViewById(R.id.sp2);
             mSearchableSpinner3 = findViewById(R.id.sp3);
@@ -269,6 +277,96 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
             mProductionCode = findViewById(R.id.production_code_textview);*/
 
 //            new GetGrowerMasterAsyncTask().execute();
+            try{
+                mSpinnerProductionCodeList=database.getAllDistinctProductionCode();
+                mSpinnerProductionCodeList.add(0,"Select");
+                if(mSpinnerProductionCodeList!=null && mSpinnerProductionCodeList.size()>0)
+                {
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, R.layout.spinner_rows,
+                            mSpinnerProductionCodeList);
+                    sp_productioncode.setAdapter(adapter);
+                }else {
+                    showNoInternetDialog(
+                            mContext,"Please download parent seed distribution data."
+                    );
+                }
+
+            }catch (Exception e)
+            {
+
+            }
+
+
+            sp_productioncode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    try{
+                        String str=parent.getSelectedItem().toString().trim();
+                        Toast.makeText(mContext, ""+str, Toast.LENGTH_SHORT).show();
+                        if (!str.contains("Select")) {
+                            strFilterValue_PC = str;
+                            strFilterName_PC = "Production code";
+                        }else {
+                            strFilterValue_PC = "";
+                            strFilterName_PC = "";
+                        }  }catch (Exception e)
+                    {
+
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
+            try{
+                mSpinnerFocussVillageList=database.getAllFocusVillage();
+                VillageModel vv=new VillageModel();
+                vv.setVillage("Select");
+                mSpinnerFocussVillageList.add(0,vv);
+                if(mSpinnerFocussVillageList!=null && mSpinnerFocussVillageList.size()>0)
+                {
+                    ArrayAdapter<VillageModel> adapter = new ArrayAdapter<>(mContext, R.layout.spinner_rows,
+                            mSpinnerFocussVillageList);
+                    sp_focusvillage.setAdapter(adapter);
+                }else {
+                    showNoInternetDialog(
+                            mContext,"Please download focused village."
+                    );
+                }
+
+            }catch (Exception e)
+            {
+
+            }
+            sp_focusvillage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    try{
+                        VillageModel villageModel=(VillageModel) parent.getSelectedItem();
+                        if (villageModel.getVillage() != null &&  !villageModel.getVillage().contains("Select")) {
+
+                            Toast.makeText(mContext, "Selected Village is " + villageModel.getVillage(), Toast.LENGTH_SHORT).show();
+                            strFilterValue = villageModel.getVillage();
+                            strFilterName = "Focus village ";
+                        }else {
+                            strFilterValue = "";
+                            strFilterName = "";
+                        }
+                    }catch (Exception e)
+                    {
+
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -314,6 +412,9 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
     private void searchGrower() {
         try{
            // Toast.makeText(mContext, "Grower Location "+strFilterName+" FilterName :"+strFilterValue, Toast.LENGTH_SHORT).show();
+
+
+
            new GetGrowerMasterAsyncTask().execute();
         }catch (Exception exception)
         {
@@ -329,14 +430,31 @@ ProgressDialog progressDialog;
 
             super.onPreExecute();
             progressDialog=new ProgressDialog(mContext);
+            String lable="";
             if(strFilterValue.trim().equals(""))
             {
+                lable+="Result for all grower.";
                 progressDialog.setMessage("Searching all grower");
                 lbl_search_filter_result.setText("Result for all grower.");
             }else {
+                lable+="Result for all grower where " + strFilterName + " = " + strFilterValue;
                 progressDialog.setMessage("Searching grower by " + strFilterName + " = " + strFilterValue);
                 lbl_search_filter_result.setText("Result for all grower where " + strFilterName + " = " + strFilterValue);
             }
+
+            if(strFilterValue_PC.trim().equals(""))
+            {
+                lable+="Result for all production code.";
+
+                progressDialog.setMessage("Searching all grower");
+                lbl_search_filter_result.setText("Result for all production code.");
+            }else {
+                lable+="Result for Grower where " + strFilterName_PC + " = " + strFilterValue_PC;
+
+                progressDialog.setMessage("Searching grower by " + strFilterName_PC + " = " + strFilterValue_PC);
+                lbl_search_filter_result.setText("Result for Grower where " + strFilterName_PC + " = " + strFilterValue_PC);
+            }
+            lbl_search_filter_result.setText(lable);
             progressDialog.show();
             }
 
@@ -346,7 +464,7 @@ ProgressDialog progressDialog;
             ArrayList<GetAllSeedDistributionModel> actionModels;
             try {
                 database = new SqlightDatabase(mContext);
-                actionModels = database.getAllSeedDistributionListNo(strFilterValue);
+                actionModels = database.getAllSeedDistributionListNo(strFilterValue,strFilterValue_PC);
             } finally {
                 if (database != null) {
                     database.close();

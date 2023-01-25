@@ -14,6 +14,7 @@ import mahyco.mipl.nxg.model.ProductionClusterModel;
 import mahyco.mipl.nxg.model.SeasonModel;
 import mahyco.mipl.nxg.model.SeedBatchNoModel;
 import mahyco.mipl.nxg.model.SeedReceiptModel;
+import mahyco.mipl.nxg.model.VillageModel;
 
 public interface DownloadCategoryListListener {
     public void onResult(String result);
@@ -30,4 +31,5 @@ public interface DownloadCategoryListListener {
     public void onListAllSeedDistributionResponse(List<GetAllSeedDistributionModel> result);
 
     void onListAllVisitData(FieldVisitServerModel result);
+    void onListAllVillageData(List<VillageModel> result);
 }

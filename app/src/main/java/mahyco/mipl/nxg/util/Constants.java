@@ -14,6 +14,7 @@ public class Constants {
     public static final String SUBMIT_GROWER = "users/newCreate";
     public static final String SUBMIT_FISRTVISIT = "fieldMonitoringVisit/create";
     public static final String GETALL_FISRTVISIT = "fieldMonitoringVisit/getall";
+    public static final String GETALL_VILLAGEVISIT = "parentSeedDistributionVillages/getall";
     public static final String CHANAGE_PASSWORD ="staffUser/changePassword" ;
     static final String CHECK_LOGIN="customToken/customToken";
     public static final String GET_SEASON = "season/getall";
