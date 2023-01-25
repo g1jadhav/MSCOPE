@@ -371,30 +371,34 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
             mResponseString = result.getComment();
             //  Log.e("temporary","onGrowerRegister mResponseString " + mResponseString);
           //  new DeleteIfSyncSuccessfully().execute();
+
+            if(result.isResultFlag()){
             SqlightDatabase database = null;
             boolean b;
             try {
-                int cnt=0;
+                int cnt = 0;
                 database = new SqlightDatabase(mContext);
-                if(userType==1) {
+                if (userType == 1) {
                     cnt = mGrowerList.size();
                     mGrowerList.clear();
-                }else if(userType==2) {
-
+                } else if (userType == 2) {
                     cnt = mOrganizerList.size();
                     mOrganizerList.clear();
                 }
                 b = database.updateAllUserType(userType);
-                if(b)
-                {
-                    showNoInternetDialog(mContext, cnt+ " Records Uploaded Successfully.");
+                if (b) {
+                    showNoInternetDialog(mContext, cnt + " Records Uploaded Successfully.");
                 }
                 new GetRegistrationAsyncTaskList().execute();
+
             }catch(Exception e)
             {
 
             }
-
+            }else
+            {
+                showNoInternetDialog(mContext, result.getComment());
+            }
         } else {
             showNoInternetDialog(mContext, result.getComment());
         }
@@ -409,7 +413,6 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
             showNoInternetDialog(mContext, totalFirstVisit+ " Records Uploaded Successfully.");
             totalFirstVisit=database.getAllFirstFieldVisit1().size();
             field_visit_1st_no_of_records.setText(getString(R.string.no_of_records_for_upload,totalFirstVisit));
-
 
             Log.i("Result",result.getStatus()+""+result.toString());
         }catch(Exception e)
@@ -1332,7 +1335,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                 for (int i = 0; i < lst_temp.size(); i++) {
 
                     Log.i("Tag:", "pass " + i);
-                   base64_dp = MyApplicationUtil.getImageDatadetail(lst_temp.get(i).getUploadPhoto());
+                    base64_dp = MyApplicationUtil.getImageDatadetail(lst_temp.get(i).getUploadPhoto());
                     base64_back = MyApplicationUtil.getImageDatadetail(lst_temp.get(i).getIdProofFrontCopy());
                     base64_front = MyApplicationUtil.getImageDatadetail(lst_temp.get(i).getIdProofBackCopy());
 

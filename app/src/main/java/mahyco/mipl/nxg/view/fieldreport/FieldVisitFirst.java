@@ -274,15 +274,13 @@ public class FieldVisitFirst extends BaseActivity {
         female_spacinglayout = findViewById(R.id.female_spacinglayout);
 
         ll_yes.setVisibility(View.GONE);
-
-
         staff_name_textview.setText("" + Preferences.get(context, Preferences.USER_NAME));
         staffcode= Preferences.get(context, Preferences.USER_ID);
         grower_name_textview.setText("" + Preferences.get(context, Preferences.SELECTED_GROWERNAME));
         grower_mobile_no_edittext.setText("" + Preferences.get(context, Preferences.SELECTED_GROWERMOBILE));
         userid = Integer.parseInt(Preferences.get(context, Preferences.SELECTED_GROWERID).toString().trim());
         cropcode = Integer.parseInt(Preferences.get(context, Preferences.SELECTEDCROPECODE).toString().trim());
-        issued_seed_area_textview.setText("" + Preferences.get(context, Preferences.SELECTED_GROWERAREA));
+        issued_seed_area_textview.setText("" + String.format("%.2f",Double.parseDouble(Preferences.get(context, Preferences.SELECTED_GROWERAREA).trim())));
         production_code_textview.setText("" + Preferences.get(context, Preferences.SELECTED_GROWERPRODUCTIONCODE));
         try {
             String str[] = database.getGetGrowerCountryMasterId(Preferences.get(context, Preferences.SELECTED_GROWERUNIQUECODE)).split("~");
@@ -1016,12 +1014,12 @@ public class FieldVisitFirst extends BaseActivity {
             for (FieldMaster f : database.getAllFieldMaster()) {
                 totalTaggedArea += Double.parseDouble(f.getTotalArea());
             }
-            total_tagged_area_below_location_textview.setText("" + totalTaggedArea);
+            total_tagged_area_below_location_textview.setText("" +String.format("%.2f",totalTaggedArea));
             double totalArea = Double.parseDouble(issued_seed_area_textview.getText().toString());
             double loss = totalTaggedArea - totalArea;
-            area_loss_or_gain_textview.setText("" + loss);
-            double existingarea = totalArea - loss;
-            existing_area_ha_textview.setText("" + existingarea);
+            area_loss_or_gain_textview.setText("" +String.format("%.2f",loss) );
+            double existingarea = totalArea + loss;
+            existing_area_ha_textview.setText("" + String.format("%.2f",existingarea));
         } catch (Exception e) {
 
         }
