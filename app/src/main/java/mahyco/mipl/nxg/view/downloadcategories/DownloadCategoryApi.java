@@ -518,8 +518,8 @@ public class DownloadCategoryApi {
                             Toast.makeText(context, "Error is " + e.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     } else {
-                        Preferences.save(context,Preferences.DISTRIBUTION_LIST_DOWNLOAD,"emptyList");
-                        Toast.makeText(context, "Parent Seed distribution list is empty", Toast.LENGTH_LONG).show();
+                       // Preferences.save(context,Preferences.DISTRIBUTION_LIST_DOWNLOAD,"emptyList");
+                        Toast.makeText(context, "List is EMPTY.", Toast.LENGTH_LONG).show();
                     }
                 }
 
@@ -560,8 +560,8 @@ public class DownloadCategoryApi {
                             Toast.makeText(context, "Error is " + e.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     } else {
-                        Preferences.save(context,Preferences.DISTRIBUTION_LIST_DOWNLOAD,"emptyList");
-                        Toast.makeText(context, "Parent Seed distribution list is empty", Toast.LENGTH_LONG).show();
+                       // Preferences.save(context,Preferences.DISTRIBUTION_LIST_DOWNLOAD,"emptyList");
+                        Toast.makeText(context, "List is Empty", Toast.LENGTH_LONG).show();
                     }
                 }
 

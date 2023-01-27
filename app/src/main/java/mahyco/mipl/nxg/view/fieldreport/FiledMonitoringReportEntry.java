@@ -193,7 +193,12 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
                         selectedGrowerId=m.getGrowerId();
                         if (database.isFirstFieldVisitDone(m.getGrowerId())) {
                             showNoInternetDialog(mContext, "First visit is done with this grower.");
-                        } else {
+                        }else if(database.isFirstFieldVisitDoneLocal(m.getGrowerId()))
+                        {
+                            showNoInternetDialog(mContext, "First visit is done with this grower.");
+
+                        }
+                            else {
                             Preferences.save(mContext, Preferences.SELECTED_GROWERNAME, m.getGrowerFullName());
                             Preferences.save(mContext, Preferences.SELECTED_GROWERMOBILE, m.getGrowerMobileNo());
                             Preferences.save(mContext, Preferences.SELECTED_GROWERID, "" + m.getGrowerId());
@@ -389,7 +394,13 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
                 if(database.isFirstFieldVisitDone(selectedGrowerId))
                 {
                  showNoInternetDialog(mContext,"First visit is done with this grower.");
-                }else {
+                }
+                else if(database.isFirstFieldVisitDoneLocal(selectedGrowerId))
+                {
+                    showNoInternetDialog(mContext, "First visit is done with this grower.");
+
+                }
+                else {
                     Intent intent = new Intent(this, FiledReportDashboard.class);
                     startActivity(intent);
                 }

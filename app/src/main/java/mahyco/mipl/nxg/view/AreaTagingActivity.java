@@ -12,8 +12,10 @@ import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -48,7 +50,8 @@ public class AreaTagingActivity extends AppCompatActivity {
     Context context;
     String TAG = "FusedLocationProviderClient";
     TextView txt_location;
-    TextView txtLocationDetails;
+    WebView txtLocationDetails;
+    TextView txtTagedArea;
     private FusedLocationProviderClient fusedLocationClient;
     private LocationRequest mLocationRequest;
 
@@ -73,6 +76,7 @@ public class AreaTagingActivity extends AppCompatActivity {
         txt_location = findViewById(R.id.txtLocation);
         txtLocationDetails = findViewById(R.id.txtLocationDetails);
         tbl_locdetails = findViewById(R.id.tbl_locdetails);
+        txtTagedArea = findViewById(R.id.txtTagedArea);
         spinner = findViewById(R.id.sp_field);
         startLocationUpdates();
 
@@ -207,19 +211,23 @@ public class AreaTagingActivity extends AppCompatActivity {
         try {
             //    latLngArrayList.add(latLngArrayList.get(0));
             double area = SphericalUtil.computeArea(latLngArrayList);
-            String data = "";
+            String data = "<style>td{ border: solid; } th{ backgroud-color:gray;}</style>" +
+                    "" +
+                    "<center><table width='100%'><tr><th>SrNo.</th><th>Latitude</th><th>Longitude</th></tr>";
             int i = 1;
             for (LatLng latLng : latLngArrayList) {
-                data += "['Point " + i + " ', " + latLng.latitude + ", " + latLng.longitude + ", " + i + "],";
+                data += "<tr><td>" + i + " </td><td>" + latLng.latitude + "</td><td>" + latLng.longitude + "</td></tr>";
                 //  data += i + "- " + latLng.latitude + "," + latLng.longitude + "\n";
                 i++;
             }
+            data+="</table></center>";
             Double ar = Math.round((area * 0.00024711) * 100.0) / 100.0;//area(arrayPoints);
 
             double acre=(area / 4046.860107422);
             double hec=acre * 0.404686011;
 
-            txtLocationDetails.setText(data + " \n Total : " + area + "\n\n Area is(in Acre) : " + ar+" \nnew Area in Acre :"+acre+" \nnew Area Hec :"+hec);
+            txtLocationDetails.loadData(data + " \n Total : " + area + "\nArea in Acre :"+acre+" \nArea Hec :"+hec, "text/html; charset=UTF-8", null);
+            txtTagedArea.setText(" \nArea in Acre :"+acre+" \t Area in Hec :"+hec);
             if (database.updateFieldMaster(fieldId, "" + hec))
                 Toast.makeText(context, "Master Updated.", Toast.LENGTH_SHORT).show();
             Log.i(TAG, "addLocation: " + data);

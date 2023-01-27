@@ -1830,27 +1830,34 @@ public class SqlightDatabase extends SQLiteOpenHelper {
             myDb = this.getReadableDatabase();
             String q = "select * from tbl_allseeddistributionmaster";
             if (value.trim().equals("")) {
-                q = "select * from tbl_allseeddistributionmaster";
+                q = "select * from tbl_allseeddistributionmaster where (select count(*) from tbl_focusedvillage where CountryMasterId=(select countryMasterid from tbl_growermaster where UserId=GrowerId))>0";
             } else {
-                q = "select * from tbl_allseeddistributionmaster where upper((select LandMark from tbl_growermaster where UserId=GrowerId limit 1)) like '%" + value.toLowerCase() + "%'";
+                q = "select * from tbl_allseeddistributionmaster where (select count(*) from tbl_focusedvillage where CountryMasterId=(select countryMasterid from tbl_growermaster where UserId=GrowerId))>0 and upper((select LandMark from tbl_growermaster where UserId=GrowerId limit 1)) like '" + value.toLowerCase() + ",%'";
             }
             if(pcode.trim().equals(""))
             {
 
             }else {
-                if(value.trim().equals(""))
-                    q+= " where ProductionCode='"+pcode+"'";
-                else
+                q+= " and ProductionCode='"+pcode+"'";
+               /* if(value.trim().equals(""))
                     q+= " and ProductionCode='"+pcode+"'";
+                else
+                    q+= " and ProductionCode='"+pcode+"'";*/
             }
             Log.i("Query","-->"+q);
             Cursor cursorCourses = myDb.rawQuery(q, null);
             ArrayList<GetAllSeedDistributionModel> courseModalArrayList = new ArrayList<>();
+           int srno=1;
             if (cursorCourses.moveToFirst()) {
                 do {
                     boolean b = isFirstFieldVisitDone(cursorCourses.getInt(2));
+                    boolean b1 = isFirstFieldVisitDoneLocal(cursorCourses.getInt(2));
                     String ss = "";
                     if (b) {
+                        ss = "1st Visit.";
+                    }
+                    if(b1)
+                    {
                         ss = "1st Visit.";
                     }
                     courseModalArrayList.add(new GetAllSeedDistributionModel(cursorCourses.getInt(1),
@@ -1877,7 +1884,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                             cursorCourses.getString(22),
                             cursorCourses.getString(23),
                             cursorCourses.getString(24),
-                            cursorCourses.getString(25) + "(" + ss + ")",
+                            srno+"-"+cursorCourses.getString(25) + "(" + ss + ")",
                             cursorCourses.getString(26),
                             cursorCourses.getString(27),
                             cursorCourses.getString(28),
@@ -1898,6 +1905,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                             cursorCourses.getString(43),
                             cursorCourses.getString(44),
                             cursorCourses.getString(45)));
+                    srno++;
                 } while (cursorCourses.moveToNext());
             }
             return courseModalArrayList;
@@ -2159,7 +2167,22 @@ public class SqlightDatabase extends SQLiteOpenHelper {
             myDb.close();
         }
     }
-
+    public boolean isFirstFieldVisitDoneLocal(int userid) {
+        SQLiteDatabase myDb = null;
+        try {
+            myDb = this.getReadableDatabase();
+            String q = "SELECT  * FROM tbl_firstVisit where UserId=" + userid;
+            Cursor cursorCourses = myDb.rawQuery(q, null);
+            if (cursorCourses.moveToFirst()) {
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            return false;
+        } finally {
+            myDb.close();
+        }
+    }
     public ArrayList<ProductCodeModel> getProdCodeMaster(String cropCode) {
         SQLiteDatabase myDb = null;
         try {

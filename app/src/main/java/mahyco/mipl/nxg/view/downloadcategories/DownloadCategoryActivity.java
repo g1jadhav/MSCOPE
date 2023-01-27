@@ -206,12 +206,14 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
 
             if (checkInternetConnection(mContext)) {
                 try {
+                    int loginid=Integer.parseInt(Preferences.get(mContext,Preferences.LOGINID).trim());
                     mJsonObjectCategory = null;
                     mJsonObjectCategory = new JsonObject();
-                    mJsonObjectCategory.addProperty("filterValue", 6);
+                    mJsonObjectCategory.addProperty("filterValue", loginid);
                     mJsonObjectCategory.addProperty("FilterOption", "LoginId");
                     mDownloadCategoryApi.getAllVillageList(mJsonObjectCategory);
                 } catch (Exception e) {
+
                 }
             } else {
                 showNoInternetDialog(mContext, "Please check your internet connection");

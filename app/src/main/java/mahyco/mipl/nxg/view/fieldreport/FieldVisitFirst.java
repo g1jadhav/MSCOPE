@@ -436,17 +436,28 @@ public class FieldVisitFirst extends BaseActivity {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(context, "Female " + total_nos_female_lines.getText(), Toast.LENGTH_SHORT).show();
-
-                int total = Integer.parseInt(total_nos_female_lines.getText().toString().trim());
-                showLineDialog("Enter No of plants per female line", total, 1);
-            }
+                String str=total_nos_female_lines.getText().toString().trim();
+                if(str.equals(""))
+                {
+                    total_nos_female_lines.setError("Please Enter no of female lines.");
+                }else {
+                    int total = Integer.parseInt(total_nos_female_lines.getText().toString().trim());
+                    showLineDialog("Enter No of plants per female line", total, 1);
+                }
+                }
         });
         buttonmalelines.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //  Toast.makeText(context, " Male  " + total_nos_male_lines.getText(), Toast.LENGTH_SHORT).show();
-                int total = Integer.parseInt(total_nos_male_lines.getText().toString().trim());
-                showLineDialog("Enter No of plants per male line", total, 2);
+                String str=total_nos_male_lines.getText().toString().trim();
+                if(str.equals(""))
+                {
+                    total_nos_male_lines.setError("Please Enter no of male lines.");
+                }else {
+                    int total = Integer.parseInt(total_nos_male_lines.getText().toString().trim());
+                    showLineDialog("Enter No of plants per male line", total, 2);
+                }
             }
         });
         save_login.setOnClickListener(new View.OnClickListener() {
@@ -786,6 +797,10 @@ public class FieldVisitFirst extends BaseActivity {
                 if (database.addFirstVisit1(fieldVisitModel)) {
                     Toast.makeText(context, "Local Data Saved.", Toast.LENGTH_SHORT).show();
                     finish();
+               /*     Intent i = new Intent(context, FiledMonitoringReportEntry.class);
+// set the new task and clear flags
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(i);*/
                 } else {
                     Toast.makeText(context, "Local Data Not Saved.", Toast.LENGTH_SHORT).show();
                 }
@@ -1013,6 +1028,7 @@ public class FieldVisitFirst extends BaseActivity {
             for (FieldMaster f : database.getAllFieldMaster()) {
                 totalTaggedArea += Double.parseDouble(f.getTotalArea());
             }
+
             total_tagged_area_below_location_textview.setText("" +String.format("%.2f",totalTaggedArea));
             double totalArea = Double.parseDouble(issued_seed_area_textview.getText().toString());
             double loss = totalTaggedArea - totalArea;
@@ -1020,7 +1036,7 @@ public class FieldVisitFirst extends BaseActivity {
             double existingarea = totalArea + loss;
             existing_area_ha_textview.setText("" + String.format("%.2f",existingarea));
         } catch (Exception e) {
-
+            Toast.makeText(context, "Error to calculate Tagged Area : "+e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -1081,11 +1097,14 @@ public class FieldVisitFirst extends BaseActivity {
                 }
             });
             for (int i = 0; i < total; i++) {
-                LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(150, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f); // Width , height
+                LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(120, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f); // Width , height
                 EditText editText = new EditText(this);
-                editText.setBackgroundResource(R.drawable.login_screen_edittext);
-                editText.setInputType(InputType.TYPE_NUMBER_FLAG_SIGNED);
+                editText.setBackgroundResource(R.drawable.line_edittext);
+                editText.setPadding(7,7,7,7);
+                editText.setInputType(InputType.TYPE_CLASS_NUMBER);
                 editText.setLayoutParams(lparams);
+                editText.setTextSize(10);
+                editText.setTextColor(Color.BLACK);
                 editText.setGravity(Gravity.CENTER);
                 editText.setHint("Line " + (i + 1));
                 editText.setId(i + 1);
