@@ -3,9 +3,9 @@ package mahyco.mipl.nxg.util;
 public class Constants {
     //Live Server
   //  public static final String BASE_URL = "http://10.80.50.26/MIPL/api/";
-  // public static final String BASE_URL = "https://mscope.mahyco.com/api/";
+  public static final String BASE_URL = "https://mscope.mahyco.com/api/";
   // Test Server
-    public static final String BASE_URL = "http://10.80.50.153/MIPL/api/";
+   // public static final String BASE_URL = "http://10.80.50.153/MIPL/api/";
 
     public static final String CREATEUSER ="staffUser/create" ;
     public static final String GETCATEGORY = "countryCategory/getall";

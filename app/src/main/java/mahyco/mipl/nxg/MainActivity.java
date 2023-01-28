@@ -48,6 +48,7 @@ import mahyco.mipl.nxg.model.CategoryModel;
 import mahyco.mipl.nxg.model.ForceUpdateModel;
 import mahyco.mipl.nxg.util.Preferences;
 import mahyco.mipl.nxg.util.SqlightDatabase;
+import mahyco.mipl.nxg.view.AndroidDatabaseManager;
 import mahyco.mipl.nxg.view.downloadcategories.DownloadCategoryActivity;
 import mahyco.mipl.nxg.view.fieldreport.FiledMonitoringReportEntry;
 import mahyco.mipl.nxg.view.fieldreport.FiledReportDashboard;
@@ -106,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void init() {
 
         TextView versionTextView = findViewById(R.id.textView8);
-        versionTextView.setText(getString(R.string.version_code, BuildConfig.VERSION_CODE));
+        versionTextView.setText(getString(R.string.version_code, BuildConfig.VERSION_NAME));
         rc_viewiqcplant = findViewById(R.id.rc_viewiqcplant);
         mManager = new LinearLayoutManager(context);
         rc_viewiqcplant.setLayoutManager(mManager);
@@ -136,6 +137,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         /*Added by Jeevan 28-11-2022*/
         mainActivityAPI.getAppUpdate(getPackageName());
         /*Added by Jeevan ended here 28-11-2022*/
+
+        versionTextView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                Intent intent=new Intent(context, AndroidDatabaseManager.class);
+                startActivity(intent);
+                return false;
+            }
+        });
 
     }
 

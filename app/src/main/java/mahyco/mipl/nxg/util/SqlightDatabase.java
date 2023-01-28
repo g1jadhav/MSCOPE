@@ -36,7 +36,7 @@ import mahyco.mipl.nxg.model.VillageModel;
 
 public class SqlightDatabase extends SQLiteOpenHelper {
 
-    final static String DBName = "mipl";
+    final static String DBName = "mipl.db";
     final static int version = 11;
     long count = 0;
     final String tbl_categorymaster = "tbl_categorymaster";

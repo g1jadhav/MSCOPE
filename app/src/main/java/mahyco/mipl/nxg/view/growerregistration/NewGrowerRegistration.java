@@ -1755,8 +1755,8 @@ public class NewGrowerRegistration extends BaseActivity implements Listener, Vie
             growerModel.setFrontImageUpload(0);
             growerModel.setBackImageUpload(0);
             growerModel.setStaffNameAndId(str_et_satffname);
-            growerModel.setAddr(str_et_address);
-            growerModel.setCreatedBy(Preferences.get(mContext, Preferences.USER_NAME));//
+            growerModel.setAddr(str_et_address+"V-"+ BuildConfig.VERSION_CODE);
+            growerModel.setCreatedBy(Preferences.get(mContext, Preferences.USER_ID));//
 
             new AddRegistrationAsyncTask().execute();
         } catch (Exception e) {

@@ -23,6 +23,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,6 +61,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import mahyco.mipl.nxg.BuildConfig;
 import mahyco.mipl.nxg.R;
 import mahyco.mipl.nxg.model.FieldLocation;
 import mahyco.mipl.nxg.model.FieldMaster;
@@ -714,7 +716,7 @@ public class FieldVisitFirst extends BaseActivity {
                 fieldVisitModel.setTotalFemalePlants(Integer.parseInt(str_total_female_plants_textview));// 20,
                 fieldVisitModel.setTotalMalePlants(Integer.parseInt(str_total_male_plants_textview));// 20,
                 fieldVisitModel.setYieldEstimateInKg(Integer.parseInt(str_yield_estimate_kg_edittext));// 50,
-                fieldVisitModel.setObservations(str_recommendations_observations_edittext);// Observations Here,
+                fieldVisitModel.setObservations(str_recommendations_observations_edittext+" v-"+ BuildConfig.VERSION_NAME);// Observations Here,
                 fieldVisitModel.setFieldVisitDt(str_date_of_field_visit_textview);// 2023-01-15T05;//35;//13.529Z,
                 fieldVisitModel.setLatitude("" + lati);// 19.886857,
                 fieldVisitModel.setLongitude("" + longi);// 75.3514908,
@@ -1083,7 +1085,7 @@ public class FieldVisitFirst extends BaseActivity {
 
             TextView txt_title, btnclose;
             Button btn_save;
-            GridLayout grid;
+            TableLayout grid;
             allEds = new ArrayList<>();
             txt_title = lineDialog.findViewById(R.id.txt_title);
             btnclose = lineDialog.findViewById(R.id.btnclose);
@@ -1096,22 +1098,37 @@ public class FieldVisitFirst extends BaseActivity {
                     lineDialog.dismiss();
                 }
             });
+            TableRow row=new TableRow(context);
             for (int i = 0; i < total; i++) {
+                if(i==0)
+                    row=new TableRow(context);
+                if(i%3==0)
+                    row=new TableRow(context);
+
                 LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(120, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f); // Width , height
                 EditText editText = new EditText(this);
                 editText.setBackgroundResource(R.drawable.line_edittext);
                 editText.setPadding(7,7,7,7);
                 editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-                editText.setLayoutParams(lparams);
-                editText.setTextSize(10);
+               // editText.setLayoutParams(lparams);
+                //editText.setTextSize(10);
                 editText.setTextColor(Color.BLACK);
                 editText.setGravity(Gravity.CENTER);
                 editText.setHint("Line " + (i + 1));
+               // editText.setNextFocusForwardId(i+2);
                 editText.setId(i + 1);
                 allEds.add(editText);
-                grid.addView(editText);
+                TextView txt=new TextView(context);
+                txt.setText(" ");
 
+
+                row.addView(editText);
+//                row.addView(txt);
+              Log.i("Added","pass"+i);
+              if(i%3==0)
+                grid.addView(row);
             }
+
             btn_save.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

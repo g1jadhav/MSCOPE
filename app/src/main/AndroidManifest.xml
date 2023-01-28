@@ -31,6 +31,9 @@
             android:noHistory="true"
             android:exported="false" />
         <activity
+            android:name=".view.AndroidDatabaseManager"
+            android:exported="false" />
+        <activity
             android:screenOrientation="portrait"
             android:name=".view.AreaTagingActivity"
             android:exported="false" />
