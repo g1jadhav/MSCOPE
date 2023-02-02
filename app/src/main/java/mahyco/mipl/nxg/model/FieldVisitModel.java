@@ -35,6 +35,146 @@ public class FieldVisitModel {
     String Longitude;//": "75.3514908",
     String CapturePhoto;//": "",
     String CreatedBy;//": "55000066"
+    String LocationData;
+    String LineData;
+    String AreaLossInHa;
+    String NoOfRoguedFemalePlants;
+
+    public String getAreaLossInHa() {
+        return AreaLossInHa;
+    }
+
+    public void setAreaLossInHa(String areaLossInHa) {
+        AreaLossInHa = areaLossInHa;
+    }
+
+    public String getNoOfRoguedFemalePlants() {
+        return NoOfRoguedFemalePlants;
+    }
+
+    public void setNoOfRoguedFemalePlants(String noOfRoguedFemalePlants) {
+        NoOfRoguedFemalePlants = noOfRoguedFemalePlants;
+    }
+
+    public String getNoOfRoguedMalePlants() {
+        return NoOfRoguedMalePlants;
+    }
+
+    public void setNoOfRoguedMalePlants(String noOfRoguedMalePlants) {
+        NoOfRoguedMalePlants = noOfRoguedMalePlants;
+    }
+
+    public String getSeedProductionMethod() {
+        return SeedProductionMethod;
+    }
+
+    public void setSeedProductionMethod(String seedProductionMethod) {
+        SeedProductionMethod = seedProductionMethod;
+    }
+
+    public String getRoguingCompletedValidated() {
+        return RoguingCompletedValidated;
+    }
+
+    public void setRoguingCompletedValidated(String roguingCompletedValidated) {
+        RoguingCompletedValidated = roguingCompletedValidated;
+    }
+
+    public String getSingleCobsPerPlant() {
+        return SingleCobsPerPlant;
+    }
+
+    public void setSingleCobsPerPlant(String singleCobsPerPlant) {
+        SingleCobsPerPlant = singleCobsPerPlant;
+    }
+
+    public String getSingleCobsPerPlantInGm() {
+        return SingleCobsPerPlantInGm;
+    }
+
+    public void setSingleCobsPerPlantInGm(String singleCobsPerPlantInGm) {
+        SingleCobsPerPlantInGm = singleCobsPerPlantInGm;
+    }
+
+    public String getUnprocessedSeedReadyInKg() {
+        return UnprocessedSeedReadyInKg;
+    }
+
+    public void setUnprocessedSeedReadyInKg(String unprocessedSeedReadyInKg) {
+        UnprocessedSeedReadyInKg = unprocessedSeedReadyInKg;
+    }
+
+    public String getPollinationStartDt() {
+        return PollinationStartDt;
+    }
+
+    public void setPollinationStartDt(String pollinationStartDt) {
+        PollinationStartDt = pollinationStartDt;
+    }
+
+    public String getPollinationEndDt() {
+        return PollinationEndDt;
+    }
+
+    public void setPollinationEndDt(String pollinationEndDt) {
+        PollinationEndDt = pollinationEndDt;
+    }
+
+    public String getExpectedDtOfHarvesting() {
+        return ExpectedDtOfHarvesting;
+    }
+
+    public void setExpectedDtOfHarvesting(String expectedDtOfHarvesting) {
+        ExpectedDtOfHarvesting = expectedDtOfHarvesting;
+    }
+
+    public String getExpectedDtOfDespatching() {
+        return ExpectedDtOfDespatching;
+    }
+
+    public void setExpectedDtOfDespatching(String expectedDtOfDespatching) {
+        ExpectedDtOfDespatching = expectedDtOfDespatching;
+    }
+
+    public String getMaleParentUprooted() {
+        return MaleParentUprooted;
+    }
+
+    public void setMaleParentUprooted(String maleParentUprooted) {
+        MaleParentUprooted = maleParentUprooted;
+    }
+
+    public String getFieldVisitRoguedPlantModels() {
+        return fieldVisitRoguedPlantModels;
+    }
+
+    public void setFieldVisitRoguedPlantModels(String fieldVisitRoguedPlantModels) {
+        this.fieldVisitRoguedPlantModels = fieldVisitRoguedPlantModels;
+    }
+
+    public String getFieldVisitFruitsCobModelsText() {
+        return fieldVisitFruitsCobModelsText;
+    }
+
+    public void setFieldVisitFruitsCobModelsText(String fieldVisitFruitsCobModelsText) {
+        this.fieldVisitFruitsCobModelsText = fieldVisitFruitsCobModelsText;
+    }
+
+    String NoOfRoguedMalePlants;
+    String SeedProductionMethod;
+    String RoguingCompletedValidated;
+    String SingleCobsPerPlant;
+    String SingleCobsPerPlantInGm;
+    String UnprocessedSeedReadyInKg;
+    String PollinationStartDt;
+    String PollinationEndDt;
+    String ExpectedDtOfHarvesting;
+    String ExpectedDtOfDespatching;
+    String MaleParentUprooted;
+    String fieldVisitRoguedPlantModels;
+    String fieldVisitFruitsCobModelsText;
+
+
 
     public String getLocationData() {
         return LocationData;
@@ -52,8 +192,7 @@ public class FieldVisitModel {
         LineData = lineData;
     }
 
-    String LocationData;
-    String LineData;
+
     public int getUserId() {
         return UserId;
     }

@@ -47,4 +47,22 @@ public class FieldMonitoringModels {
         }
         ]*/
 
+    public List<FieldVisitRoguedPlantModel> getFieldVisitRoguedPlantModels() {
+        return fieldVisitRoguedPlantModels;
+    }
+
+    public void setFieldVisitRoguedPlantModels(List<FieldVisitRoguedPlantModel> fieldVisitRoguedPlantModels) {
+        this.fieldVisitRoguedPlantModels = fieldVisitRoguedPlantModels;
+    }
+
+    public List<FieldVisitFruitsCobModel> getFieldVisitFruitsCobModels() {
+        return fieldVisitFruitsCobModels;
+    }
+
+    public void setFieldVisitFruitsCobModels(List<FieldVisitFruitsCobModel> fieldVisitFruitsCobModels) {
+        this.fieldVisitFruitsCobModels = fieldVisitFruitsCobModels;
+    }
+
+    List<FieldVisitRoguedPlantModel> fieldVisitRoguedPlantModels;
+    List<FieldVisitFruitsCobModel> fieldVisitFruitsCobModels;
 }

@@ -378,42 +378,57 @@ public class SqlightDatabase extends SQLiteOpenHelper {
 
         db.execSQL(tbl_field_location);
 
-        String tbl_firstVisit = "Create table IF NOT EXISTS tbl_firstVisit(\n" +
-                "     TempID Integer PRIMARY KEY AUTOINCREMENT,\n" +
-                "     UserId INTEGER,\n" +
-                "     CountryId INTEGER,\n" +
-                "     CountryMasterId INTEGER,\n" +
-                "     MandatoryFieldVisitId INTEGER,\n" +
-                "     FieldVisitType  TEXT,\n" +
-                "     TotalSeedAreaLost  TEXT,\n" +
-                "     TaggedAreaInHA  TEXT,\n" +
-                "     ExistingAreaInHA  TEXT,\n" +
-                "     ReasonForTotalLossed  TEXT,\n" +
-                "     FemaleSowingDt  TEXT,\n" +
-                "     MaleSowingDt  TEXT,\n" +
-                "     IsolationM  TEXT,\n" +
-                "     IsolationMeter  TEXT,\n" +
-                "     CropStage  TEXT,\n" +
-                "     TotalNoOfFemaleLines  TEXT,\n" +
-                "     TotalNoOfMaleLines  TEXT,\n" +
-                "     FemaleSpacingRRinCM  TEXT,\n" +
-                "     FemaleSpacingPPinCM  TEXT,\n" +
-                "     MaleSpacingRRinCM  TEXT,\n" +
-                "     MaleSpacingPPinCM  TEXT,\n" +
-                "     PlantingRatioFemale  TEXT,\n" +
-                "     PlantingRatioMale  TEXT,\n" +
-                "     CropCategoryType  TEXT,\n" +
-                "     TotalFemalePlants  TEXT,\n" +
-                "     TotalMalePlants  TEXT,\n" +
-                "     YieldEstimateInKg  TEXT,\n" +
-                "     Observations  TEXT,\n" +
-                "     FieldVisitDt  TEXT,\n" +
-                "     Latitude  TEXT,\n" +
-                "     Longitude  TEXT,\n" +
-                "     CapturePhoto  TEXT,\n" +
-                "     CreatedBy  TEXT,\n" +
-                "     LocationData text,\n" +
-                "     LineData text)";
+        String tbl_firstVisit = "Create table IF NOT EXISTS tbl_firstVisit( \n" +
+                "TempID Integer PRIMARY KEY AUTOINCREMENT,\n" +
+                "UserId INTEGER,\n" +
+                "CountryId INTEGER,\n" +
+                "CountryMasterId INTEGER,\n" +
+                "MandatoryFieldVisitId INTEGER,\n" +
+                "FieldVisitType  TEXT,\n" +
+                "TotalSeedAreaLost  TEXT,\n" +
+                "TaggedAreaInHA  TEXT,\n" +
+                "ExistingAreaInHA  TEXT,\n" +
+                "ReasonForTotalLossed  TEXT,\n" +
+                "FemaleSowingDt  TEXT,\n" +
+                "MaleSowingDt  TEXT,\n" +
+                "IsolationM  TEXT,\n" +
+                "IsolationMeter  TEXT,\n" +
+                "CropStage  TEXT,\n" +
+                "TotalNoOfFemaleLines  TEXT,\n" +
+                "TotalNoOfMaleLines  TEXT,\n" +
+                "FemaleSpacingRRinCM  TEXT,\n" +
+                "FemaleSpacingPPinCM  TEXT,\n" +
+                "MaleSpacingRRinCM  TEXT,\n" +
+                "MaleSpacingPPinCM  TEXT,\n" +
+                "PlantingRatioFemale  TEXT,\n" +
+                "PlantingRatioMale  TEXT,\n" +
+                "CropCategoryType  TEXT,\n" +
+                "TotalFemalePlants  TEXT,\n" +
+                "TotalMalePlants  TEXT,\n" +
+                "YieldEstimateInKg  TEXT,\n" +
+                "Observations  TEXT,\n" +
+                "FieldVisitDt  TEXT,\n" +
+                "Latitude  TEXT,\n" +
+                "Longitude  TEXT,\n" +
+                "CapturePhoto  TEXT,\n" +
+                "CreatedBy  TEXT,\n" +
+                "LocationData text,\n" +
+                "LineData text,\n" +
+                "AreaLossInHa text,\n" +
+                "NoOfRoguedFemalePlants  text,\n" +
+                "NoOfRoguedMalePlants  text,\n" +
+                "SeedProductionMethod  text,\n" +
+                "RoguingCompletedValidated  text,\n" +
+                "SingleCobsPerPlant  text,\n" +
+                "SingleCobsPerPlantInGm  text,\n" +
+                "UnprocessedSeedReadyInKg  text,\n" +
+                "PollinationStartDt  text,\n" +
+                "PollinationEndDt text,\n" +
+                "ExpectedDtOfHarvesting  text,\n" +
+                "ExpectedDtOfDespatching  text,\n" +
+                "MaleParentUprooted text,\n" +
+                "fieldVisitRoguedPlantModels text,\n" +
+                "fieldVisitFruitsCobModels Text);";
 
         db.execSQL(tbl_firstVisit);
 
