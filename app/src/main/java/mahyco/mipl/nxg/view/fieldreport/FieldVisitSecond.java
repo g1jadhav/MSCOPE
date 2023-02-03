@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +22,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
@@ -33,7 +36,11 @@ import com.vansuita.pickimage.listeners.IPickResult;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import mahyco.mipl.nxg.BuildConfig;
 import mahyco.mipl.nxg.R;
@@ -112,6 +119,8 @@ public class FieldVisitSecond extends BaseActivity {
     int userid;
     int countryId = 0;
     int countryCode;
+    double prevExistingArea=0.0;
+
     String staffcode = "";
     SqlightDatabase database;
     AppCompatButton national_id_photo_front_side_btn;
@@ -167,9 +176,18 @@ public class FieldVisitSecond extends BaseActivity {
         geotag_location_textview = findViewById(R.id.geotag_location_textview);
         crop_stage_spinner = findViewById(R.id.crop_stage_spinner);
         save_login = findViewById(R.id.save_login);
+        prevExistingArea=0.20;
         fieldVisitModel = new FieldVisitModel();
         fieldMonitoringModels = new FieldMonitoringModels();
-
+        try {
+            Date c = Calendar.getInstance().getTime();
+            System.out.println("Current time => " + c);
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            String formattedDate = df.format(c);
+            date_of_field_visit_textview.setText(formattedDate);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         countryId = Integer.parseInt(Preferences.get(context, Preferences.COUNTRYCODE));
         staff_name_textview.setText("" + Preferences.get(context, Preferences.USER_NAME));
         staffcode = Preferences.get(context, Preferences.USER_ID);
@@ -193,6 +211,7 @@ public class FieldVisitSecond extends BaseActivity {
             Toast.makeText(context, "Missing Country Master Id.", Toast.LENGTH_SHORT).show();
             countryCode = 0;
         }
+
         if (cropcode == 113 || cropcode == 115 ||
                 cropcode == 201 || cropcode == 202 ||
                 cropcode == 203 || cropcode == 204 ||
@@ -307,6 +326,190 @@ public class FieldVisitSecond extends BaseActivity {
                 }
             }
         });
+
+        female_off_type_edittext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                calculateFemaleRogudedPlants();
+            }
+        });
+        female_b_type_edittext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                calculateFemaleRogudedPlants();
+            }
+        });
+        female_volunteer_edittext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                calculateFemaleRogudedPlants();
+            }
+        });
+
+        male_off_type_edittext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                calculateMaleRogudedPlants();
+            }
+        });
+        male_b_type_edittext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                calculateMaleRogudedPlants();
+            }
+        });
+        male_volunteer_edittext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                calculateMaleRogudedPlants();
+            }
+        });
+
+        existing_area_ha_edittext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(existing_area_ha_edittext.getText().toString().trim().equals(""))
+                {
+
+                }else {
+                    double loss = prevExistingArea - Double.parseDouble(existing_area_ha_edittext.getText().toString().trim());
+                    area_loss_ha_textview.setText(""+loss);
+                }
+            }
+        });
+
+
+    }
+
+    private void calculateFemaleRogudedPlants() {
+       try{
+           if(female_b_type_edittext.getText().toString().trim().equals(""))
+           {
+
+           }else if(female_off_type_edittext.getText().toString().trim().equals(""))
+           {
+
+           }else if(female_volunteer_edittext.getText().toString().trim().equals(""))
+           {
+
+           }
+           else
+           {
+               int btype=Integer.parseInt(female_b_type_edittext.getText().toString().trim());
+               int offtype=Integer.parseInt(female_off_type_edittext.getText().toString().trim());
+               int volunteer=Integer.parseInt(female_volunteer_edittext.getText().toString().trim());
+               int total=btype+offtype+volunteer;
+               no_of_rogued_plants_female_edittext.setText(""+total);
+             //  total_female_plants_textview.setText(""+(totalplants-total));
+           }
+       }catch (Exception e)
+       {
+
+       }
+    }
+    private void calculateMaleRogudedPlants() {
+        try{
+
+            if(male_b_type_edittext.getText().toString().trim().equals(""))
+            {
+
+            }else if(male_off_type_edittext.getText().toString().trim().equals(""))
+            {
+
+            }else if(male_volunteer_edittext.getText().toString().trim().equals(""))
+            {
+
+            }
+            else
+            {
+                int btype=Integer.parseInt(male_b_type_edittext.getText().toString().trim());
+                int offtype=Integer.parseInt(male_off_type_edittext.getText().toString().trim());
+                int volunteer=Integer.parseInt(male_volunteer_edittext.getText().toString().trim());
+                int total=btype+offtype+volunteer;
+                no_of_rogued_plants_male_edittext.setText(""+total);
+                //  total_female_plants_textview.setText(""+(totalplants-total));
+            }
+        }catch (Exception e)
+        {
+
+        }
     }
 
     public void submit() {
@@ -335,6 +538,7 @@ public class FieldVisitSecond extends BaseActivity {
             str_date_of_field_visit_textview = date_of_field_visit_textview.getText().toString().trim();
             str_staff_name_textview = staff_name_textview.getText().toString().trim();
             str_geotag_location_textview = geotag_location_textview.getText().toString().trim();
+            str_crop_stage_spinner=crop_stage_spinner.getSelectedItem().toString();
             String data = str_grower_name_textview + " " + str_issued_seed_area_textview + " " + str_production_code_textview + " " + str_village_textview + " " + str_existing_area_ha_edittext + " " + str_area_loss_ha_textview + " " + str_reason_area_loss + " " + str_no_of_rogued_plants_female_edittext + " " + str_female_off_type_edittext + " " + str_female_volunteer_edittext + " " + str_female_b_type_edittext + " " + str_total_female_plants_textview + " " + str_no_of_rogued_plants_male_edittext + " " + str_male_off_type_edittext + " " + str_male_volunteer_edittext + " " + str_male_b_type_edittext + " " + str_total_male_plants_textview + " " + str_yield_estimate_kg_edittext + " " + str_grower_mobile_no_edittext + " " + str_recommendations_observations_edittext + " " + str_date_of_field_visit_textview + " " + str_staff_name_textview + " " + str_geotag_location_textview;
             Log.i("Entered Data ", data);
 
@@ -347,9 +551,9 @@ public class FieldVisitSecond extends BaseActivity {
             fieldVisitModel.setTaggedAreaInHA(Double.parseDouble("0.0"));// 0.1,
             fieldVisitModel.setExistingAreaInHA(Double.parseDouble(str_existing_area_ha_edittext));// 0.1,
             fieldVisitModel.setReasonForTotalLossed(str_reason_area_loss);// Reason For Total Lossed,
-            fieldVisitModel.setFemaleSowingDt("");// 2023-01-15T05;//35;//13.528Z,
-            fieldVisitModel.setMaleSowingDt("");// 2023-01-15T05;//35;//13.528Z,
-            fieldVisitModel.setIsolationM("");// Yes,
+            fieldVisitModel.setFemaleSowingDt(str_date_of_field_visit_textview);// 2023-01-15T05;//35;//13.528Z,
+            fieldVisitModel.setMaleSowingDt(str_date_of_field_visit_textview);// 2023-01-15T05;//35;//13.528Z,
+            fieldVisitModel.setIsolationM(str_date_of_field_visit_textview);// Yes,
             fieldVisitModel.setIsolationMeter(0);// 2,
             fieldVisitModel.setCropStage(str_crop_stage_spinner);// For Field Crop,
             fieldVisitModel.setTotalNoOfFemaleLines(Integer.parseInt("0"));// 10,
@@ -379,13 +583,12 @@ public class FieldVisitSecond extends BaseActivity {
             fieldVisitModel.setSingleCobsPerPlant("0");
             fieldVisitModel.setSingleCobsPerPlantInGm("0");
             fieldVisitModel.setUnprocessedSeedReadyInKg("0");
-            fieldVisitModel.setPollinationStartDt("0");
-            fieldVisitModel.setPollinationEndDt("0");
-            fieldVisitModel.setExpectedDtOfHarvesting("0");
-            fieldVisitModel.setExpectedDtOfDespatching("0");
+            fieldVisitModel.setPollinationStartDt(str_date_of_field_visit_textview);
+            fieldVisitModel.setPollinationEndDt(str_date_of_field_visit_textview);
+            fieldVisitModel.setExpectedDtOfHarvesting(str_date_of_field_visit_textview);
+            fieldVisitModel.setExpectedDtOfDespatching(str_date_of_field_visit_textview);
             fieldVisitModel.setMaleParentUprooted("0");
-            fieldVisitModel.setFieldVisitRoguedPlantModels("0");
-            fieldVisitModel.setFieldVisitFruitsCobModelsText("0");
+
 
             ArrayList<FieldPlantLaneModels> lst_FieldPlantLaneModels = new ArrayList<>();
             ArrayList<FieldVisitLocationModel> lst_location = new ArrayList<>();
@@ -436,8 +639,27 @@ public class FieldVisitSecond extends BaseActivity {
             fieldMonitoringModels.setFieldVisitFruitsCobModels(lst_fruitCob);
             fieldMonitoringModels.setFieldVisitRoguedPlantModels(lst_roguredPlants);
 
+            JsonArray jsonObjectLocation = new JsonParser().parse(new Gson().toJson(lst_location)).getAsJsonArray();
+            JsonArray jsonObjectLine = new JsonParser().parse(new Gson().toJson(lst_FieldPlantLaneModels)).getAsJsonArray();
+            JsonArray jsonObjectroguredPlants = new JsonParser().parse(new Gson().toJson(lst_roguredPlants)).getAsJsonArray();
+            JsonArray jsonFruitCobds = new JsonParser().parse(new Gson().toJson(lst_fruitCob)).getAsJsonArray();
+            fieldVisitModel.setLineData(jsonObjectLine.toString());
+            fieldVisitModel.setLocationData(jsonObjectLocation.toString());
+
+            fieldVisitModel.setFieldVisitRoguedPlantModels(jsonObjectroguredPlants.toString().trim());
+            fieldVisitModel.setFieldVisitFruitsCobModelsText(jsonFruitCobds.toString().trim());
             JsonObject jsonObject = new JsonParser().parse(new Gson().toJson(fieldMonitoringModels)).getAsJsonObject();
             Log.i("JsonData", jsonObject.toString().trim());
+            if (database.addFirstVisit1(fieldVisitModel)) {
+                Toast.makeText(context, "Local Data Saved.", Toast.LENGTH_SHORT).show();
+                finish();
+               /*     Intent i = new Intent(context, FiledMonitoringReportEntry.class);
+// set the new task and clear flags
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(i);*/
+            } else {
+                Toast.makeText(context, "Local Data Not Saved.", Toast.LENGTH_SHORT).show();
+            }
 
         } catch (Exception e) {
             Toast.makeText(context, "Error in submit" + e.getMessage(), Toast.LENGTH_SHORT).show();

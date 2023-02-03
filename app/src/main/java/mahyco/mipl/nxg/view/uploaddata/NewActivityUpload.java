@@ -272,6 +272,8 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                     Log.i("Final base64 R :", base64);
                     JsonArray jsonObject_location = new JsonParser().parse(f.get(0).getLocationData()).getAsJsonArray();
                     JsonArray jsonObject_line = new JsonParser().parse(f.get(0).getLineData()).getAsJsonArray();
+                    JsonArray jsonObject_roguedplant = new JsonParser().parse(f.get(0).getFieldVisitRoguedPlantModels()).getAsJsonArray();
+                    JsonArray jsonObject_fruitscobs = new JsonParser().parse(f.get(0).getFieldVisitFruitsCobModelsText()).getAsJsonArray();
                     JsonObject json_visitModel = new JsonObject();
                     json_visitModel.addProperty("UserId", fieldVisitModel.getUserId());
                     json_visitModel.addProperty("CountryId", fieldVisitModel.getCountryId());
@@ -305,10 +307,29 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                     json_visitModel.addProperty("Longitude", fieldVisitModel.getLongitude());
                     json_visitModel.addProperty("CapturePhoto", base64);
                     json_visitModel.addProperty("CreatedBy", fieldVisitModel.getCreatedBy());
+                    json_visitModel.addProperty("AreaLossInHa", fieldVisitModel.getAreaLossInHa());
+                    json_visitModel.addProperty("NoOfRoguedFemalePlants", fieldVisitModel.getNoOfRoguedFemalePlants());
+                    json_visitModel.addProperty("NoOfRoguedMalePlants", fieldVisitModel.getNoOfRoguedMalePlants());
+                    json_visitModel.addProperty("SeedProductionMethod", fieldVisitModel.getSeedProductionMethod());
+                    json_visitModel.addProperty("RoguingCompletedValidated", fieldVisitModel.getRoguingCompletedValidated());
+                    json_visitModel.addProperty("SingleCobsPerPlant", fieldVisitModel.getSingleCobsPerPlant());
+                    json_visitModel.addProperty("SingleCobsPerPlantInGm", fieldVisitModel.getSingleCobsPerPlantInGm());
+                    json_visitModel.addProperty("UnprocessedSeedReadyInKg", fieldVisitModel.getUnprocessedSeedReadyInKg());
+                    json_visitModel.addProperty("PollinationStartDt", fieldVisitModel.getPollinationStartDt());
+                    json_visitModel.addProperty("PollinationEndDt", fieldVisitModel.getPollinationEndDt());
+                    json_visitModel.addProperty("ExpectedDtOfHarvesting", fieldVisitModel.getExpectedDtOfHarvesting());
+                    json_visitModel.addProperty("ExpectedDtOfDespatching", fieldVisitModel.getExpectedDtOfDespatching());
+                    json_visitModel.addProperty("MaleParentUprooted", fieldVisitModel.getMaleParentUprooted());
+
+
+
+
 
                     jsonObjectFinale.add("fieldVisitModel", json_visitModel);
                     jsonObjectFinale.add("fieldVisitLocationModels", jsonObject_location);
                     jsonObjectFinale.add("fieldPlantLaneModels", jsonObject_line);
+                    jsonObjectFinale.add("fieldVisitRoguedPlantModels", jsonObject_roguedplant);
+                    jsonObjectFinale.add("fieldVisitFruitsCobModels", jsonObject_fruitscobs);
 
                     jsonArray.add(jsonObjectFinale);
                 }

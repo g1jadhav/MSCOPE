@@ -693,10 +693,9 @@ public class SqlightDatabase extends SQLiteOpenHelper {
         SQLiteDatabase mydb = null;
         try {
             mydb = this.getReadableDatabase();
-            String q = "insert into tbl_firstVisit" +
-                    "(UserId, CountryId, CountryMasterId, MandatoryFieldVisitId, FieldVisitType, TotalSeedAreaLost, TaggedAreaInHA, ExistingAreaInHA, ReasonForTotalLossed, FemaleSowingDt, MaleSowingDt, IsolationM, IsolationMeter, CropStage, TotalNoOfFemaleLines, TotalNoOfMaleLines, FemaleSpacingRRinCM, FemaleSpacingPPinCM, MaleSpacingRRinCM, MaleSpacingPPinCM, PlantingRatioFemale, PlantingRatioMale, CropCategoryType, TotalFemalePlants, TotalMalePlants, YieldEstimateInKg, Observations, FieldVisitDt, Latitude, Longitude, CapturePhoto, CreatedBy, LocationData, LineData) values" +
-                    "('" + visitModel.getUserId() + "','" + visitModel.getCountryId() + "','" + visitModel.getCountryMasterId() + "','" + visitModel.getMandatoryFieldVisitId() + "','" + visitModel.getFieldVisitType() + "','" + visitModel.getTotalSeedAreaLost() + "','" + visitModel.getTaggedAreaInHA() + "','" + visitModel.getExistingAreaInHA() + "','" + visitModel.getReasonForTotalLossed() + "','" + visitModel.getFemaleSowingDt() + "','" + visitModel.getMaleSowingDt() + "','" + visitModel.getIsolationM() + "','" + visitModel.getIsolationMeter() + "','" + visitModel.getCropStage() + "','" + visitModel.getTotalNoOfFemaleLines() + "','" + visitModel.getTotalNoOfMaleLines() + "','" + visitModel.getFemaleSpacingRRinCM() + "','" + visitModel.getFemaleSpacingPPinCM() + "','" + visitModel.getMaleSpacingRRinCM() + "','" + visitModel.getMaleSpacingPPinCM() + "','" + visitModel.getPlantingRatioFemale() + "','" + visitModel.getPlantingRatioMale() + "','" + visitModel.getCropCategoryType() + "','" + visitModel.getTotalFemalePlants() + "','" + visitModel.getTotalMalePlants() + "','" + visitModel.getYieldEstimateInKg() + "','" + visitModel.getObservations() + "','" + visitModel.getFieldVisitDt() + "','" + visitModel.getLatitude() + "','" + visitModel.getLongitude() + "','" + visitModel.getCapturePhoto() + "','" + visitModel.getCreatedBy() + "','" + visitModel.getLocationData() + "','" + visitModel.getLineData() + "')";
-
+            String q ="insert into tbl_firstVisit" +
+                    "(UserId, CountryId, CountryMasterId, MandatoryFieldVisitId, FieldVisitType, TotalSeedAreaLost, TaggedAreaInHA, ExistingAreaInHA, ReasonForTotalLossed, FemaleSowingDt, MaleSowingDt, IsolationM, IsolationMeter, CropStage, TotalNoOfFemaleLines, TotalNoOfMaleLines, FemaleSpacingRRinCM, FemaleSpacingPPinCM, MaleSpacingRRinCM, MaleSpacingPPinCM, PlantingRatioFemale, PlantingRatioMale, CropCategoryType, TotalFemalePlants, TotalMalePlants, YieldEstimateInKg, Observations, FieldVisitDt, Latitude, Longitude, CapturePhoto, CreatedBy, LocationData, LineData,AreaLossInHa,NoOfRoguedFemalePlants,NoOfRoguedMalePlants,SeedProductionMethod,RoguingCompletedValidated,SingleCobsPerPlant,SingleCobsPerPlantInGm,UnprocessedSeedReadyInKg,PollinationStartDt,PollinationEndDt,ExpectedDtOfHarvesting,ExpectedDtOfDespatching,MaleParentUprooted,fieldVisitRoguedPlantModels,fieldVisitFruitsCobModels) values" +
+                    "('" + visitModel.getUserId() + "','" + visitModel.getCountryId() + "','" + visitModel.getCountryMasterId() + "','" + visitModel.getMandatoryFieldVisitId() + "','" + visitModel.getFieldVisitType() + "','" + visitModel.getTotalSeedAreaLost() + "','" + visitModel.getTaggedAreaInHA() + "','" + visitModel.getExistingAreaInHA() + "','" + visitModel.getReasonForTotalLossed() + "','" + visitModel.getFemaleSowingDt() + "','" + visitModel.getMaleSowingDt() + "','" + visitModel.getIsolationM() + "','" + visitModel.getIsolationMeter() + "','" + visitModel.getCropStage() + "','" + visitModel.getTotalNoOfFemaleLines() + "','" + visitModel.getTotalNoOfMaleLines() + "','" + visitModel.getFemaleSpacingRRinCM() + "','" + visitModel.getFemaleSpacingPPinCM() + "','" + visitModel.getMaleSpacingRRinCM() + "','" + visitModel.getMaleSpacingPPinCM() + "','" + visitModel.getPlantingRatioFemale() + "','" + visitModel.getPlantingRatioMale() + "','" + visitModel.getCropCategoryType() + "','" + visitModel.getTotalFemalePlants() + "','" + visitModel.getTotalMalePlants() + "','" + visitModel.getYieldEstimateInKg() + "','" + visitModel.getObservations() + "','" + visitModel.getFieldVisitDt() + "','" + visitModel.getLatitude() + "','" + visitModel.getLongitude() + "','" + visitModel.getCapturePhoto() + "','" + visitModel.getCreatedBy() + "','" + visitModel.getLocationData() + "','" + visitModel.getLineData() + "','"+visitModel.getAreaLossInHa()+"','"+visitModel.getNoOfRoguedFemalePlants()+"','"+visitModel.getNoOfRoguedMalePlants()+"','"+visitModel.getSeedProductionMethod()+"','"+visitModel.getRoguingCompletedValidated()+"','"+visitModel.getSingleCobsPerPlant()+"','"+visitModel.getSingleCobsPerPlantInGm()+"','"+visitModel.getUnprocessedSeedReadyInKg()+"','"+visitModel.getPollinationStartDt()+"','"+visitModel.getPollinationEndDt()+"','"+visitModel.getExpectedDtOfHarvesting()+"','"+visitModel.getExpectedDtOfDespatching()+"','"+visitModel.getMaleParentUprooted()+"','"+visitModel.getFieldVisitRoguedPlantModels()+"','"+visitModel.getFieldVisitFruitsCobModelsText()+"')";
             // Log.i("Query is -------> ", "" + q);
             mydb.execSQL(q);
             return true;
@@ -779,6 +778,21 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                     f.setCreatedBy(cursorCourses.getString(32));
                     f.setLocationData(cursorCourses.getString(33));
                     f.setLineData(cursorCourses.getString(34));
+                    f.setAreaLossInHa(cursorCourses.getString(35));
+                    f.setNoOfRoguedFemalePlants (cursorCourses.getString(36));
+                    f.setNoOfRoguedMalePlants (cursorCourses.getString(37));
+                    f.setSeedProductionMethod (cursorCourses.getString(38));
+                    f.setRoguingCompletedValidated (cursorCourses.getString(39));
+                    f.setSingleCobsPerPlant (cursorCourses.getString(40));
+                    f.setSingleCobsPerPlantInGm (cursorCourses.getString(41));
+                    f.setUnprocessedSeedReadyInKg (cursorCourses.getString(42));
+                    f.setPollinationStartDt (cursorCourses.getString(43));
+                    f.setPollinationEndDt(cursorCourses.getString(44));
+                    f.setExpectedDtOfHarvesting (cursorCourses.getString(45));
+                    f.setExpectedDtOfDespatching (cursorCourses.getString(46));
+                    f.setMaleParentUprooted(cursorCourses.getString(47));
+                    f.setFieldVisitRoguedPlantModels(cursorCourses.getString(48));
+                    f.setFieldVisitFruitsCobModelsText(cursorCourses.getString(49));
 
                     fieldLocationArrayList.add(f);
                 } while (cursorCourses.moveToNext());
