@@ -433,15 +433,41 @@ public class SqlightDatabase extends SQLiteOpenHelper {
         db.execSQL(tbl_firstVisit);
 
         String tbl_visit_master = "Create table IF NOT EXISTS tbl_visit_master(\n" +
-                "      TEMPID INTEGER PRIMARY KEY AUTOINCREMENT ,\n" +
-                "      FieldVisitId Integer,\n" +
-                "      UserId Integer,\n" +
-                "      CountryId  Integer,\n" +
-                "      CountryMasterId  Integer,\n" +
-                "      MandatoryFieldVisitId  Integer,\n" +
-                "      FieldVisitType TEXT\n" +
-                "\n" +
-                ");";
+                "TEMPID INTEGER PRIMARY KEY AUTOINCREMENT ,\n" +
+                "FieldVisitId TEXT,\n" +
+                "UserId TEXT,\n" +
+                "CountryId TEXT,\n" +
+                "CountryMasterId TEXT,\n" +
+                "MandatoryFieldVisitId TEXT,\n" +
+                "FieldVisitType TEXT,\n" +
+                "TotalSeedAreaLost TEXT,\n" +
+                "TaggedAreaInHA TEXT,\n" +
+                "ExistingAreaInHA TEXT,\n" +
+                "ReasonForTotalLossed TEXT,\n" +
+                "FemaleSowingDt TEXT,\n" +
+                "MaleSowingDt TEXT,\n" +
+                "IsolationM TEXT,\n" +
+                "IsolationMeter TEXT,\n" +
+                "CropStage TEXT,\n" +
+                "TotalNoOfFemaleLines TEXT,\n" +
+                "TotalNoOfMaleLines TEXT,\n" +
+                "FemaleSpacingRRinCM TEXT,\n" +
+                "FemaleSpacingPPinCM TEXT,\n" +
+                "MaleSpacingRRinCM TEXT,\n" +
+                "MaleSpacingPPinCM TEXT,\n" +
+                "PlantingRatioFemale TEXT,\n" +
+                "PlantingRatioMale TEXT,\n" +
+                "CropCategoryType TEXT,\n" +
+                "TotalFemalePlants TEXT,\n" +
+                "TotalMalePlants TEXT,\n" +
+                "YieldEstimateInKg TEXT,\n" +
+                "Observations TEXT,\n" +
+                "FieldVisitDt TEXT,\n" +
+                "Latitude TEXT,\n" +
+                "Longitude TEXT,\n" +
+                "CapturePhoto TEXT,\n" +
+                "CreatedBy TEXT,\n" +
+                "CreatedDt TEXT)";
 
         db.execSQL(tbl_visit_master);
 
@@ -2153,22 +2179,41 @@ public class SqlightDatabase extends SQLiteOpenHelper {
         try {
             mydb = this.getReadableDatabase();
             String q = "insert into tbl_visit_master" +
-                    "(" +
-                    "" +
-                    "FieldVisitId," +
+                    "(FieldVisitId," +
                     "UserId," +
                     "CountryId," +
                     "CountryMasterId," +
                     "MandatoryFieldVisitId," +
-                    "FieldVisitType" +
-
-                    ") values" +
-                    "(" + f.getFieldVisitId() + "," +
-                    "" + f.getUserId() + "," +
-                    "" + f.getCountryId() + "," +
-                    "" + f.getCountryId() + "," +
-                    "" + f.getMandatoryFieldVisitId() + "," +
-                    "'" + f.getFieldVisitType() + "')";
+                    "FieldVisitType," +
+                    "TotalSeedAreaLost," +
+                    "TaggedAreaInHA," +
+                    "ExistingAreaInHA," +
+                    "ReasonForTotalLossed," +
+                    "FemaleSowingDt," +
+                    "MaleSowingDt," +
+                    "IsolationM," +
+                    "IsolationMeter," +
+                    "CropStage," +
+                    "TotalNoOfFemaleLines," +
+                    "TotalNoOfMaleLines," +
+                    "FemaleSpacingRRinCM," +
+                    "FemaleSpacingPPinCM," +
+                    "MaleSpacingRRinCM," +
+                    "MaleSpacingPPinCM," +
+                    "PlantingRatioFemale," +
+                    "PlantingRatioMale," +
+                    "CropCategoryType," +
+                    "TotalFemalePlants," +
+                    "TotalMalePlants," +
+                    "YieldEstimateInKg," +
+                    "Observations," +
+                    "FieldVisitDt," +
+                    "Latitude," +
+                    "Longitude," +
+                    "CapturePhoto," +
+                    "CreatedBy," +
+                    "CreatedDt) values" +
+                    "('"+f.getFieldVisitId()+"','"+f.getUserId()+"','"+f.getCountryId()+"','"+f.getCountryMasterId()+"','"+f.getMandatoryFieldVisitId()+"','"+f.getFieldVisitType()+"','"+f.getTotalSeedAreaLost()+"','"+f.getTaggedAreaInHA()+"','"+f.getExistingAreaInHA()+"','"+f.getReasonForTotalLossed()+"','"+f.getFemaleSowingDt()+"','"+f.getMaleSowingDt()+"','"+f.getIsolationM()+"','"+f.getIsolationMeter()+"','"+f.getCropStage()+"','"+f.getTotalNoOfFemaleLines()+"','"+f.getTotalNoOfMaleLines()+"','"+f.getFemaleSpacingRRinCM()+"','"+f.getFemaleSpacingPPinCM()+"','"+f.getMaleSpacingRRinCM()+"','"+f.getMaleSpacingPPinCM()+"','"+f.getPlantingRatioFemale()+"','"+f.getPlantingRatioMale()+"','"+f.getCropCategoryType()+"','"+f.getTotalFemalePlants()+"','"+f.getTotalMalePlants()+"','"+f.getYieldEstimateInKg()+"','"+f.getObservations()+"','"+f.getFieldVisitDt()+"','"+f.getLatitude()+"','"+f.getLongitude()+"','"+f.getCapturePhoto()+"','"+f.getCreatedBy()+"','"+f.getCreatedDt()+"')";
             // Log.i("Query is -------> ", "" + q);
             mydb.execSQL(q);
             return true;
@@ -2261,6 +2306,56 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                             cursorCourses.getString(8),
                             cursorCourses.getString(9)));
                 } while (cursorCourses.moveToNext());
+            }
+            return courseModalArrayList;
+        } catch (Exception e) {
+            return null;
+        } finally {
+            myDb.close();
+        }
+    }
+public FieldVisitModel getVisitDetailsById() {
+        SQLiteDatabase myDb = null;
+        try {
+            myDb = this.getReadableDatabase();
+            String q = "SELECT  * FROM tbl_clustermaster";
+            Cursor cursorCourses = myDb.rawQuery(q, null);
+           FieldVisitModel m=new FieldVisitModel();
+            if (cursorCourses.moveToFirst()) {
+                m.setFieldVisitId(cursorCourses.getString(3));
+                m.setUserId(cursorCourses.getString(3));
+                m.setCountryId(cursorCourses.getString(3));
+                m.setCountryMasterId(cursorCourses.getString(3));
+                m.setMandatoryFieldVisitId(cursorCourses.getString(3));
+                m.setFieldVisitType(cursorCourses.getString(3));
+                m.setTotalSeedAreaLost(cursorCourses.getString(3));
+                m.setTaggedAreaInHA(cursorCourses.getString(3));
+                m.setExistingAreaInHA(cursorCourses.getString(3));
+                m.setReasonForTotalLossed(cursorCourses.getString(3));
+                m.setFemaleSowingDt(cursorCourses.getString(3));
+                m.setMaleSowingDt(cursorCourses.getString(3));
+                m.setIsolationM(cursorCourses.getString(3));
+                m.setIsolationMeter(cursorCourses.getString(3));
+                m.setCropStage(cursorCourses.getString(3));
+                m.setTotalNoOfFemaleLines(cursorCourses.getString(3));
+                m.setTotalNoOfMaleLines(cursorCourses.getString(3));
+                m.setFemaleSpacingRRinCM(cursorCourses.getString(3));
+                m.setFemaleSpacingPPinCM(cursorCourses.getString(3));
+                m.setMaleSpacingRRinCM(cursorCourses.getString(3));
+                m.setMaleSpacingPPinCM(cursorCourses.getString(3));
+                m.setPlantingRatioFemale(cursorCourses.getString(3));
+                m.setPlantingRatioMale(cursorCourses.getString(3));
+                m.setCropCategoryType(cursorCourses.getString(3));
+                m.setTotalFemalePlants(cursorCourses.getString(3));
+                m.setTotalMalePlants(cursorCourses.getString(3));
+                m.setYieldEstimateInKg(cursorCourses.getString(3));
+                m.setObservations(cursorCourses.getString(3));
+                m.setFieldVisitDt(cursorCourses.getString(3));
+                m.setLatitude(cursorCourses.getString(3));
+                m.setLongitude(cursorCourses.getString(3));
+                m.setCapturePhoto(cursorCourses.getString(3));
+                m.setCreatedBy(cursorCourses.getString(3));
+                m.setCreatedDt(cursorCourses.getString(3));
             }
             return courseModalArrayList;
         } catch (Exception e) {
@@ -2403,373 +2498,6 @@ public class SqlightDatabase extends SQLiteOpenHelper {
         }
     }
 
-
-    public boolean addOrderLocal(String id, String details, int status, String cname) {
-
-        SQLiteDatabase mydb = null;
-        try {
-            mydb = this.getReadableDatabase();
-            String q = "insert into tbl_order_local(Details,Status,customername,createddate) values" +
-                    "('" + details + "'," + status + ",'" + cname + "',datetime('now'))";
-            // Log.i("Query is -------> ", "" + q);
-            mydb.execSQL(q);
-            return true;
-        } catch (Exception e) {
-            //  Log.i("Error is  Added ", "Order Details : " + e.getMessage());
-            return false;
-        } finally {
-            mydb.close();
-        }
-
-    }
-
-    public boolean updateLocalOrerStatus(String id, int status) {
-
-        SQLiteDatabase mydb = null;
-        try {
-            mydb = this.getReadableDatabase();
-            String q = "update  tbl_order_local set Status=" + status + " where id=" + id;
-            // Log.i("Query is -------> ", "" + q);
-            mydb.execSQL(q);
-            return true;
-        } catch (Exception e) {
-            // Log.i("Error is  Added ", "Order Details : " + e.getMessage());
-            return false;
-        } finally {
-            mydb.close();
-        }
-
-    }
-
-
-    public boolean clearProductList() {
-
-        SQLiteDatabase mydb = null;
-        try {
-            mydb = this.getReadableDatabase();
-            String q = "delete from order_details";
-            //String q = "delete from tbl_customersatyam";
-
-            //  Log.i("Query is -------> ", "" + q);
-            mydb.execSQL(q);
-            return true;
-        } catch (Exception e) {
-            // Log.i("Error is Clear List", "" + e.getMessage());
-            return false;
-        } finally {
-            mydb.close();
-        }
-
-    }
-
-    public boolean clearProductList(int id) {
-
-        SQLiteDatabase mydb = null;
-        try {
-            mydb = this.getReadableDatabase();
-            String q = "delete from order_details where productid=" + id + "";
-            //String q = "delete from tbl_customersatyam";
-
-            // Log.i("Query is -------> ", "" + q);
-            mydb.execSQL(q);
-            return true;
-        } catch (Exception e) {
-            // Log.i("Error is Clear List", "" + e.getMessage());
-            return false;
-        } finally {
-            mydb.close();
-        }
-
-    }
-
-
-    public boolean clearTermsList() {
-
-        SQLiteDatabase mydb = null;
-        try {
-            mydb = this.getReadableDatabase();
-            String q = "delete from tbl_order_terms";
-
-            // Log.i("Query is -------> ", "" + q);
-            mydb.execSQL(q);
-            return true;
-        } catch (Exception e) {
-            // Log.i("Error is Clear List", "" + e.getMessage());
-            return false;
-        } finally {
-            mydb.close();
-        }
-
-    }
-
-    public boolean clearTermsList(int id) {
-
-        SQLiteDatabase mydb = null;
-        try {
-            mydb = this.getReadableDatabase();
-            String q = "delete from tbl_order_terms where ParticularId='" + id + "'";
-
-            // Log.i("Query is -------> ", "" + q);
-            mydb.execSQL(q);
-            return true;
-        } catch (Exception e) {
-            //  Log.i("Error is Clear List", "" + e.getMessage());
-            return false;
-        } finally {
-            mydb.close();
-        }
-
-    }
-
-
-    public Vector getProductDetailsById(String id) {
-        SQLiteDatabase mydb = null;
-        String k = "";
-        Vector v;
-        int i = 0;
-        try {
-            mydb = this.getReadableDatabase();
-            String q = "SELECT  * FROM tbl_cstatus where id=" + id;
-
-            Cursor c = mydb.rawQuery(q, null);
-            v = new Vector();
-            if (c.moveToNext()) {
-                //v[i]=new Vector();
-
-                v.addElement(c.getInt(0));
-                v.addElement(c.getString(1));
-                v.addElement(c.getString(2));
-                v.addElement(c.getString(3));
-                v.addElement(c.getString(4));
-                v.addElement(c.getString(5));
-                v.addElement(c.getString(6));
-
-
-                i++;
-            }
-
-            return v;
-        } catch (Exception e) {
-
-            return null;
-        } finally {
-            mydb.close();
-        }
-    }
-
-    public Vector[] getAllProducts() {
-        SQLiteDatabase mydb = null;
-        String k = "";
-        Vector v[];
-        int i = 0;
-        try {
-            mydb = this.getReadableDatabase();
-            String q = "SELECT  * FROM order_details";
-
-            Cursor c = mydb.rawQuery(q, null);
-            v = new Vector[c.getCount()];
-            while (c.moveToNext()) {
-                v[i] = new Vector();
-
-                v[i].addElement(c.getInt(0)); //id
-                v[i].addElement(c.getString(1));//productid
-                v[i].addElement(c.getInt(2));
-                v[i].addElement(c.getString(3));
-                v[i].addElement(c.getString(4));
-                v[i].addElement(c.getString(5));
-                v[i].addElement(c.getString(6));
-                v[i].addElement(c.getString(7));
-                v[i].addElement(c.getString(8));
-                v[i].addElement(c.getString(9));
-
-                i++;
-            }
-
-            return v;
-        } catch (Exception e) {
-
-            return null;
-        } finally {
-            mydb.close();
-        }
-    }
-
-    public boolean addTerms(int termId, int srNo, int orderId, int particularId, String condition, boolean isRemoved, String name) {
-
-        SQLiteDatabase mydb = null;
-        try {
-            mydb = this.getReadableDatabase();
-            String q = "insert into tbl_order_terms(TermId,SrNo,OrderId,ParticularId,Condition,IsRemoved,name) values" +
-                    "(" + termId + "," + srNo + "," + orderId + "," + particularId + ",'" + condition + "','" + isRemoved + "','" + name + "')";
-            // Log.i("Query is -------> ", "" + q);
-            mydb.execSQL(q);
-            return true;
-        } catch (Exception e) {
-            // Log.i("Error is Product Added ", "" + e.getMessage());
-            return false;
-        } finally {
-            mydb.close();
-        }
-
-
-    }
-
-    public Vector[] getAllTerms() {
-        SQLiteDatabase mydb = null;
-        String k = "";
-        Vector v[];
-        int i = 0;
-        try {
-            mydb = this.getReadableDatabase();
-            String q = "SELECT  * FROM tbl_order_terms";
-
-            Cursor c = mydb.rawQuery(q, null);
-            v = new Vector[c.getCount()];
-            while (c.moveToNext()) {
-                v[i] = new Vector();
-
-                v[i].addElement(c.getInt(0)); //id
-                v[i].addElement(c.getInt(1));//productid
-                v[i].addElement(c.getInt(2));
-                v[i].addElement(c.getInt(3));
-                v[i].addElement(c.getString(4));
-                v[i].addElement(c.getString(5));
-                v[i].addElement(c.getString(6));
-
-                i++;
-            }
-
-            return v;
-        } catch (Exception e) {
-
-            return null;
-        } finally {
-            mydb.close();
-        }
-    }
-
-    public Vector[] getAllTermsForAdd() {
-        SQLiteDatabase mydb = null;
-        String k = "";
-        Vector v[];
-        int i = 0;
-        try {
-            mydb = this.getReadableDatabase();
-            String q = "SELECT  * FROM tbl_order_terms";
-
-            Cursor c = mydb.rawQuery(q, null);
-            v = new Vector[c.getCount()];
-            while (c.moveToNext()) {
-                v[i] = new Vector();
-
-                v[i].addElement(c.getInt(0)); //id
-                v[i].addElement(c.getInt(1));//productid
-                v[i].addElement(c.getInt(2));
-                v[i].addElement(c.getInt(3));
-                v[i].addElement(c.getString(4));
-                v[i].addElement(c.getString(5));
-
-
-                i++;
-            }
-
-            return v;
-        } catch (Exception e) {
-
-            return null;
-        } finally {
-            mydb.close();
-        }
-    }
-
-    public Vector[] getAllOfflineOrders() {
-        SQLiteDatabase mydb = null;
-        String k = "";
-        Vector v[];
-        int i = 0;
-        try {
-            mydb = this.getReadableDatabase();
-            String q = "SELECT  * FROM tbl_order_local where status=0";
-
-            Cursor c = mydb.rawQuery(q, null);
-            v = new Vector[c.getCount()];
-            while (c.moveToNext()) {
-                v[i] = new Vector();
-
-                v[i].addElement(c.getInt(0)); //id
-                v[i].addElement(c.getString(1));//productid
-                v[i].addElement(c.getInt(2));
-                v[i].addElement(c.getString(3));
-                v[i].addElement(c.getString(4));
-                i++;
-            }
-
-            return v;
-        } catch (Exception e) {
-
-            return null;
-        } finally {
-            mydb.close();
-        }
-    }
-
-
-    public Vector getAllOfflineOrdersById(int id) {
-        SQLiteDatabase mydb = null;
-        String k = "";
-        Vector v = new Vector();
-        ;
-        int i = 0;
-        try {
-            mydb = this.getReadableDatabase();
-            String q = "SELECT  * FROM tbl_order_local where id=" + id + " and status=0";
-
-            Cursor c = mydb.rawQuery(q, null);
-
-            if (c.moveToNext()) {
-
-
-                v.addElement(c.getInt(0)); //id
-                v.addElement(c.getString(1).replace("\\\"", ""));//productid
-                v.addElement(c.getInt(2));
-                v.addElement(c.getString(3));
-                v.addElement(c.getString(4));
-                i++;
-            }
-
-            return v;
-        } catch (Exception e) {
-
-            return null;
-        } finally {
-            mydb.close();
-        }
-    }
-
-    public int getMaxOfflineOrderID() {
-        SQLiteDatabase mydb = null;
-        String k = "";
-        Vector v = new Vector();
-        ;
-        int i = 0;
-        try {
-            mydb = this.getReadableDatabase();
-            String q = "SELECT  ifnull(max(id),0)+1 FROM tbl_order_local";
-
-            Cursor c = mydb.rawQuery(q, null);
-
-            if (c.moveToNext()) {
-                i = c.getInt(0); //id
-            }
-
-            return i;
-        } catch (Exception e) {
-
-            return 0;
-        } finally {
-            mydb.close();
-        }
-    }
 
     public boolean isGrowerRegister(String uniqueID) {
         SQLiteDatabase myDb = null;
