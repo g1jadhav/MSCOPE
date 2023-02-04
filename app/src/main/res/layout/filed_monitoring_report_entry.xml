@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/login_background">
@@ -282,6 +283,12 @@
                 android:background="@drawable/login_spinner_style"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp" />
+
+            <TextView
+                android:id="@+id/textView25"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_search"
                 style="@style/Widget.AppCompat.Button.Borderless"
@@ -343,13 +350,12 @@
         android:id="@+id/field_visit_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="10dp"
+        android:gravity="center"
         android:orientation="horizontal"
         android:weightSum="2"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/registration_version_code">
+        app:layout_constraintBottom_toTopOf="@+id/registration_version_code"
+        tools:layout_editor_absoluteX="10dp">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/next_btn"
@@ -359,20 +365,21 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:background="@color/background_color"
-            android:text="Mandatory visit"
+            android:text="Add Visit Details"
             android:textColor="@color/white" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/back_btn"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_gravity="center"
             android:layout_marginStart="5dp"
-            android:layout_weight="1"
+
             android:background="@color/background_color"
             android:text="Optional visit"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            tools:visibility="gone" />
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatTextView

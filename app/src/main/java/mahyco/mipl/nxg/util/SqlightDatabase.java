@@ -1818,10 +1818,10 @@ public class SqlightDatabase extends SQLiteOpenHelper {
             ArrayList<GetAllSeedDistributionModel> courseModalArrayList = new ArrayList<>();
             if (cursorCourses.moveToFirst()) {
                 do {
-                    boolean b = isFirstFieldVisitDone(cursorCourses.getInt(2));
+                    String b = isFirstFieldVisitDone(cursorCourses.getInt(2));
                     String ss = "";
-                    if (b) {
-                        ss = "1st Visit.";
+                    if (!b.equals("0")) {
+                        ss = b+" Visit.";
                     }
                     courseModalArrayList.add(new GetAllSeedDistributionModel(cursorCourses.getInt(1),
                             cursorCourses.getInt(2),
@@ -1905,16 +1905,16 @@ public class SqlightDatabase extends SQLiteOpenHelper {
            int srno=1;
             if (cursorCourses.moveToFirst()) {
                 do {
-                    boolean b = isFirstFieldVisitDone(cursorCourses.getInt(2));
-                    boolean b1 = isFirstFieldVisitDoneLocal(cursorCourses.getInt(2));
+                    String b = isFirstFieldVisitDone(cursorCourses.getInt(2));
+                    String b1 = isFirstFieldVisitDoneLocal(cursorCourses.getInt(2));
                     String ss = "";
-                    if (b) {
-                        ss = "1st Visit.";
+                    if (!b.equals("0")) {
+                        ss = b+" Visit.";
                     }
-                    if(b1)
+                    /*if(!b1.equals("0"))
                     {
-                        ss = "1st Visit.";
-                    }
+                        ss = b1+" Visit.";
+                    }*/
                     courseModalArrayList.add(new GetAllSeedDistributionModel(cursorCourses.getInt(1),
                             cursorCourses.getInt(2),
                             cursorCourses.getInt(3),
@@ -2225,34 +2225,35 @@ public class SqlightDatabase extends SQLiteOpenHelper {
         }
     }
 
-    public boolean isFirstFieldVisitDone(int userid) {
+    public String isFirstFieldVisitDone(int userid) {
         SQLiteDatabase myDb = null;
         try {
             myDb = this.getReadableDatabase();
-            String q = "SELECT  * FROM tbl_visit_master where UserId=" + userid;
+            String q = "SELECT  MandatoryFieldVisitId FROM tbl_visit_master where UserId=" + userid+" order by MandatoryFieldVisitId desc";
             Cursor cursorCourses = myDb.rawQuery(q, null);
             if (cursorCourses.moveToFirst()) {
-                return true;
+                cursorCourses.getString(0);
+                return cursorCourses.getString(0);
             }
-            return false;
+            return "0";
         } catch (Exception e) {
-            return false;
+            return "0";
         } finally {
             myDb.close();
         }
     }
-    public boolean isFirstFieldVisitDoneLocal(int userid) {
+    public String isFirstFieldVisitDoneLocal(int userid) {
         SQLiteDatabase myDb = null;
         try {
             myDb = this.getReadableDatabase();
-            String q = "SELECT  * FROM tbl_firstVisit where UserId=" + userid;
+            String q = "SELECT  MandatoryFieldVisitId FROM tbl_firstVisit where UserId=" + userid+" order by MandatoryFieldVisitId desc";
             Cursor cursorCourses = myDb.rawQuery(q, null);
             if (cursorCourses.moveToFirst()) {
-                return true;
+                return cursorCourses.getString(0);
             }
-            return false;
+            return "0";
         } catch (Exception e) {
-            return false;
+            return "0";
         } finally {
             myDb.close();
         }
@@ -2314,50 +2315,84 @@ public class SqlightDatabase extends SQLiteOpenHelper {
             myDb.close();
         }
     }
-public FieldVisitModel getVisitDetailsById() {
+public FieldVisitModel_Server getVisitDetailsById(int userid) {
         SQLiteDatabase myDb = null;
         try {
             myDb = this.getReadableDatabase();
-            String q = "SELECT  * FROM tbl_clustermaster";
+            String q = "Select TEMPID,FieldVisitId," +
+                    "UserId," +
+                    "CountryId," +
+                    "CountryMasterId," +
+                    "MandatoryFieldVisitId," +
+                    "FieldVisitType," +
+                    "TotalSeedAreaLost," +
+                    "TaggedAreaInHA," +
+                    "ExistingAreaInHA," +
+                    "ReasonForTotalLossed," +
+                    "FemaleSowingDt," +
+                    "MaleSowingDt," +
+                    "IsolationM," +
+                    "IsolationMeter," +
+                    "CropStage," +
+                    "TotalNoOfFemaleLines," +
+                    "TotalNoOfMaleLines," +
+                    "FemaleSpacingRRinCM," +
+                    "FemaleSpacingPPinCM," +
+                    "MaleSpacingRRinCM," +
+                    "MaleSpacingPPinCM," +
+                    "PlantingRatioFemale," +
+                    "PlantingRatioMale," +
+                    "CropCategoryType," +
+                    "TotalFemalePlants," +
+                    "TotalMalePlants," +
+                    "YieldEstimateInKg," +
+                    "Observations," +
+                    "FieldVisitDt," +
+                    "Latitude," +
+                    "Longitude," +
+                    "CapturePhoto," +
+                    "CreatedBy," +
+                    "CreatedDt from tbl_visit_master where UserId="+userid+" order by MandatoryFieldVisitId desc" ;
+            Log.i("query",q);
             Cursor cursorCourses = myDb.rawQuery(q, null);
-           FieldVisitModel m=new FieldVisitModel();
+           FieldVisitModel_Server m=new FieldVisitModel_Server();
             if (cursorCourses.moveToFirst()) {
-                m.setFieldVisitId(cursorCourses.getString(3));
-                m.setUserId(cursorCourses.getString(3));
-                m.setCountryId(cursorCourses.getString(3));
-                m.setCountryMasterId(cursorCourses.getString(3));
-                m.setMandatoryFieldVisitId(cursorCourses.getString(3));
-                m.setFieldVisitType(cursorCourses.getString(3));
-                m.setTotalSeedAreaLost(cursorCourses.getString(3));
-                m.setTaggedAreaInHA(cursorCourses.getString(3));
-                m.setExistingAreaInHA(cursorCourses.getString(3));
-                m.setReasonForTotalLossed(cursorCourses.getString(3));
-                m.setFemaleSowingDt(cursorCourses.getString(3));
-                m.setMaleSowingDt(cursorCourses.getString(3));
-                m.setIsolationM(cursorCourses.getString(3));
-                m.setIsolationMeter(cursorCourses.getString(3));
-                m.setCropStage(cursorCourses.getString(3));
-                m.setTotalNoOfFemaleLines(cursorCourses.getString(3));
-                m.setTotalNoOfMaleLines(cursorCourses.getString(3));
-                m.setFemaleSpacingRRinCM(cursorCourses.getString(3));
-                m.setFemaleSpacingPPinCM(cursorCourses.getString(3));
-                m.setMaleSpacingRRinCM(cursorCourses.getString(3));
-                m.setMaleSpacingPPinCM(cursorCourses.getString(3));
-                m.setPlantingRatioFemale(cursorCourses.getString(3));
-                m.setPlantingRatioMale(cursorCourses.getString(3));
-                m.setCropCategoryType(cursorCourses.getString(3));
-                m.setTotalFemalePlants(cursorCourses.getString(3));
-                m.setTotalMalePlants(cursorCourses.getString(3));
-                m.setYieldEstimateInKg(cursorCourses.getString(3));
-                m.setObservations(cursorCourses.getString(3));
-                m.setFieldVisitDt(cursorCourses.getString(3));
-                m.setLatitude(cursorCourses.getString(3));
-                m.setLongitude(cursorCourses.getString(3));
-                m.setCapturePhoto(cursorCourses.getString(3));
-                m.setCreatedBy(cursorCourses.getString(3));
-                m.setCreatedDt(cursorCourses.getString(3));
+                m.setFieldVisitId(cursorCourses.getInt(1));
+                m.setUserId(cursorCourses.getInt(2));
+                m.setCountryId(cursorCourses.getInt(3));
+                m.setCountryMasterId(cursorCourses.getInt(4));
+                m.setMandatoryFieldVisitId(cursorCourses.getInt(5));
+                m.setFieldVisitType(cursorCourses.getString(6));
+                m.setTotalSeedAreaLost(cursorCourses.getDouble(7));
+                m.setTaggedAreaInHA(cursorCourses.getDouble(8));
+                m.setExistingAreaInHA(Double.parseDouble(cursorCourses.getString(9).trim()));
+                m.setReasonForTotalLossed(cursorCourses.getString(10));
+                m.setFemaleSowingDt(cursorCourses.getString(11));
+                m.setMaleSowingDt(cursorCourses.getString(12));
+                m.setIsolationM(cursorCourses.getString(13));
+                m.setIsolationMeter(cursorCourses.getInt(14));
+                m.setCropStage(cursorCourses.getString(15));
+                m.setTotalNoOfFemaleLines(cursorCourses.getInt(16));
+                m.setTotalNoOfMaleLines(cursorCourses.getInt(17));
+                m.setFemaleSpacingRRinCM(cursorCourses.getInt(18));
+                m.setFemaleSpacingPPinCM(cursorCourses.getInt(19));
+                m.setMaleSpacingRRinCM(cursorCourses.getInt(20));
+                m.setMaleSpacingPPinCM(cursorCourses.getInt(21));
+                m.setPlantingRatioFemale(cursorCourses.getInt(22));
+                m.setPlantingRatioMale(cursorCourses.getInt(23));
+                m.setCropCategoryType(cursorCourses.getString(24));
+                m.setTotalFemalePlants(cursorCourses.getInt(25));
+                m.setTotalMalePlants(cursorCourses.getInt(26));
+                m.setYieldEstimateInKg(cursorCourses.getInt(27));
+                m.setObservations(cursorCourses.getString(28));
+                m.setFieldVisitDt(cursorCourses.getString(29));
+                m.setLatitude(cursorCourses.getString(30));
+                m.setLongitude(cursorCourses.getString(31));
+                m.setCapturePhoto(cursorCourses.getString(32));
+                m.setCreatedBy(cursorCourses.getString(33));
+                m.setCreatedDt(cursorCourses.getString(34));
             }
-            return courseModalArrayList;
+            return m;
         } catch (Exception e) {
             return null;
         } finally {

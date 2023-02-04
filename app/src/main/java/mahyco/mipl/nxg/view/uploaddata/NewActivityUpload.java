@@ -93,7 +93,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
     int userType = 0;
     private androidx.appcompat.widget.Toolbar toolbar;
     SqlightDatabase database;
-    int totalFirstVisit=0;
+    int totalFirstVisit = 0;
 
     @Override
     protected int getLayout() {
@@ -118,7 +118,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
         });
 
         mContext = this;
-        database=new SqlightDatabase(mContext);
+        database = new SqlightDatabase(mContext);
         // Toast.makeText(mContext, "HI1", Toast.LENGTH_SHORT).show();
         registrationAPI = new GrowerRegistrationAPI(mContext, this);
         mGrowerRegistrationBtn = findViewById(R.id.grower_registration_upload);
@@ -245,8 +245,8 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
             }
             break;
 
-            case  R.id.field_visit_1st_upload:
-                totalFirstVisit=database.getAllFirstFieldVisit1().size();
+            case R.id.field_visit_1st_upload:
+                totalFirstVisit = database.getAllFirstFieldVisit1().size();
                 uploadFirstVisit();
                 break;
         }
@@ -254,7 +254,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
 
     private void uploadFirstVisit() {
         if (totalFirstVisit > 0) {
-        try {
+            try {
 
                 ArrayList<FieldVisitModel> f = database.getAllFirstFieldVisit1();
      /*       JsonObject jsonObject=new JsonParser().parse(f.get(0).getData()).getAsJsonObject();
@@ -267,13 +267,26 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                 JsonObject jsonObject_Visit = new JsonObject();
                 JsonArray jsonArray = new JsonArray();
                 for (FieldVisitModel fieldVisitModel : f) {
+                    if (fieldVisitModel.getMandatoryFieldVisitId() == 1) {
+                        if (fieldVisitModel.getFieldVisitFruitsCobModelsText() == null || fieldVisitModel.getFieldVisitFruitsCobModelsText().trim().equals("")) {
+
+                        } else
+                            fieldVisitModel.setFieldVisitFruitsCobModelsText("[]");
+
+                        if (fieldVisitModel.getFieldVisitRoguedPlantModels() == null || fieldVisitModel.getFieldVisitRoguedPlantModels().trim().equals("")) {
+                        } else
+                            fieldVisitModel.setFieldVisitRoguedPlantModels("[]");
+                    }
                     JsonObject jsonObjectFinale = new JsonObject();
                     String base64 = MyApplicationUtil.getImageDatadetail(fieldVisitModel.getCapturePhoto());
                     Log.i("Final base64 R :", base64);
                     JsonArray jsonObject_location = new JsonParser().parse(f.get(0).getLocationData()).getAsJsonArray();
                     JsonArray jsonObject_line = new JsonParser().parse(f.get(0).getLineData()).getAsJsonArray();
+                    Log.i("Pass ", "1" + f.get(0).getFieldVisitFruitsCobModelsText());
                     JsonArray jsonObject_roguedplant = new JsonParser().parse(f.get(0).getFieldVisitRoguedPlantModels()).getAsJsonArray();
+                    Log.i("Pass ", "2" + f.get(0).getFieldVisitRoguedPlantModels());
                     JsonArray jsonObject_fruitscobs = new JsonParser().parse(f.get(0).getFieldVisitFruitsCobModelsText()).getAsJsonArray();
+                    Log.i("Pass ", "3" + f.get(0).getFieldVisitFruitsCobModelsText());
                     JsonObject json_visitModel = new JsonObject();
                     json_visitModel.addProperty("UserId", fieldVisitModel.getUserId());
                     json_visitModel.addProperty("CountryId", fieldVisitModel.getCountryId());
@@ -335,12 +348,10 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                 Log.i("Final Json R :", jsonObject_Visit.toString());
 
 
-            }catch(Exception e)
-            {
+            } catch (Exception e) {
                 Log.i("JsonDataError : ", e.getMessage());
             }
-        }else
-        {
+        } else {
             showNoInternetDialog(mContext, "No Records Found.");
 
         }
@@ -388,34 +399,32 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
 //            Log.e("temporary", "result.getStatus().equalsIgnoreCase(\"Success\")");
             mResponseString = result.getComment();
             //  Log.e("temporary","onGrowerRegister mResponseString " + mResponseString);
-          //  new DeleteIfSyncSuccessfully().execute();
+            //  new DeleteIfSyncSuccessfully().execute();
 
-            if(result.isResultFlag()){
-            SqlightDatabase database = null;
-            boolean b;
+            if (result.isResultFlag()) {
+                SqlightDatabase database = null;
+                boolean b;
 
-            try {
-                int cnt = 0;
-                database = new SqlightDatabase(mContext);
-                if (userType == 1) {
-                    cnt = mGrowerList.size();
-                    mGrowerList.clear();
-                } else if (userType == 2) {
-                    cnt = mOrganizerList.size();
-                    mOrganizerList.clear();
+                try {
+                    int cnt = 0;
+                    database = new SqlightDatabase(mContext);
+                    if (userType == 1) {
+                        cnt = mGrowerList.size();
+                        mGrowerList.clear();
+                    } else if (userType == 2) {
+                        cnt = mOrganizerList.size();
+                        mOrganizerList.clear();
+                    }
+                    b = database.updateAllUserType(userType);
+                    if (b) {
+                        showNoInternetDialog(mContext, cnt + " Records Uploaded Successfully.");
+                    }
+                    new GetRegistrationAsyncTaskList().execute();
+
+                } catch (Exception e) {
+
                 }
-                b = database.updateAllUserType(userType);
-                if (b) {
-                    showNoInternetDialog(mContext, cnt + " Records Uploaded Successfully.");
-                }
-                new GetRegistrationAsyncTaskList().execute();
-
-            }catch(Exception e)
-            {
-
-            }
-            }else
-            {
+            } else {
                 showNoInternetDialog(mContext, result.getComment());
             }
         } else {
@@ -425,18 +434,19 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
 
     @Override
     public void onFirstVisitRegister(SuccessModel result) {
-        try{
+        try {
+            if (result.isResultFlag()) {
+                database.trucateTable("tbl_firstVisit");
 
-            database.trucateTable("tbl_firstVisit");
-
-            showNoInternetDialog(mContext, totalFirstVisit+ " Records Uploaded Successfully.");
-            totalFirstVisit=database.getAllFirstFieldVisit1().size();
-            field_visit_1st_no_of_records.setText(getString(R.string.no_of_records_for_upload,totalFirstVisit));
-
-            Log.i("Result",result.getStatus()+""+result.toString());
-        }catch(Exception e)
-        {
-            Toast.makeText(mContext, "error"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                showNoInternetDialog(mContext, totalFirstVisit + " Records Uploaded Successfully.");
+                totalFirstVisit = database.getAllFirstFieldVisit1().size();
+                field_visit_1st_no_of_records.setText(getString(R.string.no_of_records_for_upload, totalFirstVisit));
+            } else {
+                showNoInternetDialog(mContext, "Result : " + result.getStatus() + "\nDetails :" + result.getComment());
+            }
+            Log.i("Result", result.getStatus() + "" + result.toString());
+        } catch (Exception e) {
+            Toast.makeText(mContext, "error" + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -447,8 +457,8 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
             try {
                 database = new SqlightDatabase(mContext);
                 List<GrowerModel> list = database.getAllRegistration();
-                mGrowerList=new ArrayList<>();
-                mOrganizerList=new ArrayList<>();
+                mGrowerList = new ArrayList<>();
+                mOrganizerList = new ArrayList<>();
                 for (int i = 0; i < list.size(); i++) {
                     if (list.get(i).getUserType().equalsIgnoreCase("Grower")) {
                         mGrowerList.add(list.get(i));
@@ -1341,11 +1351,11 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
             List<GrowerModel> lst_temp = new ArrayList<>();
 
             if (userType == 1) {
-               // lst_temp = mGrowerList;
-                lst_temp =new ArrayList<>(mGrowerList);
+                // lst_temp = mGrowerList;
+                lst_temp = new ArrayList<>(mGrowerList);
             } else if (userType == 2) {
-                lst_temp =new ArrayList<>(mOrganizerList);
-             //   lst_temp = mOrganizerList;
+                lst_temp = new ArrayList<>(mOrganizerList);
+                //   lst_temp = mOrganizerList;
             }
 
 
@@ -1355,7 +1365,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
             String base64_front = "";
             String base64_back = "";
             if (lst_temp.size() > 0) {
-                Log.i("Tag:", lst_temp.size()+" Passin "+userType);
+                Log.i("Tag:", lst_temp.size() + " Passin " + userType);
                 for (int i = 0; i < lst_temp.size(); i++) {
 
                     Log.i("Tag:", "pass " + i);

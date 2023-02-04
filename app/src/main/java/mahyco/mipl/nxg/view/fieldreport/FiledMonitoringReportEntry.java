@@ -191,14 +191,14 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
                     Log.i("GetAll", m.getGrowerId() + " " + m.getGrowerFullName());
                     if (i != 0) {
                         selectedGrowerId=m.getGrowerId();
-                        if (database.isFirstFieldVisitDone(m.getGrowerId())) {
+                /*        if (database.isFirstFieldVisitDone(m.getGrowerId())) {
                             showNoInternetDialog(mContext, "First visit is done with this grower.");
                         }else if(database.isFirstFieldVisitDoneLocal(m.getGrowerId()))
                         {
                             showNoInternetDialog(mContext, "First visit is done with this grower.");
 
                         }
-                            else {
+                            else {*/
                             Preferences.save(mContext, Preferences.SELECTED_GROWERNAME, m.getGrowerFullName());
                             Preferences.save(mContext, Preferences.SELECTED_GROWERMOBILE, m.getGrowerMobileNo());
                             Preferences.save(mContext, Preferences.SELECTED_GROWERID, "" + m.getGrowerId());
@@ -206,7 +206,7 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
                             Preferences.save(mContext, Preferences.SELECTED_GROWERPRODUCTIONCODE, "" + m.getProductionCode());
                             Preferences.save(mContext, Preferences.SELECTED_GROWERUNIQUECODE, "" + m.getGrowerUniqueCode());
                             Preferences.save(mContext, Preferences.SELECTEDCROPECODE, "" + m.getCropCode());
-                        }
+                       // }
                     } else {
                         Toast.makeText(mContext, "Please choose grower.", Toast.LENGTH_SHORT).show();
                     }
@@ -391,7 +391,7 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
                     mRecyclerView.setAdapter(mFieldMonitoringReportAdapter);
                     mRecyclerView.setVisibility(View.VISIBLE);
                 }*/
-                if(database.isFirstFieldVisitDone(selectedGrowerId))
+           /*     if(database.isFirstFieldVisitDone(selectedGrowerId))
                 {
                  showNoInternetDialog(mContext,"First visit is done with this grower.");
                 }
@@ -400,10 +400,16 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
                     showNoInternetDialog(mContext, "First visit is done with this grower.");
 
                 }
-                else {
+                else {*/
+                Toast.makeText(mContext, ""+selectedGrowerId, Toast.LENGTH_SHORT).show();
+                if(selectedGrowerId==0)
+                {
+                    Toast.makeText(mContext, "Please Select Grower.", Toast.LENGTH_SHORT).show();
+                }else {
                     Intent intent = new Intent(this, FiledReportDashboard.class);
                     startActivity(intent);
                 }
+             //   }
                 break;
             case R.id.back_btn:
                 mGrowerSearchLayout.setVisibility(View.VISIBLE);

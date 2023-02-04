@@ -54,6 +54,10 @@ public class Preferences {
     public static final String SELECTED_GROWERPRODUCTIONCODE = "SProductionCode";
     public static final String SELECTED_GROWERUNIQUECODE = "SELECTEDUNIQUECODE";
     public static final String SELECTEDCROPECODE = "SELECTEDCROPECODE";
+    public static final String SELECTEVISITEXISITINGAREA = "SELECTEDEXISTINGAREA";
+    public static final String SELECTEDVISITID = "SELECTEDVISITID";
+    public static final String PREVTOTAL_FEMALE_PLANTS ="PREVIOUS_TOTAL_FEMALEPLANTS" ;
+    public static final String PREVTOTAL_MALE_PLANTS = "PREVIOUS_TOTAL_MALEPLANTS";
     public static String IQCPlantId="IQCPlantId";
     public static final String COUNTRY_MASTER_ID = "CountryParentId";
     public static final String STORED_CATEGORY_SIZE = "CategorySize";

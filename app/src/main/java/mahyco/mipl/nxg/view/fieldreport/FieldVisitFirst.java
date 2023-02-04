@@ -137,7 +137,6 @@ public class FieldVisitFirst extends BaseActivity {
     TextView lblmeters;
 
     String
-
             str_grower_name_textview = "",
             str_issued_seed_area_textview,
             str_production_code_textview,
@@ -215,7 +214,6 @@ public class FieldVisitFirst extends BaseActivity {
             }
         });
 
-
         date_of_field_visit_textview = findViewById(R.id.date_of_field_visit_textview);
         national_id_photo_front_side_btn = findViewById(R.id.national_id_photo_front_side_btn);
         capture_photo_image_view = findViewById(R.id.capture_photo_image_view);
@@ -225,7 +223,6 @@ public class FieldVisitFirst extends BaseActivity {
         buttonmalelines = findViewById(R.id.buttonmalelines);
         total_female_plants_textview = findViewById(R.id.total_female_plants_textview);
         total_male_plants_textview = findViewById(R.id.total_male_plants_textview);
-
 
         grower_name_textview = findViewById(R.id.grower_name_textview);
         issued_seed_area_textview = findViewById(R.id.issued_seed_area_textview);
@@ -378,8 +375,6 @@ public class FieldVisitFirst extends BaseActivity {
 
             }
         });
-
-
         try {
             Date c = Calendar.getInstance().getTime();
             System.out.println("Current time => " + c);
@@ -623,7 +618,6 @@ public class FieldVisitFirst extends BaseActivity {
             female_planting_ratio.setText("0");
             male_planting_ratio.setText("0");
 
-
             female_spacinglayout.setVisibility(View.GONE);
 
         } else {
@@ -722,6 +716,19 @@ public class FieldVisitFirst extends BaseActivity {
                 fieldVisitModel.setLongitude("" + longi);// 75.3514908,
                 fieldVisitModel.setCapturePhoto(front_path);// ,
                 fieldVisitModel.setCreatedBy(str_staff_name_textview);
+                fieldVisitModel.setAreaLossInHa("0");
+                fieldVisitModel.setNoOfRoguedFemalePlants("0");
+                fieldVisitModel.setNoOfRoguedMalePlants("0");
+                fieldVisitModel.setSeedProductionMethod("0");
+                fieldVisitModel.setRoguingCompletedValidated("0");
+                fieldVisitModel.setSingleCobsPerPlant("0");
+                fieldVisitModel.setSingleCobsPerPlantInGm("0");
+                fieldVisitModel.setUnprocessedSeedReadyInKg("0");
+                fieldVisitModel.setPollinationStartDt(str_date_of_field_visit_textview);
+                fieldVisitModel.setPollinationEndDt(str_date_of_field_visit_textview);
+                fieldVisitModel.setExpectedDtOfHarvesting(str_date_of_field_visit_textview);
+                fieldVisitModel.setExpectedDtOfDespatching(str_date_of_field_visit_textview);
+                fieldVisitModel.setMaleParentUprooted("0");
 
 
                 fieldMonitoringModels.setFieldVisitModel(fieldVisitModel);
