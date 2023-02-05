@@ -189,6 +189,12 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/losslayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+            <LinearLayout
                 android:id="@+id/reason_area_loss_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -213,6 +219,12 @@
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp" />
             </LinearLayout>
+            </LinearLayout>
+        <LinearLayout
+            android:id="@+id/existlayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -614,7 +626,7 @@
                     android:padding="10dp"
                     android:textColor="@color/black_color" />
             </LinearLayout>
-
+        </LinearLayout>
             <LinearLayout
                 android:id="@+id/growers_mobile_no_layout"
                 android:layout_width="match_parent"

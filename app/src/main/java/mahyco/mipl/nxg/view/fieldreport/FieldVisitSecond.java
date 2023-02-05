@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatButton;
@@ -105,10 +106,11 @@ public class FieldVisitSecond extends BaseActivity {
             str_staff_name_textview = "",
             str_crop_stage_spinner = "",
             str_geotag_location_textview = "";
-    double longi = 0.0, lati = 0.0;
-    String front_path = "";
+
     Button save_login;
     CCFSerachSpinner crop_stage_spinner;
+    double longi = 0.0, lati = 0.0;
+    String front_path = "";
     private FusedLocationProviderClient fusedLocationClient;
     int cropcode = 0, cropcategory = 0;
     String croptype = "";
@@ -130,6 +132,8 @@ public class FieldVisitSecond extends BaseActivity {
     int currentStage = 0;
     int totalFemalePlants = 0;
     int totalMalePlants = 0;
+    LinearLayout layout_losslayout,layout_existarea;
+    int lossStatus=0;
 
     @Override
     protected int getLayout() {
@@ -179,6 +183,10 @@ public class FieldVisitSecond extends BaseActivity {
         geotag_location_textview = findViewById(R.id.geotag_location_textview);
         crop_stage_spinner = findViewById(R.id.crop_stage_spinner);
         save_login = findViewById(R.id.save_login);
+        layout_losslayout = findViewById(R.id.losslayout);
+                layout_existarea = findViewById(R.id.existlayout);
+          layout_losslayout.setVisibility(View.GONE);
+
         prevExistingArea = 0.00;
         fieldVisitModel = new FieldVisitModel();
         fieldMonitoringModels = new FieldMonitoringModels();
@@ -198,6 +206,14 @@ public class FieldVisitSecond extends BaseActivity {
         total_male_plants_textview.setText("" + totalMalePlants);
 
         prevExistingArea = Double.parseDouble(Preferences.get(context, Preferences.SELECTEVISITEXISITINGAREA));
+        existing_area_ha_edittext.setText(""+String.format("%.2f",prevExistingArea));
+        try{
+            double loss = prevExistingArea - Double.parseDouble(existing_area_ha_edittext.getText().toString().trim());
+            area_loss_ha_textview.setText("" + loss);
+        }catch (Exception e)
+        {
+
+        }
         currentStage = Integer.parseInt(Preferences.get(context, Preferences.SELECTEDVISITID));
         staff_name_textview.setText("" + Preferences.get(context, Preferences.USER_NAME));
         staffcode = Preferences.get(context, Preferences.USER_ID);
@@ -306,7 +322,18 @@ public class FieldVisitSecond extends BaseActivity {
                 }
             }
         });
-
+     /*   existing_area_ha_edittext.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus)
+                {
+                    hideOther();
+                }else
+                {
+                    showOther();
+                }
+            }
+        });*/
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -455,16 +482,48 @@ public class FieldVisitSecond extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (existing_area_ha_edittext.getText().toString().trim().equals("")) {
+                if (existing_area_ha_edittext.getText().toString().trim().equals("")||existing_area_ha_edittext.getText().toString().trim().equals(".")) {
 
                 } else {
                     double loss = prevExistingArea - Double.parseDouble(existing_area_ha_edittext.getText().toString().trim());
                     area_loss_ha_textview.setText("" + loss);
+                    double exa=Double.parseDouble(existing_area_ha_edittext.getText().toString().trim());
+                    if(exa<=0)
+                    {
+                        lossStatus=1;
+                        showOther();
+                    }else
+                    {
+                        lossStatus=2;
+                        hideOther();
+                    }
                 }
             }
         });
 
 
+    }
+
+    public void hideOther() {
+        try{
+            layout_losslayout.setVisibility(View.GONE);
+            layout_existarea.setVisibility(View.VISIBLE);
+            recommendations_observations_edittext.setVisibility(View.VISIBLE);
+        }catch (Exception e)
+        {
+
+        }
+    }
+
+    public void showOther() {
+        try{
+            layout_losslayout.setVisibility(View.VISIBLE);
+            layout_existarea.setVisibility(View.GONE);
+            recommendations_observations_edittext.setVisibility(View.GONE);
+        }catch (Exception e)
+        {
+
+        }
     }
 
     private void calculateFemaleRogudedPlants() {
@@ -540,6 +599,28 @@ public class FieldVisitSecond extends BaseActivity {
                 str_crop_stage_spinner = crop_stage_spinner.getSelectedItem().toString();
                 String data = str_grower_name_textview + " " + str_issued_seed_area_textview + " " + str_production_code_textview + " " + str_village_textview + " " + str_existing_area_ha_edittext + " " + str_area_loss_ha_textview + " " + str_reason_area_loss + " " + str_no_of_rogued_plants_female_edittext + " " + str_female_off_type_edittext + " " + str_female_volunteer_edittext + " " + str_female_b_type_edittext + " " + str_total_female_plants_textview + " " + str_no_of_rogued_plants_male_edittext + " " + str_male_off_type_edittext + " " + str_male_volunteer_edittext + " " + str_male_b_type_edittext + " " + str_total_male_plants_textview + " " + str_yield_estimate_kg_edittext + " " + str_grower_mobile_no_edittext + " " + str_recommendations_observations_edittext + " " + str_date_of_field_visit_textview + " " + str_staff_name_textview + " " + str_geotag_location_textview;
                 Log.i("Entered Data ", data);
+
+                if(lossStatus==1)
+                {
+                    str_area_loss_ha_textview = "0";
+                    str_reason_area_loss = "0";
+                    str_no_of_rogued_plants_female_edittext = "0";
+                    str_female_off_type_edittext = "0";
+                    str_female_volunteer_edittext = "0";
+                    str_female_b_type_edittext = "0";
+                    str_total_female_plants_textview = "0";
+                    str_no_of_rogued_plants_male_edittext= "0";
+                    str_male_off_type_edittext = "0";
+                    str_male_volunteer_edittext = "0";
+                    str_male_b_type_edittext = "0";
+                    str_total_male_plants_textview= "0";
+                    str_yield_estimate_kg_edittext = "0";
+                   // str_grower_mobile_no_edittext = grower_mobile_no_edittext.getText().toString().trim();
+                    str_recommendations_observations_edittext = "Area Loss";
+
+                }
+
+
                 if (validation()) {
                 fieldVisitModel.setUserId(userid);// 1,
                 fieldVisitModel.setCountryId(countryId);// 1,

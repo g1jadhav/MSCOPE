@@ -268,6 +268,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                 JsonArray jsonArray = new JsonArray();
                 for (FieldVisitModel fieldVisitModel : f) {
                     if (fieldVisitModel.getMandatoryFieldVisitId() == 1) {
+
                         if (fieldVisitModel.getFieldVisitFruitsCobModelsText() == null || fieldVisitModel.getFieldVisitFruitsCobModelsText().trim().equals("")) {
 
                         } else
@@ -277,6 +278,8 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                         } else
                             fieldVisitModel.setFieldVisitRoguedPlantModels("[]");
                     }
+
+
                     JsonObject jsonObjectFinale = new JsonObject();
                     String base64 = MyApplicationUtil.getImageDatadetail(fieldVisitModel.getCapturePhoto());
                     Log.i("Final base64 R :", base64);
