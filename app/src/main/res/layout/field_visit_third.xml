@@ -232,6 +232,63 @@
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp" />
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/female_no_lines_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/total_nos_of_female_lines"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:boxBackgroundMode="none">
+
+                        <EditText
+                            android:id="@+id/total_nos_female_lines"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:background="@drawable/login_screen_edittext"
+                            android:drawablePadding="20dp"
+                            android:hint="@string/enter_female_lines"
+                            android:inputType="number"
+                            android:maxLines="1"
+                            android:padding="10dp"
+                            android:textColor="@color/black_color" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+                    <Button
+                        android:id="@+id/buttonfemalelines"
+                        android:layout_width="wrap_content"
+                        android:textColor="@color/white"
+                        android:background="@drawable/login_btn"
+                        android:layout_height="match_parent"
+                        android:text="Add" />
+
+                </LinearLayout>
+
+
+
+
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/roguing_completed_and_validated_layout"

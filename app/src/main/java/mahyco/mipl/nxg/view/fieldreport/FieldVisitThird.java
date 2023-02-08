@@ -2,19 +2,28 @@ package mahyco.mipl.nxg.view.fieldreport;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.location.Location;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatButton;
@@ -42,6 +51,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import mahyco.mipl.nxg.BuildConfig;
@@ -57,7 +67,7 @@ import mahyco.mipl.nxg.util.BaseActivity;
 import mahyco.mipl.nxg.util.Preferences;
 import mahyco.mipl.nxg.util.SqlightDatabase;
 
-public class FieldVisitThird  extends BaseActivity {
+public class FieldVisitThird extends BaseActivity {
     EditText
             grower_name_textview,
             issued_seed_area_textview,
@@ -94,58 +104,61 @@ public class FieldVisitThird  extends BaseActivity {
             recommendations_observations_edittext,
             date_of_field_visit_textview,
             staff_name_textview,
-            geotag_location_textview;
+            geotag_location_textview,total_nos_female_lines;
 
     CCFSerachSpinner
             seed_production_method_spinner,
             roguing_completed_and_validated_spinner,
             crop_stage_spinner;
 
-    Button save_login;
+    Button save_login,buttonfemalelines;
     ImageView
             capture_photo_image_view;
-
-    String str_grower_name_textview="",
-            str_issued_seed_area_textview="",
-            str_production_code_textview="",
-            str_village_textview="",
-            str_existing_area_ha_edittext="",
-            str_area_loss_ha_textview="",
-            str_reason_for_area_loss="",
-            str_no_of_rogued_plants_female_edittext="",
-            str_female_off_type_edittext="",
-            str_female_volunteer_edittext="",
-            str_female_b_type_edittext="",
-            str_total_female_plants_textview="",
-            str_no_of_rogued_plants_male_edittext="",
-            str_male_off_type_edittext="",
-            str_male_volunteer_edittext="",
-            str_male_b_type_edittext="",
-            str_total_male_plants_textview="",
-            str_pollination_start_date="",
-            str_first_editetext_female_per_line="",
-            str_second_editetext_female_per_line="",
-            str_third_editetext_female_per_line="",
-            str_fourth_editetext_female_per_line="",
-            str_fifth_editetext_female_per_line="",
-            str_six_editetext_female_per_line="",
-            str_seven_editetext_female_per_line="",
-            str_eight_editetext_female_per_line="",
-            str_nine_editetext_female_per_line="",
-            str_ten_editetext_female_per_line="",
-            str_number_of_expected_edittextview="",
-            str_average_weight_seed_edittextview="",
-            str_yield_estimate_kg_edittext="",
-            str_grower_mobile_no_edittext="",
-            str_recommendations_observations_edittext="",
-            str_date_of_field_visit_textview="",
-            str_staff_name_textview="",
-            str_geotag_location_textview="",
-            str_seed_production_method_spinner="",
-            str_roguing_completed_and_validated_spinner="",
-            str_crop_stage_spinner="";
-
-
+    LinearLayout female_no_lines_layout;
+    String str_grower_name_textview = "",
+            str_issued_seed_area_textview = "",
+            str_production_code_textview = "",
+            str_village_textview = "",
+            str_existing_area_ha_edittext = "",
+            str_area_loss_ha_textview = "",
+            str_reason_for_area_loss = "",
+            str_no_of_rogued_plants_female_edittext = "",
+            str_female_off_type_edittext = "",
+            str_female_volunteer_edittext = "",
+            str_female_b_type_edittext = "",
+            str_total_female_plants_textview = "",
+            str_no_of_rogued_plants_male_edittext = "",
+            str_male_off_type_edittext = "",
+            str_male_volunteer_edittext = "",
+            str_male_b_type_edittext = "",
+            str_total_male_plants_textview = "",
+            str_pollination_start_date = "",
+            str_first_editetext_female_per_line = "",
+            str_second_editetext_female_per_line = "",
+            str_third_editetext_female_per_line = "",
+            str_fourth_editetext_female_per_line = "",
+            str_fifth_editetext_female_per_line = "",
+            str_six_editetext_female_per_line = "",
+            str_seven_editetext_female_per_line = "",
+            str_eight_editetext_female_per_line = "",
+            str_nine_editetext_female_per_line = "",
+            str_ten_editetext_female_per_line = "",
+            str_number_of_expected_edittextview = "",
+            str_average_weight_seed_edittextview = "",
+            str_yield_estimate_kg_edittext = "",
+            str_grower_mobile_no_edittext = "",
+            str_recommendations_observations_edittext = "",
+            str_date_of_field_visit_textview = "",
+            str_staff_name_textview = "",
+            str_geotag_location_textview = "",
+            str_seed_production_method_spinner = "",
+            str_roguing_completed_and_validated_spinner = "",
+            str_crop_stage_spinner = "";
+    private Dialog lineDialog;
+    List<EditText> allEds; // Female
+    List<EditText> allEds_male; //male
+    List<EditText> allEds_female; //male
+    int sum = 0;
     double longi = 0.0, lati = 0.0;
     String front_path = "";
     private FusedLocationProviderClient fusedLocationClient;
@@ -169,8 +182,9 @@ public class FieldVisitThird  extends BaseActivity {
     int currentStage = 0;
     int totalFemalePlants = 0;
     int totalMalePlants = 0;
-    LinearLayout layout_losslayout,layout_existarea;
-    int lossStatus=0;
+    LinearLayout layout_losslayout, layout_existarea;
+    int lossStatus = 0;
+
     @Override
     protected int getLayout() {
         return R.layout.field_visit_third;
@@ -192,59 +206,75 @@ public class FieldVisitThird  extends BaseActivity {
         });
         context = FieldVisitThird.this;
         database = new SqlightDatabase(context);
-        grower_name_textview=findViewById(R.id.grower_name_textview);
-        issued_seed_area_textview=findViewById(R.id.issued_seed_area_textview);
-        production_code_textview=findViewById(R.id.production_code_textview);
-        village_textview=findViewById(R.id.village_textview);
-        existing_area_ha_edittext=findViewById(R.id.existing_area_ha_edittext);
-        area_loss_ha_textview=findViewById(R.id.area_loss_ha_textview);
-        reason_for_area_loss=findViewById(R.id.reason_for_area_loss);
-        no_of_rogued_plants_female_edittext=findViewById(R.id.no_of_rogued_plants_female_edittext);
-        female_off_type_edittext=findViewById(R.id.female_off_type_edittext);
-        female_volunteer_edittext=findViewById(R.id.female_volunteer_edittext);
-        female_b_type_edittext=findViewById(R.id.female_b_type_edittext);
-        total_female_plants_textview=findViewById(R.id.total_female_plants_textview);
-        no_of_rogued_plants_male_edittext=findViewById(R.id.no_of_rogued_plants_male_edittext);
-        male_off_type_edittext=findViewById(R.id.male_off_type_edittext);
-        male_volunteer_edittext=findViewById(R.id.male_volunteer_edittext);
-        male_b_type_edittext=findViewById(R.id.male_b_type_edittext);
-        total_male_plants_textview=findViewById(R.id.total_male_plants_textview);
-        pollination_start_date=findViewById(R.id.pollination_start_date);
-        first_editetext_female_per_line=findViewById(R.id.first_editetext_female_per_line);
-        second_editetext_female_per_line=findViewById(R.id.second_editetext_female_per_line);
-        third_editetext_female_per_line=findViewById(R.id.third_editetext_female_per_line);
-        fourth_editetext_female_per_line=findViewById(R.id.fourth_editetext_female_per_line);
-        fifth_editetext_female_per_line=findViewById(R.id.fifth_editetext_female_per_line);
-        six_editetext_female_per_line=findViewById(R.id.six_editetext_female_per_line);
-        seven_editetext_female_per_line=findViewById(R.id.seven_editetext_female_per_line);
-        eight_editetext_female_per_line=findViewById(R.id.eight_editetext_female_per_line);
-        nine_editetext_female_per_line=findViewById(R.id.nine_editetext_female_per_line);
-        ten_editetext_female_per_line=findViewById(R.id.ten_editetext_female_per_line);
-        number_of_expected_edittextview=findViewById(R.id.number_of_expected_edittextview);
-        average_weight_seed_edittextview=findViewById(R.id.average_weight_seed_edittextview);
-        yield_estimate_kg_edittext=findViewById(R.id.yield_estimate_kg_edittext);
-        grower_mobile_no_edittext=findViewById(R.id.grower_mobile_no_edittext);
-        recommendations_observations_edittext=findViewById(R.id.recommendations_observations_edittext);
-        date_of_field_visit_textview=findViewById(R.id.date_of_field_visit_textview);
-        staff_name_textview=findViewById(R.id.staff_name_textview);
-        geotag_location_textview=findViewById(R.id.geotag_location_textview);
+        grower_name_textview = findViewById(R.id.grower_name_textview);
+        issued_seed_area_textview = findViewById(R.id.issued_seed_area_textview);
+        production_code_textview = findViewById(R.id.production_code_textview);
+        village_textview = findViewById(R.id.village_textview);
+        existing_area_ha_edittext = findViewById(R.id.existing_area_ha_edittext);
+        area_loss_ha_textview = findViewById(R.id.area_loss_ha_textview);
+        reason_for_area_loss = findViewById(R.id.reason_for_area_loss);
+        no_of_rogued_plants_female_edittext = findViewById(R.id.no_of_rogued_plants_female_edittext);
+        female_off_type_edittext = findViewById(R.id.female_off_type_edittext);
+        female_volunteer_edittext = findViewById(R.id.female_volunteer_edittext);
+        female_b_type_edittext = findViewById(R.id.female_b_type_edittext);
+        total_female_plants_textview = findViewById(R.id.total_female_plants_textview);
+        no_of_rogued_plants_male_edittext = findViewById(R.id.no_of_rogued_plants_male_edittext);
+        male_off_type_edittext = findViewById(R.id.male_off_type_edittext);
+        male_volunteer_edittext = findViewById(R.id.male_volunteer_edittext);
+        male_b_type_edittext = findViewById(R.id.male_b_type_edittext);
+        total_male_plants_textview = findViewById(R.id.total_male_plants_textview);
+        pollination_start_date = findViewById(R.id.pollination_start_date);
+        first_editetext_female_per_line = findViewById(R.id.first_editetext_female_per_line);
+        second_editetext_female_per_line = findViewById(R.id.second_editetext_female_per_line);
+        third_editetext_female_per_line = findViewById(R.id.third_editetext_female_per_line);
+        fourth_editetext_female_per_line = findViewById(R.id.fourth_editetext_female_per_line);
+        fifth_editetext_female_per_line = findViewById(R.id.fifth_editetext_female_per_line);
+        six_editetext_female_per_line = findViewById(R.id.six_editetext_female_per_line);
+        seven_editetext_female_per_line = findViewById(R.id.seven_editetext_female_per_line);
+        eight_editetext_female_per_line = findViewById(R.id.eight_editetext_female_per_line);
+        nine_editetext_female_per_line = findViewById(R.id.nine_editetext_female_per_line);
+        ten_editetext_female_per_line = findViewById(R.id.ten_editetext_female_per_line);
+        number_of_expected_edittextview = findViewById(R.id.number_of_expected_edittextview);
+        average_weight_seed_edittextview = findViewById(R.id.average_weight_seed_edittextview);
+        yield_estimate_kg_edittext = findViewById(R.id.yield_estimate_kg_edittext);
+        grower_mobile_no_edittext = findViewById(R.id.grower_mobile_no_edittext);
+        recommendations_observations_edittext = findViewById(R.id.recommendations_observations_edittext);
+        date_of_field_visit_textview = findViewById(R.id.date_of_field_visit_textview);
+        staff_name_textview = findViewById(R.id.staff_name_textview);
+        geotag_location_textview = findViewById(R.id.geotag_location_textview);
         national_id_photo_front_side_btn = findViewById(R.id.national_id_photo_front_side_btn);
         capture_photo_image_view = findViewById(R.id.capture_photo_image_view);
-        seed_production_method_spinner=findViewById(R.id.seed_production_method_spinner);
-                roguing_completed_and_validated_spinner=findViewById(R.id.roguing_completed_and_validated_spinner);
-                crop_stage_spinner=findViewById(R.id.crop_stage_spinner);
+        seed_production_method_spinner = findViewById(R.id.seed_production_method_spinner);
+        roguing_completed_and_validated_spinner = findViewById(R.id.roguing_completed_and_validated_spinner);
+        crop_stage_spinner = findViewById(R.id.crop_stage_spinner);
+        female_no_lines_layout = findViewById(R.id.female_no_lines_layout);
+        total_nos_female_lines = findViewById(R.id.total_nos_female_lines);
+        buttonfemalelines = findViewById(R.id.buttonfemalelines);
+        save_login = findViewById(R.id.save_login);
 
-                save_login=findViewById(R.id.save_login);
-
-                capture_photo_image_view=findViewById(R.id.capture_photo_image_view);
+        capture_photo_image_view = findViewById(R.id.capture_photo_image_view);
 
 
-                save_login.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        submit();
-                    }
-                });
+        save_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                submit();
+            }
+        });
+        buttonfemalelines.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(context, "Female " + total_nos_female_lines.getText(), Toast.LENGTH_SHORT).show();
+                String str=total_nos_female_lines.getText().toString().trim();
+                if(str.equals(""))
+                {
+                    total_nos_female_lines.setError("Please Enter no of female lines.");
+                }else {
+                    int total = Integer.parseInt(total_nos_female_lines.getText().toString().trim());
+                    showLineDialog("Enter No of plants per female line", total, 1);
+                }
+            }
+        });
         prevExistingArea = 0.00;
         fieldVisitModel = new FieldVisitModel();
         fieldMonitoringModels = new FieldMonitoringModels();
@@ -264,12 +294,11 @@ public class FieldVisitThird  extends BaseActivity {
         total_male_plants_textview.setText("" + totalMalePlants);
 
         prevExistingArea = Double.parseDouble(Preferences.get(context, Preferences.SELECTEVISITEXISITINGAREA));
-       existing_area_ha_edittext.setText(""+prevExistingArea);
-        try{
+        existing_area_ha_edittext.setText("" + prevExistingArea);
+        try {
             double loss = prevExistingArea - Double.parseDouble(existing_area_ha_edittext.getText().toString().trim());
             area_loss_ha_textview.setText("" + loss);
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
 
         }
         currentStage = Integer.parseInt(Preferences.get(context, Preferences.SELECTEDVISITID));
@@ -295,6 +324,27 @@ public class FieldVisitThird  extends BaseActivity {
             Toast.makeText(context, "Missing Country Master Id.", Toast.LENGTH_SHORT).show();
             countryCode = 0;
         }
+
+
+        seed_production_method_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(seed_production_method_spinner.getSelectedItem().toString().trim().contains("GMS"))
+                {
+                    female_no_lines_layout.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    female_no_lines_layout.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
         if (cropcode == 113 || cropcode == 115 ||
                 cropcode == 201 || cropcode == 202 ||
@@ -540,12 +590,12 @@ public class FieldVisitThird  extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (existing_area_ha_edittext.getText().toString().trim().equals("")||existing_area_ha_edittext.getText().toString().trim().equals(".")) {
+                if (existing_area_ha_edittext.getText().toString().trim().equals("") || existing_area_ha_edittext.getText().toString().trim().equals(".")) {
 
                 } else {
                     double loss = prevExistingArea - Double.parseDouble(existing_area_ha_edittext.getText().toString().trim());
                     area_loss_ha_textview.setText("" + loss);
-                    double exa=Double.parseDouble(existing_area_ha_edittext.getText().toString().trim());
+                    double exa = Double.parseDouble(existing_area_ha_edittext.getText().toString().trim());
                  /*   if(exa<=0)
                     {
                         lossStatus=1;
@@ -595,8 +645,9 @@ public class FieldVisitThird  extends BaseActivity {
 
             }
         });
-
+        onTextChangeEvent();
     }
+
 
     private void calculateFemaleRogudedPlants() {
         try {
@@ -642,94 +693,92 @@ public class FieldVisitThird  extends BaseActivity {
     }
 
 
-    public void submit()
-    {
-        try{
+    public void submit() {
+        try {
 
-            str_grower_name_textview=grower_name_textview.getText().toString().trim();
-            str_issued_seed_area_textview=issued_seed_area_textview.getText().toString().trim();
-            str_production_code_textview=production_code_textview.getText().toString().trim();
-            str_village_textview=village_textview.getText().toString().trim();
-            str_existing_area_ha_edittext=existing_area_ha_edittext.getText().toString().trim();
-            str_area_loss_ha_textview=area_loss_ha_textview.getText().toString().trim();
-            str_reason_for_area_loss=reason_for_area_loss.getText().toString().trim();
-            str_no_of_rogued_plants_female_edittext=no_of_rogued_plants_female_edittext.getText().toString().trim();
-            str_female_off_type_edittext=female_off_type_edittext.getText().toString().trim();
-            str_female_volunteer_edittext=female_volunteer_edittext.getText().toString().trim();
-            str_female_b_type_edittext=female_b_type_edittext.getText().toString().trim();
-            str_total_female_plants_textview=total_female_plants_textview.getText().toString().trim();
-            str_no_of_rogued_plants_male_edittext=no_of_rogued_plants_male_edittext.getText().toString().trim();
-            str_male_off_type_edittext=male_off_type_edittext.getText().toString().trim();
-            str_male_volunteer_edittext=male_volunteer_edittext.getText().toString().trim();
-            str_male_b_type_edittext=male_b_type_edittext.getText().toString().trim();
-            str_total_male_plants_textview=total_male_plants_textview.getText().toString().trim();
-            str_pollination_start_date=pollination_start_date.getText().toString().trim();
-            str_first_editetext_female_per_line=first_editetext_female_per_line.getText().toString().trim();
-            str_second_editetext_female_per_line=second_editetext_female_per_line.getText().toString().trim();
-            str_third_editetext_female_per_line=third_editetext_female_per_line.getText().toString().trim();
-            str_fourth_editetext_female_per_line=fourth_editetext_female_per_line.getText().toString().trim();
-            str_fifth_editetext_female_per_line=fifth_editetext_female_per_line.getText().toString().trim();
-            str_six_editetext_female_per_line=six_editetext_female_per_line.getText().toString().trim();
-            str_seven_editetext_female_per_line=seven_editetext_female_per_line.getText().toString().trim();
-            str_eight_editetext_female_per_line=eight_editetext_female_per_line.getText().toString().trim();
-            str_nine_editetext_female_per_line=nine_editetext_female_per_line.getText().toString().trim();
-            str_ten_editetext_female_per_line=ten_editetext_female_per_line.getText().toString().trim();
-            str_number_of_expected_edittextview=number_of_expected_edittextview.getText().toString().trim();
-            str_average_weight_seed_edittextview=average_weight_seed_edittextview.getText().toString().trim();
-            str_yield_estimate_kg_edittext=yield_estimate_kg_edittext.getText().toString().trim();
-            str_grower_mobile_no_edittext=grower_mobile_no_edittext.getText().toString().trim();
-            str_recommendations_observations_edittext=recommendations_observations_edittext.getText().toString().trim();
-            str_date_of_field_visit_textview=date_of_field_visit_textview.getText().toString().trim();
-            str_staff_name_textview=staff_name_textview.getText().toString().trim();
-            str_geotag_location_textview=geotag_location_textview.getText().toString().trim();
-            str_seed_production_method_spinner=seed_production_method_spinner.getSelectedItem().toString().trim();
-            str_roguing_completed_and_validated_spinner=roguing_completed_and_validated_spinner.getSelectedItem().toString().trim();
-            str_crop_stage_spinner=crop_stage_spinner.getSelectedItem().toString().trim();
+            str_grower_name_textview = grower_name_textview.getText().toString().trim();
+            str_issued_seed_area_textview = issued_seed_area_textview.getText().toString().trim();
+            str_production_code_textview = production_code_textview.getText().toString().trim();
+            str_village_textview = village_textview.getText().toString().trim();
+            str_existing_area_ha_edittext = existing_area_ha_edittext.getText().toString().trim();
+            str_area_loss_ha_textview = area_loss_ha_textview.getText().toString().trim();
+            str_reason_for_area_loss = reason_for_area_loss.getText().toString().trim();
+            str_no_of_rogued_plants_female_edittext = no_of_rogued_plants_female_edittext.getText().toString().trim();
+            str_female_off_type_edittext = female_off_type_edittext.getText().toString().trim();
+            str_female_volunteer_edittext = female_volunteer_edittext.getText().toString().trim();
+            str_female_b_type_edittext = female_b_type_edittext.getText().toString().trim();
+            str_total_female_plants_textview = total_female_plants_textview.getText().toString().trim();
+            str_no_of_rogued_plants_male_edittext = no_of_rogued_plants_male_edittext.getText().toString().trim();
+            str_male_off_type_edittext = male_off_type_edittext.getText().toString().trim();
+            str_male_volunteer_edittext = male_volunteer_edittext.getText().toString().trim();
+            str_male_b_type_edittext = male_b_type_edittext.getText().toString().trim();
+            str_total_male_plants_textview = total_male_plants_textview.getText().toString().trim();
+            str_pollination_start_date = pollination_start_date.getText().toString().trim();
+            str_first_editetext_female_per_line = first_editetext_female_per_line.getText().toString().trim();
+            str_second_editetext_female_per_line = second_editetext_female_per_line.getText().toString().trim();
+            str_third_editetext_female_per_line = third_editetext_female_per_line.getText().toString().trim();
+            str_fourth_editetext_female_per_line = fourth_editetext_female_per_line.getText().toString().trim();
+            str_fifth_editetext_female_per_line = fifth_editetext_female_per_line.getText().toString().trim();
+            str_six_editetext_female_per_line = six_editetext_female_per_line.getText().toString().trim();
+            str_seven_editetext_female_per_line = seven_editetext_female_per_line.getText().toString().trim();
+            str_eight_editetext_female_per_line = eight_editetext_female_per_line.getText().toString().trim();
+            str_nine_editetext_female_per_line = nine_editetext_female_per_line.getText().toString().trim();
+            str_ten_editetext_female_per_line = ten_editetext_female_per_line.getText().toString().trim();
+            str_number_of_expected_edittextview = number_of_expected_edittextview.getText().toString().trim();
+            str_average_weight_seed_edittextview = average_weight_seed_edittextview.getText().toString().trim();
+            str_yield_estimate_kg_edittext = yield_estimate_kg_edittext.getText().toString().trim();
+            str_grower_mobile_no_edittext = grower_mobile_no_edittext.getText().toString().trim();
+            str_recommendations_observations_edittext = recommendations_observations_edittext.getText().toString().trim();
+            str_date_of_field_visit_textview = date_of_field_visit_textview.getText().toString().trim();
+            str_staff_name_textview = staff_name_textview.getText().toString().trim();
+            str_geotag_location_textview = geotag_location_textview.getText().toString().trim();
+            str_seed_production_method_spinner = seed_production_method_spinner.getSelectedItem().toString().trim();
+            str_roguing_completed_and_validated_spinner = roguing_completed_and_validated_spinner.getSelectedItem().toString().trim();
+            str_crop_stage_spinner = crop_stage_spinner.getSelectedItem().toString().trim();
 
-            String data=str_grower_name_textview+" "+
-                    str_issued_seed_area_textview+" "+
-                    str_production_code_textview+" "+
-                    str_village_textview+" "+
-                    str_existing_area_ha_edittext+" "+
-                    str_area_loss_ha_textview+" "+
-                    str_reason_for_area_loss+" "+
-                    str_no_of_rogued_plants_female_edittext+" "+
-                    str_female_off_type_edittext+" "+
-                    str_female_volunteer_edittext+" "+
-                    str_female_b_type_edittext+" "+
-                    str_total_female_plants_textview+" "+
-                    str_no_of_rogued_plants_male_edittext+" "+
-                    str_male_off_type_edittext+" "+
-                    str_male_volunteer_edittext+" "+
-                    str_male_b_type_edittext+" "+
-                    str_total_male_plants_textview+" "+
-                    str_pollination_start_date+" "+
-                    str_first_editetext_female_per_line+" "+
-                    str_second_editetext_female_per_line+" "+
-                    str_third_editetext_female_per_line+" "+
-                    str_fourth_editetext_female_per_line+" "+
-                    str_fifth_editetext_female_per_line+" "+
-                    str_six_editetext_female_per_line+" "+
-                    str_seven_editetext_female_per_line+" "+
-                    str_eight_editetext_female_per_line+" "+
-                    str_nine_editetext_female_per_line+" "+
-                    str_ten_editetext_female_per_line+" "+
-                    str_number_of_expected_edittextview+" "+
-                    str_average_weight_seed_edittextview+" "+
-                    str_yield_estimate_kg_edittext+" "+
-                    str_grower_mobile_no_edittext+" "+
-                    str_recommendations_observations_edittext+" "+
-                    str_date_of_field_visit_textview+" "+
-                    str_staff_name_textview+" "+
-                    str_geotag_location_textview+" "+
-                    str_seed_production_method_spinner+" "+
-                    str_roguing_completed_and_validated_spinner+" "+
-                    str_crop_stage_spinner+" ";
-            Log.i("Data :",data);
+            String data = str_grower_name_textview + " " +
+                    str_issued_seed_area_textview + " " +
+                    str_production_code_textview + " " +
+                    str_village_textview + " " +
+                    str_existing_area_ha_edittext + " " +
+                    str_area_loss_ha_textview + " " +
+                    str_reason_for_area_loss + " " +
+                    str_no_of_rogued_plants_female_edittext + " " +
+                    str_female_off_type_edittext + " " +
+                    str_female_volunteer_edittext + " " +
+                    str_female_b_type_edittext + " " +
+                    str_total_female_plants_textview + " " +
+                    str_no_of_rogued_plants_male_edittext + " " +
+                    str_male_off_type_edittext + " " +
+                    str_male_volunteer_edittext + " " +
+                    str_male_b_type_edittext + " " +
+                    str_total_male_plants_textview + " " +
+                    str_pollination_start_date + " " +
+                    str_first_editetext_female_per_line + " " +
+                    str_second_editetext_female_per_line + " " +
+                    str_third_editetext_female_per_line + " " +
+                    str_fourth_editetext_female_per_line + " " +
+                    str_fifth_editetext_female_per_line + " " +
+                    str_six_editetext_female_per_line + " " +
+                    str_seven_editetext_female_per_line + " " +
+                    str_eight_editetext_female_per_line + " " +
+                    str_nine_editetext_female_per_line + " " +
+                    str_ten_editetext_female_per_line + " " +
+                    str_number_of_expected_edittextview + " " +
+                    str_average_weight_seed_edittextview + " " +
+                    str_yield_estimate_kg_edittext + " " +
+                    str_grower_mobile_no_edittext + " " +
+                    str_recommendations_observations_edittext + " " +
+                    str_date_of_field_visit_textview + " " +
+                    str_staff_name_textview + " " +
+                    str_geotag_location_textview + " " +
+                    str_seed_production_method_spinner + " " +
+                    str_roguing_completed_and_validated_spinner + " " +
+                    str_crop_stage_spinner + " ";
+            Log.i("Data :", data);
 
-        }catch (Exception e)
-        {
-            Log.i("Error is  :",e.getMessage());
+        } catch (Exception e) {
+            Log.i("Error is  :", e.getMessage());
         }
     }
 
@@ -762,32 +811,30 @@ public class FieldVisitThird  extends BaseActivity {
             str_geotag_location_textview = geotag_location_textview.getText().toString().trim();
             str_crop_stage_spinner = crop_stage_spinner.getSelectedItem().toString();
 
-            str_pollination_start_date=pollination_start_date.getText().toString().trim();
-            str_first_editetext_female_per_line=first_editetext_female_per_line.getText().toString().trim();
-            str_second_editetext_female_per_line=second_editetext_female_per_line.getText().toString().trim();
-            str_third_editetext_female_per_line=third_editetext_female_per_line.getText().toString().trim();
-            str_fourth_editetext_female_per_line=fourth_editetext_female_per_line.getText().toString().trim();
-            str_fifth_editetext_female_per_line=fifth_editetext_female_per_line.getText().toString().trim();
-            str_six_editetext_female_per_line=six_editetext_female_per_line.getText().toString().trim();
-            str_seven_editetext_female_per_line=seven_editetext_female_per_line.getText().toString().trim();
-            str_eight_editetext_female_per_line=eight_editetext_female_per_line.getText().toString().trim();
-            str_nine_editetext_female_per_line=nine_editetext_female_per_line.getText().toString().trim();
-            str_ten_editetext_female_per_line=ten_editetext_female_per_line.getText().toString().trim();
-            str_number_of_expected_edittextview=number_of_expected_edittextview.getText().toString().trim();
-            str_average_weight_seed_edittextview=average_weight_seed_edittextview.getText().toString().trim();
-            str_yield_estimate_kg_edittext=yield_estimate_kg_edittext.getText().toString().trim();
-            str_grower_mobile_no_edittext=grower_mobile_no_edittext.getText().toString().trim();
-            str_seed_production_method_spinner=seed_production_method_spinner.getSelectedItem().toString().trim();
-            str_roguing_completed_and_validated_spinner=roguing_completed_and_validated_spinner.getSelectedItem().toString().trim();
-            str_crop_stage_spinner=crop_stage_spinner.getSelectedItem().toString().trim();
-
+            str_pollination_start_date = pollination_start_date.getText().toString().trim();
+            str_first_editetext_female_per_line = first_editetext_female_per_line.getText().toString().trim();
+            str_second_editetext_female_per_line = second_editetext_female_per_line.getText().toString().trim();
+            str_third_editetext_female_per_line = third_editetext_female_per_line.getText().toString().trim();
+            str_fourth_editetext_female_per_line = fourth_editetext_female_per_line.getText().toString().trim();
+            str_fifth_editetext_female_per_line = fifth_editetext_female_per_line.getText().toString().trim();
+            str_six_editetext_female_per_line = six_editetext_female_per_line.getText().toString().trim();
+            str_seven_editetext_female_per_line = seven_editetext_female_per_line.getText().toString().trim();
+            str_eight_editetext_female_per_line = eight_editetext_female_per_line.getText().toString().trim();
+            str_nine_editetext_female_per_line = nine_editetext_female_per_line.getText().toString().trim();
+            str_ten_editetext_female_per_line = ten_editetext_female_per_line.getText().toString().trim();
+            str_number_of_expected_edittextview = number_of_expected_edittextview.getText().toString().trim();
+            str_average_weight_seed_edittextview = average_weight_seed_edittextview.getText().toString().trim();
+            str_yield_estimate_kg_edittext = yield_estimate_kg_edittext.getText().toString().trim();
+            str_grower_mobile_no_edittext = grower_mobile_no_edittext.getText().toString().trim();
+            str_seed_production_method_spinner = seed_production_method_spinner.getSelectedItem().toString().trim();
+            str_roguing_completed_and_validated_spinner = roguing_completed_and_validated_spinner.getSelectedItem().toString().trim();
+            str_crop_stage_spinner = crop_stage_spinner.getSelectedItem().toString().trim();
 
 
             String data = str_grower_name_textview + " " + str_issued_seed_area_textview + " " + str_production_code_textview + " " + str_village_textview + " " + str_existing_area_ha_edittext + " " + str_area_loss_ha_textview + " " + str_reason_for_area_loss + " " + str_no_of_rogued_plants_female_edittext + " " + str_female_off_type_edittext + " " + str_female_volunteer_edittext + " " + str_female_b_type_edittext + " " + str_total_female_plants_textview + " " + str_no_of_rogued_plants_male_edittext + " " + str_male_off_type_edittext + " " + str_male_volunteer_edittext + " " + str_male_b_type_edittext + " " + str_total_male_plants_textview + " " + str_yield_estimate_kg_edittext + " " + str_grower_mobile_no_edittext + " " + str_recommendations_observations_edittext + " " + str_date_of_field_visit_textview + " " + str_staff_name_textview + " " + str_geotag_location_textview;
             Log.i("Entered Data ", data);
 
-            if(lossStatus==1)
-            {
+            if (lossStatus == 1) {
                 str_area_loss_ha_textview = "0";
                 str_reason_for_area_loss = "0";
                 str_no_of_rogued_plants_female_edittext = "0";
@@ -795,11 +842,11 @@ public class FieldVisitThird  extends BaseActivity {
                 str_female_volunteer_edittext = "0";
                 str_female_b_type_edittext = "0";
                 str_total_female_plants_textview = "0";
-                str_no_of_rogued_plants_male_edittext= "0";
+                str_no_of_rogued_plants_male_edittext = "0";
                 str_male_off_type_edittext = "0";
                 str_male_volunteer_edittext = "0";
                 str_male_b_type_edittext = "0";
-                str_total_male_plants_textview= "0";
+                str_total_male_plants_textview = "0";
                 str_yield_estimate_kg_edittext = "0";
                 // str_grower_mobile_no_edittext = grower_mobile_no_edittext.getText().toString().trim();
                 str_recommendations_observations_edittext = "Area Loss";
@@ -926,8 +973,7 @@ public class FieldVisitThird  extends BaseActivity {
                 } else {
                     Toast.makeText(context, "Local Data Not Saved.", Toast.LENGTH_SHORT).show();
                 }
-            }else
-            {
+            } else {
                 Toast.makeText(context, "Please check all fields are fill properly.", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
@@ -1044,4 +1090,867 @@ public class FieldVisitThird  extends BaseActivity {
         }
     }
 
+    private void onTextChangeEvent() {
+
+
+        first_editetext_female_per_line.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                sum = 0;
+                if (first_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    first_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(first_editetext_female_per_line.getText().toString().trim());
+                }
+                if (second_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    second_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(second_editetext_female_per_line.getText().toString().trim());
+                }
+                if (third_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    third_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(third_editetext_female_per_line.getText().toString().trim());
+                }
+                if (fourth_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    fourth_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(fourth_editetext_female_per_line.getText().toString().trim());
+                }
+                if (fifth_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    fifth_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(fifth_editetext_female_per_line.getText().toString().trim());
+                }
+                if (six_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    six_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(six_editetext_female_per_line.getText().toString().trim());
+                }
+                if (seven_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    seven_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(seven_editetext_female_per_line.getText().toString().trim());
+                }
+                if (eight_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    eight_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(eight_editetext_female_per_line.getText().toString().trim());
+                }
+                if (nine_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    nine_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(nine_editetext_female_per_line.getText().toString().trim());
+                }
+                if (ten_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    ten_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(ten_editetext_female_per_line.getText().toString().trim());
+                }
+                yield_estimate_kg_edittext.setText("" + sum);
+            }
+        });
+        second_editetext_female_per_line.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                sum = 0;
+                if (first_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    first_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(first_editetext_female_per_line.getText().toString().trim());
+                }
+                if (second_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    second_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(second_editetext_female_per_line.getText().toString().trim());
+                }
+                if (third_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    third_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(third_editetext_female_per_line.getText().toString().trim());
+                }
+                if (fourth_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    fourth_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(fourth_editetext_female_per_line.getText().toString().trim());
+                }
+                if (fifth_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    fifth_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(fifth_editetext_female_per_line.getText().toString().trim());
+                }
+                if (six_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    six_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(six_editetext_female_per_line.getText().toString().trim());
+                }
+                if (seven_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    seven_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(seven_editetext_female_per_line.getText().toString().trim());
+                }
+                if (eight_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    eight_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(eight_editetext_female_per_line.getText().toString().trim());
+                }
+                if (nine_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    nine_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(nine_editetext_female_per_line.getText().toString().trim());
+                }
+                if (ten_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    ten_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(ten_editetext_female_per_line.getText().toString().trim());
+                }
+                yield_estimate_kg_edittext.setText("" + sum);
+            }
+        });
+        third_editetext_female_per_line.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                sum = 0;
+                if (first_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    first_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(first_editetext_female_per_line.getText().toString().trim());
+                }
+                if (second_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    second_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(second_editetext_female_per_line.getText().toString().trim());
+                }
+                if (third_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    third_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(third_editetext_female_per_line.getText().toString().trim());
+                }
+                if (fourth_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    fourth_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(fourth_editetext_female_per_line.getText().toString().trim());
+                }
+                if (fifth_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    fifth_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(fifth_editetext_female_per_line.getText().toString().trim());
+                }
+                if (six_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    six_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(six_editetext_female_per_line.getText().toString().trim());
+                }
+                if (seven_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    seven_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(seven_editetext_female_per_line.getText().toString().trim());
+                }
+                if (eight_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    eight_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(eight_editetext_female_per_line.getText().toString().trim());
+                }
+                if (nine_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    nine_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(nine_editetext_female_per_line.getText().toString().trim());
+                }
+                if (ten_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    ten_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(ten_editetext_female_per_line.getText().toString().trim());
+                }
+                yield_estimate_kg_edittext.setText("" + sum);
+            }
+        });
+        fourth_editetext_female_per_line.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                sum = 0;
+                if (first_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    first_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(first_editetext_female_per_line.getText().toString().trim());
+                }
+                if (second_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    second_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(second_editetext_female_per_line.getText().toString().trim());
+                }
+                if (third_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    third_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(third_editetext_female_per_line.getText().toString().trim());
+                }
+                if (fourth_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    fourth_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(fourth_editetext_female_per_line.getText().toString().trim());
+                }
+                if (fifth_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    fifth_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(fifth_editetext_female_per_line.getText().toString().trim());
+                }
+                if (six_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    six_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(six_editetext_female_per_line.getText().toString().trim());
+                }
+                if (seven_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    seven_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(seven_editetext_female_per_line.getText().toString().trim());
+                }
+                if (eight_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    eight_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(eight_editetext_female_per_line.getText().toString().trim());
+                }
+                if (nine_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    nine_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(nine_editetext_female_per_line.getText().toString().trim());
+                }
+                if (ten_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    ten_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(ten_editetext_female_per_line.getText().toString().trim());
+                }
+                yield_estimate_kg_edittext.setText("" + sum);
+            }
+        });
+        fifth_editetext_female_per_line.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                sum = 0;
+                if (first_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    first_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(first_editetext_female_per_line.getText().toString().trim());
+                }
+                if (second_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    second_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(second_editetext_female_per_line.getText().toString().trim());
+                }
+                if (third_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    third_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(third_editetext_female_per_line.getText().toString().trim());
+                }
+                if (fourth_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    fourth_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(fourth_editetext_female_per_line.getText().toString().trim());
+                }
+                if (fifth_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    fifth_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(fifth_editetext_female_per_line.getText().toString().trim());
+                }
+                if (six_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    six_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(six_editetext_female_per_line.getText().toString().trim());
+                }
+                if (seven_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    seven_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(seven_editetext_female_per_line.getText().toString().trim());
+                }
+                if (eight_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    eight_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(eight_editetext_female_per_line.getText().toString().trim());
+                }
+                if (nine_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    nine_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(nine_editetext_female_per_line.getText().toString().trim());
+                }
+                if (ten_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    ten_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(ten_editetext_female_per_line.getText().toString().trim());
+                }
+                yield_estimate_kg_edittext.setText("" + sum);
+            }
+        });
+        six_editetext_female_per_line.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                sum = 0;
+                if (first_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    first_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(first_editetext_female_per_line.getText().toString().trim());
+                }
+                if (second_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    second_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(second_editetext_female_per_line.getText().toString().trim());
+                }
+                if (third_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    third_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(third_editetext_female_per_line.getText().toString().trim());
+                }
+                if (fourth_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    fourth_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(fourth_editetext_female_per_line.getText().toString().trim());
+                }
+                if (fifth_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    fifth_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(fifth_editetext_female_per_line.getText().toString().trim());
+                }
+                if (six_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    six_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(six_editetext_female_per_line.getText().toString().trim());
+                }
+                if (seven_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    seven_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(seven_editetext_female_per_line.getText().toString().trim());
+                }
+                if (eight_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    eight_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(eight_editetext_female_per_line.getText().toString().trim());
+                }
+                if (nine_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    nine_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(nine_editetext_female_per_line.getText().toString().trim());
+                }
+                if (ten_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    ten_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(ten_editetext_female_per_line.getText().toString().trim());
+                }
+                yield_estimate_kg_edittext.setText("" + sum);
+            }
+        });
+        seven_editetext_female_per_line.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                sum = 0;
+                if (first_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    first_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(first_editetext_female_per_line.getText().toString().trim());
+                }
+                if (second_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    second_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(second_editetext_female_per_line.getText().toString().trim());
+                }
+                if (third_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    third_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(third_editetext_female_per_line.getText().toString().trim());
+                }
+                if (fourth_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    fourth_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(fourth_editetext_female_per_line.getText().toString().trim());
+                }
+                if (fifth_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    fifth_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(fifth_editetext_female_per_line.getText().toString().trim());
+                }
+                if (six_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    six_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(six_editetext_female_per_line.getText().toString().trim());
+                }
+                if (seven_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    seven_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(seven_editetext_female_per_line.getText().toString().trim());
+                }
+                if (eight_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    eight_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(eight_editetext_female_per_line.getText().toString().trim());
+                }
+                if (nine_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    nine_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(nine_editetext_female_per_line.getText().toString().trim());
+                }
+                if (ten_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    ten_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(ten_editetext_female_per_line.getText().toString().trim());
+                }
+                yield_estimate_kg_edittext.setText("" + sum);
+            }
+        });
+        eight_editetext_female_per_line.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                sum = 0;
+                if (first_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    first_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(first_editetext_female_per_line.getText().toString().trim());
+                }
+                if (second_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    second_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(second_editetext_female_per_line.getText().toString().trim());
+                }
+                if (third_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    third_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(third_editetext_female_per_line.getText().toString().trim());
+                }
+                if (fourth_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    fourth_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(fourth_editetext_female_per_line.getText().toString().trim());
+                }
+                if (fifth_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    fifth_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(fifth_editetext_female_per_line.getText().toString().trim());
+                }
+                if (six_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    six_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(six_editetext_female_per_line.getText().toString().trim());
+                }
+                if (seven_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    seven_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(seven_editetext_female_per_line.getText().toString().trim());
+                }
+                if (eight_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    eight_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(eight_editetext_female_per_line.getText().toString().trim());
+                }
+                if (nine_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    nine_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(nine_editetext_female_per_line.getText().toString().trim());
+                }
+                if (ten_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    ten_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(ten_editetext_female_per_line.getText().toString().trim());
+                }
+                yield_estimate_kg_edittext.setText("" + sum);
+            }
+        });
+        nine_editetext_female_per_line.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                sum = 0;
+                if (first_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    first_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(first_editetext_female_per_line.getText().toString().trim());
+                }
+                if (second_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    second_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(second_editetext_female_per_line.getText().toString().trim());
+                }
+                if (third_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    third_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(third_editetext_female_per_line.getText().toString().trim());
+                }
+                if (fourth_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    fourth_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(fourth_editetext_female_per_line.getText().toString().trim());
+                }
+                if (fifth_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    fifth_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(fifth_editetext_female_per_line.getText().toString().trim());
+                }
+                if (six_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    six_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(six_editetext_female_per_line.getText().toString().trim());
+                }
+                if (seven_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    seven_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(seven_editetext_female_per_line.getText().toString().trim());
+                }
+                if (eight_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    eight_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(eight_editetext_female_per_line.getText().toString().trim());
+                }
+                if (nine_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    nine_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(nine_editetext_female_per_line.getText().toString().trim());
+                }
+                if (ten_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    ten_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(ten_editetext_female_per_line.getText().toString().trim());
+                }
+                yield_estimate_kg_edittext.setText("" + sum);
+            }
+        });
+        ten_editetext_female_per_line.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                sum = 0;
+                if (first_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    first_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(first_editetext_female_per_line.getText().toString().trim());
+                }
+                if (second_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    second_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(second_editetext_female_per_line.getText().toString().trim());
+                }
+                if (third_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    third_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(third_editetext_female_per_line.getText().toString().trim());
+                }
+                if (fourth_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    fourth_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(fourth_editetext_female_per_line.getText().toString().trim());
+                }
+                if (fifth_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    fifth_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(fifth_editetext_female_per_line.getText().toString().trim());
+                }
+                if (six_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    six_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(six_editetext_female_per_line.getText().toString().trim());
+                }
+                if (seven_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    seven_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(seven_editetext_female_per_line.getText().toString().trim());
+                }
+                if (eight_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    eight_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(eight_editetext_female_per_line.getText().toString().trim());
+                }
+                if (nine_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    nine_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(nine_editetext_female_per_line.getText().toString().trim());
+                }
+                if (ten_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    ten_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(ten_editetext_female_per_line.getText().toString().trim());
+                }
+                yield_estimate_kg_edittext.setText("" + sum);
+
+
+            }
+        });
+        average_weight_seed_edittextview.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                sum = 0;
+                if (first_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    first_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(first_editetext_female_per_line.getText().toString().trim());
+                }
+                if (second_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    second_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(second_editetext_female_per_line.getText().toString().trim());
+                }
+                if (third_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    third_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(third_editetext_female_per_line.getText().toString().trim());
+                }
+                if (fourth_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    fourth_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(fourth_editetext_female_per_line.getText().toString().trim());
+                }
+                if (fifth_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    fifth_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(fifth_editetext_female_per_line.getText().toString().trim());
+                }
+                if (six_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    six_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(six_editetext_female_per_line.getText().toString().trim());
+                }
+                if (seven_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    seven_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(seven_editetext_female_per_line.getText().toString().trim());
+                }
+                if (eight_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    eight_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(eight_editetext_female_per_line.getText().toString().trim());
+                }
+                if (nine_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    nine_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(nine_editetext_female_per_line.getText().toString().trim());
+                }
+                if (ten_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    ten_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(ten_editetext_female_per_line.getText().toString().trim());
+                }
+                if (average_weight_seed_edittextview.getText().toString().trim().equals("")) {
+
+                } else {
+                    double ssum = sum;
+                    Log.i("sum", "" + sum);
+                    double dd = ssum / 10.0;
+                    Log.i("sum1", "" + dd);
+                    dd = dd + Integer.parseInt(number_of_expected_edittextview.getText().toString().trim());
+                    Log.i("sum2", "" + dd);
+                    dd = dd * Integer.parseInt(total_female_plants_textview.getText().toString().trim());
+                    Log.i("sum3", "" + dd);
+                    dd = dd * Double.parseDouble(average_weight_seed_edittextview.getText().toString().trim());
+                    Log.i("sum4", "" + dd);
+                    dd = dd / 1000;
+                    Log.i("sum5", "" + dd);
+                    double d = dd;
+
+                    yield_estimate_kg_edittext.setText("" + d);
+                }
+            }
+        });
+
+
+    }
+    void showLineDialog(String s, int total, int type) {
+        try {
+            lineDialog = new Dialog(context);
+            lineDialog.setContentView(R.layout.line_dialog_entry);
+
+            TextView txt_title, btnclose;
+            Button btn_save;
+            TableLayout grid;
+            allEds = new ArrayList<>();
+            txt_title = lineDialog.findViewById(R.id.txt_title);
+            btnclose = lineDialog.findViewById(R.id.btnclose);
+            btn_save = lineDialog.findViewById(R.id.btn_save);
+            grid = lineDialog.findViewById(R.id.grid);
+            txt_title.setText("" + s);
+            btnclose.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    lineDialog.dismiss();
+                }
+            });
+            TableRow row=new TableRow(context);
+            for (int i = 0; i < total; i++) {
+                if(i==0)
+                    row=new TableRow(context);
+                if(i%3==0)
+                    row=new TableRow(context);
+
+                LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(120, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f); // Width , height
+                EditText editText = new EditText(this);
+                editText.setBackgroundResource(R.drawable.line_edittext);
+                editText.setPadding(7,7,7,7);
+                editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                // editText.setLayoutParams(lparams);
+                //editText.setTextSize(10);
+                editText.setTextColor(Color.BLACK);
+                editText.setGravity(Gravity.CENTER);
+                editText.setHint("Line " + (i + 1));
+                // editText.setNextFocusForwardId(i+2);
+                editText.setId(i + 1);
+                allEds.add(editText);
+                TextView txt=new TextView(context);
+                txt.setText(" ");
+
+
+                row.addView(editText);
+//                row.addView(txt);
+                Log.i("Added","pass"+i);
+                if(i%3==0)
+                    grid.addView(row);
+            }
+
+            btn_save.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    int cnt = 0;
+                    int total = 0;
+                    for (EditText et : allEds) {
+                        Log.i("Test : ", et.getText().toString());
+                        if (et.getText().toString().trim().equals("")) {
+                            et.setError("Missing");
+                            cnt++;
+                        } else {
+                            try {
+                                total += Integer.parseInt(et.getText().toString().trim());
+
+                            } catch (Exception e) {
+                                cnt++;
+                                et.setError("Invalid");
+                            }
+
+                        }
+
+                    }
+                    if (cnt == 0) {
+                        if (type == 1) {
+                            allEds_female = new ArrayList<>(allEds);
+                            total_female_plants_textview.setText("" + total);
+
+                        } else {
+                            allEds_male = new ArrayList<>(allEds);
+                            total_male_plants_textview.setText("" + total);
+
+                        }
+                        lineDialog.dismiss();
+                    }
+
+
+                }
+            });
+
+
+            lineDialog.show();
+
+        } catch (Exception e) {
+            Toast.makeText(context, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+    }
 }
