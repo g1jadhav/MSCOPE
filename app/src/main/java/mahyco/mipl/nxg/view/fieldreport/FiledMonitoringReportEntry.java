@@ -399,22 +399,26 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
                     mRecyclerView.setAdapter(mFieldMonitoringReportAdapter);
                     mRecyclerView.setVisibility(View.VISIBLE);
                 }*/
+if(mSearchByIdNameSpinner.getSelectedItem()==null||mSearchByIdNameSpinner.getSelectedItem().toString().trim().contains("Select")) {
+    {
+        showNoInternetDialog(mContext,"Please Select the grower.");
+    }
+}else{
+    if (CheckGpsStatus()) {
 
-                if(CheckGpsStatus()) {
-
-                    if (database.isFirstFieldVisitDone(selectedGrowerId)) {
-                        showNoInternetDialog(mContext, "First visit is done with this grower.");
-                    } else if (database.isFirstFieldVisitDoneLocal(selectedGrowerId)) {
-                        showNoInternetDialog(mContext, "First visit is done with this grower.");
-                    } else {
-                        Intent intent = new Intent(this, FiledReportDashboard.class);
-                        startActivity(intent);
-                    }
-                }else
-                {
-                    Intent intent1 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    startActivity(intent1);
-                }
+        if (database.isFirstFieldVisitDone(selectedGrowerId)) {
+            showNoInternetDialog(mContext, "First visit is done with this grower.");
+        } else if (database.isFirstFieldVisitDoneLocal(selectedGrowerId)) {
+            showNoInternetDialog(mContext, "First visit is done with this grower.");
+        } else {
+            Intent intent = new Intent(this, FiledReportDashboard.class);
+            startActivity(intent);
+        }
+    } else {
+        Intent intent1 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+        startActivity(intent1);
+    }
+}
                 break;
             case R.id.back_btn:
                 mGrowerSearchLayout.setVisibility(View.VISIBLE);
