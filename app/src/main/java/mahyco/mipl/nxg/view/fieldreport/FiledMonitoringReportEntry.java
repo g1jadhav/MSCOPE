@@ -7,8 +7,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.SystemClock;
+import android.provider.Settings;
+import android.telephony.CarrierConfigManager;
 import android.text.Html;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -150,7 +153,8 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
     SqlightDatabase database;
     AppCompatButton btn_search;
     int selectedGrowerId=0;
-
+    LocationManager locationManager ;
+    boolean GpsStatus ;
     @Override
     protected int getLayout() {
         return R.layout.filed_monitoring_report_entry;
@@ -162,7 +166,7 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
             AppCompatTextView mVersionTextView = findViewById(R.id.registration_version_code);
             mVersionTextView.setText(getString(R.string.version_code, BuildConfig.VERSION_CODE));
 
-            mContext = this;
+            mContext = FiledMonitoringReportEntry.this;
             database = new SqlightDatabase(mContext);
 
             Toolbar mToolbar = findViewById(R.id.toolbar);
@@ -179,7 +183,11 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
                     finish();
                 }
             });
-
+            if(!CheckGpsStatus())
+            {
+                Intent intent1 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent1);
+            }
             mSearchByIdNameSpinner = findViewById(R.id.search_grower_by_id_name);
 
             mSearchByIdNameSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -391,18 +399,21 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
                     mRecyclerView.setAdapter(mFieldMonitoringReportAdapter);
                     mRecyclerView.setVisibility(View.VISIBLE);
                 }*/
-                if(database.isFirstFieldVisitDone(selectedGrowerId))
-                {
-                 showNoInternetDialog(mContext,"First visit is done with this grower.");
-                }
-                else if(database.isFirstFieldVisitDoneLocal(selectedGrowerId))
-                {
-                    showNoInternetDialog(mContext, "First visit is done with this grower.");
 
-                }
-                else {
-                    Intent intent = new Intent(this, FiledReportDashboard.class);
-                    startActivity(intent);
+                if(CheckGpsStatus()) {
+
+                    if (database.isFirstFieldVisitDone(selectedGrowerId)) {
+                        showNoInternetDialog(mContext, "First visit is done with this grower.");
+                    } else if (database.isFirstFieldVisitDoneLocal(selectedGrowerId)) {
+                        showNoInternetDialog(mContext, "First visit is done with this grower.");
+                    } else {
+                        Intent intent = new Intent(this, FiledReportDashboard.class);
+                        startActivity(intent);
+                    }
+                }else
+                {
+                    Intent intent1 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent1);
                 }
                 break;
             case R.id.back_btn:
@@ -1231,6 +1242,11 @@ ProgressDialog progressDialog;
 
 
     }
-
+    public boolean CheckGpsStatus(){
+        locationManager = (LocationManager)mContext.getSystemService(Context.LOCATION_SERVICE);
+        assert locationManager != null;
+        GpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        return GpsStatus;
+    }
 
 }

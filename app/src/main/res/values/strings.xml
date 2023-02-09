@@ -229,7 +229,7 @@
     <string name="Please_select_parent_seed_location">Please select parent seed issue location</string>
     <string name="Please_select_female_batch_no">Please select parent seed batch no. female/variety</string>
     <string name="Please_select_male_batch_no">Please select parent seed batch no. male</string>
-    <string name="field_monitoring_report_entry">Field Monitoring Report Entry</string>
+    <string name="field_monitoring_report_entry">Field Monitoring</string>
     <string name="upload_data">Data Upload</string>
     <string name="user_registration">User Registration</string>
     <string name="grower_search">Grower Search</string>
@@ -255,7 +255,7 @@
     <string name="mandatory_field_visit_4th">Mandatory Field Visit-4th</string>
     <string name="optional_field_visit">Optional Field Visit </string>
     <string name="filter">Filter</string>
-    <string name="save">Save</string>
+    <string name="save">Submit</string>
     <string name="issued_seed_area_ha">Issued Seed area (Ha:)<font color='#FF0000'>*</font></string>
     <string name="seed_area_is_totally_lost">Seed area is totally lost<font color='#FF0000'>*</font></string>
     <string name="seed_production_area_tagging">Seed Production Area Tagging</string>

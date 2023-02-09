@@ -334,7 +334,7 @@ public class FieldVisitFirst extends BaseActivity {
 
                     }
                 }, mYear, mMonth, mDay);
-                //mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+                mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
                 mDatePicker.setTitle("Female sowing date");
                 mDatePicker.show();
 
@@ -372,7 +372,7 @@ public class FieldVisitFirst extends BaseActivity {
 
                     }
                 }, mYear, mMonth, mDay);
-                //mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+                mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
                 mDatePicker.setTitle("Male sowing date");
                 mDatePicker.show();
 
@@ -682,6 +682,60 @@ public class FieldVisitFirst extends BaseActivity {
             if (str_area_lost_spinner.equals("No")) {
                 b = validation();
             } else {
+                str_reason_for_total_area_loss = reason_for_total_area_loss.getText().toString().trim();
+                str_total_tagged_area_below_location_textview = "0";
+                str_area_loss_or_gain_textview ="0";
+                str_existing_area_ha_textview = "0";
+                str_total_nos_female_lines = "0";
+                str_total_nos_male_lines ="0";
+                str_female_spacing_rr = "0";
+                str_female_spacing_pp = "0";
+                str_male_spacing_rr = "0";
+                str_male_spacing_pp ="0";
+                str_female_planting_ratio ="0";
+                str_male_planting_ratio = "0";
+                str_total_female_plants_textview = "0";
+                str_total_male_plants_textview = "0";
+                str_yield_estimate_kg_edittext ="0";
+                //  str_staff_name_textview = staff_name_textview.getText().toString().trim();
+                str_geotag_location_textview = geotag_location_textview.getText().toString().trim();
+                str_isolation_meter_textview = "0";
+                str_area_lost_spinner = area_lost_spinner.getSelectedItem().toString().trim();
+                str_isolation_spinner  ="0";
+                str_crop_stage_spinner ="0";
+
+                 if(str_reason_for_total_area_loss.trim().equals(""))
+                 {
+                     reason_for_total_area_loss.setError("REQUIRED");
+                     b=true;
+                 }else if(str_geotag_location_textview.trim().equals(""))
+                 {geotag_location_textview.setError("REQUIRED");
+                     b=true;
+                 }else if(str_grower_name_textview.trim().equals(""))
+                 {  b=true;
+                     grower_name_textview.setError("REQUIRED");
+                 }else if(str_issued_seed_area_textview.trim().equals(""))
+                 {issued_seed_area_textview.setError("REQUIRED");
+                     b=true;
+                 }else if(str_production_code_textview.trim().equals(""))
+                 {production_code_textview.setError("REQUIRED");
+                     b=true;
+                 }else if(str_village_textview.trim().equals(""))
+                 {  b=true;
+                     village_textview.setError("REQUIRED");
+                 }else if(str_female_date_sowing.trim().equals(""))
+                 {  b=true;
+                     female_date_sowing.setError("REQUIRED");
+                 }else if(str_male_date_sowing.trim().equals(""))
+                 {male_date_sowing.setError("REQUIRED");
+                     b=true;
+                 }else if(str_staff_name_textview.trim().equals(""))
+                 {  b=true;
+                     staff_name_textview.setError("REQUIRED");
+                 }else
+                 {
+                     b=false;
+                 }
 
             }
 
@@ -1001,6 +1055,39 @@ public class FieldVisitFirst extends BaseActivity {
                 Toast.makeText(context, "Photo Missing.Please Take Photo.", Toast.LENGTH_SHORT).show();
 
             }
+            if (str_crop_stage_spinner.contains("Select")) {
+                cnt++;
+                Toast.makeText(context, "Please Select Crop Stage.", Toast.LENGTH_SHORT).show();
+
+            }
+
+            if(database.getAllFieldDetails(-1).size()==0)
+            {
+                cnt++;
+                Toast.makeText(context, "Please tagged the location.", Toast.LENGTH_SHORT).show();
+
+            }
+            if(cropcategory==1)
+            {
+                if(allEds_male==null||allEds_male.size()==0)
+                {
+                    cnt++;
+                    Toast.makeText(context, "Missing male line entry", Toast.LENGTH_SHORT).show();
+
+                }
+                if(allEds_female==null||allEds_female.size()==0)
+                {
+                    cnt++;
+                    Toast.makeText(context, "Missing female line entry", Toast.LENGTH_SHORT).show();
+
+                }else
+                {
+
+                }
+
+            }
+
+
             //   Toast.makeText(this, "Count :"+cnt, Toast.LENGTH_SHORT).show();
             if (cnt == 0)
                 return false;

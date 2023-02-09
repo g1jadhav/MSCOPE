@@ -82,6 +82,7 @@
         <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/drawable/calendar.xml" value="0.193" />
         <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/drawable/edit.xml" value="0.193" />
         <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/drawable/email.xml" value="0.193" />
+        <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/drawable/line_edittext.xml" value="0.193" />
         <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/drawable/login_btn.xml" value="0.193" />
         <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/drawable/login_screen_edittext.xml" value="0.2115" />
         <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/drawable/login_spinner_style.xml" value="0.193" />
@@ -97,6 +98,9 @@
         <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/layout/field_visit_first.xml" value="0.22" />
         <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/layout/filed_monitoring_report_entry.xml" value="0.14628623188405798" />
         <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdated/app/src/main/res/layout/line_dialog_entry.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdatedUptoFirstVisit/app/src/main/res/layout/activity_main.xml" value="0.1793478260869565" />
+        <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdatedUptoFirstVisit/app/src/main/res/layout/content_main.xml" value="0.1793478260869565" />
+        <entry key="..\:/Users/MYTINAUR001/AndroidStudioProjects/MSCOPEUpdatedUptoFirstVisit/app/src/main/res/layout/field_visit_first.xml" value="0.1793478260869565" />
       </map>
     </option>
   </component>
