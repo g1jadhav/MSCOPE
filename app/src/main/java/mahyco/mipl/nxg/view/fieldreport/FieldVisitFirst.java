@@ -93,7 +93,7 @@ public class FieldVisitFirst extends BaseActivity {
     int countryId = 0;
     Double lati = 0.0, longi = 0.0;
     Double totalTaggedArea = 0.0;
-    LinearLayout ll_yes, ll_no, ll_femalelinelayout, ll_malelinelayout, female_spacinglayout;
+    LinearLayout ll_yes, ll_no, ll_femalelinelayout, ll_malelinelayout, female_spacinglayout,image_layout;
 
 
     EditText
@@ -271,6 +271,8 @@ public class FieldVisitFirst extends BaseActivity {
         //LinearLayout
         ll_yes = findViewById(R.id.ll_yes);
         ll_no = findViewById(R.id.ll_no);
+        image_layout = findViewById(R.id.image_layout);
+
         ll_femalelinelayout = findViewById(R.id.female_no_lines_layout);
         ll_malelinelayout = findViewById(R.id.male_no_lines_layout);
         female_spacinglayout = findViewById(R.id.female_spacinglayout);
@@ -545,9 +547,11 @@ public class FieldVisitFirst extends BaseActivity {
                 if (position == 1) {
                     ll_no.setVisibility(View.GONE);
                     ll_yes.setVisibility(View.VISIBLE);
+                    image_layout.setVisibility(View.GONE);
                 } else {
                     ll_no.setVisibility(View.VISIBLE);
                     ll_yes.setVisibility(View.GONE);
+                    image_layout.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -703,6 +707,7 @@ public class FieldVisitFirst extends BaseActivity {
                 str_area_lost_spinner = area_lost_spinner.getSelectedItem().toString().trim();
                 str_isolation_spinner  ="0";
                 str_crop_stage_spinner ="0";
+                front_path="NA";
 
                  if(str_reason_for_total_area_loss.trim().equals(""))
                  {
@@ -852,7 +857,8 @@ public class FieldVisitFirst extends BaseActivity {
                 firstVisitLocalModel.setData(jsonObject.toString());
                 if (database.addFirstVisit1(fieldVisitModel)) {
                     Toast.makeText(context, "Local Data Saved.", Toast.LENGTH_SHORT).show();
-                    finish();
+                    showDialogwithFinish(context,"Data Saved Successfully.");
+                   // finish();
                /*     Intent i = new Intent(context, FiledMonitoringReportEntry.class);
 // set the new task and clear flags
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
