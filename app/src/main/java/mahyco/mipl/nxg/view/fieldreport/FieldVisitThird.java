@@ -104,7 +104,14 @@ public class FieldVisitThird extends BaseActivity {
             recommendations_observations_edittext,
             date_of_field_visit_textview,
             staff_name_textview,
-            geotag_location_textview,total_nos_female_lines;
+            geotag_location_textview,total_nos_female_lines,
+            female_spacing_rr,
+            female_spacing_pp,
+            male_spacing_rr,
+            male_spacing_pp,
+            female_planting_ratio,
+            male_planting_ratio
+    ;
 
     CCFSerachSpinner
             seed_production_method_spinner,
@@ -114,7 +121,7 @@ public class FieldVisitThird extends BaseActivity {
     Button save_login,buttonfemalelines;
     ImageView
             capture_photo_image_view;
-    LinearLayout female_no_lines_layout;
+    LinearLayout female_no_lines_layout,female_spacinglayout;
     String str_grower_name_textview = "",
             str_issued_seed_area_textview = "",
             str_production_code_textview = "",
@@ -251,6 +258,13 @@ public class FieldVisitThird extends BaseActivity {
         total_nos_female_lines = findViewById(R.id.total_nos_female_lines);
         buttonfemalelines = findViewById(R.id.buttonfemalelines);
         save_login = findViewById(R.id.save_login);
+        female_spacing_rr = findViewById(R.id.female_spacing_rr);
+        female_spacing_pp = findViewById(R.id.female_spacing_pp);
+        male_spacing_rr = findViewById(R.id.male_spacing_rr);
+        male_spacing_pp = findViewById(R.id.male_spacing_pp);
+        female_planting_ratio = findViewById(R.id.female_planting_ratio);
+        male_planting_ratio = findViewById(R.id.male_planting_ratio);
+        female_spacinglayout = findViewById(R.id.female_spacinglayout);
 
         capture_photo_image_view = findViewById(R.id.capture_photo_image_view);
 
@@ -331,7 +345,14 @@ public class FieldVisitThird extends BaseActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(seed_production_method_spinner.getSelectedItem().toString().trim().contains("GMS"))
                 {
-                    female_no_lines_layout.setVisibility(View.VISIBLE);
+                    if(cropcategory==1) {
+                        female_no_lines_layout.setVisibility(View.VISIBLE);
+                        female_spacinglayout.setVisibility(View.GONE);
+                    }else
+                    {
+                        female_no_lines_layout.setVisibility(View.GONE);
+                        female_spacinglayout.setVisibility(View.VISIBLE);
+                    }
                 }
                 else
                 {
@@ -1852,7 +1873,37 @@ public class FieldVisitThird extends BaseActivity {
             }
         });
 
+        male_planting_ratio.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
 
+                  setFieldCropArea();
+
+
+                }
+            }
+        });
+    }
+    private void setFieldCropArea() {
+        try {
+            //  setArea();
+          //  totalTaggedArea = 0.0;
+            double issuedArea = Double.parseDouble(issued_seed_area_textview.getText().toString());
+            double existingArea = Double.parseDouble(existing_area_ha_edittext.getText().toString());
+            double femaleRRSpacingArea = Double.parseDouble(female_spacing_rr.getText().toString());
+            double femalePPSpacingArea = Double.parseDouble(female_spacing_pp.getText().toString());
+            double maleRRSpacingArea = Double.parseDouble(male_spacing_rr.getText().toString());
+            double malePPSpacingArea = Double.parseDouble(male_spacing_pp.getText().toString());
+            double femalePlantingRatioArea = Double.parseDouble(female_planting_ratio.getText().toString());
+            double malePlantingRatioArea = Double.parseDouble(male_planting_ratio.getText().toString());
+            double totalFemale = (((existingArea * 100000000) / (femaleRRSpacingArea * femalePPSpacingArea)) * ((femalePlantingRatioArea / (femalePlantingRatioArea + malePlantingRatioArea))));
+            double totalMale = (((existingArea * 100000000) / (maleRRSpacingArea * malePPSpacingArea)) * ((malePlantingRatioArea / (femalePlantingRatioArea + malePlantingRatioArea))));
+            total_female_plants_textview.setText("" + new Double(totalFemale).intValue());
+            total_male_plants_textview.setText("" + new Double(totalMale).intValue());
+        } catch (Exception e) {
+            Log.i("Error is FCA", e.getMessage());
+        }
     }
     void showLineDialog(String s, int total, int type) {
         try {

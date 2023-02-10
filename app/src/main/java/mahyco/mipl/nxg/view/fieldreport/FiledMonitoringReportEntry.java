@@ -7,8 +7,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.text.Html;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -150,7 +152,8 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
     SqlightDatabase database;
     AppCompatButton btn_search;
     int selectedGrowerId=0;
-
+    LocationManager locationManager ;
+    boolean GpsStatus ;
     @Override
     protected int getLayout() {
         return R.layout.filed_monitoring_report_entry;
@@ -401,13 +404,17 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
 
                 }
                 else {*/
-                Toast.makeText(mContext, ""+selectedGrowerId, Toast.LENGTH_SHORT).show();
-                if(selectedGrowerId==0)
-                {
-                    Toast.makeText(mContext, "Please Select Grower.", Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(mContext, ""+selectedGrowerId, Toast.LENGTH_SHORT).show();
+                if (CheckGpsStatus()) {
+                    if (selectedGrowerId == 0) {
+                        Toast.makeText(mContext, "Please Select Grower.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Intent intent = new Intent(this, FiledReportDashboard.class);
+                        startActivity(intent);
+                    }
                 }else {
-                    Intent intent = new Intent(this, FiledReportDashboard.class);
-                    startActivity(intent);
+                    Intent intent1 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(intent1);
                 }
              //   }
                 break;
@@ -1238,5 +1245,10 @@ ProgressDialog progressDialog;
 
     }
 
-
+    public boolean CheckGpsStatus(){
+        locationManager = (LocationManager)mContext.getSystemService(Context.LOCATION_SERVICE);
+        assert locationManager != null;
+        GpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        return GpsStatus;
+    }
 }

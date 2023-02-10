@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
@@ -98,7 +99,21 @@ public abstract class BaseActivity extends AppCompatActivity {
         mDialog = alertDialog.create();
         mDialog.show();
     }
-
+    protected void showDialogwithFinish(Context context, String message) {
+        mDialog = null;
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+        alertDialog.setCancelable(false);
+        alertDialog.setTitle("MSCOPE");
+        alertDialog.setMessage(message);
+        alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ((Activity) context).finish();
+            }
+        });
+        mDialog = alertDialog.create();
+        mDialog.show();
+    }
     protected void dismissNoInternetDialog() {
         if (mDialog != null && mDialog.isShowing()) {
             mDialog.dismiss();

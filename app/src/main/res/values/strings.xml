@@ -229,7 +229,7 @@
     <string name="Please_select_parent_seed_location">Please select parent seed issue location</string>
     <string name="Please_select_female_batch_no">Please select parent seed batch no. female/variety</string>
     <string name="Please_select_male_batch_no">Please select parent seed batch no. male</string>
-    <string name="field_monitoring_report_entry">Field Monitoring Report Entry</string>
+    <string name="field_monitoring_report_entry">Field Monitoring</string>
     <string name="upload_data">Data Upload</string>
     <string name="user_registration">User Registration</string>
     <string name="grower_search">Grower Search</string>

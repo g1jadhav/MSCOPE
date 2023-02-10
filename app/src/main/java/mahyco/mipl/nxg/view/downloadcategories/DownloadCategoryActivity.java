@@ -869,7 +869,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
 
 
 
-}
+
 class AddVisitMasterDataLocally extends AsyncTask
 {
     ProgressDialog progressDialog;
@@ -914,6 +914,7 @@ class AddVisitMasterDataLocally extends AsyncTask
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
         progressDialog.dismiss();
+        showNoInternetDialog(mContext, "Visit Master Downloaded Successfully.");
     }
 }
 
@@ -952,8 +953,6 @@ class AddVillageMasterDataLocally extends AsyncTask
         {
 
         }
-
-
         return null;
     }
 
@@ -961,6 +960,8 @@ class AddVillageMasterDataLocally extends AsyncTask
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
         progressDialog.dismiss();
+        showNoInternetDialog(mContext, "Village Master Downloaded Successfully.");
 
     }
+}
 }
