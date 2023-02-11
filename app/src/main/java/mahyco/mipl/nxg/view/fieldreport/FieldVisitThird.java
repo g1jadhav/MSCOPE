@@ -104,24 +104,23 @@ public class FieldVisitThird extends BaseActivity {
             recommendations_observations_edittext,
             date_of_field_visit_textview,
             staff_name_textview,
-            geotag_location_textview,total_nos_female_lines,
+            geotag_location_textview, total_nos_female_lines,
             female_spacing_rr,
             female_spacing_pp,
             male_spacing_rr,
             male_spacing_pp,
             female_planting_ratio,
-            male_planting_ratio
-    ;
+            male_planting_ratio;
 
     CCFSerachSpinner
             seed_production_method_spinner,
             roguing_completed_and_validated_spinner,
             crop_stage_spinner;
 
-    Button save_login,buttonfemalelines;
+    Button save_login, buttonfemalelines;
     ImageView
             capture_photo_image_view;
-    LinearLayout female_no_lines_layout,female_spacinglayout;
+    LinearLayout female_no_lines_layout, female_spacinglayout;
     String str_grower_name_textview = "",
             str_issued_seed_area_textview = "",
             str_production_code_textview = "",
@@ -279,11 +278,10 @@ public class FieldVisitThird extends BaseActivity {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(context, "Female " + total_nos_female_lines.getText(), Toast.LENGTH_SHORT).show();
-                String str=total_nos_female_lines.getText().toString().trim();
-                if(str.equals(""))
-                {
+                String str = total_nos_female_lines.getText().toString().trim();
+                if (str.equals("")) {
                     total_nos_female_lines.setError("Please Enter no of female lines.");
-                }else {
+                } else {
                     int total = Integer.parseInt(total_nos_female_lines.getText().toString().trim());
                     showLineDialog("Enter No of plants per female line", total, 1);
                 }
@@ -343,19 +341,15 @@ public class FieldVisitThird extends BaseActivity {
         seed_production_method_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(seed_production_method_spinner.getSelectedItem().toString().trim().contains("GMS"))
-                {
-                    if(cropcategory==1) {
+                if (seed_production_method_spinner.getSelectedItem().toString().trim().contains("GMS")) {
+                    if (cropcategory == 1) {
                         female_no_lines_layout.setVisibility(View.VISIBLE);
                         female_spacinglayout.setVisibility(View.GONE);
-                    }else
-                    {
+                    } else {
                         female_no_lines_layout.setVisibility(View.GONE);
                         female_spacinglayout.setVisibility(View.VISIBLE);
                     }
-                }
-                else
-                {
+                } else {
                     female_no_lines_layout.setVisibility(View.GONE);
                 }
             }
@@ -1878,17 +1872,18 @@ public class FieldVisitThird extends BaseActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
 
-                  setFieldCropArea();
+                    setFieldCropArea();
 
 
                 }
             }
         });
     }
+
     private void setFieldCropArea() {
         try {
             //  setArea();
-          //  totalTaggedArea = 0.0;
+            //  totalTaggedArea = 0.0;
             double issuedArea = Double.parseDouble(issued_seed_area_textview.getText().toString());
             double existingArea = Double.parseDouble(existing_area_ha_edittext.getText().toString());
             double femaleRRSpacingArea = Double.parseDouble(female_spacing_rr.getText().toString());
@@ -1905,6 +1900,7 @@ public class FieldVisitThird extends BaseActivity {
             Log.i("Error is FCA", e.getMessage());
         }
     }
+
     void showLineDialog(String s, int total, int type) {
         try {
             lineDialog = new Dialog(context);
@@ -1925,17 +1921,17 @@ public class FieldVisitThird extends BaseActivity {
                     lineDialog.dismiss();
                 }
             });
-            TableRow row=new TableRow(context);
+            TableRow row = new TableRow(context);
             for (int i = 0; i < total; i++) {
-                if(i==0)
-                    row=new TableRow(context);
-                if(i%3==0)
-                    row=new TableRow(context);
+                if (i == 0)
+                    row = new TableRow(context);
+                if (i % 3 == 0)
+                    row = new TableRow(context);
 
                 LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(120, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f); // Width , height
                 EditText editText = new EditText(this);
                 editText.setBackgroundResource(R.drawable.line_edittext);
-                editText.setPadding(7,7,7,7);
+                editText.setPadding(7, 7, 7, 7);
                 editText.setInputType(InputType.TYPE_CLASS_NUMBER);
                 // editText.setLayoutParams(lparams);
                 //editText.setTextSize(10);
@@ -1945,14 +1941,14 @@ public class FieldVisitThird extends BaseActivity {
                 // editText.setNextFocusForwardId(i+2);
                 editText.setId(i + 1);
                 allEds.add(editText);
-                TextView txt=new TextView(context);
+                TextView txt = new TextView(context);
                 txt.setText(" ");
 
 
                 row.addView(editText);
 //                row.addView(txt);
-                Log.i("Added","pass"+i);
-                if(i%3==0)
+                Log.i("Added", "pass" + i);
+                if (i % 3 == 0)
                     grid.addView(row);
             }
 
