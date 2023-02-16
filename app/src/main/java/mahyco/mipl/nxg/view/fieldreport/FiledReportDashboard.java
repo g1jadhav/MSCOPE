@@ -95,6 +95,19 @@ public class FiledReportDashboard extends AppCompatActivity implements View.OnCl
                 btnStage4.setVisibility(View.VISIBLE);
                 btnOptional.setVisibility(View.VISIBLE);
                 break;
+            case 5:
+                btnStage1.setVisibility(View.GONE);
+                btnStage2.setVisibility(View.GONE);
+                btnStage3.setVisibility(View.GONE);
+                btnStage4.setVisibility(View.GONE);
+                btnOptional.setVisibility(View.VISIBLE);
+                break;
+            default:
+                btnStage1.setVisibility(View.GONE);
+                btnStage2.setVisibility(View.GONE);
+                btnStage3.setVisibility(View.GONE);
+                btnStage4.setVisibility(View.GONE);
+                btnOptional.setVisibility(View.VISIBLE);
         }
 
     }

@@ -1430,6 +1430,78 @@ Context context;
                 if (average_weight_seed_edittextview.getText().toString().trim().equals("")) {
 
                 } else {
+                    yield_estimate_kg_edittext.setText("" + sum);
+                }
+            }
+        });
+        unprocessed_seed_ready_edittextview.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                sum = 0;
+                if (first_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    first_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(first_editetext_female_per_line.getText().toString().trim());
+                }
+                if (second_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    second_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(second_editetext_female_per_line.getText().toString().trim());
+                }
+                if (third_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    third_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(third_editetext_female_per_line.getText().toString().trim());
+                }
+                if (fourth_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    fourth_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(fourth_editetext_female_per_line.getText().toString().trim());
+                }
+                if (fifth_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    fifth_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(fifth_editetext_female_per_line.getText().toString().trim());
+                }
+                if (six_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    six_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(six_editetext_female_per_line.getText().toString().trim());
+                }
+                if (seven_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    seven_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(seven_editetext_female_per_line.getText().toString().trim());
+                }
+                if (eight_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    eight_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(eight_editetext_female_per_line.getText().toString().trim());
+                }
+                if (nine_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    nine_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(nine_editetext_female_per_line.getText().toString().trim());
+                }
+                if (ten_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    ten_editetext_female_per_line.setText("0");
+                } else {
+                    sum += Integer.parseInt(ten_editetext_female_per_line.getText().toString().trim());
+                }
+                if (average_weight_seed_edittextview.getText().toString().trim().equals("")) {
+
+                } else {
                     double ssum = sum;
                     Log.i("sum", "" + sum);
                     double dd = ssum / 10.0;
@@ -1442,13 +1514,13 @@ Context context;
                     Log.i("sum4", "" + dd);
                     dd = dd / 1000;
                     Log.i("sum5", "" + dd);
+                    dd=dd+(Integer.parseInt(unprocessed_seed_ready_edittextview.getText().toString().trim()));
                     double d = dd;
 
                     yield_estimate_kg_edittext.setText("" + (int)d);
                 }
             }
         });
-
 
     }
 
