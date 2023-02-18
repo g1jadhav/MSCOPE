@@ -266,7 +266,9 @@ public class FieldVisitThird extends BaseActivity {
         female_spacinglayout = findViewById(R.id.female_spacinglayout);
 
         capture_photo_image_view = findViewById(R.id.capture_photo_image_view);
-
+        layout_losslayout = findViewById(R.id.losslayout);
+        layout_existarea = findViewById(R.id.existlayout);
+        layout_losslayout.setVisibility(View.GONE);
 
         save_login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -306,6 +308,11 @@ public class FieldVisitThird extends BaseActivity {
         total_male_plants_textview.setText("" + totalMalePlants);
 
         prevExistingArea = Double.parseDouble(Preferences.get(context, Preferences.SELECTEVISITEXISITINGAREA));
+
+        if(prevExistingArea<=0) {
+            lossStatus = 1;
+            showOther();
+        }
         existing_area_ha_edittext.setText("" + prevExistingArea);
         try {
             double loss = prevExistingArea - Double.parseDouble(existing_area_ha_edittext.getText().toString().trim());
@@ -611,7 +618,7 @@ public class FieldVisitThird extends BaseActivity {
                     double loss = prevExistingArea - Double.parseDouble(existing_area_ha_edittext.getText().toString().trim());
                     area_loss_ha_textview.setText("" + loss);
                     double exa = Double.parseDouble(existing_area_ha_edittext.getText().toString().trim());
-                 /*   if(exa<=0)
+                    if(exa<=0)
                     {
                         lossStatus=1;
                         showOther();
@@ -619,7 +626,7 @@ public class FieldVisitThird extends BaseActivity {
                     {
                         lossStatus=2;
                         hideOther();
-                    }*/
+                    }
                 }
             }
         });
@@ -662,7 +669,27 @@ public class FieldVisitThird extends BaseActivity {
         });
         onTextChangeEvent();
     }
+    public void hideOther() {
+        try{
+            layout_losslayout.setVisibility(View.GONE);
+            layout_existarea.setVisibility(View.VISIBLE);
+            recommendations_observations_edittext.setVisibility(View.VISIBLE);
+        }catch (Exception e)
+        {
 
+        }
+    }
+
+    public void showOther() {
+        try{
+            layout_losslayout.setVisibility(View.VISIBLE);
+            layout_existarea.setVisibility(View.GONE);
+            recommendations_observations_edittext.setVisibility(View.GONE);
+        }catch (Exception e)
+        {
+
+        }
+    }
 
     private void calculateFemaleRogudedPlants() {
         try {
@@ -979,12 +1006,8 @@ public class FieldVisitThird extends BaseActivity {
                 JsonObject jsonObject = new JsonParser().parse(new Gson().toJson(fieldMonitoringModels)).getAsJsonObject();
                 Log.i("JsonData", jsonObject.toString().trim());
                 if (database.addFirstVisit1(fieldVisitModel)) {
-                    Toast.makeText(context, "Local Data Saved.", Toast.LENGTH_SHORT).show();
-                    finish();
-               /*     Intent i = new Intent(context, FiledMonitoringReportEntry.class);
-// set the new task and clear flags
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(i);*/
+                   showDialogwithFinish(context,"Data Saved Successfully.");
+
                 } else {
                     Toast.makeText(context, "Local Data Not Saved.", Toast.LENGTH_SHORT).show();
                 }
@@ -1092,7 +1115,7 @@ public class FieldVisitThird extends BaseActivity {
                 geotag_location_textview.setError("Required");
                 cnt++;
             }
-            if (str_crop_stage_spinner.trim().equals("") || str_crop_stage_spinner.trim().equals("Select")) {
+            if (str_crop_stage_spinner.trim().equals("") || str_crop_stage_spinner.trim().contains("Select")) {
                 Toast.makeText(context, "Select crop stage.", Toast.LENGTH_SHORT).show();
                 cnt++;
             }

@@ -42,6 +42,8 @@
                 android:text="@string/grower_name"
                 android:textColor="@color/black"
                 android:textSize="15sp"
+
+
                 android:textStyle="bold" />
 
             <EditText
@@ -145,7 +147,6 @@
                 android:layout_height="45dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/login_screen_edittext"
-                android:enabled="false"
                 android:hint="@string/enter_existing_area_ha"
                 android:inputType="numberDecimal"
                 android:maxLines="1"
@@ -181,7 +182,11 @@
                     android:textColor="@color/black"
                     android:textSize="18sp" />
             </LinearLayout>
-
+        <LinearLayout
+            android:id="@+id/losslayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
             <LinearLayout
                 android:id="@+id/reason_for_area_loss_layout"
                 android:layout_width="match_parent"
@@ -206,6 +211,13 @@
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp" />
             </LinearLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/existlayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -983,7 +995,7 @@
                     android:textColor="@color/black"
                     android:textSize="18sp" />
             </LinearLayout>
-
+        </LinearLayout>
             <LinearLayout
                 android:id="@+id/crop_stage_layout"
                 android:layout_width="match_parent"

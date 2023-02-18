@@ -206,6 +206,11 @@ public class FieldVisitSecond extends BaseActivity {
         total_male_plants_textview.setText("" + totalMalePlants);
 
         prevExistingArea = Double.parseDouble(Preferences.get(context, Preferences.SELECTEVISITEXISITINGAREA));
+
+        if(prevExistingArea<=0) {
+            lossStatus = 1;
+            showOther();
+        }
         existing_area_ha_edittext.setText(""+String.format("%.2f",prevExistingArea));
         try{
             double loss = prevExistingArea - Double.parseDouble(existing_area_ha_edittext.getText().toString().trim());
@@ -602,6 +607,7 @@ public class FieldVisitSecond extends BaseActivity {
 
                 if(lossStatus==1)
                 {
+                    recommendations_observations_edittext.setText("Area Loss");
                     str_area_loss_ha_textview = "0";
                     str_reason_area_loss = "0";
                     str_no_of_rogued_plants_female_edittext = "0";
@@ -731,12 +737,9 @@ public class FieldVisitSecond extends BaseActivity {
                 JsonObject jsonObject = new JsonParser().parse(new Gson().toJson(fieldMonitoringModels)).getAsJsonObject();
                 Log.i("JsonData", jsonObject.toString().trim());
                 if (database.addFirstVisit1(fieldVisitModel)) {
-                    Toast.makeText(context, "Local Data Saved.", Toast.LENGTH_SHORT).show();
-                    finish();
-               /*     Intent i = new Intent(context, FiledMonitoringReportEntry.class);
-// set the new task and clear flags
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(i);*/
+
+                    showDialogwithFinish(context,"Data Saved Successfully.");
+
                 } else {
                     Toast.makeText(context, "Local Data Not Saved.", Toast.LENGTH_SHORT).show();
                 }

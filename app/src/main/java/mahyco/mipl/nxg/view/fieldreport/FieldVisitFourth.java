@@ -148,7 +148,8 @@ public class FieldVisitFourth extends BaseActivity {
             str_recommendations_observations_edittext,
             str_date_of_field_visit_textview,
             str_staff_name_textview,
-            str_geotag_location_textview, str_male_parent_uprooted_spinner,
+            str_geotag_location_textview,
+            str_male_parent_uprooted_spinner,
             str_crop_stage_spinner,
             str_field_ratings_for_spinner;
 
@@ -251,6 +252,10 @@ public class FieldVisitFourth extends BaseActivity {
         btn_save = findViewById(R.id.save_login);
         capture_photo_image_view = findViewById(R.id.capture_photo_image_view);
         national_id_photo_front_side_btn = findViewById(R.id.national_id_photo_front_side_btn);
+        layout_losslayout = findViewById(R.id.losslayout);
+        layout_existarea = findViewById(R.id.existlayout);
+        layout_losslayout.setVisibility(View.GONE);
+
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -276,6 +281,12 @@ public class FieldVisitFourth extends BaseActivity {
         total_male_plants_textview.setText("" + totalMalePlants);
 
         prevExistingArea = Double.parseDouble(Preferences.get(context, Preferences.SELECTEVISITEXISITINGAREA));
+
+        if (prevExistingArea <= 0) {
+            lossStatus = 1;
+            showOther();
+        }
+
         existing_area_ha_edittext.setText("" + prevExistingArea);
         try {
             double loss = prevExistingArea - Double.parseDouble(existing_area_ha_edittext.getText().toString().trim());
@@ -558,15 +569,13 @@ public class FieldVisitFourth extends BaseActivity {
                     double loss = prevExistingArea - Double.parseDouble(existing_area_ha_edittext.getText().toString().trim());
                     area_loss_ha_textview.setText("" + loss);
                     double exa = Double.parseDouble(existing_area_ha_edittext.getText().toString().trim());
-                 /*   if(exa<=0)
-                    {
-                        lossStatus=1;
+                    if (exa <= 0) {
+                        lossStatus = 1;
                         showOther();
-                    }else
-                    {
-                        lossStatus=2;
+                    } else {
+                        lossStatus = 2;
                         hideOther();
-                    }*/
+                    }
                 }
             }
         });
@@ -686,6 +695,26 @@ public class FieldVisitFourth extends BaseActivity {
 
 
         onTextChangeEvent();
+    }
+
+    public void hideOther() {
+        try {
+            layout_losslayout.setVisibility(View.GONE);
+            layout_existarea.setVisibility(View.VISIBLE);
+            recommendations_observations_edittext.setVisibility(View.VISIBLE);
+        } catch (Exception e) {
+
+        }
+    }
+
+    public void showOther() {
+        try {
+            layout_losslayout.setVisibility(View.VISIBLE);
+            layout_existarea.setVisibility(View.GONE);
+            recommendations_observations_edittext.setVisibility(View.GONE);
+        } catch (Exception e) {
+
+        }
     }
 
     private void onTextChangeEvent() {
@@ -1069,7 +1098,7 @@ public class FieldVisitFourth extends BaseActivity {
 
                 yield_estimate_kg_edittext.setText("" + (int) d);
             } else {
-             //   Toast.makeText(context, "Some Fields are Empty. ", Toast.LENGTH_SHORT).show();
+                //   Toast.makeText(context, "Some Fields are Empty. ", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
             Toast.makeText(context, "check proper fields are entered or not.", Toast.LENGTH_SHORT).show();
@@ -1079,15 +1108,15 @@ public class FieldVisitFourth extends BaseActivity {
     public void sumCalculateValidation() {
         int cnt = 0;
         if (first_editetext_female_per_line.getText().toString().trim().equals("")) {
-                first_editetext_female_per_line.setError("Required");
+            first_editetext_female_per_line.setError("Required");
 
         }
         if (second_editetext_female_per_line.getText().toString().trim().equals("")) {
-               second_editetext_female_per_line.setError("Required");
+            second_editetext_female_per_line.setError("Required");
 
         }
         if (third_editetext_female_per_line.getText().toString().trim().equals("")) {
-               third_editetext_female_per_line.setError("Required");
+            third_editetext_female_per_line.setError("Required");
 
         }
         if (fourth_editetext_female_per_line.getText().toString().trim().equals("")) {
@@ -1095,11 +1124,11 @@ public class FieldVisitFourth extends BaseActivity {
 
         }
         if (fifth_editetext_female_per_line.getText().toString().trim().equals("")) {
-             fifth_editetext_female_per_line.setError("Required");
+            fifth_editetext_female_per_line.setError("Required");
 
         }
         if (six_editetext_female_per_line.getText().toString().trim().equals("")) {
-              six_editetext_female_per_line.setError("Required");
+            six_editetext_female_per_line.setError("Required");
 
         }
         if (seven_editetext_female_per_line.getText().toString().trim().equals("")) {
@@ -1107,15 +1136,15 @@ public class FieldVisitFourth extends BaseActivity {
 
         }
         if (eight_editetext_female_per_line.getText().toString().trim().equals("")) {
-              eight_editetext_female_per_line.setError("Required");
+            eight_editetext_female_per_line.setError("Required");
 
         }
         if (nine_editetext_female_per_line.getText().toString().trim().equals("")) {
-             nine_editetext_female_per_line.setError("Required");
+            nine_editetext_female_per_line.setError("Required");
 
         }
         if (ten_editetext_female_per_line.getText().toString().trim().equals("")) {
-               ten_editetext_female_per_line.setError("Required");
+            ten_editetext_female_per_line.setError("Required");
 
         }
         if (average_weight_seed_edittextview.getText().toString().trim().equals("")) {
@@ -1172,6 +1201,89 @@ public class FieldVisitFourth extends BaseActivity {
     public void submit1() {
 
         try {
+            if(lossStatus==1)
+            {
+                str_grower_name_textview = "0";
+                str_issued_seed_area_textview = "0";
+                str_production_code_textview = "0";
+                str_village_textview = "0";
+                str_existing_area_ha_edittext ="0";
+                str_area_loss_ha_textview = "0";
+                str_reason_for_area_loss_spinner ="0";
+                str_total_female_plants_textview = "0";
+                str_total_male_plants_textview = "0";
+                str_first_editetext_female_per_line ="0";
+                str_second_editetext_female_per_line = "0";
+                str_third_editetext_female_per_line ="0";
+                str_fourth_editetext_female_per_line = "0";
+                str_fifth_editetext_female_per_line ="0";
+                str_six_editetext_female_per_line ="0";
+                str_seven_editetext_female_per_line = "0";
+                str_eight_editetext_female_per_line = "0";
+                str_nine_editetext_female_per_line ="0";
+                str_ten_editetext_female_per_line = "0";
+                str_number_of_expected_edittextview = "0";
+                str_average_weight_seed_edittextview = "0";
+                str_unprocessed_seed_ready_edittextview ="0";
+                str_yield_estimate_kg_edittext ="0";
+                str_pollination_end_date_textview = "0";
+                str_expected_date_of_harvesting_textview ="0";
+                str_expected_date_of_despatching_textview = "0";
+                str_no_of_rogued_plants_female_edittext = "0";
+                str_female_off_type_edittext = "0";
+                str_female_volunteer_edittext ="0";
+                str_female_b_type_edittext ="0";
+                str_no_of_rogued_plants_male_edittext ="0";
+                str_male_off_type_edittext = "0";
+                str_male_volunteer_edittext = "0";
+                str_male_b_type_edittext = "0";
+                str_grower_mobile_no_edittext = "0";
+                str_recommendations_observations_edittext = "0";
+                str_male_parent_uprooted_spinner = "0";
+                str_field_ratings_for_spinner = "0";
+
+            }
+            else
+            {
+                str_grower_name_textview = "";
+                str_issued_seed_area_textview = "";
+                str_production_code_textview = "";
+                str_village_textview = "";
+                str_existing_area_ha_edittext ="";
+                str_area_loss_ha_textview = "";
+                str_reason_for_area_loss_spinner ="";
+                str_total_female_plants_textview = "";
+                str_total_male_plants_textview = "";
+                str_first_editetext_female_per_line ="";
+                str_second_editetext_female_per_line = "";
+                str_third_editetext_female_per_line ="";
+                str_fourth_editetext_female_per_line = "";
+                str_fifth_editetext_female_per_line ="";
+                str_six_editetext_female_per_line ="";
+                str_seven_editetext_female_per_line = "";
+                str_eight_editetext_female_per_line = "";
+                str_nine_editetext_female_per_line ="";
+                str_ten_editetext_female_per_line = "";
+                str_number_of_expected_edittextview = "";
+                str_average_weight_seed_edittextview = "";
+                str_unprocessed_seed_ready_edittextview ="";
+                str_yield_estimate_kg_edittext ="";
+                str_pollination_end_date_textview = "";
+                str_expected_date_of_harvesting_textview ="";
+                str_expected_date_of_despatching_textview = "";
+                str_no_of_rogued_plants_female_edittext = "";
+                str_female_off_type_edittext = "";
+                str_female_volunteer_edittext ="";
+                str_female_b_type_edittext ="";
+                str_no_of_rogued_plants_male_edittext ="";
+                str_male_off_type_edittext = "";
+                str_male_volunteer_edittext = "";
+                str_male_b_type_edittext = "";
+                str_grower_mobile_no_edittext = "";
+                str_recommendations_observations_edittext = "";
+                str_male_parent_uprooted_spinner = "";
+                str_field_ratings_for_spinner = "";
+            }
             str_grower_name_textview = grower_name_textview.getText().toString().trim();
             str_issued_seed_area_textview = issued_seed_area_textview.getText().toString().trim();
             str_production_code_textview = production_code_textview.getText().toString().trim();
@@ -1219,125 +1331,124 @@ public class FieldVisitFourth extends BaseActivity {
             Log.i("Entered Data ", data);
 
 
-            fieldVisitModel.setUserId(userid);// 1,
-            fieldVisitModel.setCountryId(countryId);// 1,
-            fieldVisitModel.setCountryMasterId(countryCode);// 90,
-            fieldVisitModel.setMandatoryFieldVisitId(4);// 1,
-            fieldVisitModel.setFieldVisitType("Mandatory Field Visit");// Mandatory Field Visit,
-            fieldVisitModel.setTotalSeedAreaLost(Double.parseDouble(str_area_loss_ha_textview));// 0.02,
-            fieldVisitModel.setTaggedAreaInHA(Double.parseDouble("0.0"));// 0.1,
-            fieldVisitModel.setExistingAreaInHA(Double.parseDouble(str_existing_area_ha_edittext));// 0.1,
-            fieldVisitModel.setReasonForTotalLossed(str_reason_for_area_loss_spinner);// Reason For Total Lossed,
-            fieldVisitModel.setFemaleSowingDt(str_date_of_field_visit_textview);// 2023-01-15T05;//35;//13.528Z,
-            fieldVisitModel.setMaleSowingDt(str_date_of_field_visit_textview);// 2023-01-15T05;//35;//13.528Z,
-            fieldVisitModel.setIsolationM(str_date_of_field_visit_textview);// Yes,
-            fieldVisitModel.setIsolationMeter(0);// 2,
-            fieldVisitModel.setCropStage(str_crop_stage_spinner);// For Field Crop,
-            fieldVisitModel.setTotalNoOfFemaleLines(Integer.parseInt("0"));// 10,
-            fieldVisitModel.setTotalNoOfMaleLines(Integer.parseInt("0"));// 10,
-            fieldVisitModel.setFemaleSpacingRRinCM(Integer.parseInt("0"));// 2,
-            fieldVisitModel.setFemaleSpacingPPinCM(Integer.parseInt("0"));// 3,
-            fieldVisitModel.setMaleSpacingRRinCM(Integer.parseInt("0"));// 2,
-            fieldVisitModel.setMaleSpacingPPinCM(Integer.parseInt("0"));// 3,
-            fieldVisitModel.setPlantingRatioFemale(Integer.parseInt("0"));// 5,
-            fieldVisitModel.setPlantingRatioMale(Integer.parseInt("0"));// 4,
-            fieldVisitModel.setCropCategoryType("" + croptype);// For Field Crop,
-            fieldVisitModel.setTotalFemalePlants(Integer.parseInt(str_total_female_plants_textview));// 20,
-            fieldVisitModel.setTotalMalePlants(Integer.parseInt(str_total_male_plants_textview));// 20,
-            fieldVisitModel.setYieldEstimateInKg(Integer.parseInt(str_yield_estimate_kg_edittext));// 50,
-            fieldVisitModel.setObservations(str_recommendations_observations_edittext + " v-" + BuildConfig.VERSION_NAME);// Observations Here,
-            fieldVisitModel.setFieldVisitDt(str_date_of_field_visit_textview);// 2023-01-15T05;//35;//13.529Z,
-            fieldVisitModel.setLatitude("" + lati);// 19.886857,
-            fieldVisitModel.setLongitude("" + longi);// 75.3514908,
-            fieldVisitModel.setCapturePhoto(front_path);// ,
-            fieldVisitModel.setCreatedBy(str_staff_name_textview);
-
-            fieldVisitModel.setAreaLossInHa(str_area_loss_ha_textview);
-            fieldVisitModel.setNoOfRoguedFemalePlants(str_no_of_rogued_plants_female_edittext);
-            fieldVisitModel.setNoOfRoguedMalePlants(str_no_of_rogued_plants_male_edittext);
-            fieldVisitModel.setSeedProductionMethod("");
-            fieldVisitModel.setRoguingCompletedValidated("");
-            fieldVisitModel.setSingleCobsPerPlant(str_number_of_expected_edittextview);
-            fieldVisitModel.setSingleCobsPerPlantInGm(str_average_weight_seed_edittextview);
-            fieldVisitModel.setUnprocessedSeedReadyInKg("0");
-            fieldVisitModel.setPollinationStartDt(str_pollination_end_date_textview);
-            fieldVisitModel.setPollinationEndDt(str_pollination_end_date_textview);
-            fieldVisitModel.setExpectedDtOfHarvesting(str_expected_date_of_harvesting_textview);
-            fieldVisitModel.setExpectedDtOfDespatching(str_expected_date_of_despatching_textview);
-            fieldVisitModel.setMaleParentUprooted("0");
 
 
-            ArrayList<FieldPlantLaneModels> lst_FieldPlantLaneModels = new ArrayList<>();
-            ArrayList<FieldVisitLocationModel> lst_location = new ArrayList<>();
+            if (validation()) {
+                fieldVisitModel.setUserId(userid);// 1,
+                fieldVisitModel.setCountryId(countryId);// 1,
+                fieldVisitModel.setCountryMasterId(countryCode);// 90,
+                fieldVisitModel.setMandatoryFieldVisitId(4);// 1,
+                fieldVisitModel.setFieldVisitType("Mandatory Field Visit");// Mandatory Field Visit,
+                fieldVisitModel.setTotalSeedAreaLost(Double.parseDouble(str_area_loss_ha_textview));// 0.02,
+                fieldVisitModel.setTaggedAreaInHA(Double.parseDouble("0.0"));// 0.1,
+                fieldVisitModel.setExistingAreaInHA(Double.parseDouble(str_existing_area_ha_edittext));// 0.1,
+                fieldVisitModel.setReasonForTotalLossed(str_reason_for_area_loss_spinner);// Reason For Total Lossed,
+                fieldVisitModel.setFemaleSowingDt(str_date_of_field_visit_textview);// 2023-01-15T05;//35;//13.528Z,
+                fieldVisitModel.setMaleSowingDt(str_date_of_field_visit_textview);// 2023-01-15T05;//35;//13.528Z,
+                fieldVisitModel.setIsolationM(str_date_of_field_visit_textview);// Yes,
+                fieldVisitModel.setIsolationMeter(0);// 2,
+                fieldVisitModel.setCropStage(str_crop_stage_spinner);// For Field Crop,
+                fieldVisitModel.setTotalNoOfFemaleLines(Integer.parseInt("0"));// 10,
+                fieldVisitModel.setTotalNoOfMaleLines(Integer.parseInt("0"));// 10,
+                fieldVisitModel.setFemaleSpacingRRinCM(Integer.parseInt("0"));// 2,
+                fieldVisitModel.setFemaleSpacingPPinCM(Integer.parseInt("0"));// 3,
+                fieldVisitModel.setMaleSpacingRRinCM(Integer.parseInt("0"));// 2,
+                fieldVisitModel.setMaleSpacingPPinCM(Integer.parseInt("0"));// 3,
+                fieldVisitModel.setPlantingRatioFemale(Integer.parseInt("0"));// 5,
+                fieldVisitModel.setPlantingRatioMale(Integer.parseInt("0"));// 4,
+                fieldVisitModel.setCropCategoryType("" + croptype);// For Field Crop,
+                fieldVisitModel.setTotalFemalePlants(Integer.parseInt(str_total_female_plants_textview));// 20,
+                fieldVisitModel.setTotalMalePlants(Integer.parseInt(str_total_male_plants_textview));// 20,
+                fieldVisitModel.setYieldEstimateInKg(Integer.parseInt(str_yield_estimate_kg_edittext));// 50,
+                fieldVisitModel.setObservations(str_recommendations_observations_edittext + " v-" + BuildConfig.VERSION_NAME);// Observations Here,
+                fieldVisitModel.setFieldVisitDt(str_date_of_field_visit_textview);// 2023-01-15T05;//35;//13.529Z,
+                fieldVisitModel.setLatitude("" + lati);// 19.886857,
+                fieldVisitModel.setLongitude("" + longi);// 75.3514908,
+                fieldVisitModel.setCapturePhoto(front_path);// ,
+                fieldVisitModel.setCreatedBy(str_staff_name_textview);
+                fieldVisitModel.setAreaLossInHa(str_area_loss_ha_textview);
+                fieldVisitModel.setNoOfRoguedFemalePlants(str_no_of_rogued_plants_female_edittext);
+                fieldVisitModel.setNoOfRoguedMalePlants(str_no_of_rogued_plants_male_edittext);
+                fieldVisitModel.setSeedProductionMethod("");
+                fieldVisitModel.setRoguingCompletedValidated("");
+                fieldVisitModel.setSingleCobsPerPlant(str_number_of_expected_edittextview);
+                fieldVisitModel.setSingleCobsPerPlantInGm(str_average_weight_seed_edittextview);
+                fieldVisitModel.setUnprocessedSeedReadyInKg("0");
+                fieldVisitModel.setPollinationStartDt(str_pollination_end_date_textview);
+                fieldVisitModel.setPollinationEndDt(str_pollination_end_date_textview);
+                fieldVisitModel.setExpectedDtOfHarvesting(str_expected_date_of_harvesting_textview);
+                fieldVisitModel.setExpectedDtOfDespatching(str_expected_date_of_despatching_textview);
+                fieldVisitModel.setMaleParentUprooted("0");
 
-            ArrayList<FieldVisitRoguedPlantModel> lst_roguredPlants = new ArrayList<>();
-            ArrayList<FieldVisitFruitsCobModel> lst_fruitCob = new ArrayList<>();
-            FieldVisitRoguedPlantModel r_male_offtype = new FieldVisitRoguedPlantModel();
-            FieldVisitRoguedPlantModel r_male_volunteer = new FieldVisitRoguedPlantModel();
-            FieldVisitRoguedPlantModel r_male_btype = new FieldVisitRoguedPlantModel();
-            r_male_offtype.setCategoryType("Male");
-            r_male_offtype.setPlantType("OffType");
-            r_male_offtype.setNoOfCount(Integer.parseInt(str_male_off_type_edittext.trim()));
 
-            r_male_volunteer.setCategoryType("Male");
-            r_male_volunteer.setPlantType("Volunteer");
-            r_male_volunteer.setNoOfCount(Integer.parseInt(str_male_volunteer_edittext.trim()));
+                ArrayList<FieldPlantLaneModels> lst_FieldPlantLaneModels = new ArrayList<>();
+                ArrayList<FieldVisitLocationModel> lst_location = new ArrayList<>();
 
-            r_male_btype.setCategoryType("Male");
-            r_male_btype.setPlantType("B-Type");
-            r_male_btype.setNoOfCount(Integer.parseInt(str_male_b_type_edittext.trim()));
+                ArrayList<FieldVisitRoguedPlantModel> lst_roguredPlants = new ArrayList<>();
+                ArrayList<FieldVisitFruitsCobModel> lst_fruitCob = new ArrayList<>();
+                FieldVisitRoguedPlantModel r_male_offtype = new FieldVisitRoguedPlantModel();
+                FieldVisitRoguedPlantModel r_male_volunteer = new FieldVisitRoguedPlantModel();
+                FieldVisitRoguedPlantModel r_male_btype = new FieldVisitRoguedPlantModel();
+                r_male_offtype.setCategoryType("Male");
+                r_male_offtype.setPlantType("OffType");
+                r_male_offtype.setNoOfCount(Integer.parseInt(str_male_off_type_edittext.trim()));
 
-            FieldVisitRoguedPlantModel r_female_offtype = new FieldVisitRoguedPlantModel();
-            FieldVisitRoguedPlantModel r_female_volunteer = new FieldVisitRoguedPlantModel();
-            FieldVisitRoguedPlantModel r_female_btype = new FieldVisitRoguedPlantModel();
-            r_female_offtype.setCategoryType("Female");
-            r_female_offtype.setPlantType("OffType");
-            r_female_offtype.setNoOfCount(Integer.parseInt(str_female_off_type_edittext.trim()));
+                r_male_volunteer.setCategoryType("Male");
+                r_male_volunteer.setPlantType("Volunteer");
+                r_male_volunteer.setNoOfCount(Integer.parseInt(str_male_volunteer_edittext.trim()));
 
-            r_female_volunteer.setCategoryType("Female");
-            r_female_volunteer.setPlantType("Volunteer");
-            r_female_volunteer.setNoOfCount(Integer.parseInt(str_female_volunteer_edittext.trim()));
+                r_male_btype.setCategoryType("Male");
+                r_male_btype.setPlantType("B-Type");
+                r_male_btype.setNoOfCount(Integer.parseInt(str_male_b_type_edittext.trim()));
 
-            r_female_btype.setCategoryType("Female");
-            r_female_btype.setPlantType("B-Type");
-            r_female_btype.setNoOfCount(Integer.parseInt(str_female_b_type_edittext.trim()));
+                FieldVisitRoguedPlantModel r_female_offtype = new FieldVisitRoguedPlantModel();
+                FieldVisitRoguedPlantModel r_female_volunteer = new FieldVisitRoguedPlantModel();
+                FieldVisitRoguedPlantModel r_female_btype = new FieldVisitRoguedPlantModel();
+                r_female_offtype.setCategoryType("Female");
+                r_female_offtype.setPlantType("OffType");
+                r_female_offtype.setNoOfCount(Integer.parseInt(str_female_off_type_edittext.trim()));
 
-            lst_roguredPlants.add(r_male_btype);
-            lst_roguredPlants.add(r_male_volunteer);
-            lst_roguredPlants.add(r_male_offtype);
-            lst_roguredPlants.add(r_female_btype);
-            lst_roguredPlants.add(r_female_volunteer);
-            lst_roguredPlants.add(r_female_offtype);
+                r_female_volunteer.setCategoryType("Female");
+                r_female_volunteer.setPlantType("Volunteer");
+                r_female_volunteer.setNoOfCount(Integer.parseInt(str_female_volunteer_edittext.trim()));
+
+                r_female_btype.setCategoryType("Female");
+                r_female_btype.setPlantType("B-Type");
+                r_female_btype.setNoOfCount(Integer.parseInt(str_female_b_type_edittext.trim()));
+
+                lst_roguredPlants.add(r_male_btype);
+                lst_roguredPlants.add(r_male_volunteer);
+                lst_roguredPlants.add(r_male_offtype);
+                lst_roguredPlants.add(r_female_btype);
+                lst_roguredPlants.add(r_female_volunteer);
+                lst_roguredPlants.add(r_female_offtype);
 
 
-            fieldMonitoringModels.setFieldVisitModel(fieldVisitModel);
-            fieldMonitoringModels.setFieldVisitLocationModels(lst_location);
-            fieldMonitoringModels.setFieldPlantLaneModels(lst_FieldPlantLaneModels);
-            fieldMonitoringModels.setFieldVisitFruitsCobModels(lst_fruitCob);
-            fieldMonitoringModels.setFieldVisitRoguedPlantModels(lst_roguredPlants);
+                fieldMonitoringModels.setFieldVisitModel(fieldVisitModel);
+                fieldMonitoringModels.setFieldVisitLocationModels(lst_location);
+                fieldMonitoringModels.setFieldPlantLaneModels(lst_FieldPlantLaneModels);
+                fieldMonitoringModels.setFieldVisitFruitsCobModels(lst_fruitCob);
+                fieldMonitoringModels.setFieldVisitRoguedPlantModels(lst_roguredPlants);
 
-            JsonArray jsonObjectLocation = new JsonParser().parse(new Gson().toJson(lst_location)).getAsJsonArray();
-            JsonArray jsonObjectLine = new JsonParser().parse(new Gson().toJson(lst_FieldPlantLaneModels)).getAsJsonArray();
-            JsonArray jsonObjectroguredPlants = new JsonParser().parse(new Gson().toJson(lst_roguredPlants)).getAsJsonArray();
-            JsonArray jsonFruitCobds = new JsonParser().parse(new Gson().toJson(lst_fruitCob)).getAsJsonArray();
-            fieldVisitModel.setLineData(jsonObjectLine.toString());
-            fieldVisitModel.setLocationData(jsonObjectLocation.toString());
+                JsonArray jsonObjectLocation = new JsonParser().parse(new Gson().toJson(lst_location)).getAsJsonArray();
+                JsonArray jsonObjectLine = new JsonParser().parse(new Gson().toJson(lst_FieldPlantLaneModels)).getAsJsonArray();
+                JsonArray jsonObjectroguredPlants = new JsonParser().parse(new Gson().toJson(lst_roguredPlants)).getAsJsonArray();
+                JsonArray jsonFruitCobds = new JsonParser().parse(new Gson().toJson(lst_fruitCob)).getAsJsonArray();
+                fieldVisitModel.setLineData(jsonObjectLine.toString());
+                fieldVisitModel.setLocationData(jsonObjectLocation.toString());
 
-            fieldVisitModel.setFieldVisitRoguedPlantModels(jsonObjectroguredPlants.toString().trim());
-            fieldVisitModel.setFieldVisitFruitsCobModelsText(jsonFruitCobds.toString().trim());
-            JsonObject jsonObject = new JsonParser().parse(new Gson().toJson(fieldMonitoringModels)).getAsJsonObject();
-            Log.i("JsonData", jsonObject.toString().trim());
-            if (database.addFirstVisit1(fieldVisitModel)) {
-                Toast.makeText(context, "Local Data Saved.", Toast.LENGTH_SHORT).show();
-                finish();
-               /*     Intent i = new Intent(context, FiledMonitoringReportEntry.class);
-// set the new task and clear flags
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(i);*/
+                fieldVisitModel.setFieldVisitRoguedPlantModels(jsonObjectroguredPlants.toString().trim());
+                fieldVisitModel.setFieldVisitFruitsCobModelsText(jsonFruitCobds.toString().trim());
+                JsonObject jsonObject = new JsonParser().parse(new Gson().toJson(fieldMonitoringModels)).getAsJsonObject();
+                Log.i("JsonData", jsonObject.toString().trim());
+                if (database.addFirstVisit1(fieldVisitModel)) {
+                    showDialogwithFinish(context, "Data Saved Successfully.");
+                } else {
+                    Toast.makeText(context, "Local Data Not Saved.", Toast.LENGTH_SHORT).show();
+                }
             } else {
-                Toast.makeText(context, "Local Data Not Saved.", Toast.LENGTH_SHORT).show();
+                showNoInternetDialog(context, "Some fields are empty.");
             }
-
 
         } catch (Exception e) {
             Toast.makeText(context, "Error in submit" + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -1444,6 +1555,73 @@ public class FieldVisitFourth extends BaseActivity {
                 Toast.makeText(context, "Select crop stage.", Toast.LENGTH_SHORT).show();
                 cnt++;
             }
+
+            if (first_editetext_female_per_line.getText().toString().trim().equals("")) {
+                first_editetext_female_per_line.setError("Required");
+                cnt++;
+            }
+            if (second_editetext_female_per_line.getText().toString().trim().equals("")) {
+                second_editetext_female_per_line.setError("Required");
+                cnt++;
+            }
+            if (third_editetext_female_per_line.getText().toString().trim().equals("")) {
+                third_editetext_female_per_line.setError("Required");
+                cnt++;
+            }
+            if (fourth_editetext_female_per_line.getText().toString().trim().equals("")) {
+                fourth_editetext_female_per_line.setError("Required");
+                cnt++;
+            }
+            if (fifth_editetext_female_per_line.getText().toString().trim().equals("")) {
+                fifth_editetext_female_per_line.setError("Required");
+                cnt++;
+            }
+            if (six_editetext_female_per_line.getText().toString().trim().equals("")) {
+                six_editetext_female_per_line.setError("Required");
+                cnt++;
+            }
+            if (seven_editetext_female_per_line.getText().toString().trim().equals("")) {
+                seven_editetext_female_per_line.setError("Required");
+                cnt++;
+            }
+            if (eight_editetext_female_per_line.getText().toString().trim().equals("")) {
+                eight_editetext_female_per_line.setError("Required");
+                cnt++;
+            }
+            if (nine_editetext_female_per_line.getText().toString().trim().equals("")) {
+                nine_editetext_female_per_line.setError("Required");
+                cnt++;
+            }
+            if (ten_editetext_female_per_line.getText().toString().trim().equals("")) {
+                ten_editetext_female_per_line.setError("Required");
+                cnt++;
+            }
+            if (average_weight_seed_edittextview.getText().toString().trim().equals("")) {
+                average_weight_seed_edittextview.setError("Required");
+                cnt++;
+            }
+            if (unprocessed_seed_ready_edittextview.getText().toString().trim().equals("")) {
+                unprocessed_seed_ready_edittextview.setError("Required");
+                cnt++;
+            }
+            if (str_field_ratings_for_spinner.toString().trim().equals("") || str_field_ratings_for_spinner.contains("Select")) {
+                Toast.makeText(context, "Please choose rating.", Toast.LENGTH_SHORT).show();
+                cnt++;
+            }
+            if (str_crop_stage_spinner.toString().trim().equals("") || str_crop_stage_spinner.contains("Select")) {
+                Toast.makeText(context, "Please choose crop stage.", Toast.LENGTH_SHORT).show();
+                cnt++;
+            }
+            if (front_path.toString().trim().equals("")) {
+                Toast.makeText(context, "Please take photo.", Toast.LENGTH_SHORT).show();
+                cnt++;
+            }
+            if (str_male_parent_uprooted_spinner.toString().trim().equals("") || str_male_parent_uprooted_spinner.contains("Select")) {
+                Toast.makeText(context, "Please select male parent uprooted.", Toast.LENGTH_SHORT).show();
+                cnt++;
+            }
+
+
             if (cnt == 0)
                 return true;
             else
@@ -1452,4 +1630,5 @@ public class FieldVisitFourth extends BaseActivity {
             return false;
         }
     }
+
 }

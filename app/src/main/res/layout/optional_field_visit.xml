@@ -68,7 +68,7 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <EditText
                 android:id="@+id/grower_name_textview"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -91,7 +91,7 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <EditText
                 android:id="@+id/issued_seed_area_textview"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -114,7 +114,7 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <EditText
                 android:id="@+id/existing_area_ha_textview"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -137,7 +137,7 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <EditText
                 android:id="@+id/production_code_textview"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -160,7 +160,7 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <EditText
                 android:id="@+id/village_textview"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -289,7 +289,7 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <EditText
                     android:id="@+id/date_of_field_visit_textview"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -305,6 +305,35 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/staff_name_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/staff_name_and_id"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/staff_name_textview"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/login_screen_edittext"
+                    android:ellipsize="end"
+                    android:gravity="center|start"
+                    android:maxLines="1"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+            </LinearLayout>
+            <LinearLayout
                 android:id="@+id/geotag_location_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -319,7 +348,7 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <EditText
                     android:id="@+id/geotag_location_textview"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
