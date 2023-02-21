@@ -628,6 +628,15 @@ public class FieldVisitThird extends BaseActivity {
                         hideOther();
                     }
                 }
+                if(lossStatus==1)
+                {
+                    reason_for_area_loss.setText("");
+                    str_reason_for_area_loss="";
+                }else if(lossStatus == 2)
+                {
+                    reason_for_area_loss.setText("-");
+                    str_reason_for_area_loss="-";
+                }
             }
         });
         pollination_start_date.setOnClickListener(new View.OnClickListener() {
@@ -878,7 +887,7 @@ public class FieldVisitThird extends BaseActivity {
 
             if (lossStatus == 1) {
                 str_area_loss_ha_textview = "0";
-                str_reason_for_area_loss = "0";
+              //  str_reason_for_area_loss = "0";
                 str_no_of_rogued_plants_female_edittext = "0";
                 str_female_off_type_edittext = "0";
                 str_female_volunteer_edittext = "0";

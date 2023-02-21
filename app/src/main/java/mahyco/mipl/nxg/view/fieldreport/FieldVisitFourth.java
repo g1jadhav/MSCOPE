@@ -576,6 +576,15 @@ public class FieldVisitFourth extends BaseActivity {
                         lossStatus = 2;
                         hideOther();
                     }
+                    if(lossStatus==1)
+                    {
+                        reason_for_area_loss_spinner.setText("");
+                        str_reason_for_area_loss_spinner="";
+                    }else if(lossStatus == 2)
+                    {
+                        reason_for_area_loss_spinner.setText("-");
+                        str_reason_for_area_loss_spinner="-";
+                    }
                 }
             }
         });
@@ -1209,7 +1218,7 @@ public class FieldVisitFourth extends BaseActivity {
                 str_village_textview = "0";
                 str_existing_area_ha_edittext ="0";
                 str_area_loss_ha_textview = "0";
-                str_reason_for_area_loss_spinner ="0";
+              //  str_reason_for_area_loss_spinner ="0";
                 str_total_female_plants_textview = "0";
                 str_total_male_plants_textview = "0";
                 str_first_editetext_female_per_line ="0";
@@ -1483,8 +1492,8 @@ public class FieldVisitFourth extends BaseActivity {
                 area_loss_ha_textview.setError("Required");
                 cnt++;
             }
-            if (str_area_loss_ha_textview.trim().equals("")) {
-                area_loss_ha_textview.setError("Required");
+            if (str_reason_for_area_loss_spinner.trim().equals("")) {
+                reason_for_area_loss_spinner.setError("Required");
                 cnt++;
             }
             if (str_no_of_rogued_plants_female_edittext.trim().equals("")) {
