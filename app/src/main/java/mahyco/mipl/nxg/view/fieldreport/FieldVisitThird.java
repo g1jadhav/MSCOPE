@@ -120,7 +120,7 @@ public class FieldVisitThird extends BaseActivity {
     Button save_login, buttonfemalelines;
     ImageView
             capture_photo_image_view;
-    LinearLayout female_no_lines_layout, female_spacinglayout;
+    LinearLayout female_no_lines_layout, female_spacinglayout,image_layout;
     String str_grower_name_textview = "",
             str_issued_seed_area_textview = "",
             str_production_code_textview = "",
@@ -212,6 +212,7 @@ public class FieldVisitThird extends BaseActivity {
         });
         context = FieldVisitThird.this;
         database = new SqlightDatabase(context);
+        image_layout = findViewById(R.id.image_layout);
         grower_name_textview = findViewById(R.id.grower_name_textview);
         issued_seed_area_textview = findViewById(R.id.issued_seed_area_textview);
         production_code_textview = findViewById(R.id.production_code_textview);
@@ -312,6 +313,9 @@ public class FieldVisitThird extends BaseActivity {
         if(prevExistingArea<=0) {
             lossStatus = 1;
             showOther();
+        }else
+        {
+            lossStatus=2;
         }
         existing_area_ha_edittext.setText("" + prevExistingArea);
         try {
@@ -498,7 +502,6 @@ public class FieldVisitThird extends BaseActivity {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-
             }
 
             @Override
@@ -532,7 +535,6 @@ public class FieldVisitThird extends BaseActivity {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-
             }
 
             @Override
@@ -563,10 +565,10 @@ public class FieldVisitThird extends BaseActivity {
                 calculateMaleRogudedPlants();
             }
         });
+
         male_b_type_edittext.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
 
             }
 
@@ -682,7 +684,8 @@ public class FieldVisitThird extends BaseActivity {
         try{
             layout_losslayout.setVisibility(View.GONE);
             layout_existarea.setVisibility(View.VISIBLE);
-            recommendations_observations_edittext.setVisibility(View.VISIBLE);
+          //  recommendations_observations_edittext.setVisibility(View.VISIBLE);
+            image_layout.setVisibility(View.VISIBLE);
         }catch (Exception e)
         {
 
@@ -693,7 +696,8 @@ public class FieldVisitThird extends BaseActivity {
         try{
             layout_losslayout.setVisibility(View.VISIBLE);
             layout_existarea.setVisibility(View.GONE);
-            recommendations_observations_edittext.setVisibility(View.GONE);
+           // recommendations_observations_edittext.setVisibility(View.GONE);
+            image_layout.setVisibility(View.GONE);
         }catch (Exception e)
         {
 
@@ -902,8 +906,45 @@ public class FieldVisitThird extends BaseActivity {
                 // str_grower_mobile_no_edittext = grower_mobile_no_edittext.getText().toString().trim();
                 str_recommendations_observations_edittext = "Area Loss";
 
-            }
 
+                str_no_of_rogued_plants_female_edittext = "0";
+                str_female_off_type_edittext = "0";
+                str_female_volunteer_edittext = "0";
+                str_female_b_type_edittext = "0";
+                str_total_female_plants_textview = "0";
+                str_no_of_rogued_plants_male_edittext = "0";
+                str_male_off_type_edittext= "0";
+                str_male_volunteer_edittext = "0";
+                str_male_b_type_edittext = "0";
+                str_total_male_plants_textview = "0";
+                str_yield_estimate_kg_edittext= "0";
+                str_recommendations_observations_edittext = "0";
+                str_crop_stage_spinner = "0";
+                str_pollination_start_date = "0";
+                str_first_editetext_female_per_line = "0";
+                str_second_editetext_female_per_line = "0";
+                str_third_editetext_female_per_line ="0";
+                str_fourth_editetext_female_per_line = "0";
+                str_fifth_editetext_female_per_line ="0";
+                str_six_editetext_female_per_line ="0";
+                str_seven_editetext_female_per_line ="0";
+                str_eight_editetext_female_per_line = "0";
+                str_nine_editetext_female_per_line = "0";
+                str_ten_editetext_female_per_line ="0";
+                str_number_of_expected_edittextview ="0";
+                str_average_weight_seed_edittextview ="0";
+                str_yield_estimate_kg_edittext ="0";
+                str_seed_production_method_spinner = "0";
+                str_roguing_completed_and_validated_spinner ="0";
+                front_path="NA";
+
+Toast.makeText(context,"Area",Toast.LENGTH_SHORT).show();
+
+            }
+            if (lossStatus == 2)
+            {
+                str_reason_for_area_loss="NA";
+            }
 
             if (validation()) {
                 fieldVisitModel.setUserId(userid);// 1,
@@ -1124,10 +1165,79 @@ public class FieldVisitThird extends BaseActivity {
                 geotag_location_textview.setError("Required");
                 cnt++;
             }
+
+            if (str_pollination_start_date.trim().equals("")) {
+                pollination_start_date.setError("Required");
+                cnt++;
+            }
+            if (str_number_of_expected_edittextview.trim().equals("")) {
+                number_of_expected_edittextview.setError("Required");
+                cnt++;
+            }
+            if (str_seed_production_method_spinner.trim().equals("") || str_seed_production_method_spinner.trim().contains("Select")) {
+                Toast.makeText(context, "Select Seed production method.", Toast.LENGTH_SHORT).show();
+                cnt++;
+            }
+            if (str_roguing_completed_and_validated_spinner.trim().equals("") || str_roguing_completed_and_validated_spinner.trim().contains("Select")) {
+                Toast.makeText(context, "Select roguing completed and validated.", Toast.LENGTH_SHORT).show();
+                cnt++;
+            }
+
             if (str_crop_stage_spinner.trim().equals("") || str_crop_stage_spinner.trim().contains("Select")) {
                 Toast.makeText(context, "Select crop stage.", Toast.LENGTH_SHORT).show();
                 cnt++;
             }
+            if(lossStatus==2) {
+                if (front_path.trim().equals("")) {
+                    Toast.makeText(context, "Please capture photo.", Toast.LENGTH_SHORT).show();
+                    cnt++;
+                }
+                if (first_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    first_editetext_female_per_line.setError("Required");
+                    cnt++;
+                }
+                if (second_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    second_editetext_female_per_line.setError("Required");
+                    cnt++;
+                }
+                if (third_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    third_editetext_female_per_line.setError("Required");
+                    cnt++;
+                }
+                if (fourth_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    fourth_editetext_female_per_line.setError("Required");
+                    cnt++;
+                }
+                if (fifth_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    fifth_editetext_female_per_line.setError("Required");
+                    cnt++;
+                }
+                if (six_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    six_editetext_female_per_line.setError("Required");
+                    cnt++;
+                }
+                if (seven_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    seven_editetext_female_per_line.setError("Required");
+                    cnt++;
+                }
+                if (eight_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    eight_editetext_female_per_line.setError("Required");
+                    cnt++;
+                }
+                if (nine_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    nine_editetext_female_per_line.setError("Required");
+                    cnt++;
+                }
+                if (ten_editetext_female_per_line.getText().toString().trim().equals("")) {
+                    ten_editetext_female_per_line.setError("Required");
+                    cnt++;
+                }
+                if (average_weight_seed_edittextview.getText().toString().trim().equals("")) {
+                    average_weight_seed_edittextview.setError("Required");
+                    cnt++;
+                }
+            }
+
             if (cnt == 0)
                 return true;
             else
@@ -1204,7 +1314,7 @@ public class FieldVisitThird extends BaseActivity {
                 } else {
                     sum += Integer.parseInt(ten_editetext_female_per_line.getText().toString().trim());
                 }
-                yield_estimate_kg_edittext.setText("" + sum);
+                yield_estimate_kg_edittext.setText("" + (int)sum);
             }
         });
         second_editetext_female_per_line.addTextChangedListener(new TextWatcher() {
@@ -1894,7 +2004,7 @@ public class FieldVisitThird extends BaseActivity {
                     Log.i("sum5", "" + dd);
                     double d = dd;
 
-                    yield_estimate_kg_edittext.setText("" + d);
+                    yield_estimate_kg_edittext.setText("" + (int)d);
                 }
             }
         });

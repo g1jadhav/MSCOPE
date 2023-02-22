@@ -334,7 +334,6 @@
     <string name="volunteer">Volunteer<font color='#FF0000'>*</font></string>
     <string name="b_type">B-Type<font color='#FF0000'>*</font></string>
     <string name="enter_female_b_type">Enter B-Type</string>
-
     <string name="enter_male_off_type">Enter Off Type</string>
     <string name="enter_male_volunteer">Enter Volunteer</string>
     <string name="enter_male_b_type">Enter B-Type</string>
@@ -354,7 +353,6 @@
     <string name="expected_date_of_despatching">Expected date of despatching<font color='#FF0000'>*</font></string>
     <string name="male_parent_uprooted">Male parent uprooted<font color='#FF0000'>*</font></string>
     <string name="field_ratings_for_quality">Field ratings for quality<font color='#FF0000'>*</font></string>
-
 
     <string-array name="country_array">
         <item>Select Country</item>
@@ -403,8 +401,6 @@
         <item>5</item>
     </string-array>
 
-
-
     <string-array name="select_crop_stage">
         <item>Select Crop Stage</item>
         <item>Vegetative</item>
@@ -415,7 +411,7 @@
     </string-array>
 
     <string-array name="select_seed_production">
-        <item>Seed production method</item>
+        <item>Select</item>
         <item>GMS</item>
         <item>CMS</item>
         <item>Conventional</item>

@@ -995,7 +995,7 @@
                     android:textColor="@color/black"
                     android:textSize="18sp" />
             </LinearLayout>
-        </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/crop_stage_layout"
                 android:layout_width="match_parent"
@@ -1047,8 +1047,60 @@
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp" />
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/recommendations_observations_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/recommendations_and_observations"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
+                <EditText
+                    android:id="@+id/recommendations_observations_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/login_screen_edittext"
+                    android:hint="@string/recommendations_and_observationss"
+                    android:inputType="textCapCharacters|textMultiLine"
+                    android:maxLength="250"
+                    android:padding="10dp"
+                    android:textColor="@color/black_color" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/field_ratings_for_quality_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/field_ratings_for_quality"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <mahyco.mipl.nxg.spinner.CCFSerachSpinner
+                    android:id="@+id/field_ratings_for_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/login_spinner_style"
+                    android:entries="@array/quality_a_b"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp" />
+            </LinearLayout>
+        </LinearLayout>
             <LinearLayout
                 android:id="@+id/growers_mobile_no_layout"
                 android:layout_width="match_parent"
@@ -1081,60 +1133,9 @@
                     android:textColor="@color/black_color" />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/recommendations_observations_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:text="@string/recommendations_and_observations"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/recommendations_observations_edittext"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/login_screen_edittext"
-                    android:hint="@string/recommendations_and_observationss"
-                    android:inputType="textCapCharacters|textMultiLine"
-                    android:maxLength="250"
-                    android:padding="10dp"
-                    android:textColor="@color/black_color" />
-            </LinearLayout>
 
 
-            <LinearLayout
-                android:id="@+id/field_ratings_for_quality_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:text="@string/field_ratings_for_quality"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <mahyco.mipl.nxg.spinner.CCFSerachSpinner
-                    android:id="@+id/field_ratings_for_spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/login_spinner_style"
-                    android:entries="@array/quality_a_b"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp" />
-            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/date_of_field_visit_layout"
