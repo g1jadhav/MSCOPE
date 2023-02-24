@@ -117,19 +117,36 @@ public class FiledReportDashboard extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_stage1:
-                showStage(1);
+                if(database.isMandetoryVisitDone(userid,1))
+                {
+                    Toast.makeText(mContext, "Field Visit is Done.", Toast.LENGTH_SHORT).show();
+                }else
+                    showStage(1);
+
                 break;
 
             case R.id.btn_stage2:
-                showStage(2);
+                if(database.isMandetoryVisitDone(userid,2))
+                {
+                    Toast.makeText(mContext, "Field Visit is Done.", Toast.LENGTH_SHORT).show();
+                }else
+                    showStage(2);
                 break;
 
             case R.id.btn_stage3:
-                showStage(3);
+                if(database.isMandetoryVisitDone(userid,3))
+                {
+                    Toast.makeText(mContext, "Field Visit is Done.", Toast.LENGTH_SHORT).show();
+                }else
+                    showStage(3);
                 break;
 
             case R.id.btn_stage4:
-                showStage(4);
+                if(database.isMandetoryVisitDone(userid,4))
+                {
+                    Toast.makeText(mContext, "Field Visit is Done.", Toast.LENGTH_SHORT).show();
+                }else
+                    showStage(4);
                 break;
 
             case R.id.btn_optional:

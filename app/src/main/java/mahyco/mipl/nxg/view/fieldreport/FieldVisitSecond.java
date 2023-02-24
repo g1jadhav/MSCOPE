@@ -210,6 +210,9 @@ public class FieldVisitSecond extends BaseActivity {
         if(prevExistingArea<=0) {
             lossStatus = 1;
             showOther();
+        }else
+        {
+            lossStatus = 2;
         }
         existing_area_ha_edittext.setText(""+String.format("%.2f",prevExistingArea));
         try{
@@ -609,7 +612,7 @@ public class FieldVisitSecond extends BaseActivity {
                 {
                     recommendations_observations_edittext.setText("Area Loss");
                     str_area_loss_ha_textview = "0";
-                    str_reason_area_loss = "0";
+                  //  str_reason_area_loss = "0";
                     str_no_of_rogued_plants_female_edittext = "0";
                     str_female_off_type_edittext = "0";
                     str_female_volunteer_edittext = "0";
@@ -623,7 +626,8 @@ public class FieldVisitSecond extends BaseActivity {
                     str_yield_estimate_kg_edittext = "0";
                    // str_grower_mobile_no_edittext = grower_mobile_no_edittext.getText().toString().trim();
                     str_recommendations_observations_edittext = "Area Loss";
-
+                    front_path="NA";
+                    str_crop_stage_spinner="NA";
                 }
 
 
@@ -780,6 +784,7 @@ public class FieldVisitSecond extends BaseActivity {
                 area_loss_ha_textview.setError("Required");
                 cnt++;
             }
+            if(lossStatus==1)
             if (str_reason_area_loss.trim().equals("")) {
                 reason_area_loss.setError("Required");
                 cnt++;
@@ -848,8 +853,13 @@ public class FieldVisitSecond extends BaseActivity {
                 geotag_location_textview.setError("Required");
                 cnt++;
             }
-            if (str_crop_stage_spinner.trim().equals("") || str_crop_stage_spinner.trim().equals("Select")) {
+            if (str_crop_stage_spinner.trim().equals("") || str_crop_stage_spinner.trim().contains("Select")) {
                 Toast.makeText(context, "Select crop stage.", Toast.LENGTH_SHORT).show();
+                cnt++;
+            }
+            if(front_path.equals(""))
+            {
+                Toast.makeText(context, "Please take photo.", Toast.LENGTH_SHORT).show();
                 cnt++;
             }
             if (cnt == 0)

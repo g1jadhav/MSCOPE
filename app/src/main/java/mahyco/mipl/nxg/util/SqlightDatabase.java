@@ -2242,6 +2242,24 @@ public class SqlightDatabase extends SQLiteOpenHelper {
             myDb.close();
         }
     }
+
+    public boolean isMandetoryVisitDone(int userid,int visitid) {
+        SQLiteDatabase myDb = null;
+        try {
+            myDb = this.getReadableDatabase();
+            String q = "SELECT  MandatoryFieldVisitId FROM tbl_firstVisit where UserId=" + userid+" and MandatoryFieldVisitId="+visitid+" order by MandatoryFieldVisitId desc";
+            Cursor cursorCourses = myDb.rawQuery(q, null);
+            if (cursorCourses.moveToFirst()) {
+                cursorCourses.getString(0);
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            return false;
+        } finally {
+            myDb.close();
+        }
+    }
     public String isFirstFieldVisitDoneLocal(int userid) {
         SQLiteDatabase myDb = null;
         try {
