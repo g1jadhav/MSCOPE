@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
@@ -79,6 +80,7 @@ public class OptionalVisit extends BaseActivity {
     int countryId = 0;
     int countryCode;
     double prevExistingArea = 0.0;
+    AppCompatTextView optional_field_visit_no_textview;
 
     String staffcode = "";
     String str_grower_name_textview,
@@ -116,6 +118,7 @@ public class OptionalVisit extends BaseActivity {
         context = OptionalVisit.this;
         database = new SqlightDatabase(context);
 
+        optional_field_visit_no_textview = findViewById(R.id.optional_field_visit_no_textview);
         grower_name_textview = findViewById(R.id.grower_name_textview);
         issued_seed_area_textview = findViewById(R.id.issued_seed_area_textview);
         existing_area_ha_textview = findViewById(R.id.existing_area_ha_textview);
@@ -129,6 +132,7 @@ public class OptionalVisit extends BaseActivity {
         staff_name_textview = findViewById(R.id.staff_name_textview);
         crop_stage_spinner = findViewById(R.id.crop_stage_spinner);
         save_login = findViewById(R.id.save_login);
+
 
         prevExistingArea = 0.00;
         fieldVisitModel = new FieldVisitModel();
@@ -153,6 +157,7 @@ public class OptionalVisit extends BaseActivity {
         grower_name_textview.setText("" + Preferences.get(context, Preferences.SELECTED_GROWERNAME));
         grower_mobile_no_edittext.setText("" + Preferences.get(context, Preferences.SELECTED_GROWERMOBILE));
         userid = Integer.parseInt(Preferences.get(context, Preferences.SELECTED_GROWERID).toString().trim());
+        optional_field_visit_no_textview.setText(""+(database.getCount(0,userid)+database.getCountServer(0,userid)+1));
         cropcode = Integer.parseInt(Preferences.get(context, Preferences.SELECTEDCROPECODE).toString().trim());
         issued_seed_area_textview.setText("" + String.format("%.2f", Double.parseDouble(Preferences.get(context, Preferences.SELECTED_GROWERAREA).trim())));
         production_code_textview.setText("" + Preferences.get(context, Preferences.SELECTED_GROWERPRODUCTIONCODE));

@@ -803,6 +803,40 @@ public class SqlightDatabase extends SQLiteOpenHelper {
             myDb.close();
         }
     }
+    public int getCount(int visitID,int userid) {
+        SQLiteDatabase myDb = null;
+        try {
+            int cnt=0;
+            myDb = this.getReadableDatabase();
+            String q = "SELECT  count(*)as cnt FROM tbl_firstVisit where MandatoryFieldVisitId="+visitID+" and UserId="+userid;
+            Cursor cursorCourses = myDb.rawQuery(q, null);
+            if (cursorCourses.moveToFirst()) {
+                    cnt=cursorCourses.getInt(0);
+            }
+            return  cnt;
+        } catch (Exception e) {
+            return 0;
+        } finally {
+            myDb.close();
+        }
+    }
+    public int getCountServer(int visitID,int userid) {
+        SQLiteDatabase myDb = null;
+        try {
+            int cnt=0;
+            myDb = this.getReadableDatabase();
+            String q = "SELECT  count(*)as cnt FROM tbl_firstVisit where MandatoryFieldVisitId="+visitID+" and UserId="+userid;
+            Cursor cursorCourses = myDb.rawQuery(q, null);
+            if (cursorCourses.moveToFirst()) {
+                cnt=cursorCourses.getInt(0);
+            }
+            return  cnt;
+        } catch (Exception e) {
+            return 0;
+        } finally {
+            myDb.close();
+        }
+    }
     public ArrayList<FieldVisitModel> getAllFirstFieldVisit1() {
         SQLiteDatabase myDb = null;
         try {
