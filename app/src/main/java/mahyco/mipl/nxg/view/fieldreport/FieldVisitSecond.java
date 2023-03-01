@@ -9,6 +9,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -108,7 +109,7 @@ public class FieldVisitSecond extends BaseActivity {
             str_geotag_location_textview = "";
 
     Button save_login;
-    CCFSerachSpinner crop_stage_spinner;
+    CCFSerachSpinner crop_stage_spinner,area_lost_spinner;
     double longi = 0.0, lati = 0.0;
     String front_path = "";
     private FusedLocationProviderClient fusedLocationClient;
@@ -508,7 +509,26 @@ public class FieldVisitSecond extends BaseActivity {
                 }
             }
         });
+        area_lost_spinner = findViewById(R.id.area_lost_spinner);
+        area_lost_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 1) {
 
+
+                    lossStatus=1;
+                    showOther();
+                } else {
+                    lossStatus=2;
+                    hideOther();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
     }
 
@@ -628,6 +648,7 @@ public class FieldVisitSecond extends BaseActivity {
                     str_recommendations_observations_edittext = "Area Loss";
                     front_path="NA";
                     str_crop_stage_spinner="NA";
+                    str_existing_area_ha_edittext="0";
                 }
 
 

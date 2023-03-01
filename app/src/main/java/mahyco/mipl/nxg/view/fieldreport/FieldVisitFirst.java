@@ -782,6 +782,19 @@ public class FieldVisitFirst extends BaseActivity {
                 fieldVisitModel.setCapturePhoto(front_path);// ,
                 fieldVisitModel.setCreatedBy(str_staff_name_textview);
 
+                fieldVisitModel.setAreaLossInHa("0");
+                fieldVisitModel.setNoOfRoguedFemalePlants("0");
+                fieldVisitModel.setNoOfRoguedMalePlants("0");
+                fieldVisitModel.setSeedProductionMethod("0");
+                fieldVisitModel.setRoguingCompletedValidated("0");
+                fieldVisitModel.setSingleCobsPerPlant("0");
+                fieldVisitModel.setSingleCobsPerPlantInGm("0");
+                fieldVisitModel.setUnprocessedSeedReadyInKg("0");
+                fieldVisitModel.setPollinationStartDt(str_date_of_field_visit_textview);
+                fieldVisitModel.setPollinationEndDt(str_date_of_field_visit_textview);
+                fieldVisitModel.setExpectedDtOfHarvesting(str_date_of_field_visit_textview);
+                fieldVisitModel.setExpectedDtOfDespatching(str_date_of_field_visit_textview);
+                fieldVisitModel.setMaleParentUprooted("0");
 
                 fieldMonitoringModels.setFieldVisitModel(fieldVisitModel);
                 ArrayList<FieldVisitLocationModel> lst_location = new ArrayList<>();

@@ -115,7 +115,7 @@ public class FieldVisitThird extends BaseActivity {
     CCFSerachSpinner
             seed_production_method_spinner,
             roguing_completed_and_validated_spinner,
-            crop_stage_spinner;
+            crop_stage_spinner,area_lost_spinner;
 
     Button save_login, buttonfemalelines;
     ImageView
@@ -672,13 +672,33 @@ public class FieldVisitThird extends BaseActivity {
 
                     }
                 }, mYear, mMonth, mDay);
-                //mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+                mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
                 mDatePicker.setTitle("Pollination start date");
                 mDatePicker.show();
 
             }
         });
         onTextChangeEvent();
+        area_lost_spinner = findViewById(R.id.area_lost_spinner);
+        area_lost_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 1) {
+
+
+                    lossStatus=1;
+                    showOther();
+                } else {
+                    lossStatus=2;
+                    hideOther();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
     public void hideOther() {
         try{
@@ -937,8 +957,8 @@ public class FieldVisitThird extends BaseActivity {
                 str_seed_production_method_spinner = "0";
                 str_roguing_completed_and_validated_spinner ="0";
                 front_path="NA";
+                str_existing_area_ha_edittext="0";
 
-Toast.makeText(context,"Area",Toast.LENGTH_SHORT).show();
 
             }
             if (lossStatus == 2)

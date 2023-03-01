@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.os.SystemClock;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -94,6 +95,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
     private androidx.appcompat.widget.Toolbar toolbar;
     SqlightDatabase database;
     int totalFirstVisit = 0;
+    TextView txt_visit_count;
 
     @Override
     protected int getLayout() {
@@ -125,6 +127,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
         mGrowerRegistrationBtn.setOnClickListener(this);
 
         field_visit_1st_upload = findViewById(R.id.field_visit_1st_upload);
+        txt_visit_count = findViewById(R.id.txt_visit_count);
         field_visit_1st_upload.setOnClickListener(this);
 
         mOrganizerRegistrationBtn = findViewById(R.id.organizer_registration_upload);
@@ -144,7 +147,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
         mOrganizerRecords.setText(getString(R.string.no_of_records_for_upload, 0));
         mSeedDistributionRecords.setText(getString(R.string.no_of_records_for_upload, 0));
         field_visit_1st_no_of_records.setText(getString(R.string.no_of_records_for_upload, database.getAllFirstFieldVisit1().size()));
-
+        txt_visit_count.setText(database.getCount());
         AppCompatTextView mVersionTextView = findViewById(R.id.upload_data_version_code);
         mVersionTextView.setText(getString(R.string.version_code, BuildConfig.VERSION_CODE));
 

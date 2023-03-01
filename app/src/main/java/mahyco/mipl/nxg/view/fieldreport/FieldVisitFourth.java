@@ -104,7 +104,7 @@ public class FieldVisitFourth extends BaseActivity {
 
     CCFSerachSpinner male_parent_uprooted_spinner,
             crop_stage_spinner,
-            field_ratings_for_spinner;
+            field_ratings_for_spinner,area_lost_spinner;
 
     Button btn_save;
     ImageView
@@ -623,7 +623,7 @@ LinearLayout image_layout;
 
                     }
                 }, mYear, mMonth, mDay);
-                //mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+                mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
                 mDatePicker.setTitle("Pollination end date");
                 mDatePicker.show();
 
@@ -661,7 +661,7 @@ LinearLayout image_layout;
 
                     }
                 }, mYear, mMonth, mDay);
-                //mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+                mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
                 mDatePicker.setTitle("Expected date of harvesting");
                 mDatePicker.show();
 
@@ -699,7 +699,7 @@ LinearLayout image_layout;
 
                     }
                 }, mYear, mMonth, mDay);
-                //mDatePicker.getDatePicker().setMaxDate(System.currentTimeMillis());
+                mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis());
                 mDatePicker.setTitle("Expected Date of Dispatching");
                 mDatePicker.show();
 
@@ -708,6 +708,28 @@ LinearLayout image_layout;
 
 
         onTextChangeEvent();
+
+
+        area_lost_spinner = findViewById(R.id.area_lost_spinner);
+        area_lost_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 1) {
+
+
+                    lossStatus=1;
+                    showOther();
+                } else {
+                    lossStatus=2;
+                    hideOther();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     public void hideOther() {
@@ -1378,7 +1400,8 @@ LinearLayout image_layout;
                 str_field_ratings_for_spinner =  "0";
                 front_path="NA";
                 str_recommendations_observations_edittext="NA";
-                Toast.makeText(context,"Area",Toast.LENGTH_SHORT).show();
+                str_existing_area_ha_edittext="0";
+             //   Toast.makeText(context,"Area",Toast.LENGTH_SHORT).show();
 
             }
             if (lossStatus == 2)

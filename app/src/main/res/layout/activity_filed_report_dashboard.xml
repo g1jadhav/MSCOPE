@@ -22,21 +22,21 @@
             android:id="@+id/btn_stage2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Second Mandetory Stage"
+            android:text="Second Mandetory Visit"
             android:visibility="visible" />
 
         <Button
             android:id="@+id/btn_stage3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Third Mandetory Stage"
+            android:text="Third Mandetory Visit"
             android:visibility="gone" />
 
         <Button
             android:id="@+id/btn_stage4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Forth Mandetory Stage"
+            android:text="Forth Mandetory Visit"
             android:visibility="gone" />
 
         <Button

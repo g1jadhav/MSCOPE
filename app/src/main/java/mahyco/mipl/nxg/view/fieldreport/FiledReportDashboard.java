@@ -1,8 +1,10 @@
 package mahyco.mipl.nxg.view.fieldreport;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -75,6 +77,26 @@ public class FiledReportDashboard extends AppCompatActivity implements View.OnCl
                 btnOptional.setVisibility(View.GONE);
                 break;
             case 2:
+                new AlertDialog.Builder(this)
+                        .setCancelable(false)
+                        .setTitle("Skip Second Mandatory Visit")
+                        .setMessage("Do you want to skip?")
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                btnStage1.setVisibility(View.GONE);
+                                btnStage2.setVisibility(View.GONE);
+                                btnStage3.setVisibility(View.VISIBLE);
+                                btnStage4.setVisibility(View.GONE);
+                                btnOptional.setVisibility(View.VISIBLE);
+                            }})
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        }).show();
                 btnStage1.setVisibility(View.GONE);
                 btnStage2.setVisibility(View.VISIBLE);
                 btnStage3.setVisibility(View.GONE);

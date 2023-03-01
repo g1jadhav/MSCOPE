@@ -760,6 +760,49 @@ public class SqlightDatabase extends SQLiteOpenHelper {
 
     }
 
+    public String getCount() {
+        SQLiteDatabase myDb = null;
+        try {
+            int cnt1=0,cnt2=0,cnt3=0,cnt4=0,cnt0=0;
+            myDb = this.getReadableDatabase();
+            String q = "SELECT  * FROM tbl_firstVisit";
+            Cursor cursorCourses = myDb.rawQuery(q, null);
+            ArrayList<FieldVisitModel> fieldLocationArrayList = new ArrayList<>();
+            if (cursorCourses.moveToFirst()) {
+                do {
+                    int id=cursorCourses.getInt(4);
+                    switch (id)
+                    {
+                        case 1:
+                            cnt1++;
+                            break;
+                        case 2:
+                            cnt2++;
+                            break;
+                        case 3:
+                            cnt3++;
+                            break;
+                        case 4:
+                            cnt4++;
+                            break;
+                        case 0:
+                            cnt0++;
+                            break;
+                    }
+                } while (cursorCourses.moveToNext());
+            }
+            return  "1st Visit : "+cnt1+"    |   "+
+                    "2nd Visit : "+cnt2+"\n"+
+                    "3rd Visit : "+cnt3+"    |   "+
+                    "4th Visit : "+cnt4+"\n"+
+                    "Optional Visit : "+cnt0+""
+                    ;
+        } catch (Exception e) {
+            return "";
+        } finally {
+            myDb.close();
+        }
+    }
     public ArrayList<FieldVisitModel> getAllFirstFieldVisit1() {
         SQLiteDatabase myDb = null;
         try {

@@ -145,7 +145,7 @@
                 android:layout_height="45dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/login_screen_edittext"
-                android:enabled="true"
+                android:enabled="false"
                 android:hint="@string/enter_existing_area_ha"
                 android:inputType="numberDecimal"
                 android:maxLines="1"
@@ -174,6 +174,7 @@
                     android:layout_marginTop="10dp"
                     android:background="@drawable/login_screen_edittext"
                     android:ellipsize="end"
+                    android:enabled="false"
                     android:gravity="center|start"
                     android:maxLines="1"
                     android:paddingStart="10dp"
@@ -181,6 +182,25 @@
                     android:textColor="@color/black"
                     android:textSize="18sp" />
             </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/seed_area_is_totally_lost"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <mahyco.mipl.nxg.spinner.CCFSerachSpinner
+                android:id="@+id/area_lost_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/login_spinner_style"
+                android:entries="@array/yes_no_array"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp" />
         <LinearLayout
             android:id="@+id/losslayout"
             android:layout_width="match_parent"
@@ -532,6 +552,7 @@
                         android:layout_marginTop="10dp"
                         android:background="@drawable/login_screen_edittext"
                         android:ellipsize="end"
+                        android:enabled="false"
                         android:gravity="center|start"
                         android:maxLines="1"
                         android:paddingStart="10dp"
@@ -563,6 +584,7 @@
                         android:layout_marginTop="10dp"
                         android:background="@drawable/login_screen_edittext"
                         android:ellipsize="end"
+                        android:enabled="false"
                         android:gravity="center|start"
                         android:maxLines="1"
                         android:paddingStart="10dp"
@@ -599,37 +621,37 @@
                         android:textStyle="bold" />
 
                     <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:text="@string/volunteer"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/female_volunteer_edittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/login_screen_edittext"
+                            android:hint="@string/enter_female_volunteer"
+                            android:inputType="number"
+                            android:maxLines="1"
+                            android:padding="10dp"
+                            android:text="0"
+                            android:textColor="@color/black_color" />
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="15dp"
-                                android:text="@string/volunteer"
-                                android:textColor="@color/black"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
-
-                            <EditText
-                                android:id="@+id/female_volunteer_edittext"
-                                android:layout_width="match_parent"
-                                android:layout_height="45dp"
-                                android:layout_marginTop="10dp"
-                                android:background="@drawable/login_screen_edittext"
-                                android:hint="@string/enter_female_volunteer"
-                                android:inputType="number"
-                                android:maxLines="1"
-                                android:padding="10dp"
-                                android:textColor="@color/black_color" />
-                        </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -656,6 +678,7 @@
                                 android:inputType="number"
                                 android:maxLines="1"
                                 android:padding="10dp"
+                                android:text="0"
                                 android:textColor="@color/black_color" />
                         </LinearLayout>
 
@@ -684,6 +707,7 @@
                                 android:inputType="number"
                                 android:maxLines="1"
                                 android:padding="10dp"
+                                android:text="0"
                                 android:textColor="@color/black_color" />
                         </LinearLayout>
                     </LinearLayout>
@@ -703,10 +727,12 @@
                         android:layout_height="45dp"
                         android:layout_marginTop="10dp"
                         android:background="@drawable/login_screen_edittext"
+                        android:enabled="false"
                         android:hint="@string/enter_no_of_rogued_plants_from_female"
                         android:inputType="number"
                         android:maxLines="1"
                         android:padding="10dp"
+                        android:text="0"
                         android:textColor="@color/black_color" />
 
                 </LinearLayout>
@@ -739,6 +765,34 @@
                         android:textStyle="bold" />
 
                     <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:orientation="vertical">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:text="@string/volunteer"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/male_volunteer_edittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/login_screen_edittext"
+                            android:hint="@string/enter_male_volunteer"
+                            android:inputType="number"
+                            android:maxLines="1"
+                            android:padding="10dp"
+                            android:textColor="@color/black_color"
+                            android:text="0" />
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
@@ -768,6 +822,7 @@
                                 android:inputType="number"
                                 android:maxLines="1"
                                 android:padding="10dp"
+                                android:text="0"
                                 android:textColor="@color/black_color" />
                         </LinearLayout>
 
@@ -796,34 +851,7 @@
                                 android:inputType="number"
                                 android:maxLines="1"
                                 android:padding="10dp"
-                                android:textColor="@color/black_color" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="15dp"
-                                android:text="@string/volunteer"
-                                android:textColor="@color/black"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
-
-                            <EditText
-                                android:id="@+id/male_volunteer_edittext"
-                                android:layout_width="match_parent"
-                                android:layout_height="45dp"
-                                android:layout_marginTop="10dp"
-                                android:background="@drawable/login_screen_edittext"
-                                android:hint="@string/enter_male_volunteer"
-                                android:inputType="number"
-                                android:maxLines="1"
-                                android:padding="10dp"
+                                android:text="0"
                                 android:textColor="@color/black_color" />
                         </LinearLayout>
 
@@ -844,10 +872,12 @@
                         android:layout_height="45dp"
                         android:layout_marginTop="10dp"
                         android:background="@drawable/login_screen_edittext"
+                        android:enabled="false"
                         android:hint="@string/enter_no_of_rogued_plants_from_male"
                         android:inputType="number"
                         android:maxLines="1"
                         android:padding="10dp"
+                        android:text="0"
                         android:textColor="@color/black_color" />
                 </LinearLayout>
 
@@ -921,7 +951,7 @@
                         android:layout_height="45dp"
                         android:layout_weight="1"
                         android:background="@drawable/login_screen_edittext"
-                        android:hint="Line no 1"
+                        android:hint="Plant no 1"
                         android:inputType="number"
                         android:maxLength="3"
                         android:maxLines="1"
@@ -935,7 +965,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_weight="1"
                         android:background="@drawable/login_screen_edittext"
-                        android:hint="Line no 2"
+                        android:hint="Plant no 2"
                         android:inputType="number"
                         android:maxLength="3"
                         android:maxLines="1"
@@ -949,7 +979,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_weight="1"
                         android:background="@drawable/login_screen_edittext"
-                        android:hint="Line no 3"
+                        android:hint="Plant no 3"
                         android:inputType="number"
                         android:maxLength="3"
                         android:maxLines="1"
@@ -970,7 +1000,7 @@
                         android:layout_height="45dp"
                         android:layout_weight="1"
                         android:background="@drawable/login_screen_edittext"
-                        android:hint="Line no 4"
+                        android:hint="Plant no 4"
                         android:inputType="number"
                         android:maxLength="3"
                         android:maxLines="1"
@@ -984,7 +1014,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_weight="1"
                         android:background="@drawable/login_screen_edittext"
-                        android:hint="Line no 5"
+                        android:hint="Plant no 5"
                         android:inputType="number"
                         android:maxLength="3"
                         android:maxLines="1"
@@ -998,7 +1028,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_weight="1"
                         android:background="@drawable/login_screen_edittext"
-                        android:hint="Line no 6"
+                        android:hint="Plant no 6"
                         android:inputType="number"
                         android:maxLength="3"
                         android:maxLines="1"
@@ -1019,7 +1049,7 @@
                         android:layout_height="45dp"
                         android:layout_weight="1"
                         android:background="@drawable/login_screen_edittext"
-                        android:hint="Line no 7"
+                        android:hint="Plant no 7"
                         android:inputType="number"
                         android:maxLength="3"
                         android:maxLines="1"
@@ -1033,7 +1063,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_weight="1"
                         android:background="@drawable/login_screen_edittext"
-                        android:hint="Line no 8"
+                        android:hint="Plant no 8"
                         android:inputType="number"
                         android:maxLength="3"
                         android:maxLines="1"
@@ -1047,7 +1077,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_weight="1"
                         android:background="@drawable/login_screen_edittext"
-                        android:hint="Line no 9"
+                        android:hint="Plant no 9"
                         android:inputType="number"
                         android:maxLength="3"
                         android:maxLines="1"
@@ -1068,7 +1098,7 @@
                         android:layout_height="45dp"
                         android:layout_weight="1"
                         android:background="@drawable/login_screen_edittext"
-                        android:hint="Line no 10"
+                        android:hint="Plant no 10"
                         android:inputType="number"
                         android:maxLength="3"
                         android:maxLines="1"
@@ -1185,6 +1215,7 @@
                     android:layout_height="45dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/login_screen_edittext"
+                    android:enabled="false"
                     android:inputType="number"
                     android:maxLines="1"
                     android:padding="10dp"
