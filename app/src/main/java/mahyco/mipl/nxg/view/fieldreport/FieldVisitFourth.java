@@ -1034,7 +1034,7 @@ LinearLayout image_layout;
                     dd = dd + (Integer.parseInt(unprocessed_seed_ready_edittextview.getText().toString().trim()));
                     double d = dd;
 
-                    yield_estimate_kg_edittext.setText("" + (int) d);
+                    yield_estimate_kg_edittext.setText("" + (int) Math.round(d));
                 } else {
                     yield_estimate_kg_edittext.setText("");
                     validation();

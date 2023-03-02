@@ -1988,10 +1988,10 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                     if (!b.equals("0")) {
                         ss = b+" Visit.";
                     }
-                    /*if(!b1.equals("0"))
+                    if(!b1.equals("0"))
                     {
                         ss = b1+" Visit.";
-                    }*/
+                    }
                     courseModalArrayList.add(new GetAllSeedDistributionModel(cursorCourses.getInt(1),
                             cursorCourses.getInt(2),
                             cursorCourses.getInt(3),

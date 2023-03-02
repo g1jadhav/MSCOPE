@@ -1143,6 +1143,7 @@ public class FieldVisitFirst extends BaseActivity {
             area_loss_or_gain_textview.setText("" +String.format("%.2f",loss) );
             double existingarea = totalArea + loss;
             existing_area_ha_textview.setText("" + String.format("%.2f",existingarea));
+            Toast.makeText(context, "Existing Area is "+existingarea, Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             Toast.makeText(context, "Error to calculate Tagged Area : "+e.getMessage(), Toast.LENGTH_SHORT).show();
         }

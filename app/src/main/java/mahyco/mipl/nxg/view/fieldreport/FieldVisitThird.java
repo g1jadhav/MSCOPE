@@ -1269,7 +1269,6 @@ public class FieldVisitThird extends BaseActivity {
 
     private void onTextChangeEvent() {
 
-
         first_editetext_female_per_line.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1283,58 +1282,7 @@ public class FieldVisitThird extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                sum = 0;
-                if (first_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    first_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(first_editetext_female_per_line.getText().toString().trim());
-                }
-                if (second_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    second_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(second_editetext_female_per_line.getText().toString().trim());
-                }
-                if (third_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    third_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(third_editetext_female_per_line.getText().toString().trim());
-                }
-                if (fourth_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    fourth_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(fourth_editetext_female_per_line.getText().toString().trim());
-                }
-                if (fifth_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    fifth_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(fifth_editetext_female_per_line.getText().toString().trim());
-                }
-                if (six_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    six_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(six_editetext_female_per_line.getText().toString().trim());
-                }
-                if (seven_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    seven_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(seven_editetext_female_per_line.getText().toString().trim());
-                }
-                if (eight_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    eight_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(eight_editetext_female_per_line.getText().toString().trim());
-                }
-                if (nine_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    nine_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(nine_editetext_female_per_line.getText().toString().trim());
-                }
-                if (ten_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    ten_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(ten_editetext_female_per_line.getText().toString().trim());
-                }
-                yield_estimate_kg_edittext.setText("" + (int)sum);
+                performSum();
             }
         });
         second_editetext_female_per_line.addTextChangedListener(new TextWatcher() {
@@ -1350,58 +1298,7 @@ public class FieldVisitThird extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                sum = 0;
-                if (first_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    first_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(first_editetext_female_per_line.getText().toString().trim());
-                }
-                if (second_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    second_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(second_editetext_female_per_line.getText().toString().trim());
-                }
-                if (third_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    third_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(third_editetext_female_per_line.getText().toString().trim());
-                }
-                if (fourth_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    fourth_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(fourth_editetext_female_per_line.getText().toString().trim());
-                }
-                if (fifth_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    fifth_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(fifth_editetext_female_per_line.getText().toString().trim());
-                }
-                if (six_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    six_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(six_editetext_female_per_line.getText().toString().trim());
-                }
-                if (seven_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    seven_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(seven_editetext_female_per_line.getText().toString().trim());
-                }
-                if (eight_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    eight_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(eight_editetext_female_per_line.getText().toString().trim());
-                }
-                if (nine_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    nine_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(nine_editetext_female_per_line.getText().toString().trim());
-                }
-                if (ten_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    ten_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(ten_editetext_female_per_line.getText().toString().trim());
-                }
-                yield_estimate_kg_edittext.setText("" + sum);
+                performSum();
             }
         });
         third_editetext_female_per_line.addTextChangedListener(new TextWatcher() {
@@ -1417,58 +1314,7 @@ public class FieldVisitThird extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                sum = 0;
-                if (first_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    first_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(first_editetext_female_per_line.getText().toString().trim());
-                }
-                if (second_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    second_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(second_editetext_female_per_line.getText().toString().trim());
-                }
-                if (third_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    third_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(third_editetext_female_per_line.getText().toString().trim());
-                }
-                if (fourth_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    fourth_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(fourth_editetext_female_per_line.getText().toString().trim());
-                }
-                if (fifth_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    fifth_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(fifth_editetext_female_per_line.getText().toString().trim());
-                }
-                if (six_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    six_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(six_editetext_female_per_line.getText().toString().trim());
-                }
-                if (seven_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    seven_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(seven_editetext_female_per_line.getText().toString().trim());
-                }
-                if (eight_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    eight_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(eight_editetext_female_per_line.getText().toString().trim());
-                }
-                if (nine_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    nine_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(nine_editetext_female_per_line.getText().toString().trim());
-                }
-                if (ten_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    ten_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(ten_editetext_female_per_line.getText().toString().trim());
-                }
-                yield_estimate_kg_edittext.setText("" + sum);
+                performSum();
             }
         });
         fourth_editetext_female_per_line.addTextChangedListener(new TextWatcher() {
@@ -1484,58 +1330,7 @@ public class FieldVisitThird extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                sum = 0;
-                if (first_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    first_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(first_editetext_female_per_line.getText().toString().trim());
-                }
-                if (second_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    second_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(second_editetext_female_per_line.getText().toString().trim());
-                }
-                if (third_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    third_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(third_editetext_female_per_line.getText().toString().trim());
-                }
-                if (fourth_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    fourth_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(fourth_editetext_female_per_line.getText().toString().trim());
-                }
-                if (fifth_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    fifth_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(fifth_editetext_female_per_line.getText().toString().trim());
-                }
-                if (six_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    six_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(six_editetext_female_per_line.getText().toString().trim());
-                }
-                if (seven_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    seven_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(seven_editetext_female_per_line.getText().toString().trim());
-                }
-                if (eight_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    eight_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(eight_editetext_female_per_line.getText().toString().trim());
-                }
-                if (nine_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    nine_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(nine_editetext_female_per_line.getText().toString().trim());
-                }
-                if (ten_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    ten_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(ten_editetext_female_per_line.getText().toString().trim());
-                }
-                yield_estimate_kg_edittext.setText("" + sum);
+                performSum();
             }
         });
         fifth_editetext_female_per_line.addTextChangedListener(new TextWatcher() {
@@ -1551,58 +1346,7 @@ public class FieldVisitThird extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                sum = 0;
-                if (first_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    first_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(first_editetext_female_per_line.getText().toString().trim());
-                }
-                if (second_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    second_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(second_editetext_female_per_line.getText().toString().trim());
-                }
-                if (third_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    third_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(third_editetext_female_per_line.getText().toString().trim());
-                }
-                if (fourth_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    fourth_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(fourth_editetext_female_per_line.getText().toString().trim());
-                }
-                if (fifth_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    fifth_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(fifth_editetext_female_per_line.getText().toString().trim());
-                }
-                if (six_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    six_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(six_editetext_female_per_line.getText().toString().trim());
-                }
-                if (seven_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    seven_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(seven_editetext_female_per_line.getText().toString().trim());
-                }
-                if (eight_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    eight_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(eight_editetext_female_per_line.getText().toString().trim());
-                }
-                if (nine_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    nine_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(nine_editetext_female_per_line.getText().toString().trim());
-                }
-                if (ten_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    ten_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(ten_editetext_female_per_line.getText().toString().trim());
-                }
-                yield_estimate_kg_edittext.setText("" + sum);
+                performSum();
             }
         });
         six_editetext_female_per_line.addTextChangedListener(new TextWatcher() {
@@ -1618,58 +1362,7 @@ public class FieldVisitThird extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                sum = 0;
-                if (first_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    first_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(first_editetext_female_per_line.getText().toString().trim());
-                }
-                if (second_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    second_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(second_editetext_female_per_line.getText().toString().trim());
-                }
-                if (third_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    third_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(third_editetext_female_per_line.getText().toString().trim());
-                }
-                if (fourth_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    fourth_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(fourth_editetext_female_per_line.getText().toString().trim());
-                }
-                if (fifth_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    fifth_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(fifth_editetext_female_per_line.getText().toString().trim());
-                }
-                if (six_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    six_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(six_editetext_female_per_line.getText().toString().trim());
-                }
-                if (seven_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    seven_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(seven_editetext_female_per_line.getText().toString().trim());
-                }
-                if (eight_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    eight_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(eight_editetext_female_per_line.getText().toString().trim());
-                }
-                if (nine_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    nine_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(nine_editetext_female_per_line.getText().toString().trim());
-                }
-                if (ten_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    ten_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(ten_editetext_female_per_line.getText().toString().trim());
-                }
-                yield_estimate_kg_edittext.setText("" + sum);
+                performSum();
             }
         });
         seven_editetext_female_per_line.addTextChangedListener(new TextWatcher() {
@@ -1685,58 +1378,7 @@ public class FieldVisitThird extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                sum = 0;
-                if (first_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    first_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(first_editetext_female_per_line.getText().toString().trim());
-                }
-                if (second_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    second_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(second_editetext_female_per_line.getText().toString().trim());
-                }
-                if (third_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    third_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(third_editetext_female_per_line.getText().toString().trim());
-                }
-                if (fourth_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    fourth_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(fourth_editetext_female_per_line.getText().toString().trim());
-                }
-                if (fifth_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    fifth_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(fifth_editetext_female_per_line.getText().toString().trim());
-                }
-                if (six_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    six_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(six_editetext_female_per_line.getText().toString().trim());
-                }
-                if (seven_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    seven_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(seven_editetext_female_per_line.getText().toString().trim());
-                }
-                if (eight_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    eight_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(eight_editetext_female_per_line.getText().toString().trim());
-                }
-                if (nine_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    nine_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(nine_editetext_female_per_line.getText().toString().trim());
-                }
-                if (ten_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    ten_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(ten_editetext_female_per_line.getText().toString().trim());
-                }
-                yield_estimate_kg_edittext.setText("" + sum);
+                performSum();
             }
         });
         eight_editetext_female_per_line.addTextChangedListener(new TextWatcher() {
@@ -1752,58 +1394,7 @@ public class FieldVisitThird extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                sum = 0;
-                if (first_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    first_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(first_editetext_female_per_line.getText().toString().trim());
-                }
-                if (second_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    second_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(second_editetext_female_per_line.getText().toString().trim());
-                }
-                if (third_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    third_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(third_editetext_female_per_line.getText().toString().trim());
-                }
-                if (fourth_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    fourth_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(fourth_editetext_female_per_line.getText().toString().trim());
-                }
-                if (fifth_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    fifth_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(fifth_editetext_female_per_line.getText().toString().trim());
-                }
-                if (six_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    six_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(six_editetext_female_per_line.getText().toString().trim());
-                }
-                if (seven_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    seven_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(seven_editetext_female_per_line.getText().toString().trim());
-                }
-                if (eight_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    eight_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(eight_editetext_female_per_line.getText().toString().trim());
-                }
-                if (nine_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    nine_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(nine_editetext_female_per_line.getText().toString().trim());
-                }
-                if (ten_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    ten_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(ten_editetext_female_per_line.getText().toString().trim());
-                }
-                yield_estimate_kg_edittext.setText("" + sum);
+                performSum();
             }
         });
         nine_editetext_female_per_line.addTextChangedListener(new TextWatcher() {
@@ -1819,58 +1410,7 @@ public class FieldVisitThird extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                sum = 0;
-                if (first_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    first_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(first_editetext_female_per_line.getText().toString().trim());
-                }
-                if (second_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    second_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(second_editetext_female_per_line.getText().toString().trim());
-                }
-                if (third_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    third_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(third_editetext_female_per_line.getText().toString().trim());
-                }
-                if (fourth_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    fourth_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(fourth_editetext_female_per_line.getText().toString().trim());
-                }
-                if (fifth_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    fifth_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(fifth_editetext_female_per_line.getText().toString().trim());
-                }
-                if (six_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    six_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(six_editetext_female_per_line.getText().toString().trim());
-                }
-                if (seven_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    seven_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(seven_editetext_female_per_line.getText().toString().trim());
-                }
-                if (eight_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    eight_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(eight_editetext_female_per_line.getText().toString().trim());
-                }
-                if (nine_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    nine_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(nine_editetext_female_per_line.getText().toString().trim());
-                }
-                if (ten_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    ten_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(ten_editetext_female_per_line.getText().toString().trim());
-                }
-                yield_estimate_kg_edittext.setText("" + sum);
+                performSum();
             }
         });
         ten_editetext_female_per_line.addTextChangedListener(new TextWatcher() {
@@ -1886,59 +1426,7 @@ public class FieldVisitThird extends BaseActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                sum = 0;
-                if (first_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    first_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(first_editetext_female_per_line.getText().toString().trim());
-                }
-                if (second_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    second_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(second_editetext_female_per_line.getText().toString().trim());
-                }
-                if (third_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    third_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(third_editetext_female_per_line.getText().toString().trim());
-                }
-                if (fourth_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    fourth_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(fourth_editetext_female_per_line.getText().toString().trim());
-                }
-                if (fifth_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    fifth_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(fifth_editetext_female_per_line.getText().toString().trim());
-                }
-                if (six_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    six_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(six_editetext_female_per_line.getText().toString().trim());
-                }
-                if (seven_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    seven_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(seven_editetext_female_per_line.getText().toString().trim());
-                }
-                if (eight_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    eight_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(eight_editetext_female_per_line.getText().toString().trim());
-                }
-                if (nine_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    nine_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(nine_editetext_female_per_line.getText().toString().trim());
-                }
-                if (ten_editetext_female_per_line.getText().toString().trim().equals("")) {
-                    ten_editetext_female_per_line.setText("0");
-                } else {
-                    sum += Integer.parseInt(ten_editetext_female_per_line.getText().toString().trim());
-                }
-                yield_estimate_kg_edittext.setText("" + sum);
-
+                performSum();
 
             }
         });
@@ -2024,7 +1512,7 @@ public class FieldVisitThird extends BaseActivity {
                     Log.i("sum5", "" + dd);
                     double d = dd;
 
-                    yield_estimate_kg_edittext.setText("" + (int)d);
+                    yield_estimate_kg_edittext.setText("" + (int) Math.round(d));
                 }
             }
         });
@@ -2040,6 +1528,99 @@ public class FieldVisitThird extends BaseActivity {
                 }
             }
         });
+    }
+    public void performSum() {
+        try {
+            int cnt = 0;
+            sum = 0;
+            if (first_editetext_female_per_line.getText().toString().trim().equals("")) {
+                //    first_editetext_female_per_line.setText("0");
+                cnt++;
+            } else {
+                sum += Integer.parseInt(first_editetext_female_per_line.getText().toString().trim());
+            }
+            if (second_editetext_female_per_line.getText().toString().trim().equals("")) {
+                //   second_editetext_female_per_line.setText("0");
+                cnt++;
+            } else {
+                sum += Integer.parseInt(second_editetext_female_per_line.getText().toString().trim());
+            }
+            if (third_editetext_female_per_line.getText().toString().trim().equals("")) {
+                //    third_editetext_female_per_line.setText("0");
+                cnt++;
+            } else {
+                sum += Integer.parseInt(third_editetext_female_per_line.getText().toString().trim());
+            }
+            if (fourth_editetext_female_per_line.getText().toString().trim().equals("")) {
+                //  fourth_editetext_female_per_line.setText("0");
+                cnt++;
+            } else {
+                sum += Integer.parseInt(fourth_editetext_female_per_line.getText().toString().trim());
+            }
+            if (fifth_editetext_female_per_line.getText().toString().trim().equals("")) {
+                //  fifth_editetext_female_per_line.setText("0");
+                cnt++;
+            } else {
+                sum += Integer.parseInt(fifth_editetext_female_per_line.getText().toString().trim());
+            }
+            if (six_editetext_female_per_line.getText().toString().trim().equals("")) {
+                //  six_editetext_female_per_line.setText("0");
+                cnt++;
+            } else {
+                sum += Integer.parseInt(six_editetext_female_per_line.getText().toString().trim());
+            }
+            if (seven_editetext_female_per_line.getText().toString().trim().equals("")) {
+                //   seven_editetext_female_per_line.setText("0");
+                cnt++;
+            } else {
+                sum += Integer.parseInt(seven_editetext_female_per_line.getText().toString().trim());
+            }
+            if (eight_editetext_female_per_line.getText().toString().trim().equals("")) {
+                //  eight_editetext_female_per_line.setText("0");
+                cnt++;
+            } else {
+                sum += Integer.parseInt(eight_editetext_female_per_line.getText().toString().trim());
+            }
+            if (nine_editetext_female_per_line.getText().toString().trim().equals("")) {
+                // nine_editetext_female_per_line.setText("0");
+                cnt++;
+            } else {
+                sum += Integer.parseInt(nine_editetext_female_per_line.getText().toString().trim());
+            }
+            if (ten_editetext_female_per_line.getText().toString().trim().equals("")) {
+                //    ten_editetext_female_per_line.setText("0");
+                cnt++;
+            } else {
+                sum += Integer.parseInt(ten_editetext_female_per_line.getText().toString().trim());
+            }
+            if (average_weight_seed_edittextview.getText().toString().trim().equals("")) {
+                cnt++;
+            }
+
+
+            if (cnt == 0) {
+
+                double ssum = sum;
+                Log.i("sum", "" + sum);
+                double dd = ssum / 10.0;
+                Log.i("sum1", "" + dd);
+                dd = dd + Integer.parseInt(number_of_expected_edittextview.getText().toString().trim());
+                Log.i("sum2", "" + dd);
+                dd = dd * Integer.parseInt(total_female_plants_textview.getText().toString().trim());
+                Log.i("sum3", "" + dd);
+                dd = dd * Double.parseDouble(average_weight_seed_edittextview.getText().toString().trim());
+                Log.i("sum4", "" + dd);
+                dd = dd / 1000;
+                Log.i("sum5", "" + dd);
+                double d = dd;
+
+                yield_estimate_kg_edittext.setText("" + (int) Math.round(d));
+            } else {
+                //   Toast.makeText(context, "Some Fields are Empty. ", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            Toast.makeText(context, "check proper fields are entered or not.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void setFieldCropArea() {
