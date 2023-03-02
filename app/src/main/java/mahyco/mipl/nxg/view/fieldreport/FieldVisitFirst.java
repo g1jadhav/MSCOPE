@@ -284,7 +284,7 @@ public class FieldVisitFirst extends BaseActivity {
         grower_mobile_no_edittext.setText("" + Preferences.get(context, Preferences.SELECTED_GROWERMOBILE));
         userid = Integer.parseInt(Preferences.get(context, Preferences.SELECTED_GROWERID).toString().trim());
         cropcode = Integer.parseInt(Preferences.get(context, Preferences.SELECTEDCROPECODE).toString().trim());
-        issued_seed_area_textview.setText("" + String.format("%.2f",Double.parseDouble(Preferences.get(context, Preferences.SELECTED_GROWERAREA).trim())));
+        issued_seed_area_textview.setText("" + String.format("%.2f",Double.parseDouble(Preferences.get(context, Preferences.SELECTED_GROWERAREA).trim().replace(",","."))));
         production_code_textview.setText("" + Preferences.get(context, Preferences.SELECTED_GROWERPRODUCTIONCODE));
         try {
             String str[] = database.getGetGrowerCountryMasterId(Preferences.get(context, Preferences.SELECTED_GROWERUNIQUECODE)).split("~");
@@ -512,7 +512,7 @@ public class FieldVisitFirst extends BaseActivity {
                         setAreaAfterOnChange(0.0);
 
                     } else {
-                        double d = Double.parseDouble(total_tagged_area_below_location_textview.getText().toString().trim());
+                        double d = Double.parseDouble(total_tagged_area_below_location_textview.getText().toString().trim().replace(",","."));
 
                         setAreaAfterOnChange(d);
 
@@ -532,7 +532,7 @@ public class FieldVisitFirst extends BaseActivity {
 
                     } else {
 
-                        double d = Double.parseDouble(total_tagged_area_below_location_textview.getText().toString().trim());
+                        double d = Double.parseDouble(total_tagged_area_below_location_textview.getText().toString().trim().replace(",","."));
                         setAreaAfterOnChange(d);
                         setFieldCropArea();
 
@@ -754,9 +754,9 @@ public class FieldVisitFirst extends BaseActivity {
                 fieldVisitModel.setCountryMasterId(countryCode);// 90,
                 fieldVisitModel.setMandatoryFieldVisitId(1);// 1,
                 fieldVisitModel.setFieldVisitType("Mandatory Field Visit");// Mandatory Field Visit,
-                fieldVisitModel.setTotalSeedAreaLost(Double.parseDouble(str_area_loss_or_gain_textview));// 0.02,
-                fieldVisitModel.setTaggedAreaInHA(Double.parseDouble(str_total_tagged_area_below_location_textview));// 0.1,
-                fieldVisitModel.setExistingAreaInHA(Double.parseDouble(str_existing_area_ha_textview));// 0.1,
+                fieldVisitModel.setTotalSeedAreaLost(Double.parseDouble(str_area_loss_or_gain_textview.replace(",",".")));// 0.02,
+                fieldVisitModel.setTaggedAreaInHA(Double.parseDouble(str_total_tagged_area_below_location_textview.replace(",",".")));// 0.1,
+                fieldVisitModel.setExistingAreaInHA(Double.parseDouble(str_existing_area_ha_textview.replace(",",".")));// 0.1,
                 fieldVisitModel.setReasonForTotalLossed(str_reason_for_total_area_loss);// Reason For Total Lossed,
                 fieldVisitModel.setFemaleSowingDt(str_female_date_sowing);// 2023-01-15T05;//35;//13.528Z,
                 fieldVisitModel.setMaleSowingDt(str_male_date_sowing);// 2023-01-15T05;//35;//13.528Z,
@@ -1121,11 +1121,11 @@ public class FieldVisitFirst extends BaseActivity {
         try {
             totalTaggedArea = 0.0;
             for (FieldMaster f : database.getAllFieldMaster()) {
-                totalTaggedArea += Double.parseDouble(f.getTotalArea());
+                totalTaggedArea += Double.parseDouble(f.getTotalArea().replace(",","."));
             }
 
             total_tagged_area_below_location_textview.setText("" +String.format("%.2f",totalTaggedArea));
-            double totalArea = Double.parseDouble(issued_seed_area_textview.getText().toString());
+            double totalArea = Double.parseDouble(issued_seed_area_textview.getText().toString().replace(",","."));
             double loss = totalTaggedArea - totalArea;
             area_loss_or_gain_textview.setText("" +String.format("%.2f",loss) );
             double existingarea = totalArea + loss;
@@ -1139,14 +1139,14 @@ public class FieldVisitFirst extends BaseActivity {
         try {
             //  setArea();
             totalTaggedArea = 0.0;
-            double issuedArea = Double.parseDouble(issued_seed_area_textview.getText().toString());
-            double existingArea = Double.parseDouble(existing_area_ha_textview.getText().toString());
-            double femaleRRSpacingArea = Double.parseDouble(female_spacing_rr.getText().toString());
-            double femalePPSpacingArea = Double.parseDouble(female_spacing_pp.getText().toString());
-            double maleRRSpacingArea = Double.parseDouble(male_spacing_rr.getText().toString());
-            double malePPSpacingArea = Double.parseDouble(male_spacing_pp.getText().toString());
-            double femalePlantingRatioArea = Double.parseDouble(female_planting_ratio.getText().toString());
-            double malePlantingRatioArea = Double.parseDouble(male_planting_ratio.getText().toString());
+            double issuedArea = Double.parseDouble(issued_seed_area_textview.getText().toString().replace(",","."));
+            double existingArea = Double.parseDouble(existing_area_ha_textview.getText().toString().replace(",","."));
+            double femaleRRSpacingArea = Double.parseDouble(female_spacing_rr.getText().toString().replace(",","."));
+            double femalePPSpacingArea = Double.parseDouble(female_spacing_pp.getText().toString().replace(",","."));
+            double maleRRSpacingArea = Double.parseDouble(male_spacing_rr.getText().toString().replace(",","."));
+            double malePPSpacingArea = Double.parseDouble(male_spacing_pp.getText().toString().replace(",","."));
+            double femalePlantingRatioArea = Double.parseDouble(female_planting_ratio.getText().toString().trim().replace(",","."));
+            double malePlantingRatioArea = Double.parseDouble(male_planting_ratio.getText().toString().trim().replace(",","."));
             double totalFemale = (((existingArea * 100000000) / (femaleRRSpacingArea * femalePPSpacingArea)) * ((femalePlantingRatioArea / (femalePlantingRatioArea + malePlantingRatioArea))));
             double totalMale = (((existingArea * 100000000) / (maleRRSpacingArea * malePPSpacingArea)) * ((malePlantingRatioArea / (femalePlantingRatioArea + malePlantingRatioArea))));
             total_female_plants_textview.setText("" + new Double(totalFemale).intValue());
@@ -1161,7 +1161,7 @@ public class FieldVisitFirst extends BaseActivity {
         try {
             totalTaggedArea = s;
             total_tagged_area_below_location_textview.setText("" + totalTaggedArea);
-            double totalArea = Double.parseDouble(issued_seed_area_textview.getText().toString());
+            double totalArea = Double.parseDouble(issued_seed_area_textview.getText().toString().trim().replace(",","."));
             double loss = totalTaggedArea - totalArea;
             area_loss_or_gain_textview.setText("" + loss);
             double existingarea = totalArea + loss;
