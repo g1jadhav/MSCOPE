@@ -397,10 +397,10 @@ public class OptionalVisit extends BaseActivity {
                 staff_name_textview.setError("Required");
                 cnt++;
             }
-            if (str_geotag_location_textview.trim().equals("")) {
+          /*  if (str_geotag_location_textview.trim().equals("")) {
                 geotag_location_textview.setError("Required");
                 cnt++;
-            }
+            }*/
             if (str_reason_for_optional_visit.trim().equals("")) {
                 reason_for_optional_visit.setError("Required");
                 cnt++;

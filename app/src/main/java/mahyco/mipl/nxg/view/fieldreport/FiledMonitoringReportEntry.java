@@ -11,9 +11,11 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.SystemClock;
 import android.provider.Settings;
+import android.text.Editable;
 import android.text.Html;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -48,6 +50,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import mahyco.mipl.nxg.BuildConfig;
 import mahyco.mipl.nxg.R;
 import mahyco.mipl.nxg.adapter.CategoryLoadingAdapter;
+import mahyco.mipl.nxg.adapter.GrowerAdapter;
+import mahyco.mipl.nxg.adapter.VisitGrowerAdapter;
 import mahyco.mipl.nxg.model.CategoryChildModel;
 import mahyco.mipl.nxg.model.CategoryModel;
 import mahyco.mipl.nxg.model.DownloadGrowerModel;
@@ -55,6 +59,7 @@ import mahyco.mipl.nxg.model.GetAllSeedDistributionModel;
 import mahyco.mipl.nxg.model.GrowerModel;
 import mahyco.mipl.nxg.model.VillageModel;
 import mahyco.mipl.nxg.spinner.CCFSerachSpinner;
+import mahyco.mipl.nxg.spinner.SpinnerGrowerAdapter;
 import mahyco.mipl.nxg.util.BaseActivity;
 import mahyco.mipl.nxg.util.Preferences;
 import mahyco.mipl.nxg.util.SqlightDatabase;
@@ -65,7 +70,7 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
         View.OnClickListener {
 
     private Context mContext;
-
+Dialog dialog_growerlist;
     private CCFSerachSpinner mSearchByIdNameSpinner;
 
     private ArrayList<GetAllSeedDistributionModel> mGrowerList = new ArrayList<>();
@@ -84,6 +89,7 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
     LinearLayoutManager mManager;
     RecyclerView rc_list;
     CategoryLoadingAdapter adapter;
+    VisitGrowerAdapter visitGrowerAdapter;
     EditText et_landmark, et_fullname, /*et_gender,*/ /*et_dob,*/
             et_mobile, et_uniqcode /*et_regdate,*/
             /*,et_satffname*/;
@@ -154,6 +160,8 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
     int selectedGrowerId=0;
     LocationManager locationManager ;
     boolean GpsStatus ;
+    ProgressDialog progressDialog;
+
     @Override
     protected int getLayout() {
         return R.layout.filed_monitoring_report_entry;
@@ -175,7 +183,9 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
             lbl_search_filter_result=findViewById(R.id.lbl_search_filter_result);
-
+            mManager = new LinearLayoutManager(mContext);
+            progressDialog = new ProgressDialog(mContext);
+            progressDialog.setMessage("प्रतिक्षा करा..");
             mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -518,10 +528,12 @@ ProgressDialog progressDialog;
                 }
 
                 if (mGrowerList.size() > 0) {*/
-                ArrayAdapter<GetAllSeedDistributionModel> adapter = new ArrayAdapter<>(mContext, R.layout.spinner_rows, mGrowerList);
+                SpinnerGrowerAdapter adapter = new SpinnerGrowerAdapter(mContext, mGrowerList);
                 mSearchByIdNameSpinner.setAdapter(adapter);
                 /* }*/
                 super.onPostExecute(result);
+
+                show_grower_list();
             }
 
             /*if (mGrowerList.size() > 0) {
@@ -1250,5 +1262,71 @@ ProgressDialog progressDialog;
         assert locationManager != null;
         GpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         return GpsStatus;
+    }
+
+    public void show_grower_list()
+    {
+        try{
+            mManager=new LinearLayoutManager(mContext);
+            dialog_growerlist=new Dialog(mContext,android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+            dialog_growerlist.setContentView(R.layout.growerlist_dialog);
+            RecyclerView rc_list=dialog_growerlist.findViewById(R.id.rc_list);
+            EditText et_search=dialog_growerlist.findViewById(R.id.et_search);
+            et_search.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                       filter(s.toString().trim());
+                }
+            });
+            rc_list.setLayoutManager(mManager);
+
+
+            try {
+                visitGrowerAdapter = new VisitGrowerAdapter((ArrayList) mGrowerList, mContext);
+                rc_list.setAdapter(visitGrowerAdapter);
+                dialog_growerlist.show();
+            } catch (NullPointerException e) {
+                Toast.makeText(mContext, "Error is " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                Toast.makeText(mContext, "Error is " + e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }catch (Exception e)
+        {
+            Toast.makeText(mContext, "Error is " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+    private void filter(String text) {
+        // creating a new array list to filter our data.
+        ArrayList<GetAllSeedDistributionModel> filteredlist = new ArrayList<GetAllSeedDistributionModel>();
+
+        // running a for loop to compare elements.
+        for (GetAllSeedDistributionModel item : mGrowerList) {
+            // checking if the entered string matched with any item of our recycler view.
+            if (item.getGrowerFullName().toLowerCase().contains(text.toLowerCase())) {
+                // if the item is matched we are
+                // adding it to our filtered list.
+                filteredlist.add(item);
+            }
+        }
+        if (filteredlist.isEmpty()) {
+            // if no item is added in filtered list we are
+            // displaying a toast message as no data found.
+            Toast.makeText(this, "No Data Found..", Toast.LENGTH_SHORT).show();
+        } else {
+            // at last we are passing that filtered
+            // list to our adapter class.
+            visitGrowerAdapter.filterList(filteredlist);
+        }
     }
 }
