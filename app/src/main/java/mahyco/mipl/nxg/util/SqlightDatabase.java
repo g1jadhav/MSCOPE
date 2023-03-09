@@ -32,6 +32,7 @@ import mahyco.mipl.nxg.model.SeedBatchNoModel;
 import mahyco.mipl.nxg.model.SeedReceiptModel;
 import mahyco.mipl.nxg.model.StoreAreaModel;
 import mahyco.mipl.nxg.model.VillageModel;
+import mahyco.mipl.nxg.model.VisitDetailCoutModel;
 
 
 public class SqlightDatabase extends SQLiteOpenHelper {
@@ -833,6 +834,36 @@ public class SqlightDatabase extends SQLiteOpenHelper {
             return  cnt;
         } catch (Exception e) {
             return 0;
+        } finally {
+            myDb.close();
+        }
+    }
+
+    public VisitDetailCoutModel getCountServerObject(int userid) {
+        SQLiteDatabase myDb = null;
+        VisitDetailCoutModel visitDetailCoutModel=new VisitDetailCoutModel();
+        try {
+            int cnt=0;
+            myDb = this.getReadableDatabase();
+            String q = "SELECT  * FROM tbl_visit_master where UserId="+userid+" and MandatoryFieldVisitId>0 order by FieldVisitId  desc  LIMIT 1";
+            Cursor cursorCourses = myDb.rawQuery(q, null);
+            if (cursorCourses.moveToFirst()) {
+                cnt=cursorCourses.getInt(0);
+
+                visitDetailCoutModel.setTempid(cursorCourses.getInt(0));
+                visitDetailCoutModel.setUserId(cursorCourses.getString(2));
+                visitDetailCoutModel.setGrowerName(cursorCourses.getString(0));
+                visitDetailCoutModel.setGrowerNationalId(cursorCourses.getString(0));
+                visitDetailCoutModel.setGrowerMobile(cursorCourses.getString(0));
+                visitDetailCoutModel.setGrowerIssuedArea(cursorCourses.getString(0));
+                visitDetailCoutModel.setGrowerExistingArea(cursorCourses.getString(9));
+                visitDetailCoutModel.setVisitDate(cursorCourses.getString(34));
+                visitDetailCoutModel.setVisitedBy(cursorCourses.getString(33));
+                visitDetailCoutModel.setVisitID(cursorCourses.getInt(5));
+            }
+            return  visitDetailCoutModel;
+        } catch (Exception e) {
+            return null;
         } finally {
             myDb.close();
         }
@@ -2016,7 +2047,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                             cursorCourses.getString(22),
                             cursorCourses.getString(23),
                             cursorCourses.getString(24),
-                            srno+"-"+cursorCourses.getString(25) + "(" + ss + ")",
+                            srno+"-"+cursorCourses.getInt(2)+" "+cursorCourses.getString(25) + "(" + ss + ")",
                             cursorCourses.getString(26),
                             cursorCourses.getString(27),
                             cursorCourses.getString(28),
@@ -2446,8 +2477,8 @@ public FieldVisitModel_Server getVisitDetailsById(int userid) {
                     "Latitude," +
                     "Longitude," +
                     "CapturePhoto," +
-                    "CreatedBy," +
-                    "CreatedDt from tbl_visit_master where UserId="+userid+" order by MandatoryFieldVisitId desc" ;
+                    "CreatedBy," +  //UserId="+userid+" and MandatoryFieldVisitId>0 order by FieldVisitId
+                    "CreatedDt from tbl_visit_master where UserId="+userid+"  and MandatoryFieldVisitId>0 order by FieldVisitId desc" ;
             Log.i("query",q);
             Cursor cursorCourses = myDb.rawQuery(q, null);
            FieldVisitModel_Server m=new FieldVisitModel_Server();

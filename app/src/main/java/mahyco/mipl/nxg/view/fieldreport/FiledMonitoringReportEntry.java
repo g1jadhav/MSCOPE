@@ -70,7 +70,7 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
         View.OnClickListener {
 
     private Context mContext;
-Dialog dialog_growerlist;
+    Dialog dialog_growerlist;
     private CCFSerachSpinner mSearchByIdNameSpinner;
 
     private ArrayList<GetAllSeedDistributionModel> mGrowerList = new ArrayList<>();
@@ -1272,6 +1272,13 @@ ProgressDialog progressDialog;
             dialog_growerlist.setContentView(R.layout.growerlist_dialog);
             RecyclerView rc_list=dialog_growerlist.findViewById(R.id.rc_list);
             EditText et_search=dialog_growerlist.findViewById(R.id.et_search);
+            ImageView imageButton3=dialog_growerlist.findViewById(R.id.imageButton3);
+            imageButton3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog_growerlist.dismiss();
+                }
+            });
             et_search.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {

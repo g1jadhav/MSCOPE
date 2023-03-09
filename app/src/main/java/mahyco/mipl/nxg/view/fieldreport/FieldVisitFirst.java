@@ -67,8 +67,10 @@ import mahyco.mipl.nxg.model.FieldLocation;
 import mahyco.mipl.nxg.model.FieldMaster;
 import mahyco.mipl.nxg.model.FieldMonitoringModels;
 import mahyco.mipl.nxg.model.FieldPlantLaneModels;
+import mahyco.mipl.nxg.model.FieldVisitFruitsCobModel;
 import mahyco.mipl.nxg.model.FieldVisitLocationModel;
 import mahyco.mipl.nxg.model.FieldVisitModel;
+import mahyco.mipl.nxg.model.FieldVisitRoguedPlantModel;
 import mahyco.mipl.nxg.model.FirstVisitLocalModel;
 import mahyco.mipl.nxg.spinner.CCFSerachSpinner;
 import mahyco.mipl.nxg.util.BaseActivity;
@@ -94,7 +96,7 @@ public class FieldVisitFirst extends BaseActivity {
     Double lati = 0.0, longi = 0.0;
     Double totalTaggedArea = 0.0;
     LinearLayout ll_yes, ll_no, ll_femalelinelayout, ll_malelinelayout, female_spacinglayout,image_layout;
-
+     int buttonclick=0;
 
     EditText
             grower_name_textview,
@@ -210,6 +212,7 @@ public class FieldVisitFirst extends BaseActivity {
         tag_area_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                buttonclick=1;
                 Intent intent = new Intent(FieldVisitFirst.this, AreaTagingActivity.class);
                 startActivity(intent);
             }
@@ -395,6 +398,7 @@ public class FieldVisitFirst extends BaseActivity {
             @Override
             public void onClick(View v) {
                 try {
+                    buttonclick=2;
                     PickImageDialog.build(new PickSetup().setPickTypes(EPickType.CAMERA))
                             .setOnPickResult(new IPickResult() {
                                 @Override
@@ -855,6 +859,32 @@ public class FieldVisitFirst extends BaseActivity {
                 fieldVisitModel.setLineData(jsonObjectLine.toString());
                 fieldVisitModel.setLocationData(jsonObjectLocation.toString());
 
+
+                ArrayList<FieldVisitRoguedPlantModel> lst_roguredPlants = new ArrayList<>();
+                ArrayList<FieldVisitFruitsCobModel> lst_fruitCob = new ArrayList<>();
+
+                FieldVisitRoguedPlantModel r_male_btype = new FieldVisitRoguedPlantModel();
+                r_male_btype.setCategoryType("Male");
+                r_male_btype.setPlantType("OffType");
+                r_male_btype.setNoOfCount(0);
+                lst_roguredPlants.add(r_male_btype);
+
+
+                fieldMonitoringModels.setFieldVisitModel(fieldVisitModel);
+                fieldMonitoringModels.setFieldVisitLocationModels(lst_location);
+                fieldMonitoringModels.setFieldPlantLaneModels(lst_FieldPlantLaneModels);
+                fieldMonitoringModels.setFieldVisitFruitsCobModels(lst_fruitCob);
+                fieldMonitoringModels.setFieldVisitRoguedPlantModels(lst_roguredPlants);
+
+                JsonArray jsonObjectroguredPlants = new JsonParser().parse(new Gson().toJson(lst_roguredPlants)).getAsJsonArray();
+                JsonArray jsonFruitCobds = new JsonParser().parse(new Gson().toJson(lst_fruitCob)).getAsJsonArray();
+
+                fieldVisitModel.setFieldVisitRoguedPlantModels(jsonObjectroguredPlants.toString().trim());
+                fieldVisitModel.setFieldVisitFruitsCobModelsText(jsonFruitCobds.toString().trim());
+
+
+
+
                 JsonObject jsonObject = new JsonParser().parse(new Gson().toJson(fieldMonitoringModels)).getAsJsonObject();
                 JsonArray jsonArray = new JsonArray();
                 jsonArray.add(jsonObject);
@@ -1123,6 +1153,7 @@ public class FieldVisitFirst extends BaseActivity {
     protected void onResume() {
         super.onResume();
         // if (cropcategory == 1)
+        if(buttonclick==1)
         setArea();
 //        else if (cropcategory == 2)
 //            setFieldCropArea();

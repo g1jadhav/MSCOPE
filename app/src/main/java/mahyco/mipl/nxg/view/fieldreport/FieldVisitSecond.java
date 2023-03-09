@@ -238,7 +238,7 @@ public class FieldVisitSecond extends BaseActivity {
                 countryCode = Integer.parseInt(str[0].trim());
                 village_textview.setText(str[1].trim());
 
-                Toast.makeText(context, "Selected ." + countryCode, Toast.LENGTH_SHORT).show();
+           //     Toast.makeText(context, "Selected ." + countryCode, Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(context, "Missing Country Master Id.", Toast.LENGTH_SHORT).show();
             }

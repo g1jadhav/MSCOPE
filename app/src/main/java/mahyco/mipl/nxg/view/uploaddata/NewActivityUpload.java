@@ -270,7 +270,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                 JsonObject jsonObject_Visit = new JsonObject();
                 JsonArray jsonArray = new JsonArray();
                 for (FieldVisitModel fieldVisitModel : f) {
-                    if (fieldVisitModel.getMandatoryFieldVisitId() == 1) {
+          /*          if (fieldVisitModel.getMandatoryFieldVisitId() == 1) {
 
                         if (fieldVisitModel.getFieldVisitFruitsCobModelsText() == null || fieldVisitModel.getFieldVisitFruitsCobModelsText().trim().equals("")) {
 
@@ -280,7 +280,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                         if (fieldVisitModel.getFieldVisitRoguedPlantModels() == null || fieldVisitModel.getFieldVisitRoguedPlantModels().trim().equals("")) {
                         } else
                             fieldVisitModel.setFieldVisitRoguedPlantModels("[]");
-                    }
+                    }*/
 
 
                     JsonObject jsonObjectFinale = new JsonObject();
