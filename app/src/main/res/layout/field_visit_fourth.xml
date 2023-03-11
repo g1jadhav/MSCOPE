@@ -121,7 +121,7 @@
             <EditText
                 android:id="@+id/village_textview"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="82dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/login_screen_edittext"
                 android:ellipsize="end"
@@ -231,7 +231,7 @@
                 <EditText
                     android:id="@+id/reason_for_area_loss_spinner"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="64dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/login_spinner_style"
                     android:paddingStart="10dp"

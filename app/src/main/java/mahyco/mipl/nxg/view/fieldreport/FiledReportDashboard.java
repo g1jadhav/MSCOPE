@@ -202,7 +202,10 @@ public class FiledReportDashboard extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onClick(View v) {
-
+       if(v.getId()==R.id.btn_optional)
+       {
+           showStage(5);
+       }else
         if(longi!=0 && lati!=0) {
             if (isMockSettingsON(mContext)) {
                 showMeesageDiaog("These application need to uninstall.\n" + appName);

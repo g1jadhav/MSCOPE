@@ -191,10 +191,13 @@ public class VisitGrowerAdapter extends RecyclerView.Adapter<VisitGrowerAdapter.
                             holder.txt_first.setImageResource(R.drawable.ic_baseline_add_task_24);
                             break;
                         case 2:
+                            holder.txt_second.setImageResource(R.drawable.ic_baseline_add_task_24);
                             break;
                         case 3:
+                            holder.txt_third.setImageResource(R.drawable.ic_baseline_add_task_24);
                             break;
                         case 4:
+                            holder.txt_forth.setImageResource(R.drawable.ic_baseline_add_task_24);
                             break;
 
                     }
