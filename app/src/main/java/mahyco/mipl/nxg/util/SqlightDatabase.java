@@ -792,14 +792,9 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                     }
                 } while (cursorCourses.moveToNext());
             }
-            return  "1st Visit : "+cnt1+"    |   "+
-                    "2nd Visit : "+cnt2+"\n"+
-                    "3rd Visit : "+cnt3+"    |   "+
-                    "4th Visit : "+cnt4+"\n"+
-                    "Optional Visit : "+cnt0+""
-                    ;
+            return  cnt1+"~"+cnt2+"~"+cnt3+"~"+cnt4+"~"+cnt0;
         } catch (Exception e) {
-            return "";
+            return "0~0~0~0~0";
         } finally {
             myDb.close();
         }
@@ -854,12 +849,13 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                 visitDetailCoutModel.setUserId(cursorCourses.getString(2));
                 visitDetailCoutModel.setGrowerName(cursorCourses.getString(0));
                 visitDetailCoutModel.setGrowerNationalId(cursorCourses.getString(0));
-                visitDetailCoutModel.setGrowerMobile(cursorCourses.getString(0));
+                visitDetailCoutModel.setGrowerMobile(cursorCourses.getString(28)); // Storing Observations Status
                 visitDetailCoutModel.setGrowerIssuedArea(cursorCourses.getString(0));
                 visitDetailCoutModel.setGrowerExistingArea(cursorCourses.getString(9));
                 visitDetailCoutModel.setVisitDate(cursorCourses.getString(34));
                 visitDetailCoutModel.setVisitedBy(cursorCourses.getString(33));
                 visitDetailCoutModel.setVisitID(cursorCourses.getInt(5));
+                visitDetailCoutModel.setIsAreaLossStatus(0);
             }
             return  visitDetailCoutModel;
         } catch (Exception e) {

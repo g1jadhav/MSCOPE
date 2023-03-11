@@ -247,7 +247,7 @@
     <string name="enter_organizer_name">Enter Organizer Name</string>
     <string name="Please_select_organizer_name">Please select organizer name</string>
     <string name="please_organizer_photo">Please capture organizer photo</string>
-    <string name="no_of_records_for_upload">No. of Records for upload = %d</string>
+    <string name="no_of_records_for_upload">Records for upload = %d</string>
     <string name="upload">Upload</string>
     <string name="mandatory_field_visit_1st">Field Vist </string>
     <string name="mandatory_field_visit_2nd">Mandatory Field Visit-2nd</string>

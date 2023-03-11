@@ -298,5 +298,15 @@ public class GetAllSeedDistributionModel {
             return GrowerFullName + " (" + GrowerUniqueCode + ") ";
         }
     }
+
+    public VisitDetailCoutModel getVisitDetailCoutModel() {
+        return visitDetailCoutModel;
+    }
+
+    public void setVisitDetailCoutModel(VisitDetailCoutModel visitDetailCoutModel) {
+        this.visitDetailCoutModel = visitDetailCoutModel;
+    }
+
+    VisitDetailCoutModel visitDetailCoutModel;
     /*Added by Jeevan 9-12-2022 ended here*/
 }

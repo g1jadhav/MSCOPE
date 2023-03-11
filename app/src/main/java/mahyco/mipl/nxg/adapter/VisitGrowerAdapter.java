@@ -48,7 +48,9 @@ public class VisitGrowerAdapter extends RecyclerView.Adapter<VisitGrowerAdapter.
 
     public VisitGrowerAdapter(ArrayList<GetAllSeedDistributionModel> productModels, Context context) {
         if (productModels != null)
-            productModels.remove(0);
+            if (productModels.size() > 0)
+                if (productModels.get(0).getGrowerFullName().toLowerCase().contains("select"))
+                    productModels.remove(0);
         this.bhartiModelArrayList = productModels;
         Log.i("Seller produ:", ">>" + productModels.size());
         this.context = context;
@@ -98,8 +100,10 @@ public class VisitGrowerAdapter extends RecyclerView.Adapter<VisitGrowerAdapter.
     @Override
     public void onBindViewHolder(final DataObjectHolder holder, final int position) {
         try {
-
+            int st = 0;
             GetAllSeedDistributionModel model = bhartiModelArrayList.get(position);
+            holder.txt_growerid.setText("" + model.getGrowerId());
+            int GrowerId = Integer.parseInt(holder.txt_growerid.getText().toString().trim());
             if (model.getGrowerFullName() != null)
                 holder.txt_title.setText("" + model.getGrowerFullName());
 
@@ -116,19 +120,45 @@ public class VisitGrowerAdapter extends RecyclerView.Adapter<VisitGrowerAdapter.
             int f2 = database.getCountServer(2, model.getGrowerId());
             int f3 = database.getCountServer(3, model.getGrowerId());
             int f4 = database.getCountServer(4, model.getGrowerId());
-            VisitDetailCoutModel visitDetailCoutModel = database.getCountServerObject(model.getGrowerId());
-            if (visitDetailCoutModel != null) {
-                if (visitDetailCoutModel.getVisitID() > 0) {
-                    if (visitDetailCoutModel.getGrowerExistingArea() != null) {
-                        holder.txt_existarea.setText(visitDetailCoutModel.getGrowerExistingArea());
-                        if (Double.parseDouble(visitDetailCoutModel.getGrowerExistingArea().trim()) > 0) {
+            VisitDetailCoutModel visitDetailCoutModel = database.getCountServerObject(GrowerId);
+            model.setVisitDetailCoutModel(visitDetailCoutModel);
+            if (model.getVisitDetailCoutModel() != null) {
+                //    visitDetailCoutModel.setVisitID(0);
+                if (model.getVisitDetailCoutModel().getVisitID() > 0) {
+                    if (model.getVisitDetailCoutModel().getGrowerExistingArea() != null) {
+
+                        String str_isAreaLossStatus = model.getVisitDetailCoutModel().getGrowerMobile().trim();
+                        if (str_isAreaLossStatus.contains("~")) {
+                            String ss[] = model.getVisitDetailCoutModel().getGrowerMobile().split("~");
+                            if (ss[0].trim().equalsIgnoreCase("Yes")) {
+                                model.getVisitDetailCoutModel().setIsAreaLossStatus(1);
+                                st = 1;
+                            } else {
+                                model.getVisitDetailCoutModel().setIsAreaLossStatus(0);
+                                st = 0;
+                            }
+                        }
+                        holder.txt_existarea.setText(model.getVisitDetailCoutModel().getGrowerExistingArea());
+                        // This Code is Comment bcoz showing area loss status on Existing Area is zero
+                    /*    if (Double.parseDouble(model.getVisitDetailCoutModel().getGrowerExistingArea().trim()) > 0) {
                             holder.txt_arealoss.setVisibility(View.GONE);
                         } else {
                             holder.txt_arealoss.setVisibility(View.VISIBLE);
+                        }*/
+                        // Adding this code as per the Dropdown Status IsAreaLoss Flag
+
+                        if (st > 0) {
+                            holder.txt_arealoss.setVisibility(View.VISIBLE);
+                        } else {
+                            holder.txt_arealoss.setVisibility(View.GONE);
                         }
+
                     }
-                    if (visitDetailCoutModel.getVisitDate() != null)
-                        holder.txt_vdate.setText(parseDateToddMMyyyy(visitDetailCoutModel.getVisitDate()));
+                    if (model.getVisitDetailCoutModel().getVisitDate() != null)
+                        holder.txt_vdate.setText(parseDateToddMMyyyy(model.getVisitDetailCoutModel().getVisitDate()));
+                } else {
+                    holder.txt_existarea.setText("NA");
+                    holder.txt_vdate.setText("NA");
                 }
             }
             if (f1 > 0)
@@ -152,11 +182,34 @@ public class VisitGrowerAdapter extends RecyclerView.Adapter<VisitGrowerAdapter.
                 holder.txt_forth.setImageResource(0);
 
 
+            String s = database.isFirstFieldVisitDoneLocal(model.getGrowerId());
+            try {
+                int localvisit = Integer.parseInt(s.trim());
+                if (localvisit > 0)
+                    switch (localvisit) {
+                        case 1:
+                            holder.txt_first.setImageResource(R.drawable.ic_baseline_add_task_24);
+                            break;
+                        case 2:
+                            break;
+                        case 3:
+                            break;
+                        case 4:
+                            break;
+
+                    }
+
+
+            } catch (NumberFormatException e) {
+
+            }
+
+
             holder.ll.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    if (visitDetailCoutModel.getVisitID() == 0) {
+                    if (model.getVisitDetailCoutModel().getVisitID() == 0) {
                         Preferences.save(context, Preferences.SELECTED_GROWERNAME, model.getGrowerFullName());
                         Preferences.save(context, Preferences.SELECTED_GROWERMOBILE, model.getGrowerMobileNo());
                         Preferences.save(context, Preferences.SELECTED_GROWERID, "" + model.getGrowerId());
@@ -173,12 +226,12 @@ public class VisitGrowerAdapter extends RecyclerView.Adapter<VisitGrowerAdapter.
                             Intent intent1 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                             context.startActivity(intent1);
                         }
-                    } else if (visitDetailCoutModel != null) {
-                        if (visitDetailCoutModel.getVisitID() > 0) {
-                            if (visitDetailCoutModel.getGrowerExistingArea() != null) {
+                    } else if (model.getVisitDetailCoutModel() != null) {
+                        if (model.getVisitDetailCoutModel().getVisitID() > 0) {
+                            if (model.getVisitDetailCoutModel().getGrowerExistingArea() != null) {
 
-                                if (Double.parseDouble(visitDetailCoutModel.getGrowerExistingArea().trim()) > 0) {
-                                    Toast.makeText(context, "Visit id" + visitDetailCoutModel.getVisitID(), Toast.LENGTH_SHORT).show();
+                                if (model.getVisitDetailCoutModel().getIsAreaLossStatus() == 0) {
+                                    Toast.makeText(context, "Visit id" + model.getVisitDetailCoutModel().getVisitID(), Toast.LENGTH_SHORT).show();
                                     Preferences.save(context, Preferences.SELECTED_GROWERNAME, model.getGrowerFullName());
                                     Preferences.save(context, Preferences.SELECTED_GROWERMOBILE, model.getGrowerMobileNo());
                                     Preferences.save(context, Preferences.SELECTED_GROWERID, "" + model.getGrowerId());
@@ -245,6 +298,7 @@ public class VisitGrowerAdapter extends RecyclerView.Adapter<VisitGrowerAdapter.
         TextView txt_title, txt_issuedarea, txt_existarea, txt_vdate, txt_arealoss, txt_nationalid, txt_mobilenumber;
         ImageView txt_first, txt_second, txt_third, txt_forth;
         LinearLayout ll;
+        TextView txt_growerid;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
@@ -260,6 +314,7 @@ public class VisitGrowerAdapter extends RecyclerView.Adapter<VisitGrowerAdapter.
             txt_arealoss = itemView.findViewById(R.id.txt_arealoss);
             txt_mobilenumber = itemView.findViewById(R.id.txt_mobilenumber);
             txt_nationalid = itemView.findViewById(R.id.txt_nationalid);
+            txt_growerid = itemView.findViewById(R.id.txt_growerid);
         }
     }
 

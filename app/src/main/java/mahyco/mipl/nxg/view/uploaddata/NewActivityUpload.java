@@ -95,7 +95,8 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
     private androidx.appcompat.widget.Toolbar toolbar;
     SqlightDatabase database;
     int totalFirstVisit = 0;
-    TextView txt_visit_count;
+   // TextView txt_visit_count;
+    TextView txt1, txt2, txt3, txt4, txt5;
 
     @Override
     protected int getLayout() {
@@ -127,7 +128,14 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
         mGrowerRegistrationBtn.setOnClickListener(this);
 
         field_visit_1st_upload = findViewById(R.id.field_visit_1st_upload);
-        txt_visit_count = findViewById(R.id.txt_visit_count);
+      //  txt_visit_count = findViewById(R.id.txt_visit_count);
+        txt1 = findViewById(R.id.txt1);
+        txt2 = findViewById(R.id.txt2);
+        txt3 = findViewById(R.id.txt3);
+        txt4 = findViewById(R.id.txt4);
+        txt5 = findViewById(R.id.txt5);
+
+
         field_visit_1st_upload.setOnClickListener(this);
 
         mOrganizerRegistrationBtn = findViewById(R.id.organizer_registration_upload);
@@ -147,9 +155,29 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
         mOrganizerRecords.setText(getString(R.string.no_of_records_for_upload, 0));
         mSeedDistributionRecords.setText(getString(R.string.no_of_records_for_upload, 0));
         field_visit_1st_no_of_records.setText(getString(R.string.no_of_records_for_upload, database.getAllFirstFieldVisit1().size()));
-        txt_visit_count.setText(database.getCount());
+      //  txt_visit_count.setText(database.getCount());
+
+        String data=database.getCount();
+
+        if(data.contains("~"))
+        {
+            try{
+                String k[]=data.trim().split("~");
+                txt1.setText(k[0]);
+                txt2.setText(k[1]);
+                txt3.setText(k[2]);
+                txt4.setText(k[3]);
+                txt5.setText(k[4]);
+
+            }catch (ArrayIndexOutOfBoundsException e)
+            {
+
+            }
+        }
+
+
         AppCompatTextView mVersionTextView = findViewById(R.id.upload_data_version_code);
-        mVersionTextView.setText(getString(R.string.version_code, BuildConfig.VERSION_CODE));
+        mVersionTextView.setText(getString(R.string.version_code, BuildConfig.VERSION_NAME));
 
         mGrowerList = new ArrayList<>();
         mOrganizerList = new ArrayList<>();
@@ -447,6 +475,24 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                 showNoInternetDialog(mContext, totalFirstVisit + " Records Uploaded Successfully.");
                 totalFirstVisit = database.getAllFirstFieldVisit1().size();
                 field_visit_1st_no_of_records.setText(getString(R.string.no_of_records_for_upload, totalFirstVisit));
+                String data=database.getCount();
+
+                if(data.contains("~"))
+                {
+                    try{
+                        String k[]=data.trim().split("~");
+                        txt1.setText(k[0]);
+                        txt2.setText(k[1]);
+                        txt3.setText(k[2]);
+                        txt4.setText(k[3]);
+                        txt5.setText(k[4]);
+
+                    }catch (ArrayIndexOutOfBoundsException e)
+                    {
+
+                    }
+                }
+
             } else {
                 showNoInternetDialog(mContext, "Result : " + result.getStatus() + "\nDetails :" + result.getComment());
             }

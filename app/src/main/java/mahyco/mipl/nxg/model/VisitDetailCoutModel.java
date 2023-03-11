@@ -84,5 +84,15 @@ public class VisitDetailCoutModel {
     }
 
     int VisitID;
+
+    public int getIsAreaLossStatus() {
+        return isAreaLossStatus;
+    }
+
+    public void setIsAreaLossStatus(int isAreaLossStatus) {
+        this.isAreaLossStatus = isAreaLossStatus;
+    }
+
+    int isAreaLossStatus=0;
     String UserId,GrowerName,GrowerNationalId,GrowerMobile,GrowerIssuedArea,GrowerExistingArea,VisitDate,VisitedBy;
 }
