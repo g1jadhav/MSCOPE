@@ -1450,11 +1450,12 @@ LinearLayout image_layout;
                 fieldVisitModel.setSingleCobsPerPlant(str_number_of_expected_edittextview);
                 fieldVisitModel.setSingleCobsPerPlantInGm(str_average_weight_seed_edittextview);
                 fieldVisitModel.setUnprocessedSeedReadyInKg("0");
-                fieldVisitModel.setPollinationStartDt(str_pollination_end_date_textview);
+              //  fieldVisitModel.setPollinationStartDt(str_pollination_end_date_textview);
                 fieldVisitModel.setPollinationEndDt(str_pollination_end_date_textview);
                 fieldVisitModel.setExpectedDtOfHarvesting(str_expected_date_of_harvesting_textview);
                 fieldVisitModel.setExpectedDtOfDespatching(str_expected_date_of_despatching_textview);
                 fieldVisitModel.setMaleParentUprooted("0");
+                fieldVisitModel.setAreaLossStatus(""+area_lost_spinner.getSelectedItem().toString().trim());
 
 
                 ArrayList<FieldPlantLaneModels> lst_FieldPlantLaneModels = new ArrayList<>();

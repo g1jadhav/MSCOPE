@@ -26,6 +26,16 @@ public class FieldVisitModel_Server {
     int PlantingRatioMale;// 4,
     String CropCategoryType;// "For Field Crop",
 
+    public String getAreaLossStatus() {
+        return AreaLossStatus;
+    }
+
+    public void setAreaLossStatus(String areaLossStatus) {
+        AreaLossStatus = areaLossStatus;
+    }
+
+    String AreaLossStatus;
+
     public int getFieldVisitId() {
         return FieldVisitId;
     }

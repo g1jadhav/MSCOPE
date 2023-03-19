@@ -95,8 +95,8 @@ public class FieldVisitFirst extends BaseActivity {
     int countryId = 0;
     Double lati = 0.0, longi = 0.0;
     Double totalTaggedArea = 0.0;
-    LinearLayout ll_yes, ll_no, ll_femalelinelayout, ll_malelinelayout, female_spacinglayout,image_layout;
-     int buttonclick=0;
+    LinearLayout ll_yes, ll_no, ll_femalelinelayout, ll_malelinelayout, female_spacinglayout, image_layout;
+    int buttonclick = 0;
 
     EditText
             grower_name_textview,
@@ -179,7 +179,7 @@ public class FieldVisitFirst extends BaseActivity {
     JsonArray jsonArray_linecount;
     int userid;
     int countryCode;
-    String staffcode="";
+    String staffcode = "";
     private FusedLocationProviderClient fusedLocationClient;
     int cropcode = 0, cropcategory = 0;
     String croptype = "";
@@ -212,7 +212,7 @@ public class FieldVisitFirst extends BaseActivity {
         tag_area_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                buttonclick=1;
+                buttonclick = 1;
                 Intent intent = new Intent(FieldVisitFirst.this, AreaTagingActivity.class);
                 startActivity(intent);
             }
@@ -282,12 +282,12 @@ public class FieldVisitFirst extends BaseActivity {
 
         ll_yes.setVisibility(View.GONE);
         staff_name_textview.setText("" + Preferences.get(context, Preferences.USER_NAME));
-        staffcode= Preferences.get(context, Preferences.USER_ID);
+        staffcode = Preferences.get(context, Preferences.USER_ID);
         grower_name_textview.setText("" + Preferences.get(context, Preferences.SELECTED_GROWERNAME));
         grower_mobile_no_edittext.setText("" + Preferences.get(context, Preferences.SELECTED_GROWERMOBILE));
         userid = Integer.parseInt(Preferences.get(context, Preferences.SELECTED_GROWERID).toString().trim());
         cropcode = Integer.parseInt(Preferences.get(context, Preferences.SELECTEDCROPECODE).toString().trim());
-        issued_seed_area_textview.setText("" + String.format("%.2f",Double.parseDouble(Preferences.get(context, Preferences.SELECTED_GROWERAREA).trim())));
+        issued_seed_area_textview.setText("" + String.format("%.2f", Double.parseDouble(Preferences.get(context, Preferences.SELECTED_GROWERAREA).trim())));
         production_code_textview.setText("" + Preferences.get(context, Preferences.SELECTED_GROWERPRODUCTIONCODE));
         try {
             String str[] = database.getGetGrowerCountryMasterId(Preferences.get(context, Preferences.SELECTED_GROWERUNIQUECODE)).split("~");
@@ -398,7 +398,7 @@ public class FieldVisitFirst extends BaseActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    buttonclick=2;
+                    buttonclick = 2;
                     PickImageDialog.build(new PickSetup().setPickTypes(EPickType.CAMERA))
                             .setOnPickResult(new IPickResult() {
                                 @Override
@@ -444,11 +444,10 @@ public class FieldVisitFirst extends BaseActivity {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(context, "Female " + total_nos_female_lines.getText(), Toast.LENGTH_SHORT).show();
-                String str=total_nos_female_lines.getText().toString().trim();
-                if(str.equals(""))
-                {
+                String str = total_nos_female_lines.getText().toString().trim();
+                if (str.equals("")) {
                     total_nos_female_lines.setError("Please Enter no of female lines.");
-                }else {
+                } else {
                     int total = Integer.parseInt(total_nos_female_lines.getText().toString().trim());
                     showLineDialog("Enter No of plants per female line", total, 1);
                 }
@@ -458,11 +457,10 @@ public class FieldVisitFirst extends BaseActivity {
             @Override
             public void onClick(View v) {
                 //  Toast.makeText(context, " Male  " + total_nos_male_lines.getText(), Toast.LENGTH_SHORT).show();
-                String str=total_nos_male_lines.getText().toString().trim();
-                if(str.equals(""))
-                {
+                String str = total_nos_male_lines.getText().toString().trim();
+                if (str.equals("")) {
                     total_nos_male_lines.setError("Please Enter no of male lines.");
-                }else {
+                } else {
                     int total = Integer.parseInt(total_nos_male_lines.getText().toString().trim());
                     showLineDialog("Enter No of plants per male line", total, 2);
                 }
@@ -578,7 +576,7 @@ public class FieldVisitFirst extends BaseActivity {
                     lblmeters.setVisibility(View.VISIBLE);
                     str_isolation_meter_textview = "0";
                     isolation_meter_textview.setText("");
-                }else{
+                } else {
                     isolation_meter_textview.setVisibility(View.GONE);
                     lblmeters.setVisibility(View.GONE);
                     str_isolation_meter_textview = "0";
@@ -692,58 +690,56 @@ public class FieldVisitFirst extends BaseActivity {
             } else {
                 str_reason_for_total_area_loss = reason_for_total_area_loss.getText().toString().trim();
                 str_total_tagged_area_below_location_textview = "0";
-                str_area_loss_or_gain_textview ="0";
+                str_area_loss_or_gain_textview = "0";
                 str_existing_area_ha_textview = "0";
                 str_total_nos_female_lines = "0";
-                str_total_nos_male_lines ="0";
+                str_total_nos_male_lines = "0";
                 str_female_spacing_rr = "0";
                 str_female_spacing_pp = "0";
                 str_male_spacing_rr = "0";
-                str_male_spacing_pp ="0";
-                str_female_planting_ratio ="0";
+                str_male_spacing_pp = "0";
+                str_female_planting_ratio = "0";
                 str_male_planting_ratio = "0";
                 str_total_female_plants_textview = "0";
                 str_total_male_plants_textview = "0";
-                str_yield_estimate_kg_edittext ="0";
+                str_yield_estimate_kg_edittext = "0";
                 //  str_staff_name_textview = staff_name_textview.getText().toString().trim();
                 str_geotag_location_textview = geotag_location_textview.getText().toString().trim();
                 str_isolation_meter_textview = "0";
                 str_area_lost_spinner = area_lost_spinner.getSelectedItem().toString().trim();
-                str_isolation_spinner  ="0";
-                str_crop_stage_spinner ="0";
-                front_path="NA";
+                str_isolation_spinner = "0";
+                str_crop_stage_spinner = "0";
+                front_path = "NA";
 
-                if(str_reason_for_total_area_loss.trim().equals(""))
-                {
+                if (str_reason_for_total_area_loss.trim().equals("")) {
                     reason_for_total_area_loss.setError("REQUIRED");
-                    b=true;
-                }else if(str_geotag_location_textview.trim().equals(""))
-                {geotag_location_textview.setError("REQUIRED");
-                    b=true;
-                }else if(str_grower_name_textview.trim().equals(""))
-                {  b=true;
+                    b = true;
+                } else if (str_geotag_location_textview.trim().equals("")) {
+                    geotag_location_textview.setError("REQUIRED");
+                    b = true;
+                } else if (str_grower_name_textview.trim().equals("")) {
+                    b = true;
                     grower_name_textview.setError("REQUIRED");
-                }else if(str_issued_seed_area_textview.trim().equals(""))
-                {issued_seed_area_textview.setError("REQUIRED");
-                    b=true;
-                }else if(str_production_code_textview.trim().equals(""))
-                {production_code_textview.setError("REQUIRED");
-                    b=true;
-                }else if(str_village_textview.trim().equals(""))
-                {  b=true;
+                } else if (str_issued_seed_area_textview.trim().equals("")) {
+                    issued_seed_area_textview.setError("REQUIRED");
+                    b = true;
+                } else if (str_production_code_textview.trim().equals("")) {
+                    production_code_textview.setError("REQUIRED");
+                    b = true;
+                } else if (str_village_textview.trim().equals("")) {
+                    b = true;
                     village_textview.setError("REQUIRED");
-                }else if(str_female_date_sowing.trim().equals(""))
-                {  b=true;
+                } else if (str_female_date_sowing.trim().equals("")) {
+                    b = true;
                     female_date_sowing.setError("REQUIRED");
-                }else if(str_male_date_sowing.trim().equals(""))
-                {male_date_sowing.setError("REQUIRED");
-                    b=true;
-                }else if(str_staff_name_textview.trim().equals(""))
-                {  b=true;
+                } else if (str_male_date_sowing.trim().equals("")) {
+                    male_date_sowing.setError("REQUIRED");
+                    b = true;
+                } else if (str_staff_name_textview.trim().equals("")) {
+                    b = true;
                     staff_name_textview.setError("REQUIRED");
-                }else
-                {
-                    b=false;
+                } else {
+                    b = false;
                 }
 
             }
@@ -775,16 +771,17 @@ public class FieldVisitFirst extends BaseActivity {
                 fieldVisitModel.setMaleSpacingPPinCM(Integer.parseInt(str_male_spacing_pp));// 3,
                 fieldVisitModel.setPlantingRatioFemale(Integer.parseInt(str_female_planting_ratio));// 5,
                 fieldVisitModel.setPlantingRatioMale(Integer.parseInt(str_male_planting_ratio));// 4,
-                fieldVisitModel.setCropCategoryType( ""+ croptype);// For Field Crop,
+                fieldVisitModel.setCropCategoryType("" + croptype);// For Field Crop,
                 fieldVisitModel.setTotalFemalePlants(Integer.parseInt(str_total_female_plants_textview));// 20,
                 fieldVisitModel.setTotalMalePlants(Integer.parseInt(str_total_male_plants_textview));// 20,
                 fieldVisitModel.setYieldEstimateInKg(Integer.parseInt(str_yield_estimate_kg_edittext));// 50,
-                fieldVisitModel.setObservations(str_area_lost_spinner+"~" +str_recommendations_observations_edittext+" v-"+ BuildConfig.VERSION_NAME);// Observations Here,
+                fieldVisitModel.setObservations(str_area_lost_spinner + "~" + str_recommendations_observations_edittext + " v-" + BuildConfig.VERSION_NAME);// Observations Here,
                 fieldVisitModel.setFieldVisitDt(str_date_of_field_visit_textview);// 2023-01-15T05;//35;//13.529Z,
                 fieldVisitModel.setLatitude("" + lati);// 19.886857,
                 fieldVisitModel.setLongitude("" + longi);// 75.3514908,
                 fieldVisitModel.setCapturePhoto(front_path);// ,
                 fieldVisitModel.setCreatedBy(str_staff_name_textview);
+                fieldVisitModel.setAreaLossStatus(str_area_lost_spinner);
 
                 fieldVisitModel.setAreaLossInHa("0");
                 fieldVisitModel.setNoOfRoguedFemalePlants("0");
@@ -794,10 +791,10 @@ public class FieldVisitFirst extends BaseActivity {
                 fieldVisitModel.setSingleCobsPerPlant("0");
                 fieldVisitModel.setSingleCobsPerPlantInGm("0");
                 fieldVisitModel.setUnprocessedSeedReadyInKg("0");
-                fieldVisitModel.setPollinationStartDt(str_date_of_field_visit_textview);
-                fieldVisitModel.setPollinationEndDt(str_date_of_field_visit_textview);
-                fieldVisitModel.setExpectedDtOfHarvesting(str_date_of_field_visit_textview);
-                fieldVisitModel.setExpectedDtOfDespatching(str_date_of_field_visit_textview);
+                //  fieldVisitModel.setPollinationStartDt(str_date_of_field_visit_textview);
+                //  fieldVisitModel.setPollinationEndDt(str_date_of_field_visit_textview);
+                //  fieldVisitModel.setExpectedDtOfHarvesting(str_date_of_field_visit_textview);
+                // fieldVisitModel.setExpectedDtOfDespatching(str_date_of_field_visit_textview);
                 fieldVisitModel.setMaleParentUprooted("0");
 
                 fieldMonitoringModels.setFieldVisitModel(fieldVisitModel);
@@ -820,7 +817,7 @@ public class FieldVisitFirst extends BaseActivity {
 
                 int cnt = 0;
                 int total = 0;
-                if(allEds_female!=null)
+                if (allEds_female != null)
                     for (EditText et : allEds_female) {
                         FieldPlantLaneModels fieldPlantLaneModels = new FieldPlantLaneModels();
                         try {
@@ -835,7 +832,7 @@ public class FieldVisitFirst extends BaseActivity {
 
                     }
                 cnt = 0;
-                if(allEds_male!=null)
+                if (allEds_male != null)
                     for (EditText et : allEds_male) {
                         FieldPlantLaneModels fieldPlantLaneModels = new FieldPlantLaneModels();
                         try {
@@ -883,8 +880,6 @@ public class FieldVisitFirst extends BaseActivity {
                 fieldVisitModel.setFieldVisitFruitsCobModelsText(jsonFruitCobds.toString().trim());
 
 
-
-
                 JsonObject jsonObject = new JsonParser().parse(new Gson().toJson(fieldMonitoringModels)).getAsJsonObject();
                 JsonArray jsonArray = new JsonArray();
                 jsonArray.add(jsonObject);
@@ -900,7 +895,7 @@ public class FieldVisitFirst extends BaseActivity {
                 firstVisitLocalModel.setData(jsonObject.toString());
                 if (database.addFirstVisit1(fieldVisitModel)) {
                     Toast.makeText(context, "Local Data Saved.", Toast.LENGTH_SHORT).show();
-                    showDialogwithFinish(context,"Data Saved Successfully.");
+                    showDialogwithFinish(context, "Data Saved Successfully.");
                     // finish();
                /*     Intent i = new Intent(context, FiledMonitoringReportEntry.class);
 // set the new task and clear flags
@@ -1110,27 +1105,22 @@ public class FieldVisitFirst extends BaseActivity {
 
             }
 
-            if(database.getAllFieldDetails(-1).size()==0)
-            {
+            if (database.getAllFieldDetails(-1).size() == 0) {
                 cnt++;
                 Toast.makeText(context, "Please tagged the location.", Toast.LENGTH_SHORT).show();
 
             }
-            if(cropcategory==1)
-            {
-                if(allEds_male==null||allEds_male.size()==0)
-                {
+            if (cropcategory == 1) {
+                if (allEds_male == null || allEds_male.size() == 0) {
                     cnt++;
                     Toast.makeText(context, "Missing male line entry", Toast.LENGTH_SHORT).show();
 
                 }
-                if(allEds_female==null||allEds_female.size()==0)
-                {
+                if (allEds_female == null || allEds_female.size() == 0) {
                     cnt++;
                     Toast.makeText(context, "Missing female line entry", Toast.LENGTH_SHORT).show();
 
-                }else
-                {
+                } else {
 
                 }
 
@@ -1153,8 +1143,8 @@ public class FieldVisitFirst extends BaseActivity {
     protected void onResume() {
         super.onResume();
         // if (cropcategory == 1)
-        if(buttonclick==1)
-        setArea();
+        if (buttonclick == 1)
+            setArea();
 //        else if (cropcategory == 2)
 //            setFieldCropArea();
 
@@ -1168,15 +1158,15 @@ public class FieldVisitFirst extends BaseActivity {
                 totalTaggedArea += Double.parseDouble(f.getTotalArea());
             }
 
-            total_tagged_area_below_location_textview.setText("" +String.format("%.2f",totalTaggedArea));
+            total_tagged_area_below_location_textview.setText("" + String.format("%.2f", totalTaggedArea));
             double totalArea = Double.parseDouble(issued_seed_area_textview.getText().toString());
             double loss = totalTaggedArea - totalArea;
-            area_loss_or_gain_textview.setText("" +String.format("%.2f",loss) );
+            area_loss_or_gain_textview.setText("" + String.format("%.2f", loss));
             double existingarea = totalArea + loss;
-            existing_area_ha_textview.setText("" + String.format("%.2f",existingarea));
-            Toast.makeText(context, "Existing Area is "+existingarea, Toast.LENGTH_SHORT).show();
+            existing_area_ha_textview.setText("" + String.format("%.2f", existingarea));
+            Toast.makeText(context, "Existing Area is " + existingarea, Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
-            Toast.makeText(context, "Error to calculate Tagged Area : "+e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Error to calculate Tagged Area : " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -1236,17 +1226,17 @@ public class FieldVisitFirst extends BaseActivity {
                     lineDialog.dismiss();
                 }
             });
-            TableRow row=new TableRow(context);
+            TableRow row = new TableRow(context);
             for (int i = 0; i < total; i++) {
-                if(i==0)
-                    row=new TableRow(context);
-                if(i%3==0)
-                    row=new TableRow(context);
+                if (i == 0)
+                    row = new TableRow(context);
+                if (i % 3 == 0)
+                    row = new TableRow(context);
 
                 LinearLayout.LayoutParams lparams = new LinearLayout.LayoutParams(120, ViewGroup.LayoutParams.WRAP_CONTENT, 1.0f); // Width , height
                 EditText editText = new EditText(this);
                 editText.setBackgroundResource(R.drawable.line_edittext);
-                editText.setPadding(7,7,7,7);
+                editText.setPadding(7, 7, 7, 7);
                 editText.setInputType(InputType.TYPE_CLASS_NUMBER);
                 // editText.setLayoutParams(lparams);
                 //editText.setTextSize(10);
@@ -1256,14 +1246,14 @@ public class FieldVisitFirst extends BaseActivity {
                 // editText.setNextFocusForwardId(i+2);
                 editText.setId(i + 1);
                 allEds.add(editText);
-                TextView txt=new TextView(context);
+                TextView txt = new TextView(context);
                 txt.setText(" ");
 
 
                 row.addView(editText);
 //                row.addView(txt);
-                Log.i("Added","pass"+i);
-                if(i%3==0)
+                Log.i("Added", "pass" + i);
+                if (i % 3 == 0)
                     grid.addView(row);
             }
 

@@ -40,6 +40,17 @@ public class FieldVisitModel {
     String AreaLossInHa;
     String NoOfRoguedFemalePlants;
 
+
+
+    String AreaLossStatus;
+
+    public String getAreaLossStatus() {
+        return AreaLossStatus;
+    }
+
+    public void setAreaLossStatus(String areaLossStatus) {
+        AreaLossStatus = areaLossStatus;
+    }
     public String getAreaLossInHa() {
         return AreaLossInHa;
     }

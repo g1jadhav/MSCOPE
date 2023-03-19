@@ -1008,11 +1008,12 @@ public class FieldVisitThird extends BaseActivity {
                 fieldVisitModel.setSingleCobsPerPlant(str_number_of_expected_edittextview);
                 fieldVisitModel.setSingleCobsPerPlantInGm(str_average_weight_seed_edittextview);
                 fieldVisitModel.setUnprocessedSeedReadyInKg("0");
-                fieldVisitModel.setPollinationStartDt(str_date_of_field_visit_textview);
-                fieldVisitModel.setPollinationEndDt(str_date_of_field_visit_textview);
-                fieldVisitModel.setExpectedDtOfHarvesting(str_date_of_field_visit_textview);
-                fieldVisitModel.setExpectedDtOfDespatching(str_date_of_field_visit_textview);
+                fieldVisitModel.setPollinationStartDt(str_pollination_start_date);
+            //    fieldVisitModel.setPollinationEndDt(str_date_of_field_visit_textview);
+             //   fieldVisitModel.setExpectedDtOfHarvesting(str_date_of_field_visit_textview);
+             //   fieldVisitModel.setExpectedDtOfDespatching(str_date_of_field_visit_textview);
                 fieldVisitModel.setMaleParentUprooted("0");
+                fieldVisitModel.setAreaLossStatus(""+area_lost_spinner.getSelectedItem().toString().trim());
 
 
                 ArrayList<FieldPlantLaneModels> lst_FieldPlantLaneModels = new ArrayList<>();

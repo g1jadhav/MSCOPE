@@ -367,6 +367,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                     json_visitModel.addProperty("ExpectedDtOfHarvesting", fieldVisitModel.getExpectedDtOfHarvesting());
                     json_visitModel.addProperty("ExpectedDtOfDespatching", fieldVisitModel.getExpectedDtOfDespatching());
                     json_visitModel.addProperty("MaleParentUprooted", fieldVisitModel.getMaleParentUprooted());
+                    json_visitModel.addProperty("AreaLossStatus", fieldVisitModel.getAreaLossStatus());
 
                     jsonObjectFinale.add("fieldVisitModel", json_visitModel);
                     jsonObjectFinale.add("fieldVisitLocationModels", jsonObject_location);

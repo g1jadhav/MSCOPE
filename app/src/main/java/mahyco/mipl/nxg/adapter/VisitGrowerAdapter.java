@@ -128,9 +128,20 @@ public class VisitGrowerAdapter extends RecyclerView.Adapter<VisitGrowerAdapter.
                     if (model.getVisitDetailCoutModel().getGrowerExistingArea() != null) {
 
                         String str_isAreaLossStatus = model.getVisitDetailCoutModel().getGrowerMobile().trim();
-                        if (str_isAreaLossStatus.contains("~")) {
-                            String ss[] = model.getVisitDetailCoutModel().getGrowerMobile().split("~");
-                            if (ss[0].trim().equalsIgnoreCase("Yes")) {
+//                        if (str_isAreaLossStatus.contains("~")) {
+//                            String ss[] = model.getVisitDetailCoutModel().getGrowerMobile().split("~");
+//                            if (ss[0].trim().equalsIgnoreCase("Yes")) {
+//                                model.getVisitDetailCoutModel().setIsAreaLossStatus(1);
+//                                st = 1;
+//                            } else {
+//                                model.getVisitDetailCoutModel().setIsAreaLossStatus(0);
+//                                st = 0;
+//                            }
+//                        }
+
+                        if (str_isAreaLossStatus!=null) {
+                          //  String ss[] = model.getVisitDetailCoutModel().getGrowerMobile().split("~");
+                            if (str_isAreaLossStatus.trim().equalsIgnoreCase("Yes")) {
                                 model.getVisitDetailCoutModel().setIsAreaLossStatus(1);
                                 st = 1;
                             } else {
@@ -138,6 +149,7 @@ public class VisitGrowerAdapter extends RecyclerView.Adapter<VisitGrowerAdapter.
                                 st = 0;
                             }
                         }
+
                         holder.txt_existarea.setText(model.getVisitDetailCoutModel().getGrowerExistingArea());
                         // This Code is Comment bcoz showing area loss status on Existing Area is zero
                     /*    if (Double.parseDouble(model.getVisitDetailCoutModel().getGrowerExistingArea().trim()) > 0) {
