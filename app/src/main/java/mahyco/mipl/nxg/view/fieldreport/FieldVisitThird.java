@@ -998,7 +998,7 @@ public class FieldVisitThird extends BaseActivity {
                 fieldVisitModel.setLatitude("" + lati);// 19.886857,
                 fieldVisitModel.setLongitude("" + longi);// 75.3514908,
                 fieldVisitModel.setCapturePhoto(front_path);// ,
-                fieldVisitModel.setCreatedBy(str_staff_name_textview);
+                fieldVisitModel.setCreatedBy(""+Preferences.get(context, Preferences.USER_ID));
 
                 fieldVisitModel.setAreaLossInHa(str_area_loss_ha_textview);
                 fieldVisitModel.setNoOfRoguedFemalePlants(str_no_of_rogued_plants_female_edittext);

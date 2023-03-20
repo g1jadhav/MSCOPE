@@ -299,7 +299,7 @@ public class OptionalVisit extends BaseActivity {
                 fieldVisitModel.setLatitude("" + lati);// 19.886857,
                 fieldVisitModel.setLongitude("" + longi);// 75.3514908,
                 fieldVisitModel.setCapturePhoto(front_path);// ,
-                fieldVisitModel.setCreatedBy(str_staff_name_textview);
+                fieldVisitModel.setCreatedBy(""+Preferences.get(context, Preferences.USER_ID));
 
                 fieldVisitModel.setAreaLossInHa("0");
                 fieldVisitModel.setNoOfRoguedFemalePlants("0");
