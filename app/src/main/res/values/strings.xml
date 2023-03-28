@@ -343,6 +343,7 @@
     <string name="pollination_start_dates">Pollination start date</string>
     <string name="number_of_existing">Number of Existing bolls/ fruits/ pods/ panicles/ ear heads/ Cobs per female plant<font color='#FF0000'>*</font></string>
     <string name="number_of_expected">Number of Expected bolls/ fruits/ pods/ panicles/ ear heads/ Cobs per female plant<font color='#FF0000'>*</font></string>
+    <string name="avg_of_expected">Average of Existing bolls/ fruits/ pods/ panicles/ ear heads/ Cobs per female plant<font color='#FF0000'>*</font></string>
     <string name="enter_number">Enter Number</string>
     <string name="average_weight_seed">Average weight of seed per boll/ fruit/ pod/ panicle/ ear head/ Cob of female (gms)<font color='#FF0000'>*</font></string>
     <string name="enter_average_weight_seed">Enter average weight seed</string>

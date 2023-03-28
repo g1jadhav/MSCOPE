@@ -210,10 +210,10 @@ public class FiledReportDashboard extends AppCompatActivity implements View.OnCl
             if (isMockSettingsON(mContext)) {
                 showMeesageDiaog("These application need to uninstall.\n" + appName);
             } else {
-                if (distanceFromCurrentLoc > 500) {
-                    showMeesageDiaog("You Are too far from location.Please go to location and then fill the visit details.\nYour distance from field :\nIn Meter :" + String.format("%.2f", distanceFromCurrentLoc) + "meter.\nIn KM :" + String.format("%.2f", (distanceFromCurrentLoc / 1000)) + "km.");
-                } else {
-
+//                if (distanceFromCurrentLoc > 500) {
+//                    showMeesageDiaog("You Are too far from location.Please go to location and then fill the visit details.\nYour distance from field :\nIn Meter :" + String.format("%.2f", distanceFromCurrentLoc) + "meter.\nIn KM :" + String.format("%.2f", (distanceFromCurrentLoc / 1000)) + "km.");
+//                } else {
+                   Preferences.save(mContext,Preferences.DISTANCEFROMFIELD,""+distanceFromCurrentLoc);
                     switch (v.getId()) {
                         case R.id.btn_stage1:
                             if (database.isMandetoryVisitDone(userid, 1)) {
@@ -249,7 +249,7 @@ public class FiledReportDashboard extends AppCompatActivity implements View.OnCl
                             showStage(5);
                             break;
                     }
-                }
+           //     }
             }
         }else
         {

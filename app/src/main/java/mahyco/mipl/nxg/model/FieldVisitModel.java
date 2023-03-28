@@ -43,6 +43,25 @@ public class FieldVisitModel {
 
 
     String AreaLossStatus;
+    String AverageNoofExistingbolls;
+
+    public String getAverageNoofExistingbolls() {
+        return AverageNoofExistingbolls;
+    }
+
+    public void setAverageNoofExistingbolls(String averageNoofExistingbolls) {
+        AverageNoofExistingbolls = averageNoofExistingbolls;
+    }
+
+    public String getDistanceFromField() {
+        return DistanceFromField;
+    }
+
+    public void setDistanceFromField(String distanceFromField) {
+        DistanceFromField = distanceFromField;
+    }
+
+    String DistanceFromField;
 
     public String getAreaLossStatus() {
         return AreaLossStatus;

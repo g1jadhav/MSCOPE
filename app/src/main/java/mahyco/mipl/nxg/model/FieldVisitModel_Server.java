@@ -318,4 +318,23 @@ public class FieldVisitModel_Server {
     String CapturePhoto;// "Field-Visit-Img-U1-V1-20230115112859249.jpg",
     String CreatedBy;// "55000066",
     String CreatedDt;// "2023-01-15T11:28:16.4"
+
+    public String getAverageNoofExistingbolls() {
+        return AverageNoofExistingbolls;
+    }
+
+    public void setAverageNoofExistingbolls(String averageNoofExistingbolls) {
+        AverageNoofExistingbolls = averageNoofExistingbolls;
+    }
+
+    public String getDistanceFromField() {
+        return DistanceFromField;
+    }
+
+    public void setDistanceFromField(String distanceFromField) {
+        DistanceFromField = distanceFromField;
+    }
+
+    String AverageNoofExistingbolls;
+    String DistanceFromField;
 }

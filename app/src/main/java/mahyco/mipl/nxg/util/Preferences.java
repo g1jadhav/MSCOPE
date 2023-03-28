@@ -58,6 +58,7 @@ public class Preferences {
     public static final String SELECTEDVISITID = "SELECTEDVISITID";
     public static final String PREVTOTAL_FEMALE_PLANTS ="PREVIOUS_TOTAL_FEMALEPLANTS" ;
     public static final String PREVTOTAL_MALE_PLANTS = "PREVIOUS_TOTAL_MALEPLANTS";
+    public static final String DISTANCEFROMFIELD = "DistanceFromCurrentField";
     public static String IQCPlantId="IQCPlantId";
     public static final String COUNTRY_MASTER_ID = "CountryParentId";
     public static final String STORED_CATEGORY_SIZE = "CategorySize";

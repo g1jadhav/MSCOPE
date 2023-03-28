@@ -775,7 +775,10 @@ public class FieldVisitFirst extends BaseActivity {
                 fieldVisitModel.setTotalFemalePlants(Integer.parseInt(str_total_female_plants_textview));// 20,
                 fieldVisitModel.setTotalMalePlants(Integer.parseInt(str_total_male_plants_textview));// 20,
                 fieldVisitModel.setYieldEstimateInKg(Integer.parseInt(str_yield_estimate_kg_edittext));// 50,
-                fieldVisitModel.setObservations(str_area_lost_spinner + "~" + str_recommendations_observations_edittext + " v-" + BuildConfig.VERSION_NAME);// Observations Here,
+                String currentdistance="0";
+                if(Preferences.get(context,Preferences.DISTANCEFROMFIELD)!=null)
+                        currentdistance=Preferences.get(context,Preferences.DISTANCEFROMFIELD);
+                fieldVisitModel.setObservations(str_recommendations_observations_edittext +" ~ "+ currentdistance +" ~ v-" + BuildConfig.VERSION_NAME);// Observations Here,
                 fieldVisitModel.setFieldVisitDt(str_date_of_field_visit_textview);// 2023-01-15T05;//35;//13.529Z,
                 fieldVisitModel.setLatitude("" + lati);// 19.886857,
                 fieldVisitModel.setLongitude("" + longi);// 75.3514908,
@@ -796,6 +799,8 @@ public class FieldVisitFirst extends BaseActivity {
                 //  fieldVisitModel.setExpectedDtOfHarvesting(str_date_of_field_visit_textview);
                 // fieldVisitModel.setExpectedDtOfDespatching(str_date_of_field_visit_textview);
                 fieldVisitModel.setMaleParentUprooted("0");
+                fieldVisitModel.setAverageNoofExistingbolls("0");
+                fieldVisitModel.setDistanceFromField("0");
 
                 fieldMonitoringModels.setFieldVisitModel(fieldVisitModel);
                 ArrayList<FieldVisitLocationModel> lst_location = new ArrayList<>();

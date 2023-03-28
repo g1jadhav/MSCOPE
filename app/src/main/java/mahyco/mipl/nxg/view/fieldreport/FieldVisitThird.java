@@ -110,7 +110,8 @@ public class FieldVisitThird extends BaseActivity {
             male_spacing_rr,
             male_spacing_pp,
             female_planting_ratio,
-            male_planting_ratio;
+            male_planting_ratio,
+            avg_of_expected_edittextview;
 
     CCFSerachSpinner
             seed_production_method_spinner,
@@ -157,6 +158,7 @@ public class FieldVisitThird extends BaseActivity {
             str_date_of_field_visit_textview = "",
             str_staff_name_textview = "",
             str_geotag_location_textview = "",
+            str_avg_of_expected_edittextview = "",
             str_seed_production_method_spinner = "",
             str_roguing_completed_and_validated_spinner = "",
             str_crop_stage_spinner = "";
@@ -248,6 +250,7 @@ public class FieldVisitThird extends BaseActivity {
         recommendations_observations_edittext = findViewById(R.id.recommendations_observations_edittext);
         date_of_field_visit_textview = findViewById(R.id.date_of_field_visit_textview);
         staff_name_textview = findViewById(R.id.staff_name_textview);
+        avg_of_expected_edittextview = findViewById(R.id.avg_of_expected_edittextview);
         geotag_location_textview = findViewById(R.id.geotag_location_textview);
         national_id_photo_front_side_btn = findViewById(R.id.national_id_photo_front_side_btn);
         capture_photo_image_view = findViewById(R.id.capture_photo_image_view);
@@ -993,7 +996,10 @@ public class FieldVisitThird extends BaseActivity {
                 fieldVisitModel.setTotalFemalePlants(Integer.parseInt(str_total_female_plants_textview));// 20,
                 fieldVisitModel.setTotalMalePlants(Integer.parseInt(str_total_male_plants_textview));// 20,
                 fieldVisitModel.setYieldEstimateInKg(Integer.parseInt(str_yield_estimate_kg_edittext));// 50,
-                fieldVisitModel.setObservations(area_lost_spinner.getSelectedItem().toString().trim()+"~" +str_recommendations_observations_edittext + " v-" + BuildConfig.VERSION_NAME);// Observations Here,
+                String currentdistance="0";
+                if(Preferences.get(context,Preferences.DISTANCEFROMFIELD)!=null)
+                    currentdistance=Preferences.get(context,Preferences.DISTANCEFROMFIELD);
+                fieldVisitModel.setObservations(str_recommendations_observations_edittext +" ~ "+ currentdistance + "~ v-" + BuildConfig.VERSION_NAME);// Observations Here,
                 fieldVisitModel.setFieldVisitDt(str_date_of_field_visit_textview);// 2023-01-15T05;//35;//13.529Z,
                 fieldVisitModel.setLatitude("" + lati);// 19.886857,
                 fieldVisitModel.setLongitude("" + longi);// 75.3514908,
@@ -1013,14 +1019,94 @@ public class FieldVisitThird extends BaseActivity {
              //   fieldVisitModel.setExpectedDtOfHarvesting(str_date_of_field_visit_textview);
              //   fieldVisitModel.setExpectedDtOfDespatching(str_date_of_field_visit_textview);
                 fieldVisitModel.setMaleParentUprooted("0");
+                fieldVisitModel.setAverageNoofExistingbolls(avg_of_expected_edittextview.getText().toString().trim());
+                fieldVisitModel.setDistanceFromField(""+currentdistance);
                 fieldVisitModel.setAreaLossStatus(""+area_lost_spinner.getSelectedItem().toString().trim());
-
-
                 ArrayList<FieldPlantLaneModels> lst_FieldPlantLaneModels = new ArrayList<>();
-                ArrayList<FieldVisitLocationModel> lst_location = new ArrayList<>();
+                int cnt = 0;
+                int total = 0;
+                if (allEds != null)
+                    for (EditText et : allEds) {
+                        FieldPlantLaneModels fieldPlantLaneModels = new FieldPlantLaneModels();
+                        try {
+                            if(!(et.getText().toString().trim().equals(""))) {
+                                fieldPlantLaneModels.setLaneNo(cnt + 1);
+                                fieldPlantLaneModels.setNoOfPlants(Integer.parseInt(et.getText().toString().trim()));
+                                fieldPlantLaneModels.setPlantType("Female");
+                                cnt++;
+                                lst_FieldPlantLaneModels.add(fieldPlantLaneModels);
+                            }
+                        } catch (Exception e) {
 
+                        }
+                    }
+                ArrayList<FieldVisitLocationModel> lst_location = new ArrayList<>();
                 ArrayList<FieldVisitRoguedPlantModel> lst_roguredPlants = new ArrayList<>();
                 ArrayList<FieldVisitFruitsCobModel> lst_fruitCob = new ArrayList<>();
+
+                for(int i=0;i<10;i++)
+                {
+                    FieldVisitFruitsCobModel fieldVisitFruitsCobModel=new FieldVisitFruitsCobModel();
+                    fieldVisitFruitsCobModel.setPlantType("Female");
+                    String one="";
+                    switch(i+1)
+                    {
+                        case 1:
+                            one=first_editetext_female_per_line.getText().toString().trim();
+                            if(!(one.equals("")))
+                             fieldVisitFruitsCobModel.setNoOfCount(Integer.parseInt(one));
+                            break;
+
+                        case 2:
+                            one=second_editetext_female_per_line.getText().toString().trim();
+                            if(!(one.equals("")))
+                                fieldVisitFruitsCobModel.setNoOfCount(Integer.parseInt(one));
+                            break;
+                        case 3:
+                            one=third_editetext_female_per_line.getText().toString().trim();
+                            if(!(one.equals("")))
+                                fieldVisitFruitsCobModel.setNoOfCount(Integer.parseInt(one));
+                            break;
+                        case 4:
+                            one=fourth_editetext_female_per_line.getText().toString().trim();
+                            if(!(one.equals("")))
+                                fieldVisitFruitsCobModel.setNoOfCount(Integer.parseInt(one));
+                            break;
+                        case 5:
+                            one=fifth_editetext_female_per_line.getText().toString().trim();
+                            if(!(one.equals("")))
+                                fieldVisitFruitsCobModel.setNoOfCount(Integer.parseInt(one));
+                            break;
+                        case 6:
+                            one=six_editetext_female_per_line.getText().toString().trim();
+                            if(!(one.equals("")))
+                                fieldVisitFruitsCobModel.setNoOfCount(Integer.parseInt(one));
+                            break;
+                        case 7:
+                            one=seven_editetext_female_per_line.getText().toString().trim();
+                            if(!(one.equals("")))
+                                fieldVisitFruitsCobModel.setNoOfCount(Integer.parseInt(one));
+                            break;
+                        case 8:
+                            one=eight_editetext_female_per_line.getText().toString().trim();
+                            if(!(one.equals("")))
+                                fieldVisitFruitsCobModel.setNoOfCount(Integer.parseInt(one));
+                            break;
+                        case 9:
+                            one=nine_editetext_female_per_line.getText().toString().trim();
+                            if(!(one.equals("")))
+                                fieldVisitFruitsCobModel.setNoOfCount(Integer.parseInt(one));
+                            break;
+                        case 10:
+                            one=ten_editetext_female_per_line.getText().toString().trim();
+                            if(!(one.equals("")))
+                                fieldVisitFruitsCobModel.setNoOfCount(Integer.parseInt(one));
+                            break;
+                    }
+                    lst_fruitCob.add(fieldVisitFruitsCobModel);
+                }
+                
+
                 FieldVisitRoguedPlantModel r_male_offtype = new FieldVisitRoguedPlantModel();
                 FieldVisitRoguedPlantModel r_male_volunteer = new FieldVisitRoguedPlantModel();
                 FieldVisitRoguedPlantModel r_male_btype = new FieldVisitRoguedPlantModel();
@@ -1597,13 +1683,14 @@ public class FieldVisitThird extends BaseActivity {
             if (average_weight_seed_edittextview.getText().toString().trim().equals("")) {
                 cnt++;
             }
-
+            avg_of_expected_edittextview.setText(""+(sum/10));
 
             if (cnt == 0) {
 
                 double ssum = sum;
                 Log.i("sum", "" + sum);
                 double dd = ssum / 10.0;
+                avg_of_expected_edittextview.setText(""+dd);
                 Log.i("sum1", "" + dd);
                 dd = dd + Integer.parseInt(number_of_expected_edittextview.getText().toString().trim());
                 Log.i("sum2", "" + dd);

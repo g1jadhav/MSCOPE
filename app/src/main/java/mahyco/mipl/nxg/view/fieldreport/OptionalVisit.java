@@ -314,6 +314,8 @@ public class OptionalVisit extends BaseActivity {
                 fieldVisitModel.setExpectedDtOfHarvesting(str_date_of_field_visit_textview);
                 fieldVisitModel.setExpectedDtOfDespatching(str_date_of_field_visit_textview);
                 fieldVisitModel.setMaleParentUprooted("0");
+                fieldVisitModel.setAverageNoofExistingbolls("0");
+                fieldVisitModel.setDistanceFromField("0");
 
                 ArrayList<FieldPlantLaneModels> lst_FieldPlantLaneModels = new ArrayList<>();
                 ArrayList<FieldVisitLocationModel> lst_location = new ArrayList<>();
