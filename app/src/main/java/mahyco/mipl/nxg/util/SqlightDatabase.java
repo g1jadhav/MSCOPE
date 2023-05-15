@@ -437,11 +437,11 @@ public class SqlightDatabase extends SQLiteOpenHelper {
 
         String tbl_visit_master = "Create table IF NOT EXISTS tbl_visit_master(\n" +
                 "TEMPID INTEGER PRIMARY KEY AUTOINCREMENT ,\n" +
-                "FieldVisitId TEXT,\n" +
+                "FieldVisitId INTEGER,\n" +
                 "UserId TEXT,\n" +
                 "CountryId TEXT,\n" +
                 "CountryMasterId TEXT,\n" +
-                "MandatoryFieldVisitId TEXT,\n" +
+                "MandatoryFieldVisitId Integer,\n" +
                 "FieldVisitType TEXT,\n" +
                 "TotalSeedAreaLost TEXT,\n" +
                 "TaggedAreaInHA TEXT,\n" +

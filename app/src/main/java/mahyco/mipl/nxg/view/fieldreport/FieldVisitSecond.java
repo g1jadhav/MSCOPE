@@ -133,7 +133,7 @@ public class FieldVisitSecond extends BaseActivity {
     int currentStage = 0;
     int totalFemalePlants = 0;
     int totalMalePlants = 0;
-    LinearLayout layout_losslayout,layout_existarea;
+    LinearLayout layout_losslayout,layout_existarea,image_layout;
     int lossStatus=0;
 
     @Override
@@ -158,6 +158,7 @@ public class FieldVisitSecond extends BaseActivity {
         context = FieldVisitSecond.this;
         database = new SqlightDatabase(context);
         national_id_photo_front_side_btn = findViewById(R.id.national_id_photo_front_side_btn);
+        image_layout = findViewById(R.id.image_layout);
         capture_photo_image_view = findViewById(R.id.capture_photo_image_view);
         grower_name_textview = findViewById(R.id.grower_name_textview);
         issued_seed_area_textview = findViewById(R.id.issued_seed_area_textview);
@@ -186,7 +187,7 @@ public class FieldVisitSecond extends BaseActivity {
         save_login = findViewById(R.id.save_login);
         layout_losslayout = findViewById(R.id.losslayout);
                 layout_existarea = findViewById(R.id.existlayout);
-          layout_losslayout.setVisibility(View.GONE);
+                layout_losslayout.setVisibility(View.GONE);
 
         prevExistingArea = 0.00;
         fieldVisitModel = new FieldVisitModel();
@@ -537,6 +538,7 @@ public class FieldVisitSecond extends BaseActivity {
             layout_losslayout.setVisibility(View.GONE);
             layout_existarea.setVisibility(View.VISIBLE);
             recommendations_observations_edittext.setVisibility(View.VISIBLE);
+            image_layout.setVisibility(View.VISIBLE);
         }catch (Exception e)
         {
 
@@ -548,6 +550,7 @@ public class FieldVisitSecond extends BaseActivity {
             layout_losslayout.setVisibility(View.VISIBLE);
             layout_existarea.setVisibility(View.GONE);
             recommendations_observations_edittext.setVisibility(View.GONE);
+            image_layout.setVisibility(View.GONE);
         }catch (Exception e)
         {
 

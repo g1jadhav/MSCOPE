@@ -382,9 +382,9 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                             json_visitModel.addProperty("AverageNoofExistingbolls", 0);
 
                         if (fieldVisitModel.getDistanceFromField() != null && !(fieldVisitModel.getDistanceFromField().trim().equals("")))
-                            json_visitModel.addProperty("DistanceFromField", Double.parseDouble(fieldVisitModel.getDistanceFromField().trim()));
+                            json_visitModel.addProperty("DistanceFromField", fieldVisitModel.getDistanceFromField().trim());
                         else
-                            json_visitModel.addProperty("DistanceFromField", 0);
+                            json_visitModel.addProperty("DistanceFromField", "0");
 
                         jsonObjectFinale.add("fieldVisitModel", json_visitModel);
                         jsonObjectFinale.add("fieldVisitLocationModels", jsonObject_location);
