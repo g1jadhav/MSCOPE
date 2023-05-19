@@ -123,13 +123,37 @@
             android:exported="false"
 
             android:theme="@style/AppTheme.NoActionBar" />
+
+
+        <activity
+            android:name=".view.receipt.CreateReceipt"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:screenOrientation="portrait"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+       <activity
+            android:name=".view.receipt.FieldReceiptDashboard"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:screenOrientation="portrait"
+            android:exported="false"
+        />
+
+        <activity
+            android:name=".view.receipt.ReceiptGrowerSelectionActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:screenOrientation="portrait"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+
         <activity
             android:name=".view.fieldreport.OptionalVisit"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:screenOrientation="portrait"
             android:exported="false"
-
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".view.fieldreport.FiledMonitoringReportEntry"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"

@@ -54,6 +54,7 @@ import mahyco.mipl.nxg.view.fieldreport.FiledMonitoringReportEntry;
 import mahyco.mipl.nxg.view.fieldreport.FiledReportDashboard;
 import mahyco.mipl.nxg.view.growerregistration.NewGrowerRegistration;
 import mahyco.mipl.nxg.view.login.Login;
+import mahyco.mipl.nxg.view.receipt.ReceiptGrowerSelectionActivity;
 import mahyco.mipl.nxg.view.seeddistribution.OldGrowerSeedDistribution;
 import mahyco.mipl.nxg.view.uploaddata.NewActivityUpload;
 import retrofit2.Response;
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     String plantid, roleid;
 
     CardView card_downlaodMaster, card_upload_data_layout, card_grower, card_organizer,
-            card_parent_seed_distributin_layout;
+            card_parent_seed_distributin_layout,card_receipt;
     /*Added by jeevan 7-12-2022*/
     CardView mFieldMonitoringReportEntryLayout;
     /*Added by jeevan 7-12-2022 ended here*/
@@ -125,9 +126,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         /*Added by jeevan 7-12-2022*/
         mFieldMonitoringReportEntryLayout = (CardView) findViewById(R.id.field_monitoring_report_entry_layout);
+        card_receipt = (CardView) findViewById(R.id.seedreceipts);
         mFieldMonitoringReportEntryLayout.setOnClickListener(this);
         /*Added by jeevan 7-12-2022 ended here*/
+        card_receipt = (CardView) findViewById(R.id.seedreceipts);
 
+        card_receipt.setOnClickListener(this);
         card_parent_seed_distributin_layout.setOnClickListener(this);
         card_downlaodMaster.setOnClickListener(this);
         card_upload_data_layout.setOnClickListener(this);
@@ -360,6 +364,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (!Preferences.get(context, Preferences.DISTRIBUTION_LIST_DOWNLOAD).equalsIgnoreCase("")) {
                     if (checkAutoTimeEnabledOrNot()) {
                         Intent intent = new Intent(context, OldGrowerSeedDistribution.class);
+                        startActivity(intent);
+                    } else {
+                        showAutomaticTimeMessage("Please update time setting to automatic");
+                    }
+                } else {
+                    Toast.makeText(context, "Please download seed distribution master data in download master data first", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.seedreceipts:
+                if (!Preferences.get(context, Preferences.DISTRIBUTION_LIST_DOWNLOAD).equalsIgnoreCase("")) {
+                    if (checkAutoTimeEnabledOrNot()) {
+                        Intent intent = new Intent(context, ReceiptGrowerSelectionActivity.class);
                         startActivity(intent);
                     } else {
                         showAutomaticTimeMessage("Please update time setting to automatic");

@@ -432,10 +432,22 @@
         <item>No</item>
     </string-array>
 
+    <string-array name="yes_no_">
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
     <string-array name="quality_a_b">
         <item>Select</item>
         <item>A</item>
         <item>B</item>
+    </string-array>
+
+    <string-array name="serviceprovider">
+        <item>Select</item>
+        <item>Airtel</item>
+        <item>TNM</item>
+        <item>ECO Cash</item>
     </string-array>
 
 

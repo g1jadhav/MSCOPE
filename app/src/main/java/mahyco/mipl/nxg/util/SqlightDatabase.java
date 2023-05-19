@@ -27,6 +27,7 @@ import mahyco.mipl.nxg.model.GrowerModel;
 import mahyco.mipl.nxg.model.OldGrowerSeedDistributionModel;
 import mahyco.mipl.nxg.model.ProductCodeModel;
 import mahyco.mipl.nxg.model.ProductionClusterModel;
+import mahyco.mipl.nxg.model.ReceiptModel;
 import mahyco.mipl.nxg.model.SeasonModel;
 import mahyco.mipl.nxg.model.SeedBatchNoModel;
 import mahyco.mipl.nxg.model.SeedReceiptModel;
@@ -507,6 +508,29 @@ public class SqlightDatabase extends SQLiteOpenHelper {
 
         db.execSQL(tbl_focusvillage_master);
 
+        String tbl_receiptmaster = "Create table tbl_seedreceipt (\n" +
+                "     TEMPID INTEGER PRIMARY Key AUTOINCREMENT,\n" +
+                "GrowerId  TEXT,\n" +
+                "     GrowerName  TEXT,\n" +
+                "     issued_seed_area  TEXT,\n" +
+                "     production_code  TEXT,\n" +
+                "     village  TEXT,\n" +
+                "     existing_area  TEXT,\n" +
+                "     area_loss  TEXT,\n" +
+                "     reason_for_area_loss  TEXT,\n" +
+                "     yeildinkg  TEXT,\n" +
+                "     batchno  TEXT,\n" +
+                "     noofbags  TEXT,\n" +
+                "     weightinkg  TEXT,\n" +
+                "     serviceprovider  TEXT,\n" +
+                "     grower_mobile_no_edittext  TEXT,\n" +
+                "     date_of_field_visit_textview  TEXT,\n" +
+                "     staff_name_textview  TEXT,\n" +
+                "     StaffID  TEXT\n" +
+                "\t)";
+
+        db.execSQL(tbl_receiptmaster);
+
     }
 
     @Override
@@ -527,6 +551,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
         droptable(db, "tbl_seedbatchnomaster");
         droptable(db, "tbl_croptypemaster");
         droptable(db, "tbl_allseeddistributionmaster");
+        droptable(db, "tbl_seedreceipt");
         /*Commented by Jeevan 28-11-2022*/
         /*droptable(db, "tbl_storestributiondata");*/
         /*Commented by Jeevan 28-11-2022*/
@@ -724,7 +749,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
             mydb = this.getReadableDatabase();
             String q = "insert into tbl_firstVisit" +
                     "(UserId, CountryId, CountryMasterId, MandatoryFieldVisitId, FieldVisitType, TotalSeedAreaLost, TaggedAreaInHA, ExistingAreaInHA, ReasonForTotalLossed, FemaleSowingDt, MaleSowingDt, IsolationM, IsolationMeter, CropStage, TotalNoOfFemaleLines, TotalNoOfMaleLines, FemaleSpacingRRinCM, FemaleSpacingPPinCM, MaleSpacingRRinCM, MaleSpacingPPinCM, PlantingRatioFemale, PlantingRatioMale, CropCategoryType, TotalFemalePlants, TotalMalePlants, YieldEstimateInKg, Observations, FieldVisitDt, Latitude, Longitude, CapturePhoto, CreatedBy, LocationData, LineData,AreaLossInHa,NoOfRoguedFemalePlants,NoOfRoguedMalePlants,SeedProductionMethod,RoguingCompletedValidated,SingleCobsPerPlant,SingleCobsPerPlantInGm,UnprocessedSeedReadyInKg,PollinationStartDt,PollinationEndDt,ExpectedDtOfHarvesting,ExpectedDtOfDespatching,MaleParentUprooted,fieldVisitRoguedPlantModels,fieldVisitFruitsCobModels,AreaLossStatus,AverageNoofExistingbolls,DistanceFromField) values" +
-                    "('" + visitModel.getUserId() + "','" + visitModel.getCountryId() + "','" + visitModel.getCountryMasterId() + "','" + visitModel.getMandatoryFieldVisitId() + "','" + visitModel.getFieldVisitType() + "','" + visitModel.getTotalSeedAreaLost() + "','" + visitModel.getTaggedAreaInHA() + "','" + visitModel.getExistingAreaInHA() + "','" + visitModel.getReasonForTotalLossed() + "','" + visitModel.getFemaleSowingDt() + "','" + visitModel.getMaleSowingDt() + "','" + visitModel.getIsolationM() + "','" + visitModel.getIsolationMeter() + "','" + visitModel.getCropStage() + "','" + visitModel.getTotalNoOfFemaleLines() + "','" + visitModel.getTotalNoOfMaleLines() + "','" + visitModel.getFemaleSpacingRRinCM() + "','" + visitModel.getFemaleSpacingPPinCM() + "','" + visitModel.getMaleSpacingRRinCM() + "','" + visitModel.getMaleSpacingPPinCM() + "','" + visitModel.getPlantingRatioFemale() + "','" + visitModel.getPlantingRatioMale() + "','" + visitModel.getCropCategoryType() + "','" + visitModel.getTotalFemalePlants() + "','" + visitModel.getTotalMalePlants() + "','" + visitModel.getYieldEstimateInKg() + "','" + visitModel.getObservations() + "','" + visitModel.getFieldVisitDt() + "','" + visitModel.getLatitude() + "','" + visitModel.getLongitude() + "','" + visitModel.getCapturePhoto() + "','" + visitModel.getCreatedBy() + "','" + visitModel.getLocationData() + "','" + visitModel.getLineData() + "','" + visitModel.getAreaLossInHa() + "','" + visitModel.getNoOfRoguedFemalePlants() + "','" + visitModel.getNoOfRoguedMalePlants() + "','" + visitModel.getSeedProductionMethod() + "','" + visitModel.getRoguingCompletedValidated() + "','" + visitModel.getSingleCobsPerPlant() + "','" + visitModel.getSingleCobsPerPlantInGm() + "','" + visitModel.getUnprocessedSeedReadyInKg() + "','" + visitModel.getPollinationStartDt() + "','" + visitModel.getPollinationEndDt() + "','" + visitModel.getExpectedDtOfHarvesting() + "','" + visitModel.getExpectedDtOfDespatching() + "','" + visitModel.getMaleParentUprooted() + "','" + visitModel.getFieldVisitRoguedPlantModels() + "','" + visitModel.getFieldVisitFruitsCobModelsText() + "','"+visitModel.getAreaLossStatus()+"','"+visitModel.getAverageNoofExistingbolls()+"','"+visitModel.getDistanceFromField()+"')";
+                    "('" + visitModel.getUserId() + "','" + visitModel.getCountryId() + "','" + visitModel.getCountryMasterId() + "','" + visitModel.getMandatoryFieldVisitId() + "','" + visitModel.getFieldVisitType() + "','" + visitModel.getTotalSeedAreaLost() + "','" + visitModel.getTaggedAreaInHA() + "','" + visitModel.getExistingAreaInHA() + "','" + visitModel.getReasonForTotalLossed() + "','" + visitModel.getFemaleSowingDt() + "','" + visitModel.getMaleSowingDt() + "','" + visitModel.getIsolationM() + "','" + visitModel.getIsolationMeter() + "','" + visitModel.getCropStage() + "','" + visitModel.getTotalNoOfFemaleLines() + "','" + visitModel.getTotalNoOfMaleLines() + "','" + visitModel.getFemaleSpacingRRinCM() + "','" + visitModel.getFemaleSpacingPPinCM() + "','" + visitModel.getMaleSpacingRRinCM() + "','" + visitModel.getMaleSpacingPPinCM() + "','" + visitModel.getPlantingRatioFemale() + "','" + visitModel.getPlantingRatioMale() + "','" + visitModel.getCropCategoryType() + "','" + visitModel.getTotalFemalePlants() + "','" + visitModel.getTotalMalePlants() + "','" + visitModel.getYieldEstimateInKg() + "','" + visitModel.getObservations() + "','" + visitModel.getFieldVisitDt() + "','" + visitModel.getLatitude() + "','" + visitModel.getLongitude() + "','" + visitModel.getCapturePhoto() + "','" + visitModel.getCreatedBy() + "','" + visitModel.getLocationData() + "','" + visitModel.getLineData() + "','" + visitModel.getAreaLossInHa() + "','" + visitModel.getNoOfRoguedFemalePlants() + "','" + visitModel.getNoOfRoguedMalePlants() + "','" + visitModel.getSeedProductionMethod() + "','" + visitModel.getRoguingCompletedValidated() + "','" + visitModel.getSingleCobsPerPlant() + "','" + visitModel.getSingleCobsPerPlantInGm() + "','" + visitModel.getUnprocessedSeedReadyInKg() + "','" + visitModel.getPollinationStartDt() + "','" + visitModel.getPollinationEndDt() + "','" + visitModel.getExpectedDtOfHarvesting() + "','" + visitModel.getExpectedDtOfDespatching() + "','" + visitModel.getMaleParentUprooted() + "','" + visitModel.getFieldVisitRoguedPlantModels() + "','" + visitModel.getFieldVisitFruitsCobModelsText() + "','" + visitModel.getAreaLossStatus() + "','" + visitModel.getAverageNoofExistingbolls() + "','" + visitModel.getDistanceFromField() + "')";
             // Log.i("Query is -------> ", "" + q);
             mydb.execSQL(q);
             return true;
@@ -930,6 +955,48 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                     f.setAreaLossStatus(cursorCourses.getString(50));
                     f.setAverageNoofExistingbolls(cursorCourses.getString(51));
                     f.setDistanceFromField(cursorCourses.getString(52));
+
+                    fieldLocationArrayList.add(f);
+                } while (cursorCourses.moveToNext());
+            }
+            return fieldLocationArrayList;
+        } catch (Exception e) {
+            return null;
+        } finally {
+            myDb.close();
+        }
+    }
+
+    public ArrayList<ReceiptModel> getAllSeedReceipt() {
+        SQLiteDatabase myDb = null;
+        try {
+            myDb = this.getReadableDatabase();
+            String q = "SELECT  * FROM tbl_seedreceipt";
+            Cursor cursorCourses = myDb.rawQuery(q, null);
+            ArrayList<ReceiptModel> fieldLocationArrayList = new ArrayList<>();
+            if (cursorCourses.moveToFirst()) {
+                do {
+                    ReceiptModel f = new ReceiptModel();
+                    f.setTempId(cursorCourses.getInt(0));
+                    f.setGrowerId(cursorCourses.getString(1));
+                    f.setGrowerName(cursorCourses.getString(2));
+                    f.setIssued_seed_area(cursorCourses.getString(3));
+                    f.setProduction_code(cursorCourses.getString(4));
+                    f.setVillage(cursorCourses.getString(5));
+                    f.setExisting_area(cursorCourses.getString(6));
+                    f.setArea_loss(cursorCourses.getString(7));
+                    f.setReason_for_area_loss(cursorCourses.getString(8));
+                    f.setYeildinkg(cursorCourses.getString(9));
+                    f.setBatchno(cursorCourses.getString(10));
+                    f.setNoofbags(cursorCourses.getString(11));
+                    f.setWeightinkg(cursorCourses.getString(12));
+                    f.setServiceprovider(cursorCourses.getString(13));
+                    f.setGrower_mobile_no_edittext(cursorCourses.getString(14));
+                    f.setDate_of_field_visit_textview(cursorCourses.getString(15));
+                    f.setStaff_name_textview(cursorCourses.getString(16));
+                    f.setStaffID(cursorCourses.getString(17));
+
+
 
                     fieldLocationArrayList.add(f);
                 } while (cursorCourses.moveToNext());
@@ -2081,9 +2148,101 @@ public class SqlightDatabase extends SQLiteOpenHelper {
         }
     }
 
+    public ArrayList<GetAllSeedDistributionModel> getAllSeedDistributionListForReceipt(String value, String pcode) {
+        SQLiteDatabase myDb = null;
+        try {
+            Log.i("Query Receipt", value + "-->" + pcode);
+            myDb = this.getReadableDatabase();
+            String q = "select * from tbl_allseeddistributionmaster a where (select count(*) from tbl_visit_master where MandatoryFieldVisitId = 3 and AreaLossStatus= 'No' and UserId=a.GrowerId)>0";
+            if (value.trim().equals("")) {
+                q = "select * from tbl_allseeddistributionmaster a where (select count(*) from tbl_visit_master where MandatoryFieldVisitId = 3 and AreaLossStatus= 'No' and UserId=a.GrowerId)>0 and (select count(*) from tbl_focusedvillage where CountryMasterId=(select countryMasterid from tbl_growermaster where UserId=GrowerId))>0";
+            } else {
+                q = "select * from tbl_allseeddistributionmaster a where (select count(*) from tbl_visit_master where MandatoryFieldVisitId = 3 and AreaLossStatus= 'No' and UserId=a.GrowerId)>0  and (select count(*) from tbl_focusedvillage where CountryMasterId=(select countryMasterid from tbl_growermaster where UserId=GrowerId))>0 and upper((select LandMark from tbl_growermaster where UserId=GrowerId limit 1)) like '" + value.toLowerCase() + ",%'";
+            }
+            if (pcode.trim().equals("")) {
+
+            } else {
+                q += " and ProductionCode='" + pcode + "'";
+               /* if(value.trim().equals(""))
+                    q+= " and ProductionCode='"+pcode+"'";
+                else
+                    q+= " and ProductionCode='"+pcode+"'";*/
+            }
+
+            Log.i("Query", "-->" + q);
+            Cursor cursorCourses = myDb.rawQuery(q, null);
+            ArrayList<GetAllSeedDistributionModel> courseModalArrayList = new ArrayList<>();
+            int srno = 1;
+            if (cursorCourses.moveToFirst()) {
+                do {
+                    String b = isFirstFieldVisitDone(cursorCourses.getInt(2));
+                    String b1 = isFirstFieldVisitDoneLocal(cursorCourses.getInt(2));
+                    String ss = "";
+                    if (!b.equals("0")) {
+                        ss = getSuperscript(b) + " Visit.";
+                    }
+                    if (!b1.equals("0")) {
+                        ss = getSuperscript(b1) + " Visit.";
+                    }
+                    courseModalArrayList.add(new GetAllSeedDistributionModel(cursorCourses.getInt(1),
+                            cursorCourses.getInt(2),
+                            cursorCourses.getInt(3),
+                            cursorCourses.getString(4),
+                            cursorCourses.getInt(5),
+                            cursorCourses.getInt(6),
+                            cursorCourses.getInt(7),
+                            cursorCourses.getInt(8),
+                            cursorCourses.getFloat(9),
+                            cursorCourses.getInt(10),
+                            cursorCourses.getInt(11),
+                            cursorCourses.getInt(12),
+                            cursorCourses.getString(13),
+                            cursorCourses.getString(14),
+                            cursorCourses.getString(15),
+                            cursorCourses.getString(16),
+                            cursorCourses.getString(17),
+                            cursorCourses.getString(18),
+                            cursorCourses.getString(19),
+                            cursorCourses.getString(20),
+                            cursorCourses.getString(21),
+                            cursorCourses.getString(22),
+                            cursorCourses.getString(23),
+                            cursorCourses.getString(24),
+                            srno + "-" + cursorCourses.getInt(2) + " " + cursorCourses.getString(25) + "(" + ss + ")",
+                            cursorCourses.getString(26),
+                            cursorCourses.getString(27),
+                            cursorCourses.getString(28),
+                            cursorCourses.getString(29),
+                            cursorCourses.getString(30),
+                            cursorCourses.getString(31),
+                            cursorCourses.getString(32),
+                            cursorCourses.getString(33),
+                            cursorCourses.getString(34),
+                            cursorCourses.getString(35),
+                            cursorCourses.getString(36),
+                            cursorCourses.getString(37),
+                            cursorCourses.getString(38),
+                            cursorCourses.getString(39),
+                            cursorCourses.getString(40),
+                            cursorCourses.getString(41),
+                            cursorCourses.getString(42),
+                            cursorCourses.getString(43),
+                            cursorCourses.getString(44),
+                            cursorCourses.getString(45)));
+                    srno++;
+                } while (cursorCourses.moveToNext());
+            }
+            return courseModalArrayList;
+        } catch (Exception e) {
+            return null;
+        } finally {
+            myDb.close();
+        }
+    }
+
     String getSuperscript(String a) {
         int k = 0;
-        String str="";
+        String str = "";
         try {
             k = Integer.parseInt(a.trim());
         } catch (NumberFormatException e) {
@@ -2091,20 +2250,20 @@ public class SqlightDatabase extends SQLiteOpenHelper {
         }
         switch (k) {
             case 1:
-                str= "1st";
-            break;
+                str = "1st";
+                break;
 
             case 2:
-                str= "2nd";
-            break;
+                str = "2nd";
+                break;
 
             case 3:
-                str= "3rd";
-            break;
+                str = "3rd";
+                break;
 
             case 4:
-                str= "4th";
-            break;
+                str = "4th";
+                break;
 
         }
         return str;
@@ -2352,7 +2511,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                     "CapturePhoto," +
                     "CreatedBy," +
                     "CreatedDt,AreaLossStatus) values" +
-                    "('" + f.getFieldVisitId() + "','" + f.getUserId() + "','" + f.getCountryId() + "','" + f.getCountryMasterId() + "','" + f.getMandatoryFieldVisitId() + "','" + f.getFieldVisitType() + "','" + f.getTotalSeedAreaLost() + "','" + f.getTaggedAreaInHA() + "','" + f.getExistingAreaInHA() + "','" + f.getReasonForTotalLossed() + "','" + f.getFemaleSowingDt() + "','" + f.getMaleSowingDt() + "','" + f.getIsolationM() + "','" + f.getIsolationMeter() + "','" + f.getCropStage() + "','" + f.getTotalNoOfFemaleLines() + "','" + f.getTotalNoOfMaleLines() + "','" + f.getFemaleSpacingRRinCM() + "','" + f.getFemaleSpacingPPinCM() + "','" + f.getMaleSpacingRRinCM() + "','" + f.getMaleSpacingPPinCM() + "','" + f.getPlantingRatioFemale() + "','" + f.getPlantingRatioMale() + "','" + f.getCropCategoryType() + "','" + f.getTotalFemalePlants() + "','" + f.getTotalMalePlants() + "','" + f.getYieldEstimateInKg() + "','" + f.getObservations() + "','" + f.getFieldVisitDt() + "','" + f.getLatitude() + "','" + f.getLongitude() + "','" + f.getCapturePhoto() + "','" + f.getCreatedBy() + "','" + f.getCreatedDt() + "','"+f.getAreaLossStatus()+"')";
+                    "('" + f.getFieldVisitId() + "','" + f.getUserId() + "','" + f.getCountryId() + "','" + f.getCountryMasterId() + "','" + f.getMandatoryFieldVisitId() + "','" + f.getFieldVisitType() + "','" + f.getTotalSeedAreaLost() + "','" + f.getTaggedAreaInHA() + "','" + f.getExistingAreaInHA() + "','" + f.getReasonForTotalLossed() + "','" + f.getFemaleSowingDt() + "','" + f.getMaleSowingDt() + "','" + f.getIsolationM() + "','" + f.getIsolationMeter() + "','" + f.getCropStage() + "','" + f.getTotalNoOfFemaleLines() + "','" + f.getTotalNoOfMaleLines() + "','" + f.getFemaleSpacingRRinCM() + "','" + f.getFemaleSpacingPPinCM() + "','" + f.getMaleSpacingRRinCM() + "','" + f.getMaleSpacingPPinCM() + "','" + f.getPlantingRatioFemale() + "','" + f.getPlantingRatioMale() + "','" + f.getCropCategoryType() + "','" + f.getTotalFemalePlants() + "','" + f.getTotalMalePlants() + "','" + f.getYieldEstimateInKg() + "','" + f.getObservations() + "','" + f.getFieldVisitDt() + "','" + f.getLatitude() + "','" + f.getLongitude() + "','" + f.getCapturePhoto() + "','" + f.getCreatedBy() + "','" + f.getCreatedDt() + "','" + f.getAreaLossStatus() + "')";
             // Log.i("Query is -------> ", "" + q);
             mydb.execSQL(q);
             return true;
@@ -2941,6 +3100,81 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                 // Log.e("temporary", "temp " + temp);
             }
             return temp;
+        } catch (Exception e) {
+            return 0;
+        } finally {
+            myDb.close();
+        }
+    }
+
+    public boolean addReceiptDetails(ReceiptModel receiptModel) {
+
+
+        SQLiteDatabase mydb = null;
+        try {
+            String str = "insert into tbl_seedreceipt( GrowerId,\n" +
+                    " GrowerName,\n" +
+                    " issued_seed_area,\n" +
+                    " production_code,\n" +
+                    " village,\n" +
+                    " existing_area,\n" +
+                    " area_loss,\n" +
+                    " reason_for_area_loss,\n" +
+                    " yeildinkg,\n" +
+                    " batchno,\n" +
+                    " noofbags,\n" +
+                    " weightinkg,\n" +
+                    " serviceprovider,\n" +
+                    " grower_mobile_no_edittext,\n" +
+                    " date_of_field_visit_textview,\n" +
+                    " staff_name_textview,\n" +
+                    " StaffID) Values " +
+                    "(" +
+                    "'" + receiptModel.getGrowerId() + "'," +
+                    "'" + receiptModel.getGrowerName() + "'," +
+                    "'" + receiptModel.getIssued_seed_area() + "'," +
+                    "'" + receiptModel.getProduction_code() + "'," +
+                    "'" + receiptModel.getVillage() + "'," +
+                    "'" + receiptModel.getExisting_area() + "'," +
+                    "'" + receiptModel.getArea_loss() + "'," +
+                    "'" + receiptModel.getReason_for_area_loss() + "'," +
+                    "'" + receiptModel.getYeildinkg() + "'," +
+                    "'" + receiptModel.getBatchno() + "'," +
+                    "'" + receiptModel.getNoofbags() + "'," +
+                    "'" + receiptModel.getWeightinkg() + "'," +
+                    "'" + receiptModel.getServiceprovider() + "'," +
+                    "'" + receiptModel.getGrower_mobile_no_edittext() + "'," +
+                    "'" + receiptModel.getDate_of_field_visit_textview() + "'," +
+                    "'" + receiptModel.getStaff_name_textview() + "'," +
+                    "'" + receiptModel.getStaffID() + "')";
+            mydb = this.getReadableDatabase();
+            String q = str;
+            Log.e("temporary", "updateAreaData Query is -------> " + q);
+            mydb.execSQL(q);
+            return true;
+        } catch (Exception e) {
+            Log.e("temporary", "updateAreaData Error is  Added Order Details : " + e.getMessage());
+            return false;
+        } finally {
+            mydb.close();
+            //  return false;
+
+        }
+
+
+    }
+
+    public int isLocalReceiptDone(int userid) {
+        SQLiteDatabase myDb = null;
+        try {
+            myDb = this.getReadableDatabase();
+            String q = "select count(*)as cnt from tbl_seedreceipt where GrowerId=" + userid;
+            Cursor cursorCourses = myDb.rawQuery(q, null);
+            if (cursorCourses.moveToFirst()) {
+                cursorCourses.getInt(0);
+                return cursorCourses.getInt(0);
+            }
+            return 0;
         } catch (Exception e) {
             return 0;
         } finally {
