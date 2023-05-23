@@ -1,5 +1,6 @@
 package mahyco.mipl.nxg.util;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
@@ -18,6 +19,8 @@ import mahyco.mipl.nxg.model.GetAllSeedDistributionModel;
 import mahyco.mipl.nxg.model.OldGrowerSeedDistributionModel;
 import mahyco.mipl.nxg.model.ProductCodeModel;
 import mahyco.mipl.nxg.model.ProductionClusterModel;
+import mahyco.mipl.nxg.model.ReceiptModel;
+import mahyco.mipl.nxg.model.ReceiptModelServer;
 import mahyco.mipl.nxg.model.SeasonModel;
 import mahyco.mipl.nxg.model.SeedBatchNoModel;
 import mahyco.mipl.nxg.model.SeedReceiptModel;
@@ -111,5 +114,12 @@ public interface Api {
 
     @POST(Constants.GETALL_VILLAGEVISIT)
     Call<List<VillageModel>> getVillageData(@Body JsonObject jsonObject);
+
+    @POST(Constants.SUBMIT_SEEDRECEIPT)
+    Call<SuccessModel> submitSeedReceiptDetails(@Body JsonArray jsonObject);
+
+    @POST(Constants.GETALLSEEDRECEIPTDATA)
+    Call<List<ReceiptModelServer>> getSeedReceiptData(@Query("CountryID") String s);
+
     /*Added by jeevan ended here 28-11-2022*/
 }

@@ -163,4 +163,14 @@ public class ReceiptModel {
     String date_of_field_visit_textview;
     String staff_name_textview;
     String StaffID;
+
+    public String getCountryID() {
+        return CountryID;
+    }
+
+    public void setCountryID(String countryID) {
+        CountryID = countryID;
+    }
+
+    String CountryID;
 }

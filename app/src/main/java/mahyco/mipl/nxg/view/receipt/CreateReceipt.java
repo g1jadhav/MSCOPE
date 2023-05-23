@@ -128,6 +128,7 @@ public class CreateReceipt extends BaseActivity {
     int totalMalePlants = 0;
     LinearLayout layout_losslayout, layout_existarea;
     int lossStatus = 0;
+    String yeidinkg, BatchNo;
 
 
     @Override
@@ -200,6 +201,18 @@ public class CreateReceipt extends BaseActivity {
         totalMalePlants = Integer.parseInt(Preferences.get(context, Preferences.PREVTOTAL_MALE_PLANTS));
 
         prevExistingArea = Double.parseDouble(Preferences.get(context, Preferences.SELECTEVISITEXISITINGAREA));
+
+
+        if(Preferences.get(context, Preferences.SELECTEDBATCHID)!=null) {
+            BatchNo = Preferences.get(context, Preferences.SELECTEDBATCHID);
+            et_batchno.setText(BatchNo);
+        }
+
+        if(Preferences.get(context, Preferences.YEILDKG)!=null) {
+            yeidinkg = Preferences.get(context, Preferences.YEILDKG);
+            et_yeildinkg.setText(yeidinkg);
+        }
+
 
 
         existing_area_ha_edittext.setText("" + prevExistingArea);
@@ -360,7 +373,7 @@ public class CreateReceipt extends BaseActivity {
                 receiptModel.setStaffID(staffcode);
 
                 if (database.addReceiptDetails(receiptModel)) {
-                   // Toast.makeText(context, "Data Saved Successfully..", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(context, "Data Saved Successfully..", Toast.LENGTH_SHORT).show();
 
                     new AlertDialog.Builder(context)
                             .setMessage("Data Saved Successfully")
@@ -375,7 +388,7 @@ public class CreateReceipt extends BaseActivity {
                             .setTitle("Receipt details.")
                             .show();
                 } else {
-                   // Toast.makeText(context, "Data Not Saved", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(context, "Data Not Saved", Toast.LENGTH_SHORT).show();
                     new AlertDialog.Builder(context)
                             .setMessage("Something went wrong.")
                             .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -406,8 +419,7 @@ public class CreateReceipt extends BaseActivity {
                 Log.i("Values", str_date_of_field_visit_textview);
                 Log.i("Values", str_staff_name_textview);
 
-            }else
-            {
+            } else {
                 Toast.makeText(context, "Please Check Validations. Some Fields are missing. Please check.", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
@@ -420,14 +432,12 @@ public class CreateReceipt extends BaseActivity {
         try {
 
 
-
             int cnt = 0;
 
-            if(str_area_lost_spinner.toLowerCase().contains("no"))
-            {
-                str_et_noofbags="0";
-                str_et_weightinkg="0";
-                str_sp_serviceprovider="NA";
+            if (str_area_lost_spinner.toLowerCase().contains("no")) {
+                str_et_noofbags = "0";
+                str_et_weightinkg = "0";
+                str_sp_serviceprovider = "NA";
             }
 
 
@@ -452,7 +462,6 @@ public class CreateReceipt extends BaseActivity {
                 cnt++;
             }
 
-          
 
             if (str_grower_mobile_no_edittext.trim().equals("")) {
                 grower_mobile_no_edittext.setError("Required");
@@ -468,11 +477,11 @@ public class CreateReceipt extends BaseActivity {
                 cnt++;
             }
 
-if(str_area_lost_spinner.contains("No"))
-            if (str_reason_for_area_loss_spinner.trim().equals("")) {
-                reason_for_area_loss_spinner.setError("Required");
-                cnt++;
-            }
+            if (str_area_lost_spinner.contains("No"))
+                if (str_reason_for_area_loss_spinner.trim().equals("")) {
+                    reason_for_area_loss_spinner.setError("Required");
+                    cnt++;
+                }
 
             if (str_et_yeildinkg.trim().equals("")) {
                 et_yeildinkg.setError("Required");
@@ -482,7 +491,7 @@ if(str_area_lost_spinner.contains("No"))
                 et_batchno.setError("Required");
                 cnt++;
             }
-          
+
 
             if (str_et_noofbags.trim().equals("")) {
                 et_noofbags.setError("Required");
@@ -492,7 +501,7 @@ if(str_area_lost_spinner.contains("No"))
                 et_weightinkg.setError("Required");
                 cnt++;
             }
-            if (str_sp_serviceprovider.trim().equals("") ||str_sp_serviceprovider.trim().toLowerCase().contains("select")) {
+            if (str_sp_serviceprovider.trim().equals("") || str_sp_serviceprovider.trim().toLowerCase().contains("select")) {
                 Toast.makeText(context, "Please select service ptrovider.", Toast.LENGTH_SHORT).show();
                 cnt++;
             }

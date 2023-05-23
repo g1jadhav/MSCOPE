@@ -28,6 +28,8 @@ import mahyco.mipl.nxg.model.GetAllSeedDistributionModel;
 import mahyco.mipl.nxg.model.GrowerModel;
 import mahyco.mipl.nxg.model.ProductCodeModel;
 import mahyco.mipl.nxg.model.ProductionClusterModel;
+import mahyco.mipl.nxg.model.ReceiptModel;
+import mahyco.mipl.nxg.model.ReceiptModelServer;
 import mahyco.mipl.nxg.model.SeasonModel;
 import mahyco.mipl.nxg.model.SeedBatchNoModel;
 import mahyco.mipl.nxg.model.SeedReceiptModel;
@@ -53,6 +55,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
     private CardView mGetAllSeedDistributionMaster;
     private CardView mGetAllVisitMaster;
     private CardView mGetAllVillageMaster;
+    private CardView download_seedreceipt_master_layout;
 
     private JsonObject mJsonObjectCategory;
 
@@ -122,6 +125,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
         mGetAllSeedDistributionMaster = findViewById(R.id.download_parent_seed_distribution_master_layout);
         mGetAllVisitMaster = findViewById(R.id.download_visit_master_layout);
         mGetAllVillageMaster = findViewById(R.id.download_village_master_layout);
+        download_seedreceipt_master_layout = findViewById(R.id.download_seedreceipt_master_layout);
 
         mCategoryMaster.setOnClickListener(this);
         mLocationMaster.setOnClickListener(this);
@@ -137,6 +141,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
         mGetAllVisitMaster.setOnClickListener(this);
         mGetAllVisitMaster.setOnClickListener(this);
         mGetAllVillageMaster.setOnClickListener(this);
+        download_seedreceipt_master_layout.setOnClickListener(this);
 
         mDownloadCategoryApi = new DownloadCategoryApi(mContext, this);
     }
@@ -195,6 +200,11 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
             case R.id.download_village_master_layout:
 
                 downloadVillageMasterData();
+
+                break;
+                case R.id.download_seedreceipt_master_layout:
+
+                downloadReceiptMasterData();
 
                 break;
         }
@@ -438,6 +448,33 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
         }
     }
 
+    @Override
+    public void onAllSeedReceiptData(List<ReceiptModelServer> result) {
+        try{
+
+            Toast.makeText(mContext, "Length : "+result.size(), Toast.LENGTH_SHORT).show();
+            try{
+                if(result!=null)
+                {
+                    new AddReceiptDataLocally(mContext,result).execute();
+                    Toast.makeText(mContext, ""+result.size(), Toast.LENGTH_SHORT).show();
+                }else
+                {
+                    Toast.makeText(mContext, "Data Not Available.", Toast.LENGTH_SHORT).show();
+                }
+
+
+
+            }catch (Exception e)
+            {
+
+            }
+        }catch (Exception e)
+        {
+
+        }
+    }
+
 
     private void downloadLocationData() {
         if (checkInternetConnection(mContext)) {
@@ -604,6 +641,20 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
         }
     }
 
+
+    void downloadReceiptMasterData() {
+
+        if (checkInternetConnection(mContext)) {
+            try {
+
+                mDownloadCategoryApi.getAllSeedReceipt(Preferences.get(mContext, Preferences.COUNTRYCODE));
+            } catch (Exception e) {
+            }
+        } else {
+            showNoInternetDialog(mContext, "Please check your internet connection");
+        }
+
+    }
 
 
     private void downloadVistMsaterData() {
@@ -964,4 +1015,53 @@ class AddVillageMasterDataLocally extends AsyncTask
 
     }
 }
+
+
+    class AddReceiptDataLocally extends AsyncTask
+    {
+        ProgressDialog progressDialog;
+        List<ReceiptModelServer> fieldVisitModel_server;
+        Context context;
+        SqlightDatabase database;
+        AddReceiptDataLocally(Context context,List<ReceiptModelServer> fieldVisitModel_server)
+        {
+            this.context=context;
+            this.fieldVisitModel_server=fieldVisitModel_server;
+        }
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            database=new SqlightDatabase(context);
+            progressDialog=new ProgressDialog(context);
+            progressDialog.setMessage("Sync data in progress.Please wait..");
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(Object[] objects) {
+
+            try{
+                database.trucateTable("tbl_seedreceipt_server");
+                for(ReceiptModelServer f:fieldVisitModel_server)
+                {
+                    Log.i("Data",""+f.getBatchno());
+                    Log.i("Saved Status",""+database.addReceiptDetails_Server(f));
+                }
+
+            }catch (Exception exception)
+            {
+
+            }
+
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            progressDialog.dismiss();
+            showNoInternetDialog(mContext, "Seed Receipt Master Downloaded Successfully.");
+        }
+    }
 }

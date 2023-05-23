@@ -28,6 +28,7 @@ import mahyco.mipl.nxg.model.OldGrowerSeedDistributionModel;
 import mahyco.mipl.nxg.model.ProductCodeModel;
 import mahyco.mipl.nxg.model.ProductionClusterModel;
 import mahyco.mipl.nxg.model.ReceiptModel;
+import mahyco.mipl.nxg.model.ReceiptModelServer;
 import mahyco.mipl.nxg.model.SeasonModel;
 import mahyco.mipl.nxg.model.SeedBatchNoModel;
 import mahyco.mipl.nxg.model.SeedReceiptModel;
@@ -39,7 +40,7 @@ import mahyco.mipl.nxg.model.VisitDetailCoutModel;
 public class SqlightDatabase extends SQLiteOpenHelper {
 
     final static String DBName = "mipl.db";
-    final static int version = 11;
+    final static int version = 12;
     long count = 0;
     final String tbl_categorymaster = "tbl_categorymaster";
     final String tbl_locationmaster = "tbl_locationmaster";
@@ -471,7 +472,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                 "Longitude TEXT,\n" +
                 "CapturePhoto TEXT,\n" +
                 "CreatedBy TEXT,\n" +
-                "CreatedDt TEXT,AreaLossStatus Text)";
+                "CreatedDt TEXT,AreaLossStatus Text,BatchID Text)";
 
         db.execSQL(tbl_visit_master);
 
@@ -508,7 +509,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
 
         db.execSQL(tbl_focusvillage_master);
 
-        String tbl_receiptmaster = "Create table tbl_seedreceipt (\n" +
+        String tbl_receiptmaster = "Create table  if not Exists tbl_seedreceipt (\n" +
                 "     TEMPID INTEGER PRIMARY Key AUTOINCREMENT,\n" +
                 "GrowerId  TEXT,\n" +
                 "     GrowerName  TEXT,\n" +
@@ -531,6 +532,31 @@ public class SqlightDatabase extends SQLiteOpenHelper {
 
         db.execSQL(tbl_receiptmaster);
 
+
+        String tbl_receiptmaster_server = "Create table  if not Exists tbl_seedreceipt_server (\n" +
+                "     TEMPID INTEGER PRIMARY Key AUTOINCREMENT,\n" +
+                "GrowerId  TEXT,\n" +
+                "     GrowerName  TEXT,\n" +
+                "     issued_seed_area  TEXT,\n" +
+                "     production_code  TEXT,\n" +
+                "     village  TEXT,\n" +
+                "     existing_area  TEXT,\n" +
+                "     area_loss  TEXT,\n" +
+                "     reason_for_area_loss  TEXT,\n" +
+                "     yeildinkg  TEXT,\n" +
+                "     batchno  TEXT,\n" +
+                "     noofbags  TEXT,\n" +
+                "     weightinkg  TEXT,\n" +
+                "     serviceprovider  TEXT,\n" +
+                "     grower_mobile_no_edittext  TEXT,\n" +
+                "     date_of_field_visit_textview  TEXT,\n" +
+                "     staff_name_textview  TEXT,\n" +
+                "     StaffID  TEXT,\n" +
+                "     CountryID  TEXT\n" +
+                ")";
+
+        db.execSQL(tbl_receiptmaster_server);
+
     }
 
     @Override
@@ -552,6 +578,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
         droptable(db, "tbl_croptypemaster");
         droptable(db, "tbl_allseeddistributionmaster");
         droptable(db, "tbl_seedreceipt");
+        droptable(db, "tbl_receiptmaster_server");
         /*Commented by Jeevan 28-11-2022*/
         /*droptable(db, "tbl_storestributiondata");*/
         /*Commented by Jeevan 28-11-2022*/
@@ -2153,11 +2180,11 @@ public class SqlightDatabase extends SQLiteOpenHelper {
         try {
             Log.i("Query Receipt", value + "-->" + pcode);
             myDb = this.getReadableDatabase();
-            String q = "select * from tbl_allseeddistributionmaster a where (select count(*) from tbl_visit_master where MandatoryFieldVisitId = 3 and AreaLossStatus= 'No' and UserId=a.GrowerId)>0";
+            String q = "select * from tbl_allseeddistributionmaster a where (select count(*) from tbl_visit_master where MandatoryFieldVisitId = 4 and AreaLossStatus= 'No' and UserId=a.GrowerId)>0";
             if (value.trim().equals("")) {
-                q = "select * from tbl_allseeddistributionmaster a where (select count(*) from tbl_visit_master where MandatoryFieldVisitId = 3 and AreaLossStatus= 'No' and UserId=a.GrowerId)>0 and (select count(*) from tbl_focusedvillage where CountryMasterId=(select countryMasterid from tbl_growermaster where UserId=GrowerId))>0";
+                q = "select * from tbl_allseeddistributionmaster a where (select count(*) from tbl_visit_master where MandatoryFieldVisitId = 4 and AreaLossStatus= 'No' and UserId=a.GrowerId)>0 and (select count(*) from tbl_focusedvillage where CountryMasterId=(select countryMasterid from tbl_growermaster where UserId=GrowerId))>0";
             } else {
-                q = "select * from tbl_allseeddistributionmaster a where (select count(*) from tbl_visit_master where MandatoryFieldVisitId = 3 and AreaLossStatus= 'No' and UserId=a.GrowerId)>0  and (select count(*) from tbl_focusedvillage where CountryMasterId=(select countryMasterid from tbl_growermaster where UserId=GrowerId))>0 and upper((select LandMark from tbl_growermaster where UserId=GrowerId limit 1)) like '" + value.toLowerCase() + ",%'";
+                q = "select * from tbl_allseeddistributionmaster a where (select count(*) from tbl_visit_master where MandatoryFieldVisitId = 4 and AreaLossStatus= 'No' and UserId=a.GrowerId)>0  and (select count(*) from tbl_focusedvillage where CountryMasterId=(select countryMasterid from tbl_growermaster where UserId=GrowerId))>0 and upper((select LandMark from tbl_growermaster where UserId=GrowerId limit 1)) like '" + value.toLowerCase() + ",%'";
             }
             if (pcode.trim().equals("")) {
 
@@ -2510,8 +2537,8 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                     "Longitude," +
                     "CapturePhoto," +
                     "CreatedBy," +
-                    "CreatedDt,AreaLossStatus) values" +
-                    "('" + f.getFieldVisitId() + "','" + f.getUserId() + "','" + f.getCountryId() + "','" + f.getCountryMasterId() + "','" + f.getMandatoryFieldVisitId() + "','" + f.getFieldVisitType() + "','" + f.getTotalSeedAreaLost() + "','" + f.getTaggedAreaInHA() + "','" + f.getExistingAreaInHA() + "','" + f.getReasonForTotalLossed() + "','" + f.getFemaleSowingDt() + "','" + f.getMaleSowingDt() + "','" + f.getIsolationM() + "','" + f.getIsolationMeter() + "','" + f.getCropStage() + "','" + f.getTotalNoOfFemaleLines() + "','" + f.getTotalNoOfMaleLines() + "','" + f.getFemaleSpacingRRinCM() + "','" + f.getFemaleSpacingPPinCM() + "','" + f.getMaleSpacingRRinCM() + "','" + f.getMaleSpacingPPinCM() + "','" + f.getPlantingRatioFemale() + "','" + f.getPlantingRatioMale() + "','" + f.getCropCategoryType() + "','" + f.getTotalFemalePlants() + "','" + f.getTotalMalePlants() + "','" + f.getYieldEstimateInKg() + "','" + f.getObservations() + "','" + f.getFieldVisitDt() + "','" + f.getLatitude() + "','" + f.getLongitude() + "','" + f.getCapturePhoto() + "','" + f.getCreatedBy() + "','" + f.getCreatedDt() + "','" + f.getAreaLossStatus() + "')";
+                    "CreatedDt,AreaLossStatus,BatchID) values" +
+                    "('" + f.getFieldVisitId() + "','" + f.getUserId() + "','" + f.getCountryId() + "','" + f.getCountryMasterId() + "','" + f.getMandatoryFieldVisitId() + "','" + f.getFieldVisitType() + "','" + f.getTotalSeedAreaLost() + "','" + f.getTaggedAreaInHA() + "','" + f.getExistingAreaInHA() + "','" + f.getReasonForTotalLossed() + "','" + f.getFemaleSowingDt() + "','" + f.getMaleSowingDt() + "','" + f.getIsolationM() + "','" + f.getIsolationMeter() + "','" + f.getCropStage() + "','" + f.getTotalNoOfFemaleLines() + "','" + f.getTotalNoOfMaleLines() + "','" + f.getFemaleSpacingRRinCM() + "','" + f.getFemaleSpacingPPinCM() + "','" + f.getMaleSpacingRRinCM() + "','" + f.getMaleSpacingPPinCM() + "','" + f.getPlantingRatioFemale() + "','" + f.getPlantingRatioMale() + "','" + f.getCropCategoryType() + "','" + f.getTotalFemalePlants() + "','" + f.getTotalMalePlants() + "','" + f.getYieldEstimateInKg() + "','" + f.getObservations() + "','" + f.getFieldVisitDt() + "','" + f.getLatitude() + "','" + f.getLongitude() + "','" + f.getCapturePhoto() + "','" + f.getCreatedBy() + "','" + f.getCreatedDt() + "','" + f.getAreaLossStatus() + "','"+f.getBatchID()+"')";
             // Log.i("Query is -------> ", "" + q);
             mydb.execSQL(q);
             return true;
@@ -2671,7 +2698,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                     "Longitude," +
                     "CapturePhoto," +
                     "CreatedBy," +  //UserId="+userid+" and MandatoryFieldVisitId>0 order by FieldVisitId
-                    "CreatedDt from tbl_visit_master where UserId=" + userid + "  and MandatoryFieldVisitId>0 order by FieldVisitId desc";
+                    "CreatedDt,BatchID from tbl_visit_master where UserId=" + userid + "  and MandatoryFieldVisitId>0 order by FieldVisitId desc";
             Log.i("query", q);
             Cursor cursorCourses = myDb.rawQuery(q, null);
             FieldVisitModel_Server m = new FieldVisitModel_Server();
@@ -2710,6 +2737,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                 m.setCapturePhoto(cursorCourses.getString(32));
                 m.setCreatedBy(cursorCourses.getString(33));
                 m.setCreatedDt(cursorCourses.getString(34));
+                m.setBatchID(cursorCourses.getString(35));
             }
             return m;
         } catch (Exception e) {
@@ -3180,5 +3208,80 @@ public class SqlightDatabase extends SQLiteOpenHelper {
         } finally {
             myDb.close();
         }
+    }
+    public int isServerReceiptDone(int userid) {
+        SQLiteDatabase myDb = null;
+        try {
+            myDb = this.getReadableDatabase();
+            String q = "select count(*)as cnt from tbl_seedreceipt_server where GrowerId=" + userid;
+            Cursor cursorCourses = myDb.rawQuery(q, null);
+            if (cursorCourses.moveToFirst()) {
+                cursorCourses.getInt(0);
+                return cursorCourses.getInt(0);
+            }
+            return 0;
+        } catch (Exception e) {
+            return 0;
+        } finally {
+            myDb.close();
+        }
+    }
+
+    public boolean addReceiptDetails_Server(ReceiptModelServer receiptModel) {
+
+
+        SQLiteDatabase mydb = null;
+        try {
+            String str = "insert into tbl_seedreceipt_server( GrowerId,\n" +
+                    " GrowerName,\n" +
+                    " issued_seed_area,\n" +
+                    " production_code,\n" +
+                    " village,\n" +
+                    " existing_area,\n" +
+                    " area_loss,\n" +
+                    " reason_for_area_loss,\n" +
+                    " yeildinkg,\n" +
+                    " batchno,\n" +
+                    " noofbags,\n" +
+                    " weightinkg,\n" +
+                    " serviceprovider,\n" +
+                    " grower_mobile_no_edittext,\n" +
+                    " date_of_field_visit_textview,\n" +
+                    " staff_name_textview,\n" +
+                    " StaffID,CountryID) Values " +
+                    "(" +
+                    "'" + receiptModel.getGrowerId() + "'," +
+                    "'" + receiptModel.getGrowerName() + "'," +
+                    "'" + receiptModel.getIssued_seed_area() + "'," +
+                    "'" + receiptModel.getProduction_code() + "'," +
+                    "'" + receiptModel.getVillage() + "'," +
+                    "'" + receiptModel.getExisting_area() + "'," +
+                    "'" + receiptModel.getIsSeedReceipt() + "'," +
+                    "'" + receiptModel.getReason() + "'," +
+                    "'" + receiptModel.getYeildinkg() + "'," +
+                    "'" + receiptModel.getBatchno() + "'," +
+                    "'" + receiptModel.getNoofbags() + "'," +
+                    "'" + receiptModel.getWeightinkg() + "'," +
+                    "'" + receiptModel.getServiceprovider() + "'," +
+                    "'" + receiptModel.getGrower_mobile_no() + "'," +
+                    "'" + receiptModel.getDate_of_field_visit() + "'," +
+                    "'" + receiptModel.getStaff_name() + "'," +
+                    "'" + receiptModel.getStaffID() + "'," +
+                    "'" + receiptModel.getCountryID() + "')";
+            mydb = this.getReadableDatabase();
+            String q = str;
+            Log.e("temporary", "updateAreaData Query is -------> " + q);
+            mydb.execSQL(q);
+            return true;
+        } catch (Exception e) {
+            Log.e("temporary", "updateAreaData Error is  Added Order Details : " + e.getMessage());
+            return false;
+        } finally {
+            mydb.close();
+            //  return false;
+
+        }
+
+
     }
 }

@@ -176,6 +176,13 @@ public class ReceiptGrowerAdapter extends RecyclerView.Adapter<ReceiptGrowerAdap
 
             int s = database.isLocalReceiptDone(GrowerId);
             if (s > 0) {
+                holder.txt_first.setImageResource(R.drawable.ic_baseline_add_task_24);
+                holder.txt_arealoss.setVisibility(View.VISIBLE);
+            } else
+                holder.txt_first.setImageResource(0);
+
+            int s1 = database.isServerReceiptDone(GrowerId);
+            if (s1 > 0) {
                 holder.txt_first.setImageResource(R.drawable.check_done);
                 holder.txt_arealoss.setVisibility(View.VISIBLE);
             } else
@@ -184,7 +191,7 @@ public class ReceiptGrowerAdapter extends RecyclerView.Adapter<ReceiptGrowerAdap
             holder.ll.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (s > 0){
+                    if (s > 0 || s1>0){
                         AlertDialog alertDialog = new AlertDialog.Builder(context)
                                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                     @Override

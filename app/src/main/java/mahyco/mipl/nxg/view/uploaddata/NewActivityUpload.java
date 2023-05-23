@@ -45,6 +45,7 @@ import mahyco.mipl.nxg.model.OldGrowerSeedDistributionModel;
 import mahyco.mipl.nxg.model.ProductCodeModel;
 import mahyco.mipl.nxg.model.ProductionClusterModel;
 import mahyco.mipl.nxg.model.ReceiptModel;
+import mahyco.mipl.nxg.model.ReceiptModelServer;
 import mahyco.mipl.nxg.model.SeasonModel;
 import mahyco.mipl.nxg.model.SeedBatchNoModel;
 import mahyco.mipl.nxg.model.SeedReceiptModel;
@@ -308,7 +309,6 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                 break;
 
             case R.id.seed_receipt_upload:
-                Toast.makeText(mContext, "Hii", Toast.LENGTH_SHORT).show();
                 if (checkInternetConnection(mContext)) {
                     int k = database.getAllSeedReceipt().size();
                     if (k > 0) {
@@ -573,6 +573,24 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
         } catch (Exception e) {
             Toast.makeText(mContext, "error" + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onSeedReceiptDone(SuccessModel result) {
+        try {
+            if (result.isResultFlag()) {
+                int k = database.getAllSeedReceipt().size();
+                database.trucateTable("tbl_seedreceipt");
+                showNoInternetDialog(mContext, k + " Records Uploaded Successfully.");
+                seed_receipt.setText(getString(R.string.no_of_records_for_upload, database.getAllSeedReceipt().size()));
+            } else {
+                showNoInternetDialog(mContext, "Result : " + result.getStatus() + "\nDetails :" + result.getComment());
+            }
+            Log.i("Result", result.getStatus() + "" + result.toString());
+        } catch (Exception e) {
+            Toast.makeText(mContext, "error" + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private class GetRegistrationAsyncTaskList extends AsyncTask<Void, Void, Void> {
@@ -1302,6 +1320,11 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
     }
 
     @Override
+    public void onAllSeedReceiptData(List<ReceiptModelServer> result) {
+
+    }
+
+    @Override
     public void onListSeedReceiptNoResponse(List<SeedReceiptModel> lst) {
         if (mParentSeedReceiptList != null) {
             mParentSeedReceiptList.clear();
@@ -1564,6 +1587,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                         json_visitModel.addProperty("Date_of_field_visit", fieldVisitModel.getDate_of_field_visit_textview());
                         json_visitModel.addProperty("Staff_name", fieldVisitModel.getStaff_name_textview());
                         json_visitModel.addProperty("StaffID", fieldVisitModel.getStaffID());
+                        json_visitModel.addProperty("CountryID", Preferences.get(mContext, Preferences.COUNTRYCODE));
 
                         jsonArray.add(json_visitModel);
                     } catch (Exception e) {
@@ -1572,7 +1596,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                 }
                 jsonObject_Visit.add("receiptModel", jsonArray);
 
-                registrationAPI.createFirstVisit(jsonObject_Visit);
+                registrationAPI.createSeedReceipt(jsonArray);
                 Log.i("Final Json R :", jsonObject_Visit.toString());
 
 

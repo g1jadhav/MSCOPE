@@ -132,12 +132,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|end"
                     android:layout_weight="1"
+                    android:onClick="register"
                     android:paddingRight="25dp"
                     android:text="@string/user_registration"
                     android:textAlignment="center"
-                    android:textColor="@color/link_color_code"
-                    android:onClick="register"
-                    />
+                    android:textColor="@color/link_color_code" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

@@ -26,6 +26,7 @@ public class FieldVisitModel_Server {
     int PlantingRatioMale;// 4,
     String CropCategoryType;// "For Field Crop",
 
+
     public String getAreaLossStatus() {
         return AreaLossStatus;
     }
@@ -337,4 +338,14 @@ public class FieldVisitModel_Server {
 
     String AverageNoofExistingbolls;
     String DistanceFromField;
+
+    public String getBatchID() {
+        return BatchID;
+    }
+
+    public void setBatchID(String batchID) {
+        BatchID = batchID;
+    }
+
+    String BatchID;
 }

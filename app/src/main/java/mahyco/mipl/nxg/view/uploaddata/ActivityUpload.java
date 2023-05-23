@@ -227,6 +227,11 @@ public class ActivityUpload extends BaseActivity implements View.OnClickListener
 
     }
 
+    @Override
+    public void onSeedReceiptDone(SuccessModel result) {
+
+    }
+
     private class GetRegistrationAsyncTaskList extends AsyncTask<Void, Void, Void> {
         @Override
         protected final Void doInBackground(Void... voids) {

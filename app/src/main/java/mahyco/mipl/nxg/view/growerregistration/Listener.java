@@ -17,4 +17,6 @@ public interface Listener {
 
     void onGrowerRegister(SuccessModel result);
     void onFirstVisitRegister(SuccessModel result);
+
+    void onSeedReceiptDone(SuccessModel result);
 }

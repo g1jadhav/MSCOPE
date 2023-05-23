@@ -337,7 +337,7 @@
                         android:background="@drawable/login_screen_edittext"
                         android:ellipsize="end"
                         android:gravity="center|start"
-                        android:inputType="number"
+                        android:inputType="number|numberDecimal"
                         android:maxLines="1"
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"
