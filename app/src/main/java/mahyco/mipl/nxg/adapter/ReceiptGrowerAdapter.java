@@ -182,6 +182,7 @@ public class ReceiptGrowerAdapter extends RecyclerView.Adapter<ReceiptGrowerAdap
                 holder.txt_first.setImageResource(0);
             Preferences.save(context, Preferences.TOTALRECEIPTCOUNT, "" + 0);
             int s1 = database.isServerReceiptDone(GrowerId);
+            int isNo = database.isSeedReceiptNo(GrowerId);
             if (s1 > 0) {
                 holder.txt_first.setImageResource(R.drawable.check_done);
                 holder.txt_arealoss.setVisibility(View.VISIBLE);
@@ -192,25 +193,90 @@ public class ReceiptGrowerAdapter extends RecyclerView.Adapter<ReceiptGrowerAdap
             } else
                 holder.txt_first.setImageResource(0);
 
+            if(isNo>0)
+            {
+                holder.txt_arealoss.setText("Recorded as No Receipt");
+            }
+
             holder.ll.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (s > 0) {
-
+                    if(isNo>0)
+                    {
                         AlertDialog alertDialog = new AlertDialog.Builder(context)
-                                .setTitle(s1 + " Receipt is done.")
-                                .setMessage("Locally receipt is done.")
+                                .setTitle("MIPL")
+                                .setMessage("Already Recorded as No Receipt")
+                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                })
                                 .show();
+                    }else {
+                        if (s > 0) {
 
-                    }else{
-                        if (s1 > 0) {
                             AlertDialog alertDialog = new AlertDialog.Builder(context)
                                     .setTitle(s1 + " Receipt is done.")
-                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    .setMessage("Locally receipt is done.")
+                                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
                                             dialog.dismiss();
+                                        }
+                                    })
+                                    .show();
 
+                        } else {
+                            if (s1 > 0) {
+                                AlertDialog alertDialog = new AlertDialog.Builder(context)
+                                        .setTitle(s1 + " Receipt is done.")
+                                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+
+                                                Preferences.save(context, Preferences.SELECTED_GROWERNAME, model.getGrowerFullName());
+                                                Preferences.save(context, Preferences.SELECTED_GROWERMOBILE, model.getGrowerMobileNo());
+                                                Preferences.save(context, Preferences.SELECTED_GROWERID, "" + model.getGrowerId());
+                                                Preferences.save(context, Preferences.SELECTED_GROWERAREA, "" + model.getSeedProductionArea());
+                                                Preferences.save(context, Preferences.SELECTED_GROWERPRODUCTIONCODE, "" + model.getProductionCode());
+                                                Preferences.save(context, Preferences.SELECTED_GROWERUNIQUECODE, "" + model.getGrowerUniqueCode());
+                                                Preferences.save(context, Preferences.SELECTEDCROPECODE, "" + model.getCropCode());
+                                                Preferences.save(context, Preferences.TOTALRECEIPTCOUNT, "" + s1);
+
+                                                Intent intent = new Intent(context, FieldReceiptDashboard.class);
+                                                context.startActivity(intent);
+
+
+                                            }
+                                        })
+                                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+
+                                            }
+                                        })
+                                        .setMessage("Do you want to take more receipt?")
+                                        .show();
+                            } else if (model.getVisitDetailCoutModel().getVisitID() == 0) {
+
+                                Preferences.save(context, Preferences.SELECTED_GROWERNAME, model.getGrowerFullName());
+                                Preferences.save(context, Preferences.SELECTED_GROWERMOBILE, model.getGrowerMobileNo());
+                                Preferences.save(context, Preferences.SELECTED_GROWERID, "" + model.getGrowerId());
+                                Preferences.save(context, Preferences.SELECTED_GROWERAREA, "" + model.getSeedProductionArea());
+                                Preferences.save(context, Preferences.SELECTED_GROWERPRODUCTIONCODE, "" + model.getProductionCode());
+                                Preferences.save(context, Preferences.SELECTED_GROWERUNIQUECODE, "" + model.getGrowerUniqueCode());
+                                Preferences.save(context, Preferences.SELECTEDCROPECODE, "" + model.getCropCode());
+                                Preferences.save(context, Preferences.TOTALRECEIPTCOUNT, "" + s1);
+
+                                Intent intent = new Intent(context, FieldReceiptDashboard.class);
+                                context.startActivity(intent);
+
+                            } else if (model.getVisitDetailCoutModel() != null) {
+                                if (model.getVisitDetailCoutModel().getVisitID() > 0) {
+                                    if (model.getVisitDetailCoutModel().getGrowerExistingArea() != null) {
+                                        if (model.getVisitDetailCoutModel().getIsAreaLossStatus() == 0) {
                                             Preferences.save(context, Preferences.SELECTED_GROWERNAME, model.getGrowerFullName());
                                             Preferences.save(context, Preferences.SELECTED_GROWERMOBILE, model.getGrowerMobileNo());
                                             Preferences.save(context, Preferences.SELECTED_GROWERID, "" + model.getGrowerId());
@@ -218,66 +284,26 @@ public class ReceiptGrowerAdapter extends RecyclerView.Adapter<ReceiptGrowerAdap
                                             Preferences.save(context, Preferences.SELECTED_GROWERPRODUCTIONCODE, "" + model.getProductionCode());
                                             Preferences.save(context, Preferences.SELECTED_GROWERUNIQUECODE, "" + model.getGrowerUniqueCode());
                                             Preferences.save(context, Preferences.SELECTEDCROPECODE, "" + model.getCropCode());
-                                            Preferences.save(context, Preferences.TOTALRECEIPTCOUNT, "" + s1);
 
                                             Intent intent = new Intent(context, FieldReceiptDashboard.class);
                                             context.startActivity(intent);
 
-
+                                        } else {
+                                            AlertDialog alertDialog = new AlertDialog.Builder(context)
+                                                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            dialog.dismiss();
+                                                        }
+                                                    })
+                                                    .setMessage("Total area is loss.")
+                                                    .show();
                                         }
-                                    })
-                                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-
-                                        }
-                                    })
-                                    .setMessage("Do you want to take more receipt?")
-                                    .show();
-                        } else if (model.getVisitDetailCoutModel().getVisitID() == 0) {
-
-                            Preferences.save(context, Preferences.SELECTED_GROWERNAME, model.getGrowerFullName());
-                            Preferences.save(context, Preferences.SELECTED_GROWERMOBILE, model.getGrowerMobileNo());
-                            Preferences.save(context, Preferences.SELECTED_GROWERID, "" + model.getGrowerId());
-                            Preferences.save(context, Preferences.SELECTED_GROWERAREA, "" + model.getSeedProductionArea());
-                            Preferences.save(context, Preferences.SELECTED_GROWERPRODUCTIONCODE, "" + model.getProductionCode());
-                            Preferences.save(context, Preferences.SELECTED_GROWERUNIQUECODE, "" + model.getGrowerUniqueCode());
-                            Preferences.save(context, Preferences.SELECTEDCROPECODE, "" + model.getCropCode());
-                            Preferences.save(context, Preferences.TOTALRECEIPTCOUNT, "" + s1);
-
-                            Intent intent = new Intent(context, FieldReceiptDashboard.class);
-                            context.startActivity(intent);
-
-                        } else if (model.getVisitDetailCoutModel() != null) {
-                            if (model.getVisitDetailCoutModel().getVisitID() > 0) {
-                                if (model.getVisitDetailCoutModel().getGrowerExistingArea() != null) {
-                                    if (model.getVisitDetailCoutModel().getIsAreaLossStatus() == 0) {
-                                        Preferences.save(context, Preferences.SELECTED_GROWERNAME, model.getGrowerFullName());
-                                        Preferences.save(context, Preferences.SELECTED_GROWERMOBILE, model.getGrowerMobileNo());
-                                        Preferences.save(context, Preferences.SELECTED_GROWERID, "" + model.getGrowerId());
-                                        Preferences.save(context, Preferences.SELECTED_GROWERAREA, "" + model.getSeedProductionArea());
-                                        Preferences.save(context, Preferences.SELECTED_GROWERPRODUCTIONCODE, "" + model.getProductionCode());
-                                        Preferences.save(context, Preferences.SELECTED_GROWERUNIQUECODE, "" + model.getGrowerUniqueCode());
-                                        Preferences.save(context, Preferences.SELECTEDCROPECODE, "" + model.getCropCode());
-
-                                        Intent intent = new Intent(context, FieldReceiptDashboard.class);
-                                        context.startActivity(intent);
-
-                                    } else {
-                                        AlertDialog alertDialog = new AlertDialog.Builder(context)
-                                                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        dialog.dismiss();
-                                                    }
-                                                })
-                                                .setMessage("Total area is loss.")
-                                                .show();
                                     }
                                 }
                             }
-                        }
 
+                        }
                     }
                     //
                 }

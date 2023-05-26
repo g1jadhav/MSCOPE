@@ -3235,6 +3235,24 @@ public class SqlightDatabase extends SQLiteOpenHelper {
         }
     }
 
+    public int isSeedReceiptNo(int userid) {
+        SQLiteDatabase myDb = null;
+        try {
+            myDb = this.getReadableDatabase();
+            String q = "select count(*)as cnt from tbl_seedreceipt_server where GrowerId=" + userid+" and area_loss='No'";
+            Cursor cursorCourses = myDb.rawQuery(q, null);
+            if (cursorCourses.moveToFirst()) {
+                cursorCourses.getInt(0);
+                return cursorCourses.getInt(0);
+            }
+            return 0;
+        } catch (Exception e) {
+            return 0;
+        } finally {
+            myDb.close();
+        }
+    }
+
     public boolean addReceiptDetails_Server(ReceiptModelServer receiptModel) {
 
 
