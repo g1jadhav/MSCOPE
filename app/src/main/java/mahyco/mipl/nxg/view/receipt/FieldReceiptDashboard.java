@@ -84,6 +84,7 @@ public class FieldReceiptDashboard extends AppCompatActivity implements View.OnC
             Preferences.save(mContext, Preferences.PREVTOTAL_MALE_PLANTS, "" + serverModel.getTotalMalePlants());
             Preferences.save(mContext, Preferences.YEILDKG, "" + serverModel.getYieldEstimateInKg());
             Preferences.save(mContext, Preferences.SELECTEDBATCHID, "" + serverModel.getBatchID());
+
             currentStage = serverModel.getMandatoryFieldVisitId();
             Toast.makeText(mContext, "Selected Visit " + currentStage, Toast.LENGTH_SHORT).show();
 

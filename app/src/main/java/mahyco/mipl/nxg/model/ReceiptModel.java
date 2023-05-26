@@ -164,6 +164,16 @@ public class ReceiptModel {
     String staff_name_textview;
     String StaffID;
 
+    public String getReceiptBatchno() {
+        return ReceiptBatchno;
+    }
+
+    public void setReceiptBatchno(String receiptBatchno) {
+        ReceiptBatchno = receiptBatchno;
+    }
+
+    String ReceiptBatchno;
+
     public String getCountryID() {
         return CountryID;
     }

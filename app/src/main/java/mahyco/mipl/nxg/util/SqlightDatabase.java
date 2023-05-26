@@ -527,7 +527,8 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                 "     grower_mobile_no_edittext  TEXT,\n" +
                 "     date_of_field_visit_textview  TEXT,\n" +
                 "     staff_name_textview  TEXT,\n" +
-                "     StaffID  TEXT\n" +
+                "     StaffID  TEXT,\n" +
+                "     ReceiptBatchno  TEXT\n" +
                 "\t)";
 
         db.execSQL(tbl_receiptmaster);
@@ -552,7 +553,8 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                 "     date_of_field_visit_textview  TEXT,\n" +
                 "     staff_name_textview  TEXT,\n" +
                 "     StaffID  TEXT,\n" +
-                "     CountryID  TEXT\n" +
+                "     CountryID  TEXT,\n" +
+                "     ReceiptBatchno  TEXT\n" +
                 ")";
 
         db.execSQL(tbl_receiptmaster_server);
@@ -1003,7 +1005,9 @@ public class SqlightDatabase extends SQLiteOpenHelper {
             ArrayList<ReceiptModel> fieldLocationArrayList = new ArrayList<>();
             if (cursorCourses.moveToFirst()) {
                 do {
+
                     ReceiptModel f = new ReceiptModel();
+
                     f.setTempId(cursorCourses.getInt(0));
                     f.setGrowerId(cursorCourses.getString(1));
                     f.setGrowerName(cursorCourses.getString(2));
@@ -1022,8 +1026,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                     f.setDate_of_field_visit_textview(cursorCourses.getString(15));
                     f.setStaff_name_textview(cursorCourses.getString(16));
                     f.setStaffID(cursorCourses.getString(17));
-
-
+                    f.setReceiptBatchno(cursorCourses.getString(18));
 
                     fieldLocationArrayList.add(f);
                 } while (cursorCourses.moveToNext());
@@ -2538,7 +2541,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                     "CapturePhoto," +
                     "CreatedBy," +
                     "CreatedDt,AreaLossStatus,BatchID) values" +
-                    "('" + f.getFieldVisitId() + "','" + f.getUserId() + "','" + f.getCountryId() + "','" + f.getCountryMasterId() + "','" + f.getMandatoryFieldVisitId() + "','" + f.getFieldVisitType() + "','" + f.getTotalSeedAreaLost() + "','" + f.getTaggedAreaInHA() + "','" + f.getExistingAreaInHA() + "','" + f.getReasonForTotalLossed() + "','" + f.getFemaleSowingDt() + "','" + f.getMaleSowingDt() + "','" + f.getIsolationM() + "','" + f.getIsolationMeter() + "','" + f.getCropStage() + "','" + f.getTotalNoOfFemaleLines() + "','" + f.getTotalNoOfMaleLines() + "','" + f.getFemaleSpacingRRinCM() + "','" + f.getFemaleSpacingPPinCM() + "','" + f.getMaleSpacingRRinCM() + "','" + f.getMaleSpacingPPinCM() + "','" + f.getPlantingRatioFemale() + "','" + f.getPlantingRatioMale() + "','" + f.getCropCategoryType() + "','" + f.getTotalFemalePlants() + "','" + f.getTotalMalePlants() + "','" + f.getYieldEstimateInKg() + "','" + f.getObservations() + "','" + f.getFieldVisitDt() + "','" + f.getLatitude() + "','" + f.getLongitude() + "','" + f.getCapturePhoto() + "','" + f.getCreatedBy() + "','" + f.getCreatedDt() + "','" + f.getAreaLossStatus() + "','"+f.getBatchID()+"')";
+                    "('" + f.getFieldVisitId() + "','" + f.getUserId() + "','" + f.getCountryId() + "','" + f.getCountryMasterId() + "','" + f.getMandatoryFieldVisitId() + "','" + f.getFieldVisitType() + "','" + f.getTotalSeedAreaLost() + "','" + f.getTaggedAreaInHA() + "','" + f.getExistingAreaInHA() + "','" + f.getReasonForTotalLossed() + "','" + f.getFemaleSowingDt() + "','" + f.getMaleSowingDt() + "','" + f.getIsolationM() + "','" + f.getIsolationMeter() + "','" + f.getCropStage() + "','" + f.getTotalNoOfFemaleLines() + "','" + f.getTotalNoOfMaleLines() + "','" + f.getFemaleSpacingRRinCM() + "','" + f.getFemaleSpacingPPinCM() + "','" + f.getMaleSpacingRRinCM() + "','" + f.getMaleSpacingPPinCM() + "','" + f.getPlantingRatioFemale() + "','" + f.getPlantingRatioMale() + "','" + f.getCropCategoryType() + "','" + f.getTotalFemalePlants() + "','" + f.getTotalMalePlants() + "','" + f.getYieldEstimateInKg() + "','" + f.getObservations() + "','" + f.getFieldVisitDt() + "','" + f.getLatitude() + "','" + f.getLongitude() + "','" + f.getCapturePhoto() + "','" + f.getCreatedBy() + "','" + f.getCreatedDt() + "','" + f.getAreaLossStatus() + "','" + f.getBatchID() + "')";
             // Log.i("Query is -------> ", "" + q);
             mydb.execSQL(q);
             return true;
@@ -3156,7 +3159,8 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                     " grower_mobile_no_edittext,\n" +
                     " date_of_field_visit_textview,\n" +
                     " staff_name_textview,\n" +
-                    " StaffID) Values " +
+                    " StaffID," +
+                    "ReceiptBatchno) Values " +
                     "(" +
                     "'" + receiptModel.getGrowerId() + "'," +
                     "'" + receiptModel.getGrowerName() + "'," +
@@ -3174,14 +3178,17 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                     "'" + receiptModel.getGrower_mobile_no_edittext() + "'," +
                     "'" + receiptModel.getDate_of_field_visit_textview() + "'," +
                     "'" + receiptModel.getStaff_name_textview() + "'," +
-                    "'" + receiptModel.getStaffID() + "')";
+                    "'" + receiptModel.getStaffID() + "'," +
+                    "'" + receiptModel.getReceiptBatchno() + "'" +
+                    ")";
+
             mydb = this.getReadableDatabase();
             String q = str;
-            Log.e("temporary", "updateAreaData Query is -------> " + q);
+            Log.e("temporary", "Receipt Query is  " + q);
             mydb.execSQL(q);
             return true;
         } catch (Exception e) {
-            Log.e("temporary", "updateAreaData Error is  Added Order Details : " + e.getMessage());
+            Log.e("temporary", "Receipt Error is : " + e.getMessage());
             return false;
         } finally {
             mydb.close();
@@ -3209,6 +3216,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
             myDb.close();
         }
     }
+
     public int isServerReceiptDone(int userid) {
         SQLiteDatabase myDb = null;
         try {
@@ -3248,7 +3256,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                     " grower_mobile_no_edittext,\n" +
                     " date_of_field_visit_textview,\n" +
                     " staff_name_textview,\n" +
-                    " StaffID,CountryID) Values " +
+                    " StaffID,CountryID,ReceiptBatchno) Values " +
                     "(" +
                     "'" + receiptModel.getGrowerId() + "'," +
                     "'" + receiptModel.getGrowerName() + "'," +
@@ -3267,7 +3275,8 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                     "'" + receiptModel.getDate_of_field_visit() + "'," +
                     "'" + receiptModel.getStaff_name() + "'," +
                     "'" + receiptModel.getStaffID() + "'," +
-                    "'" + receiptModel.getCountryID() + "')";
+                    "'" + receiptModel.getCountryID() + "'," +
+                    "'" + receiptModel.getReceiptBatchno() + "')";
             mydb = this.getReadableDatabase();
             String q = str;
             Log.e("temporary", "updateAreaData Query is -------> " + q);

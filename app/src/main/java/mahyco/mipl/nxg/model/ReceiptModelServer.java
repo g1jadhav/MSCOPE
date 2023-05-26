@@ -165,4 +165,15 @@ public class ReceiptModelServer {
     String Staff_name;//": "CHINSISI LOGEYAH",
     String StaffID;//": "UMW07",
     String CountryID;//": 1
+
+    public String getReceiptBatchno() {
+        return ReceiptBatchno;
+    }
+
+    public void setReceiptBatchno(String receiptBatchno) {
+        ReceiptBatchno = receiptBatchno;
+    }
+
+    String ReceiptBatchno;//": 1
+
 }

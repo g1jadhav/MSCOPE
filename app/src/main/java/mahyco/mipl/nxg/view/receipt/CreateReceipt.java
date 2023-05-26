@@ -73,6 +73,7 @@ public class CreateReceipt extends BaseActivity {
             reason_for_area_loss_spinner,
             et_yeildinkg,
             et_batchno,
+            et_batchnoreceipt,
 
     et_noofbags,
             et_weightinkg,
@@ -96,6 +97,7 @@ public class CreateReceipt extends BaseActivity {
             str_reason_for_area_loss_spinner,
             str_et_yeildinkg,
             str_et_batchno,
+            str_et_batchnoreceipt,
             str_area_lost_spinner,
 
     str_et_noofbags,
@@ -129,7 +131,7 @@ public class CreateReceipt extends BaseActivity {
     LinearLayout layout_losslayout, layout_existarea;
     int lossStatus = 0;
     String yeidinkg, BatchNo;
-
+    int receiptcount = 0;
 
     @Override
     protected int getLayout() {
@@ -164,6 +166,7 @@ public class CreateReceipt extends BaseActivity {
         field_ratings_for_spinner = findViewById(R.id.field_ratings_for_spinner);
         et_yeildinkg = findViewById(R.id.et_yeildinkg);
         et_batchno = findViewById(R.id.et_batchno);
+        et_batchnoreceipt = findViewById(R.id.et_batchnoreceipt);
 
         et_noofbags = findViewById(R.id.et_noofbags);
         et_weightinkg = findViewById(R.id.et_weightinkg);
@@ -203,16 +206,126 @@ public class CreateReceipt extends BaseActivity {
         prevExistingArea = Double.parseDouble(Preferences.get(context, Preferences.SELECTEVISITEXISITINGAREA));
 
 
-        if(Preferences.get(context, Preferences.SELECTEDBATCHID)!=null) {
+        if (Preferences.get(context, Preferences.SELECTEDBATCHID) != null) {
             BatchNo = Preferences.get(context, Preferences.SELECTEDBATCHID);
+
             et_batchno.setText(BatchNo);
         }
+        receiptcount = 0;
+        if (Preferences.get(context, Preferences.TOTALRECEIPTCOUNT) != null) {
+            receiptcount = Integer.parseInt(Preferences.get(context, Preferences.TOTALRECEIPTCOUNT).toString().trim());
 
-        if(Preferences.get(context, Preferences.YEILDKG)!=null) {
+
+        }
+        switch (receiptcount + 1) {
+            case 1:
+                et_batchnoreceipt.setText(BatchNo + "A");
+                break;
+
+            case 2:
+                et_batchnoreceipt.setText(BatchNo + "B");
+                break;
+
+            case 3:
+                et_batchnoreceipt.setText(BatchNo + "C");
+                break;
+
+            case 4:
+                et_batchnoreceipt.setText(BatchNo + "D");
+                break;
+
+            case 5:
+                et_batchnoreceipt.setText(BatchNo + "E");
+                break;
+
+            case 6:
+                et_batchnoreceipt.setText(BatchNo + "F");
+                break;
+
+            case 7:
+                et_batchnoreceipt.setText(BatchNo + "G");
+                break;
+
+            case 8:
+                et_batchnoreceipt.setText(BatchNo + "H");
+                break;
+
+            case 9:
+                et_batchnoreceipt.setText(BatchNo + "I");
+                break;
+
+            case 10:
+                et_batchnoreceipt.setText(BatchNo + "J");
+                break;
+
+            case 11:
+                et_batchnoreceipt.setText(BatchNo + "K");
+                break;
+
+            case 12:
+                et_batchnoreceipt.setText(BatchNo + "L");
+                break;
+
+            case 13:
+                et_batchnoreceipt.setText(BatchNo + "M");
+                break;
+
+            case 14:
+                et_batchnoreceipt.setText(BatchNo + "N");
+                break;
+
+            case 15:
+                et_batchnoreceipt.setText(BatchNo + "O");
+                break;
+
+            case 16:
+                et_batchnoreceipt.setText(BatchNo + "P");
+                break;
+
+            case 17:
+                et_batchnoreceipt.setText(BatchNo + "Q");
+                break;
+
+            case 18:
+                et_batchnoreceipt.setText(BatchNo + "R");
+                break;
+
+            case 19:
+                et_batchnoreceipt.setText(BatchNo + "S");
+                break;
+
+            case 20:
+                et_batchnoreceipt.setText(BatchNo + "T");
+                break;
+
+            case 21:
+                et_batchnoreceipt.setText(BatchNo + "U");
+                break;
+
+            case 22:
+                et_batchnoreceipt.setText(BatchNo + "V");
+                break;
+            case 23:
+                et_batchnoreceipt.setText(BatchNo + "W");
+                break;
+            case 24:
+                et_batchnoreceipt.setText(BatchNo + "X");
+                break;
+            case 25:
+                et_batchnoreceipt.setText(BatchNo + "Y");
+                break;
+
+            case 26:
+                et_batchnoreceipt.setText(BatchNo + "Z");
+                break;
+
+        }
+
+
+        if (Preferences.get(context, Preferences.YEILDKG) != null) {
             yeidinkg = Preferences.get(context, Preferences.YEILDKG);
             et_yeildinkg.setText(yeidinkg);
         }
-
 
 
         existing_area_ha_edittext.setText("" + prevExistingArea);
@@ -340,6 +453,7 @@ public class CreateReceipt extends BaseActivity {
             str_reason_for_area_loss_spinner = reason_for_area_loss_spinner.getText().toString().trim();
             str_et_yeildinkg = et_yeildinkg.getText().toString().trim();
             str_et_batchno = et_batchno.getText().toString().trim();
+            str_et_batchnoreceipt = et_batchnoreceipt.getText().toString().trim();
             str_area_lost_spinner = area_lost_spinner.getSelectedItem().toString().trim();
 
             str_et_noofbags = et_noofbags.getText().toString().trim();
@@ -371,6 +485,7 @@ public class CreateReceipt extends BaseActivity {
                 receiptModel.setDate_of_field_visit_textview(str_date_of_field_visit_textview);
                 receiptModel.setStaff_name_textview(str_staff_name_textview);
                 receiptModel.setStaffID(staffcode);
+                receiptModel.setReceiptBatchno(str_et_batchnoreceipt);
 
                 if (database.addReceiptDetails(receiptModel)) {
                     // Toast.makeText(context, "Data Saved Successfully..", Toast.LENGTH_SHORT).show();
@@ -489,6 +604,10 @@ public class CreateReceipt extends BaseActivity {
             }
             if (str_et_batchno.trim().equals("")) {
                 et_batchno.setError("Required");
+                cnt++;
+            }
+            if (str_et_batchnoreceipt.trim().equals("")) {
+                et_batchnoreceipt.setError("Required");
                 cnt++;
             }
 

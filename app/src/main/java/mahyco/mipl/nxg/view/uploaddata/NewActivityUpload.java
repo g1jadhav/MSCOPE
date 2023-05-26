@@ -1588,6 +1588,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                         json_visitModel.addProperty("Staff_name", fieldVisitModel.getStaff_name_textview());
                         json_visitModel.addProperty("StaffID", fieldVisitModel.getStaffID());
                         json_visitModel.addProperty("CountryID", Preferences.get(mContext, Preferences.COUNTRYCODE));
+                        json_visitModel.addProperty("ReceiptBatchno", fieldVisitModel.getReceiptBatchno());
 
                         jsonArray.add(json_visitModel);
                     } catch (Exception e) {

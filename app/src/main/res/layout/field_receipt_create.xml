@@ -47,13 +47,13 @@
             <EditText
                 android:id="@+id/grower_name_textview"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/login_screen_edittext"
                 android:ellipsize="end"
                 android:enabled="false"
                 android:gravity="center|start"
-                android:maxLines="1"
+                android:maxLines="2"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:textColor="@color/black"
@@ -220,6 +220,37 @@
                     android:textSize="18sp" />
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/ll_batchreceiptid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="Batch Receipt No"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/et_batchnoreceipt"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/login_screen_edittext"
+                    android:ellipsize="end"
+                    android:enabled="false"
+                    android:gravity="center|start"
+                    android:maxLines="1"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="AMW000001A"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
@@ -387,7 +418,7 @@
                     android:layout_marginTop="15dp"
                     android:drawableEnd="@drawable/edit"
                     android:drawablePadding="2dp"
-                    android:text="@string/growers_mobile_no"
+                    android:text="Grower Mobile No. For Procurement Payment"
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -398,7 +429,6 @@
                     android:layout_height="45dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/login_screen_edittext"
-
                     android:hint="@string/growers_mobile_nos"
                     android:inputType="phone"
                     android:maxLines="1"
