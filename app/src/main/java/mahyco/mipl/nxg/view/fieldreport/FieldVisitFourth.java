@@ -1441,7 +1441,7 @@ LinearLayout image_layout;
                 String currentdistance="0";
                 if(Preferences.get(context,Preferences.DISTANCEFROMFIELD)!=null)
                     currentdistance=Preferences.get(context,Preferences.DISTANCEFROMFIELD);
-                fieldVisitModel.setObservations(str_recommendations_observations_edittext  +" ~ "+ currentdistance +"~ v-" + BuildConfig.VERSION_NAME);// Observations Here,
+                fieldVisitModel.setObservations(str_recommendations_observations_edittext  +" ~ "+ currentdistance +"~ v-" + BuildConfig.VERSION_NAME+" ~ "+str_field_ratings_for_spinner);// Observations Here,
                 fieldVisitModel.setFieldVisitDt(str_date_of_field_visit_textview);// 2023-01-15T05;//35;//13.529Z,
                 fieldVisitModel.setLatitude("" + lati);// 19.886857,
                 fieldVisitModel.setLongitude("" + longi);// 75.3514908,
