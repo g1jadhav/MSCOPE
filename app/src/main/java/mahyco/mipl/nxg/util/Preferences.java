@@ -62,6 +62,9 @@ public class Preferences {
     public static final String YEILDKG = "YeidKgInForthVisit";
     public static final String SELECTEDBATCHID = "SELECTEDBATCHID";
     public static final String TOTALRECEIPTCOUNT = "TOTALRECEIPTCOUNT";
+    public static final String SELECTED_CLUSTERIDFORSEEDRECEIPT = "SELECTED_SEEDRECEIPTCLUSTERID";
+    public static final String SELECTED_PARENTSEEDDISTRIBUTIONID = "SELECTEDPARENTSEEDDISTID";
+    public static final String SELECTEDCOUNTRYMASTERID = "SELECTEDCOUNTRYMASTERID";
     public static String IQCPlantId="IQCPlantId";
     public static final String COUNTRY_MASTER_ID = "CountryParentId";
     public static final String STORED_CATEGORY_SIZE = "CategorySize";

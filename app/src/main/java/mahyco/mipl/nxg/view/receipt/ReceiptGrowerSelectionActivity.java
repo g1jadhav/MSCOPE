@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.os.AsyncTask;
@@ -24,6 +25,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
@@ -95,8 +97,8 @@ public class ReceiptGrowerSelectionActivity extends BaseActivity implements Recy
     static int stid = 0;
     GrowerModel growerModel = new GrowerModel();
     String counrtyId = "0", countryName = "";
-    String strFilterName = "",strFilterValue="";
-    String strFilterName_PC = "",strFilterValue_PC="";
+    String strFilterName = "", strFilterValue = "";
+    String strFilterName_PC = "", strFilterValue_PC = "";
     private CCFSerachSpinner mSpinnerArray[];
     private int[] mSpinnerHeadingTextView;
 
@@ -127,7 +129,7 @@ public class ReceiptGrowerSelectionActivity extends BaseActivity implements Recy
     private ArrayList<CategoryChildModel> mSpinner8List;
     private ArrayList<CategoryChildModel> mSpinner9List;
     private ArrayList<CategoryChildModel> mSpinner10List;
-   AppCompatTextView lbl_search_filter_result;
+    AppCompatTextView lbl_search_filter_result;
     private CodeScanner mCodeScanner;
     private CodeScannerView mCodeScannerView;
     private ScrollView mScrollView;
@@ -147,9 +149,9 @@ public class ReceiptGrowerSelectionActivity extends BaseActivity implements Recy
     int total_active_spinners = 0;
     SqlightDatabase database;
     AppCompatButton btn_search;
-    int selectedGrowerId=0;
-    LocationManager locationManager ;
-    boolean GpsStatus ;
+    int selectedGrowerId = 0;
+    LocationManager locationManager;
+    boolean GpsStatus;
     ProgressDialog progressDialog;
 
     @Override
@@ -172,7 +174,7 @@ public class ReceiptGrowerSelectionActivity extends BaseActivity implements Recy
             setSupportActionBar(mToolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-            lbl_search_filter_result=findViewById(R.id.lbl_search_filter_result);
+            lbl_search_filter_result = findViewById(R.id.lbl_search_filter_result);
             mManager = new LinearLayoutManager(mContext);
             progressDialog = new ProgressDialog(mContext);
             progressDialog.setMessage("Please Wait..");
@@ -193,7 +195,7 @@ public class ReceiptGrowerSelectionActivity extends BaseActivity implements Recy
                     GetAllSeedDistributionModel m = (GetAllSeedDistributionModel) adapterView.getSelectedItem();
                     Log.i("GetAll", m.getGrowerId() + " " + m.getGrowerFullName());
                     if (i != 0) {
-                        selectedGrowerId=m.getGrowerId();
+                        selectedGrowerId = m.getGrowerId();
                 /*        if (database.isFirstFieldVisitDone(m.getGrowerId())) {
                             showNoInternetDialog(mContext, "First visit is done with this grower.");
                         }else if(database.isFirstFieldVisitDoneLocal(m.getGrowerId()))
@@ -202,14 +204,14 @@ public class ReceiptGrowerSelectionActivity extends BaseActivity implements Recy
 
                         }
                             else {*/
-                            Preferences.save(mContext, Preferences.SELECTED_GROWERNAME, m.getGrowerFullName());
-                            Preferences.save(mContext, Preferences.SELECTED_GROWERMOBILE, m.getGrowerMobileNo());
-                            Preferences.save(mContext, Preferences.SELECTED_GROWERID, "" + m.getGrowerId());
-                            Preferences.save(mContext, Preferences.SELECTED_GROWERAREA, "" + m.getSeedProductionArea());
-                            Preferences.save(mContext, Preferences.SELECTED_GROWERPRODUCTIONCODE, "" + m.getProductionCode());
-                            Preferences.save(mContext, Preferences.SELECTED_GROWERUNIQUECODE, "" + m.getGrowerUniqueCode());
-                            Preferences.save(mContext, Preferences.SELECTEDCROPECODE, "" + m.getCropCode());
-                       // }
+                        Preferences.save(mContext, Preferences.SELECTED_GROWERNAME, m.getGrowerFullName());
+                        Preferences.save(mContext, Preferences.SELECTED_GROWERMOBILE, m.getGrowerMobileNo());
+                        Preferences.save(mContext, Preferences.SELECTED_GROWERID, "" + m.getGrowerId());
+                        Preferences.save(mContext, Preferences.SELECTED_GROWERAREA, "" + m.getSeedProductionArea());
+                        Preferences.save(mContext, Preferences.SELECTED_GROWERPRODUCTIONCODE, "" + m.getProductionCode());
+                        Preferences.save(mContext, Preferences.SELECTED_GROWERUNIQUECODE, "" + m.getGrowerUniqueCode());
+                        Preferences.save(mContext, Preferences.SELECTEDCROPECODE, "" + m.getCropCode());
+                        // }
                     } else {
                         Toast.makeText(mContext, "Please choose grower.", Toast.LENGTH_SHORT).show();
                     }
@@ -238,7 +240,7 @@ public class ReceiptGrowerSelectionActivity extends BaseActivity implements Recy
             mGrowerSearchLayout = findViewById(R.id.grower_search_layout);
             mFilterSearchLayout = findViewById(R.id.filter_search_layout);
 
-         //   new GetGrowerMasterAsyncTask().execute();
+            //   new GetGrowerMasterAsyncTask().execute();
             new GetCategoriesAsyncTask().execute();
             sp_focusvillage = findViewById(R.id.sp_focusvillage);
             sp_productioncode = findViewById(R.id.sp_productioncode);
@@ -259,18 +261,18 @@ public class ReceiptGrowerSelectionActivity extends BaseActivity implements Recy
             mSearchableSpinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    strFilterName="";
-                    strFilterValue="";
+                    strFilterName = "";
+                    strFilterValue = "";
                     if (mSpinner1List != null && mSpinner1List.size() > 0) {
                         mSpinnerPosition = 2;
                         mCountryMasterIdAsPerSelection = mSpinner1List.get(i).getCountryMasterId();
                         CategoryChildModel d = (CategoryChildModel) adapterView.getSelectedItem();
-                        if (d.getCategoryName() != null &&  !d.getCategoryName().contains("Select")&& !d.getKeyValue().contains("Select")) {
-                              strFilterName = "" + d.getCategoryName();
-                            strFilterValue=""+d.getKeyValue();
+                        if (d.getCategoryName() != null && !d.getCategoryName().contains("Select") && !d.getKeyValue().contains("Select")) {
+                            strFilterName = "" + d.getCategoryName();
+                            strFilterValue = "" + d.getKeyValue();
 
                         }
-                            new GetLocationMasterAsyncTask().execute();
+                        new GetLocationMasterAsyncTask().execute();
                     }
                 }
 
@@ -285,22 +287,20 @@ public class ReceiptGrowerSelectionActivity extends BaseActivity implements Recy
             mProductionCode = findViewById(R.id.production_code_textview);*/
 
 //            new GetGrowerMasterAsyncTask().execute();
-            try{
-                mSpinnerProductionCodeList=database.getAllDistinctProductionCode();
-                mSpinnerProductionCodeList.add(0,"Select");
-                if(mSpinnerProductionCodeList!=null && mSpinnerProductionCodeList.size()>0)
-                {
+            try {
+                mSpinnerProductionCodeList = database.getAllDistinctProductionCode();
+                mSpinnerProductionCodeList.add(0, "Select");
+                if (mSpinnerProductionCodeList != null && mSpinnerProductionCodeList.size() > 0) {
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(mContext, R.layout.spinner_rows,
                             mSpinnerProductionCodeList);
                     sp_productioncode.setAdapter(adapter);
-                }else {
+                } else {
                     showNoInternetDialog(
-                            mContext,"Please download parent seed distribution data."
+                            mContext, "Please download parent seed distribution data."
                     );
                 }
 
-            }catch (Exception e)
-            {
+            } catch (Exception e) {
 
             }
 
@@ -308,17 +308,17 @@ public class ReceiptGrowerSelectionActivity extends BaseActivity implements Recy
             sp_productioncode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    try{
-                        String str=parent.getSelectedItem().toString().trim();
-                        Toast.makeText(mContext, ""+str, Toast.LENGTH_SHORT).show();
+                    try {
+                        String str = parent.getSelectedItem().toString().trim();
+                        Toast.makeText(mContext, "" + str, Toast.LENGTH_SHORT).show();
                         if (!str.contains("Select")) {
                             strFilterValue_PC = str;
                             strFilterName_PC = "Production code";
-                        }else {
+                        } else {
                             strFilterValue_PC = "";
                             strFilterName_PC = "";
-                        }  }catch (Exception e)
-                    {
+                        }
+                    } catch (Exception e) {
 
                     }
                 }
@@ -329,42 +329,39 @@ public class ReceiptGrowerSelectionActivity extends BaseActivity implements Recy
                 }
             });
 
-            try{
-                mSpinnerFocussVillageList=database.getAllFocusVillage();
-                VillageModel vv=new VillageModel();
+            try {
+                mSpinnerFocussVillageList = database.getAllFocusVillage();
+                VillageModel vv = new VillageModel();
                 vv.setVillage("Select");
-                mSpinnerFocussVillageList.add(0,vv);
-                if(mSpinnerFocussVillageList!=null && mSpinnerFocussVillageList.size()>0)
-                {
+                mSpinnerFocussVillageList.add(0, vv);
+                if (mSpinnerFocussVillageList != null && mSpinnerFocussVillageList.size() > 0) {
                     ArrayAdapter<VillageModel> adapter = new ArrayAdapter<>(mContext, R.layout.spinner_rows,
                             mSpinnerFocussVillageList);
                     sp_focusvillage.setAdapter(adapter);
-                }else {
+                } else {
                     showNoInternetDialog(
-                            mContext,"Please download focused village."
+                            mContext, "Please download focused village."
                     );
                 }
 
-            }catch (Exception e)
-            {
+            } catch (Exception e) {
 
             }
             sp_focusvillage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    try{
-                        VillageModel villageModel=(VillageModel) parent.getSelectedItem();
-                        if (villageModel.getVillage() != null &&  !villageModel.getVillage().contains("Select")) {
+                    try {
+                        VillageModel villageModel = (VillageModel) parent.getSelectedItem();
+                        if (villageModel.getVillage() != null && !villageModel.getVillage().contains("Select")) {
 
                             Toast.makeText(mContext, "Selected Village is " + villageModel.getVillage(), Toast.LENGTH_SHORT).show();
                             strFilterValue = villageModel.getVillage();
                             strFilterName = "Focus village ";
-                        }else {
+                        } else {
                             strFilterValue = "";
                             strFilterName = "";
                         }
-                    }catch (Exception e)
-                    {
+                    } catch (Exception e) {
 
                     }
                 }
@@ -404,7 +401,7 @@ public class ReceiptGrowerSelectionActivity extends BaseActivity implements Recy
 
                 }
                 else {*/
-             //   Toast.makeText(mContext, ""+selectedGrowerId, Toast.LENGTH_SHORT).show();
+                //   Toast.makeText(mContext, ""+selectedGrowerId, Toast.LENGTH_SHORT).show();
                 if (CheckGpsStatus()) {
                     if (selectedGrowerId == 0) {
                         Toast.makeText(mContext, "Please Select Grower.", Toast.LENGTH_SHORT).show();
@@ -412,11 +409,11 @@ public class ReceiptGrowerSelectionActivity extends BaseActivity implements Recy
                         Intent intent = new Intent(this, FiledReportDashboard.class);
                         startActivity(intent);
                     }
-                }else {
+                } else {
                     Intent intent1 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                     startActivity(intent1);
                 }
-             //   }
+                //   }
                 break;
             case R.id.back_btn:
                 mGrowerSearchLayout.setVisibility(View.VISIBLE);
@@ -434,53 +431,50 @@ public class ReceiptGrowerSelectionActivity extends BaseActivity implements Recy
     }
 
     private void searchGrower() {
-        try{
-           // Toast.makeText(mContext, "Grower Location "+strFilterName+" FilterName :"+strFilterValue, Toast.LENGTH_SHORT).show();
+        try {
+            // Toast.makeText(mContext, "Grower Location "+strFilterName+" FilterName :"+strFilterValue, Toast.LENGTH_SHORT).show();
 
 
-
-           new GetGrowerMasterAsyncTask().execute();
-        }catch (Exception exception)
-        {
+            new GetGrowerMasterAsyncTask().execute();
+        } catch (Exception exception) {
 
         }
     }
 
 
     private class GetGrowerMasterAsyncTask extends AsyncTask<Void, Void, ArrayList<GetAllSeedDistributionModel>> {
-ProgressDialog progressDialog;
+        ProgressDialog progressDialog;
+
         @Override
         protected void onPreExecute() {
 
             super.onPreExecute();
-            progressDialog=new ProgressDialog(mContext);
-            String lable="";
-            if(strFilterValue.trim().equals(""))
-            {
-                lable+="Result for all grower.";
+            progressDialog = new ProgressDialog(mContext);
+            String lable = "";
+            if (strFilterValue.trim().equals("")) {
+                lable += "Result for all grower.";
                 progressDialog.setMessage("Searching all grower");
                 lbl_search_filter_result.setText("Result for all grower.");
-            }else {
-                lable+="Result for all grower where " + strFilterName + " = " + strFilterValue;
+            } else {
+                lable += "Result for all grower where " + strFilterName + " = " + strFilterValue;
                 progressDialog.setMessage("Searching grower by " + strFilterName + " = " + strFilterValue);
                 lbl_search_filter_result.setText("Result for all grower where " + strFilterName + " = " + strFilterValue);
             }
 
-            if(strFilterValue_PC.trim().equals(""))
-            {
-                lable+="Result for all production code.";
+            if (strFilterValue_PC.trim().equals("")) {
+                lable += "Result for all production code.";
 
                 progressDialog.setMessage("Searching all grower");
                 lbl_search_filter_result.setText("Result for all production code.");
-            }else {
-                lable+="Result for Grower where " + strFilterName_PC + " = " + strFilterValue_PC;
+            } else {
+                lable += "Result for Grower where " + strFilterName_PC + " = " + strFilterValue_PC;
 
                 progressDialog.setMessage("Searching grower by " + strFilterName_PC + " = " + strFilterValue_PC);
                 lbl_search_filter_result.setText("Result for Grower where " + strFilterName_PC + " = " + strFilterValue_PC);
             }
             lbl_search_filter_result.setText(lable);
             progressDialog.show();
-            }
+        }
 
         @Override
         protected final ArrayList<GetAllSeedDistributionModel> doInBackground(Void... voids) {
@@ -488,7 +482,7 @@ ProgressDialog progressDialog;
             ArrayList<GetAllSeedDistributionModel> actionModels;
             try {
                 database = new SqlightDatabase(mContext);
-                actionModels = database.getAllSeedDistributionListForReceipt(strFilterValue,strFilterValue_PC);
+                actionModels = database.getAllSeedDistributionListForReceipt(strFilterValue, strFilterValue_PC);
             } finally {
                 if (database != null) {
                     database.close();
@@ -499,7 +493,7 @@ ProgressDialog progressDialog;
 
         @Override
         protected void onPostExecute(ArrayList<GetAllSeedDistributionModel> result) {
-         //   hideProgressDialog();
+            //   hideProgressDialog();
             if (mGrowerList != null) {
                 mGrowerList.clear();
             }
@@ -507,6 +501,7 @@ ProgressDialog progressDialog;
             GetAllSeedDistributionModel model = new GetAllSeedDistributionModel();
             model.setGrowerFullName("Select");
             model.setGrowerUniqueCode("");
+
 
             if (result != null && result.size() > 0) {
                 result.add(0, model);
@@ -524,6 +519,16 @@ ProgressDialog progressDialog;
                 super.onPostExecute(result);
 
                 show_grower_list();
+            } else {
+                new AlertDialog.Builder(mContext)
+                        .setMessage("No details found for forth visit.")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+
             }
 
             /*if (mGrowerList.size() > 0) {
@@ -667,9 +672,10 @@ ProgressDialog progressDialog;
                             mCountryMasterIdAsPerSelection = mSpinner2List.get(i).getCountryMasterId();
 
                             CategoryChildModel d = (CategoryChildModel) adapterView.getSelectedItem();
-                            if (d.getCategoryName() != null &&  !d.getCategoryName().contains("Select")&& !d.getKeyValue().contains("Select")){
-                                  strFilterName = "" + d.getCategoryName();
-                            strFilterValue=""+d.getKeyValue();}
+                            if (d.getCategoryName() != null && !d.getCategoryName().contains("Select") && !d.getKeyValue().contains("Select")) {
+                                strFilterName = "" + d.getCategoryName();
+                                strFilterValue = "" + d.getKeyValue();
+                            }
                             new GetLocationMasterAsyncTask().execute();
 
                         }
@@ -697,9 +703,10 @@ ProgressDialog progressDialog;
                             mCountryMasterIdAsPerSelection = mSpinner3List.get(i).getCountryMasterId();
 
                             CategoryChildModel d = (CategoryChildModel) adapterView.getSelectedItem();
-                            if (d.getCategoryName() != null &&  !d.getCategoryName().contains("Select")&& !d.getKeyValue().contains("Select")){
-                                  strFilterName = "" + d.getCategoryName();
-                            strFilterValue=""+d.getKeyValue();}
+                            if (d.getCategoryName() != null && !d.getCategoryName().contains("Select") && !d.getKeyValue().contains("Select")) {
+                                strFilterName = "" + d.getCategoryName();
+                                strFilterValue = "" + d.getKeyValue();
+                            }
                             new GetLocationMasterAsyncTask().execute();
                         }
                     }
@@ -726,9 +733,10 @@ ProgressDialog progressDialog;
                             mCountryMasterIdAsPerSelection = mSpinner4List.get(i).getCountryMasterId();
 
                             CategoryChildModel d = (CategoryChildModel) adapterView.getSelectedItem();
-                            if (d.getCategoryName() != null &&  !d.getCategoryName().contains("Select")&& !d.getKeyValue().contains("Select")){
-                                  strFilterName = "" + d.getCategoryName();
-                            strFilterValue=""+d.getKeyValue();}
+                            if (d.getCategoryName() != null && !d.getCategoryName().contains("Select") && !d.getKeyValue().contains("Select")) {
+                                strFilterName = "" + d.getCategoryName();
+                                strFilterValue = "" + d.getKeyValue();
+                            }
                             new GetLocationMasterAsyncTask().execute();
                         }
                     }
@@ -755,9 +763,10 @@ ProgressDialog progressDialog;
                             mCountryMasterIdAsPerSelection = mSpinner5List.get(i).getCountryMasterId();
 
                             CategoryChildModel d = (CategoryChildModel) adapterView.getSelectedItem();
-                            if (d.getCategoryName() != null &&  !d.getCategoryName().contains("Select")&& !d.getKeyValue().contains("Select")){
-                                  strFilterName = "" + d.getCategoryName();
-                            strFilterValue=""+d.getKeyValue();}
+                            if (d.getCategoryName() != null && !d.getCategoryName().contains("Select") && !d.getKeyValue().contains("Select")) {
+                                strFilterName = "" + d.getCategoryName();
+                                strFilterValue = "" + d.getKeyValue();
+                            }
                             new GetLocationMasterAsyncTask().execute();
                         }
                     }
@@ -784,9 +793,10 @@ ProgressDialog progressDialog;
                             mCountryMasterIdAsPerSelection = mSpinner6List.get(i).getCountryMasterId();
 
                             CategoryChildModel d = (CategoryChildModel) adapterView.getSelectedItem();
-                            if (d.getCategoryName() != null &&  !d.getCategoryName().contains("Select")&& !d.getKeyValue().contains("Select")){
-                                  strFilterName = "" + d.getCategoryName();
-                            strFilterValue=""+d.getKeyValue();}
+                            if (d.getCategoryName() != null && !d.getCategoryName().contains("Select") && !d.getKeyValue().contains("Select")) {
+                                strFilterName = "" + d.getCategoryName();
+                                strFilterValue = "" + d.getKeyValue();
+                            }
                             new GetLocationMasterAsyncTask().execute();
                         }
                     }
@@ -812,9 +822,10 @@ ProgressDialog progressDialog;
                             mSpinnerPosition = 8;
                             mCountryMasterIdAsPerSelection = mSpinner7List.get(i).getCountryMasterId();
                             CategoryChildModel d = (CategoryChildModel) adapterView.getSelectedItem();
-                            if (d.getCategoryName() != null &&  !d.getCategoryName().contains("Select")&& !d.getKeyValue().contains("Select")){
+                            if (d.getCategoryName() != null && !d.getCategoryName().contains("Select") && !d.getKeyValue().contains("Select")) {
                                 strFilterName = "" + d.getCategoryName();
-                                strFilterValue=""+d.getKeyValue();}
+                                strFilterValue = "" + d.getKeyValue();
+                            }
                             new GetLocationMasterAsyncTask().execute();
                         }
                     }
@@ -840,9 +851,10 @@ ProgressDialog progressDialog;
                             mSpinnerPosition = 9;
                             mCountryMasterIdAsPerSelection = mSpinner8List.get(i).getCountryMasterId();
                             CategoryChildModel d = (CategoryChildModel) adapterView.getSelectedItem();
-                            if (d.getCategoryName() != null &&  !d.getCategoryName().contains("Select")&& !d.getKeyValue().contains("Select")){
+                            if (d.getCategoryName() != null && !d.getCategoryName().contains("Select") && !d.getKeyValue().contains("Select")) {
                                 strFilterName = "" + d.getCategoryName();
-                                strFilterValue=""+d.getKeyValue();}
+                                strFilterValue = "" + d.getKeyValue();
+                            }
                             new GetLocationMasterAsyncTask().execute();
                         }
                     }
@@ -868,9 +880,10 @@ ProgressDialog progressDialog;
                             mSpinnerPosition = 10;
                             mCountryMasterIdAsPerSelection = mSpinner9List.get(i).getCountryMasterId();
                             CategoryChildModel d = (CategoryChildModel) adapterView.getSelectedItem();
-                            if (d.getCategoryName() != null &&  !d.getCategoryName().contains("Select")&& !d.getKeyValue().contains("Select")){
+                            if (d.getCategoryName() != null && !d.getCategoryName().contains("Select") && !d.getKeyValue().contains("Select")) {
                                 strFilterName = "" + d.getCategoryName();
-                                strFilterValue=""+d.getKeyValue();}
+                                strFilterValue = "" + d.getKeyValue();
+                            }
                             new GetLocationMasterAsyncTask().execute();
                         }
                     }
@@ -895,9 +908,10 @@ ProgressDialog progressDialog;
                             mSpinnerPosition = 11;
                             mCountryMasterIdAsPerSelection = mSpinner10List.get(i).getCountryMasterId();
                             CategoryChildModel d = (CategoryChildModel) adapterView.getSelectedItem();
-                            if (d.getCategoryName() != null &&  !d.getCategoryName().contains("Select")&& !d.getKeyValue().contains("Select")){
+                            if (d.getCategoryName() != null && !d.getCategoryName().contains("Select") && !d.getKeyValue().contains("Select")) {
                                 strFilterName = "" + d.getCategoryName();
-                                strFilterValue=""+d.getKeyValue();}
+                                strFilterValue = "" + d.getKeyValue();
+                            }
                             new GetLocationMasterAsyncTask().execute();
                         }
                     }
@@ -1247,22 +1261,21 @@ ProgressDialog progressDialog;
 
     }
 
-    public boolean CheckGpsStatus(){
-        locationManager = (LocationManager)mContext.getSystemService(Context.LOCATION_SERVICE);
+    public boolean CheckGpsStatus() {
+        locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
         assert locationManager != null;
         GpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         return GpsStatus;
     }
 
-    public void show_grower_list()
-    {
-        try{
-            mManager=new LinearLayoutManager(mContext);
-            dialog_growerlist=new Dialog(mContext,android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+    public void show_grower_list() {
+        try {
+            mManager = new LinearLayoutManager(mContext);
+            dialog_growerlist = new Dialog(mContext, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
             dialog_growerlist.setContentView(R.layout.growerlist_dialog);
-            RecyclerView rc_list=dialog_growerlist.findViewById(R.id.rc_list);
-            EditText et_search=dialog_growerlist.findViewById(R.id.et_search);
-            ImageView imageButton3=dialog_growerlist.findViewById(R.id.imageButton3);
+            RecyclerView rc_list = dialog_growerlist.findViewById(R.id.rc_list);
+            EditText et_search = dialog_growerlist.findViewById(R.id.et_search);
+            ImageView imageButton3 = dialog_growerlist.findViewById(R.id.imageButton3);
             imageButton3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -1285,7 +1298,7 @@ ProgressDialog progressDialog;
                 @Override
                 public void afterTextChanged(Editable s) {
 
-                       filter(s.toString().trim());
+                    filter(s.toString().trim());
                 }
             });
             rc_list.setLayoutManager(mManager);
@@ -1300,11 +1313,11 @@ ProgressDialog progressDialog;
             } catch (Exception e) {
                 Toast.makeText(mContext, "Error is " + e.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             Toast.makeText(mContext, "Error is " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
+
     private void filter(String text) {
         // creating a new array list to filter our data.
         ArrayList<GetAllSeedDistributionModel> filteredlist = new ArrayList<GetAllSeedDistributionModel>();

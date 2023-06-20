@@ -40,7 +40,7 @@ import mahyco.mipl.nxg.model.VisitDetailCoutModel;
 public class SqlightDatabase extends SQLiteOpenHelper {
 
     final static String DBName = "mipl.db";
-    final static int version = 12;
+    final static int version = 13;
     long count = 0;
     final String tbl_categorymaster = "tbl_categorymaster";
     final String tbl_locationmaster = "tbl_locationmaster";
@@ -509,52 +509,67 @@ public class SqlightDatabase extends SQLiteOpenHelper {
 
         db.execSQL(tbl_focusvillage_master);
 
-        String tbl_receiptmaster = "Create table  if not Exists tbl_seedreceipt (\n" +
-                "     TEMPID INTEGER PRIMARY Key AUTOINCREMENT,\n" +
-                "GrowerId  TEXT,\n" +
-                "     GrowerName  TEXT,\n" +
-                "     issued_seed_area  TEXT,\n" +
-                "     production_code  TEXT,\n" +
-                "     village  TEXT,\n" +
-                "     existing_area  TEXT,\n" +
-                "     area_loss  TEXT,\n" +
-                "     reason_for_area_loss  TEXT,\n" +
-                "     yeildinkg  TEXT,\n" +
-                "     batchno  TEXT,\n" +
-                "     noofbags  TEXT,\n" +
-                "     weightinkg  TEXT,\n" +
-                "     serviceprovider  TEXT,\n" +
-                "     grower_mobile_no_edittext  TEXT,\n" +
-                "     date_of_field_visit_textview  TEXT,\n" +
-                "     staff_name_textview  TEXT,\n" +
-                "     StaffID  TEXT,\n" +
-                "     ReceiptBatchno  TEXT\n" +
-                "\t)";
+        String tbl_receiptmaster = "Create TABLE tbl_seedreceipt \n" +
+                "(\n" +
+                "TempId integer primary key AUTOINCREMENT,\n" +
+                "GrowerId INTEGER,\n" +
+                "ProductionClusterId  INTEGER,\n" +
+                "IssueSeedArea text,\n" +
+                "ProductionCode text,\n" +
+                "VillageId  INTEGER,\n" +
+                "CountryId INTEGER,\n" +
+                "ExisitingArea text,\n" +
+                "IsSeedReceipt text,\n" +
+                "Reason text,\n" +
+                "BatchNo text,\n" +
+                "ReceiptBatchNo text,\n" +
+                "Yeildinkg  INTEGER,\n" +
+                "Noofbags INTEGER,\n" +
+                "Weightinkg INTEGER,\n" +
+                "Serviceprovider text,\n" +
+                "BankName text,\n" +
+                "IFSCCode text,\n" +
+                "AccountNo text,\n" +
+                "GrowerMobileNo text,\n" +
+                "FieldVisitDt text,\n" +
+                "ExtraCol1 text,\n" +
+                "ExtraCol2 text,\n" +
+                "Address text,\n" +
+                "CreatedBy text\n" +
+                ")";
 
         db.execSQL(tbl_receiptmaster);
 
 
-        String tbl_receiptmaster_server = "Create table  if not Exists tbl_seedreceipt_server (\n" +
-                "     TEMPID INTEGER PRIMARY Key AUTOINCREMENT,\n" +
-                "GrowerId  TEXT,\n" +
-                "     GrowerName  TEXT,\n" +
-                "     issued_seed_area  TEXT,\n" +
-                "     production_code  TEXT,\n" +
-                "     village  TEXT,\n" +
-                "     existing_area  TEXT,\n" +
-                "     area_loss  TEXT,\n" +
-                "     reason_for_area_loss  TEXT,\n" +
-                "     yeildinkg  TEXT,\n" +
-                "     batchno  TEXT,\n" +
-                "     noofbags  TEXT,\n" +
-                "     weightinkg  TEXT,\n" +
-                "     serviceprovider  TEXT,\n" +
-                "     grower_mobile_no_edittext  TEXT,\n" +
-                "     date_of_field_visit_textview  TEXT,\n" +
-                "     staff_name_textview  TEXT,\n" +
-                "     StaffID  TEXT,\n" +
-                "     CountryID  TEXT,\n" +
-                "     ReceiptBatchno  TEXT\n" +
+
+
+
+        String tbl_receiptmaster_server = "Create TABLE tbl_seedreceiptmaster_server \n" +
+                "(\n" +
+                "GrowerId INTEGER,\n" +
+                "ProductionClusterId  INTEGER,\n" +
+                "IssueSeedArea text,\n" +
+                "ProductionCode text,\n" +
+                "VillageId  INTEGER,\n" +
+                "CountryId INTEGER,\n" +
+                "ExisitingArea text,\n" +
+                "IsSeedReceipt text,\n" +
+                "Reason text,\n" +
+                "BatchNo text,\n" +
+                "ReceiptBatchNo text,\n" +
+                "Yeildinkg  INTEGER,\n" +
+                "Noofbags INTEGER,\n" +
+                "Weightinkg INTEGER,\n" +
+                "Serviceprovider text,\n" +
+                "BankName text,\n" +
+                "IFSCCode text,\n" +
+                "AccountNo text,\n" +
+                "GrowerMobileNo text,\n" +
+                "FieldVisitDt text,\n" +
+                "ExtraCol1 text,\n" +
+                "ExtraCol2 text,\n" +
+                "Address text,\n" +
+                "CreatedBy text\n" +
                 ")";
 
         db.execSQL(tbl_receiptmaster_server);
@@ -580,7 +595,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
         droptable(db, "tbl_croptypemaster");
         droptable(db, "tbl_allseeddistributionmaster");
         droptable(db, "tbl_seedreceipt");
-        droptable(db, "tbl_receiptmaster_server");
+        droptable(db, "tbl_seedreceiptmaster_server");
         /*Commented by Jeevan 28-11-2022*/
         /*droptable(db, "tbl_storestributiondata");*/
         /*Commented by Jeevan 28-11-2022*/
@@ -1009,6 +1024,32 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                     ReceiptModel f = new ReceiptModel();
 
                     f.setTempId(cursorCourses.getInt(0));
+                            f.setGrowerId(cursorCourses.getInt(1));
+                            f.setProductionClusterId(cursorCourses.getInt(2));
+                            f.setIssueSeedArea(cursorCourses.getInt(3));
+                            f.setProductionCode(cursorCourses.getString(4));
+                            f.setVillageId(cursorCourses.getInt(5));
+                            f.setCountryId(cursorCourses.getInt(6));
+                            f.setExisitingArea(cursorCourses.getInt(7));
+                            f.setIsSeedReceipt(cursorCourses.getString(8));
+                            f.setReason(cursorCourses.getString(9));
+                            f.setBatchNo(cursorCourses.getString(10));
+                            f.setReceiptBatchNo(cursorCourses.getString(11));
+                            f.setYeildinkg(cursorCourses.getInt(12));
+                            f.setNoofbags(cursorCourses.getInt(13));
+                            f.setWeightinkg(cursorCourses.getInt(14));
+                            f.setServiceprovider(cursorCourses.getString(14));
+                            f.setBankName(cursorCourses.getString(16));
+                            f.setIFSCCode(cursorCourses.getString(17));
+                            f.setAccountNo(cursorCourses.getString(18));
+                            f.setGrowerMobileNo(cursorCourses.getString(19));
+                            f.setFieldVisitDt(cursorCourses.getString(20));
+                            f.setExtraCol1(cursorCourses.getString(21));
+                            f.setExtraCol2(cursorCourses.getString(22));
+                            f.setAddress(cursorCourses.getString(23));
+                            f.setCreatedBy(cursorCourses.getString(24));
+/*
+                    f.setTempId(cursorCourses.getInt(0));
                     f.setGrowerId(cursorCourses.getString(1));
                     f.setGrowerName(cursorCourses.getString(2));
                     f.setIssued_seed_area(cursorCourses.getString(3));
@@ -1026,7 +1067,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                     f.setDate_of_field_visit_textview(cursorCourses.getString(15));
                     f.setStaff_name_textview(cursorCourses.getString(16));
                     f.setStaffID(cursorCourses.getString(17));
-                    f.setReceiptBatchno(cursorCourses.getString(18));
+                    f.setReceiptBatchno(cursorCourses.getString(18));*/
 
                     fieldLocationArrayList.add(f);
                 } while (cursorCourses.moveToNext());
@@ -3143,43 +3184,56 @@ public class SqlightDatabase extends SQLiteOpenHelper {
 
         SQLiteDatabase mydb = null;
         try {
-            String str = "insert into tbl_seedreceipt( GrowerId,\n" +
-                    " GrowerName,\n" +
-                    " issued_seed_area,\n" +
-                    " production_code,\n" +
-                    " village,\n" +
-                    " existing_area,\n" +
-                    " area_loss,\n" +
-                    " reason_for_area_loss,\n" +
-                    " yeildinkg,\n" +
-                    " batchno,\n" +
-                    " noofbags,\n" +
-                    " weightinkg,\n" +
-                    " serviceprovider,\n" +
-                    " grower_mobile_no_edittext,\n" +
-                    " date_of_field_visit_textview,\n" +
-                    " staff_name_textview,\n" +
-                    " StaffID," +
-                    "ReceiptBatchno) Values " +
+            String str = "insert into tbl_seedreceipt(" +
+                    "GrowerId,\n" +
+                    "ProductionClusterId,\n" +
+                    "IssueSeedArea,\n" +
+                    "ProductionCode,\n" +
+                    "VillageId,\n" +
+                    "CountryId,\n" +
+                    "ExisitingArea,\n" +
+                    "IsSeedReceipt,\n" +
+                    "Reason,\n" +
+                    "BatchNo,\n" +
+                    "ReceiptBatchNo,\n" +
+                    "Yeildinkg,\n" +
+                    "Noofbags,\n" +
+                    "Weightinkg,\n" +
+                    "Serviceprovider,\n" +
+                    "BankName,\n" +
+                    "IFSCCode,\n" +
+                    "AccountNo,\n" +
+                    "GrowerMobileNo,\n" +
+                    "FieldVisitDt,\n" +
+                    "ExtraCol1,\n" +
+                    "ExtraCol2,\n" +
+                    "Address,\n" +
+                    "CreatedBy) Values " +
                     "(" +
                     "'" + receiptModel.getGrowerId() + "'," +
-                    "'" + receiptModel.getGrowerName() + "'," +
-                    "'" + receiptModel.getIssued_seed_area() + "'," +
-                    "'" + receiptModel.getProduction_code() + "'," +
-                    "'" + receiptModel.getVillage() + "'," +
-                    "'" + receiptModel.getExisting_area() + "'," +
-                    "'" + receiptModel.getArea_loss() + "'," +
-                    "'" + receiptModel.getReason_for_area_loss() + "'," +
-                    "'" + receiptModel.getYeildinkg() + "'," +
-                    "'" + receiptModel.getBatchno() + "'," +
+                    "'" + receiptModel.getProductionClusterId() + "'," +
+                    "'" + receiptModel.getIssueSeedArea() + "'," +
+                    "'" + receiptModel.getProductionCode() + "'," +
+                    "'" + receiptModel.getVillageId() + "'," +
+                    "'" + receiptModel.getCountryId() + "'," +
+                    "'" + receiptModel.getExisitingArea() + "'," +
+                    "'" + receiptModel.getIsSeedReceipt() + "'," +
+                    "'" + receiptModel.getReason() + "'," +
+                    "'" + receiptModel.getBatchNo() + "'," +
+                    "'" + receiptModel.getReceiptBatchNo() + "'," +
+                    "'" + receiptModel.getYeildinkg()+ "'," +
                     "'" + receiptModel.getNoofbags() + "'," +
                     "'" + receiptModel.getWeightinkg() + "'," +
                     "'" + receiptModel.getServiceprovider() + "'," +
-                    "'" + receiptModel.getGrower_mobile_no_edittext() + "'," +
-                    "'" + receiptModel.getDate_of_field_visit_textview() + "'," +
-                    "'" + receiptModel.getStaff_name_textview() + "'," +
-                    "'" + receiptModel.getStaffID() + "'," +
-                    "'" + receiptModel.getReceiptBatchno() + "'" +
+                    "'" + receiptModel.getBankName() + "'," +
+                    "'" + receiptModel.getIFSCCode()+ "'," +
+                    "'" + receiptModel.getAccountNo()+ "'," +
+                    "'" + receiptModel.getGrowerMobileNo()+ "'," +
+                    "'" + receiptModel.getFieldVisitDt()+ "'," +
+                    "'" + receiptModel.getExtraCol1()+ "'," +
+                    "'" + receiptModel.getExtraCol2()+ "'," +
+                    "'" + receiptModel.getAddress()+ "'," +
+                    "'" + receiptModel.getCreatedBy() + "'" +
                     ")";
 
             mydb = this.getReadableDatabase();
@@ -3221,7 +3275,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
         SQLiteDatabase myDb = null;
         try {
             myDb = this.getReadableDatabase();
-            String q = "select count(*)as cnt from tbl_seedreceipt_server where GrowerId=" + userid;
+            String q = "select count(*)as cnt from tbl_seedreceiptmaster_server where GrowerId=" + userid;
             Cursor cursorCourses = myDb.rawQuery(q, null);
             if (cursorCourses.moveToFirst()) {
                 cursorCourses.getInt(0);
@@ -3239,7 +3293,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
         SQLiteDatabase myDb = null;
         try {
             myDb = this.getReadableDatabase();
-            String q = "select count(*)as cnt from tbl_seedreceipt_server where GrowerId=" + userid+" and area_loss='No'";
+            String q = "select count(*)as cnt from tbl_seedreceiptmaster_server where GrowerId=" + userid+" and area_loss='No'";
             Cursor cursorCourses = myDb.rawQuery(q, null);
             if (cursorCourses.moveToFirst()) {
                 cursorCourses.getInt(0);
@@ -3258,50 +3312,65 @@ public class SqlightDatabase extends SQLiteOpenHelper {
 
         SQLiteDatabase mydb = null;
         try {
-            String str = "insert into tbl_seedreceipt_server( GrowerId,\n" +
-                    " GrowerName,\n" +
-                    " issued_seed_area,\n" +
-                    " production_code,\n" +
-                    " village,\n" +
-                    " existing_area,\n" +
-                    " area_loss,\n" +
-                    " reason_for_area_loss,\n" +
-                    " yeildinkg,\n" +
-                    " batchno,\n" +
-                    " noofbags,\n" +
-                    " weightinkg,\n" +
-                    " serviceprovider,\n" +
-                    " grower_mobile_no_edittext,\n" +
-                    " date_of_field_visit_textview,\n" +
-                    " staff_name_textview,\n" +
-                    " StaffID,CountryID,ReceiptBatchno) Values " +
+            String str = "insert into tbl_seedreceiptmaster_server(" +
+                    "GrowerId,\n" +
+                    "ProductionClusterId,\n" +
+                    "IssueSeedArea,\n" +
+                    "ProductionCode,\n" +
+                    "VillageId,\n" +
+                    "CountryId,\n" +
+                    "ExisitingArea,\n" +
+                    "IsSeedReceipt,\n" +
+                    "Reason,\n" +
+                    "BatchNo,\n" +
+                    "ReceiptBatchNo,\n" +
+                    "Yeildinkg,\n" +
+                    "Noofbags,\n" +
+                    "Weightinkg,\n" +
+                    "Serviceprovider,\n" +
+                    "BankName,\n" +
+                    "IFSCCode,\n" +
+                    "AccountNo,\n" +
+                    "GrowerMobileNo,\n" +
+                    "FieldVisitDt,\n" +
+                    "ExtraCol1,\n" +
+                    "ExtraCol2,\n" +
+                    "Address,\n" +
+                    "CreatedBy) Values " +
                     "(" +
                     "'" + receiptModel.getGrowerId() + "'," +
-                    "'" + receiptModel.getGrowerName() + "'," +
-                    "'" + receiptModel.getIssued_seed_area() + "'," +
-                    "'" + receiptModel.getProduction_code() + "'," +
-                    "'" + receiptModel.getVillage() + "'," +
-                    "'" + receiptModel.getExisting_area() + "'," +
+                    "'" + receiptModel.getProductionClusterId() + "'," +
+                    "'" + receiptModel.getIssueSeedArea() + "'," +
+                    "'" + receiptModel.getProductionCode() + "'," +
+                    "'" + receiptModel.getVillageId() + "'," +
+                    "'" + receiptModel.getCountryId() + "'," +
+                    "'" + receiptModel.getExisitingArea() + "'," +
                     "'" + receiptModel.getIsSeedReceipt() + "'," +
                     "'" + receiptModel.getReason() + "'," +
-                    "'" + receiptModel.getYeildinkg() + "'," +
-                    "'" + receiptModel.getBatchno() + "'," +
+                    "'" + receiptModel.getBatchNo() + "'," +
+                    "'" + receiptModel.getReceiptBatchNo() + "'," +
+                    "'" + receiptModel.getYeildinkg()+ "'," +
                     "'" + receiptModel.getNoofbags() + "'," +
                     "'" + receiptModel.getWeightinkg() + "'," +
                     "'" + receiptModel.getServiceprovider() + "'," +
-                    "'" + receiptModel.getGrower_mobile_no() + "'," +
-                    "'" + receiptModel.getDate_of_field_visit() + "'," +
-                    "'" + receiptModel.getStaff_name() + "'," +
-                    "'" + receiptModel.getStaffID() + "'," +
-                    "'" + receiptModel.getCountryID() + "'," +
-                    "'" + receiptModel.getReceiptBatchno() + "')";
+                    "'" + receiptModel.getBankName() + "'," +
+                    "'" + receiptModel.getIFSCCode()+ "'," +
+                    "'" + receiptModel.getAccountNo()+ "'," +
+                    "'" + receiptModel.getGrowerMobileNo()+ "'," +
+                    "'" + receiptModel.getFieldVisitDt()+ "'," +
+                    "'" + receiptModel.getExtraCol1()+ "'," +
+                    "'" + receiptModel.getExtraCol2()+ "'," +
+                    "'" + receiptModel.getAddress()+ "'," +
+                    "'" + receiptModel.getCreatedBy() + "'" +
+                    ")";
+
             mydb = this.getReadableDatabase();
             String q = str;
-            Log.e("temporary", "updateAreaData Query is -------> " + q);
+            Log.e("temporary", "Receipt Query is  " + q);
             mydb.execSQL(q);
             return true;
         } catch (Exception e) {
-            Log.e("temporary", "updateAreaData Error is  Added Order Details : " + e.getMessage());
+            Log.e("temporary", "Receipt Error is : " + e.getMessage());
             return false;
         } finally {
             mydb.close();

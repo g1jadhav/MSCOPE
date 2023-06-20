@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.ColorSpace;
 import android.location.LocationManager;
 import android.provider.Settings;
 import android.util.Log;
@@ -108,7 +109,7 @@ public class ReceiptGrowerAdapter extends RecyclerView.Adapter<ReceiptGrowerAdap
                 holder.txt_title.setText("" + model.getGrowerFullName());
 
             if (model.getGrowerMobileNo() != null)
-                holder.txt_mobilenumber.setText("" + model.getGrowerMobileNo());
+                holder.txt_mobilenumber.setText("" + model.getGrowerMobileNo() +" "+database.isServerReceiptDone(GrowerId));
 
             if (model.getGrowerUniqueCode() != null)
                 holder.txt_nationalid.setText("" + model.getGrowerUniqueCode());
@@ -244,6 +245,8 @@ public class ReceiptGrowerAdapter extends RecyclerView.Adapter<ReceiptGrowerAdap
                                                 Preferences.save(context, Preferences.SELECTED_GROWERUNIQUECODE, "" + model.getGrowerUniqueCode());
                                                 Preferences.save(context, Preferences.SELECTEDCROPECODE, "" + model.getCropCode());
                                                 Preferences.save(context, Preferences.TOTALRECEIPTCOUNT, "" + s1);
+                                                Preferences.save(context,Preferences.SELECTED_CLUSTERIDFORSEEDRECEIPT, ""+model.getProductionClusterId());
+                                                Preferences.save(context,Preferences.SELECTED_PARENTSEEDDISTRIBUTIONID, ""+model.getParentSeedDistributionId());
 
                                                 Intent intent = new Intent(context, FieldReceiptDashboard.class);
                                                 context.startActivity(intent);

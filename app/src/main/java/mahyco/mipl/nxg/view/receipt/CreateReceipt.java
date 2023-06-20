@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
@@ -81,7 +82,13 @@ public class CreateReceipt extends BaseActivity {
     grower_mobile_no_edittext,
 
     date_of_field_visit_textview,
-            staff_name_textview;
+            staff_name_textview,
+
+    et_bankname,
+    et_bankifsc,
+    et_bankaccount
+
+    ;
 
     CCFSerachSpinner
             field_ratings_for_spinner, area_lost_spinner, sp_serviceprovider;
@@ -106,7 +113,12 @@ public class CreateReceipt extends BaseActivity {
 
     str_grower_mobile_no_edittext,
             str_date_of_field_visit_textview,
-            str_staff_name_textview;
+            str_staff_name_textview,
+            str_bankname,
+    str_bankaccount,
+    str_bankifsc
+
+    ;
 
     Context context;
 
@@ -132,6 +144,13 @@ public class CreateReceipt extends BaseActivity {
     int lossStatus = 0;
     String yeidinkg, BatchNo;
     int receiptcount = 0;
+
+
+    LinearLayout ll_bankname,ll_bankaccountno,ll_bankifsc;
+    AppCompatTextView lbl_bankname;
+    int serviceprovidertype=0;  // 0= selected predefine SP , 1 - Bank , 2 -  Other SP (SP-Service Provider)
+    int clusterid=0;
+    int villageid=0;
 
     @Override
     protected int getLayout() {
@@ -176,10 +195,58 @@ public class CreateReceipt extends BaseActivity {
         sp_serviceprovider = findViewById(R.id.sp_serviceprovider);
 
 
+        et_bankname= findViewById(R.id.et_bankname);
+                et_bankifsc= findViewById(R.id.et_bankifsc);
+                et_bankaccount= findViewById(R.id.et_bankaccountnumber);
+        ll_bankname=findViewById(R.id.ll_bank);
+        ll_bankifsc=findViewById(R.id.ll_bankifsc);
+        ll_bankaccountno=findViewById(R.id.ll_bankaccount);
+        lbl_bankname=findViewById(R.id.lbl_bankname);
+
+
         btn_save = findViewById(R.id.save_login);
         layout_losslayout = findViewById(R.id.losslayout);
         layout_existarea = findViewById(R.id.existlayout);
         layout_losslayout.setVisibility(View.GONE);
+
+        sp_serviceprovider.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String strname=sp_serviceprovider.getSelectedItem().toString().trim();
+                if(strname.toLowerCase().contains("bank"))
+                {
+                    ll_bankname.setVisibility(View.VISIBLE);
+                    ll_bankifsc.setVisibility(View.VISIBLE);
+                    ll_bankaccountno.setVisibility(View.VISIBLE);
+                    lbl_bankname.setText("Bank Name");
+                    serviceprovidertype=1;
+                }
+                else  if(strname.toLowerCase().contains("other"))
+                {
+
+                    ll_bankname.setVisibility(View.VISIBLE);
+                    ll_bankifsc.setVisibility(View.GONE);
+                    ll_bankaccountno.setVisibility(View.GONE);
+                    lbl_bankname.setText("Other Service Provider");
+                    serviceprovidertype=2;
+
+                }
+                else
+                {
+                    ll_bankname.setVisibility(View.GONE);
+                    ll_bankifsc.setVisibility(View.GONE);
+                    ll_bankaccountno.setVisibility(View.GONE);
+                    lbl_bankname.setText("Bank Name");
+                    serviceprovidertype=0;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -205,6 +272,8 @@ public class CreateReceipt extends BaseActivity {
 
         prevExistingArea = Double.parseDouble(Preferences.get(context, Preferences.SELECTEVISITEXISITINGAREA));
 
+        clusterid= Integer.parseInt(Preferences.get(context,Preferences.SELECTED_CLUSTERIDFORSEEDRECEIPT).trim());
+        villageid=Integer.parseInt(Preferences.get(context,Preferences.SELECTEDCOUNTRYMASTERID).trim());
 
         if (Preferences.get(context, Preferences.SELECTEDBATCHID) != null) {
             BatchNo = Preferences.get(context, Preferences.SELECTEDBATCHID);
@@ -464,28 +533,58 @@ public class CreateReceipt extends BaseActivity {
             str_date_of_field_visit_textview = date_of_field_visit_textview.getText().toString().trim();
             str_staff_name_textview = staff_name_textview.getText().toString().trim();
 
+            str_bankname = et_bankname.getText().toString().trim();
+            str_bankifsc = et_bankifsc.getText().toString().trim();
+            str_bankaccount = et_bankaccount.getText().toString().trim();
+
             if (validation()) {
 
                 receiptModel = new ReceiptModel();
 
-                receiptModel.setGrowerId("" + userid);
-                receiptModel.setGrowerName(str_grower_name_textview);
-                receiptModel.setIssued_seed_area(str_issued_seed_area_textview);
-                receiptModel.setProduction_code(str_production_code_textview);
-                receiptModel.setVillage(str_village_textview);
-                receiptModel.setExisting_area(str_existing_area_ha_edittext);
-                receiptModel.setArea_loss(str_area_lost_spinner);
-                receiptModel.setReason_for_area_loss(str_reason_for_area_loss_spinner);
-                receiptModel.setYeildinkg(str_et_yeildinkg);
-                receiptModel.setBatchno(str_et_batchno);
-                receiptModel.setNoofbags(str_et_noofbags);
-                receiptModel.setWeightinkg(str_et_weightinkg);
+                receiptModel.setGrowerId(userid);
+                receiptModel.setProductionClusterId(clusterid);
+                receiptModel.setIssueSeedArea(Double.parseDouble(str_issued_seed_area_textview));
+                receiptModel.setProductionCode(str_production_code_textview);
+                receiptModel.setVillageId(villageid);
+                receiptModel.setCountryId(countryId);
+                receiptModel.setExisitingArea(Double.parseDouble(str_existing_area_ha_edittext));
+                receiptModel.setIsSeedReceipt(str_area_lost_spinner);
+                receiptModel.setReason(str_reason_for_area_loss_spinner);
+                receiptModel.setBatchNo(str_et_batchno);
+                receiptModel.setReceiptBatchNo(str_et_batchnoreceipt);
+                receiptModel.setYeildinkg(Integer.parseInt(str_et_yeildinkg));
+                receiptModel.setNoofbags(Integer.parseInt(str_et_noofbags));
+                receiptModel.setWeightinkg(Integer.parseInt(str_et_weightinkg));
                 receiptModel.setServiceprovider(str_sp_serviceprovider);
-                receiptModel.setGrower_mobile_no_edittext(str_grower_mobile_no_edittext);
-                receiptModel.setDate_of_field_visit_textview(str_date_of_field_visit_textview);
-                receiptModel.setStaff_name_textview(str_staff_name_textview);
-                receiptModel.setStaffID(staffcode);
-                receiptModel.setReceiptBatchno(str_et_batchnoreceipt);
+                receiptModel.setBankName(str_bankname);
+                receiptModel.setIFSCCode(str_bankifsc);
+                receiptModel.setAccountNo(str_bankaccount);
+                receiptModel.setGrowerMobileNo(str_grower_mobile_no_edittext);
+                receiptModel.setFieldVisitDt(str_date_of_field_visit_textview);
+                receiptModel.setExtraCol1(""+Preferences.get(context,Preferences.SELECTED_PARENTSEEDDISTRIBUTIONID).trim());
+                receiptModel.setExtraCol2(""+str_grower_name_textview);
+                receiptModel.setAddress(str_village_textview);
+                receiptModel.setCreatedBy(staffcode);
+
+//
+//                receiptModel.setGrowerId("" + userid);
+//                receiptModel.setGrowerName(str_grower_name_textview);
+//                receiptModel.setIssued_seed_area(str_issued_seed_area_textview);
+//                receiptModel.setProduction_code(str_production_code_textview);
+//                receiptModel.setVillage(str_village_textview);
+//                receiptModel.setExisting_area(str_existing_area_ha_edittext);
+//                receiptModel.setArea_loss(str_area_lost_spinner);
+//                receiptModel.setReason_for_area_loss(str_reason_for_area_loss_spinner);
+//                receiptModel.setYeildinkg(str_et_yeildinkg);
+//                receiptModel.setBatchno(str_et_batchno);
+//                receiptModel.setNoofbags(str_et_noofbags);
+//                receiptModel.setWeightinkg(str_et_weightinkg);
+//                receiptModel.setServiceprovider(str_sp_serviceprovider);
+//                receiptModel.setGrower_mobile_no_edittext(str_grower_mobile_no_edittext);
+//                receiptModel.setDate_of_field_visit_textview(str_date_of_field_visit_textview);
+//                receiptModel.setStaff_name_textview(str_staff_name_textview);
+//                receiptModel.setStaffID(staffcode);
+//                receiptModel.setReceiptBatchno(str_et_batchnoreceipt);
 
                 if (database.addReceiptDetails(receiptModel)) {
                     // Toast.makeText(context, "Data Saved Successfully..", Toast.LENGTH_SHORT).show();
@@ -621,9 +720,44 @@ public class CreateReceipt extends BaseActivity {
                 cnt++;
             }
             if (str_sp_serviceprovider.trim().equals("") || str_sp_serviceprovider.trim().toLowerCase().contains("select")) {
-                Toast.makeText(context, "Please select service ptrovider.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Please select service provider.", Toast.LENGTH_SHORT).show();
                 cnt++;
             }
+
+                if(serviceprovidertype==1)
+                {
+                    if(str_bankname.trim().equals(""))
+                    {
+                        cnt++;
+                        et_bankname.setError("Required");
+                    }
+                    if(str_bankaccount.trim().equals(""))
+                    {
+                        cnt++;
+                        et_bankaccount.setError("Required");
+                    }
+                    if(str_bankifsc.trim().equals(""))
+                    {
+                        cnt++;
+                        et_bankifsc.setError("Required");
+                    }
+                }
+                if(serviceprovidertype==2)
+                {
+                    if(str_bankname.trim().equals(""))
+                    {
+                        cnt++;
+                        et_bankname.setError("Required");
+                    }
+                }
+
+                if(serviceprovidertype==0)
+                {
+                    str_bankifsc="";
+                    str_bankaccount="";
+                    str_bankname="";
+                }
+
 
 
             //Toast.makeText(context, "Total Validation " + cnt, Toast.LENGTH_SHORT).show();

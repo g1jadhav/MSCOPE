@@ -291,7 +291,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                       /*  Log.e("temporary"," before SystemClock.elapsedRealtime() "+ SystemClock.elapsedRealtime() +
                                 " lastClickTime " + lastClickTime +" = " +
                                 (SystemClock.elapsedRealtime() - lastClickTime));*/
-                        if (SystemClock.elapsedRealtime() - lastClickTime < 3500) {
+                        if (SystemClock.elapsedRealtime() - lastClickTime < 5500) {
                             return;
                         }
                         lastClickTime = SystemClock.elapsedRealtime();
@@ -316,7 +316,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                       /*  Log.e("temporary"," before SystemClock.elapsedRealtime() "+ SystemClock.elapsedRealtime() +
                                 " lastClickTime " + lastClickTime +" = " +
                                 (SystemClock.elapsedRealtime() - lastClickTime));*/
-                        if (SystemClock.elapsedRealtime() - lastClickTime < 3500) {
+                        if (SystemClock.elapsedRealtime() - lastClickTime < 5500) {
                             return;
                         }
                         lastClickTime = SystemClock.elapsedRealtime();
@@ -1570,6 +1570,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                 for (ReceiptModel fieldVisitModel : f) {
                     try {
                         JsonObject json_visitModel = new JsonObject();
+/*
                         json_visitModel.addProperty("GrowerId", fieldVisitModel.getGrowerId());
                         json_visitModel.addProperty("GrowerName", fieldVisitModel.getGrowerName());
                         json_visitModel.addProperty("Issued_seed_area", fieldVisitModel.getIssued_seed_area());
@@ -1589,6 +1590,33 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                         json_visitModel.addProperty("StaffID", fieldVisitModel.getStaffID());
                         json_visitModel.addProperty("CountryID", Preferences.get(mContext, Preferences.COUNTRYCODE));
                         json_visitModel.addProperty("ReceiptBatchno", fieldVisitModel.getReceiptBatchno());
+*/
+
+                        json_visitModel.addProperty("GrowerId", fieldVisitModel.getGrowerId());
+                        json_visitModel.addProperty("ProductionClusterId", fieldVisitModel.getProductionClusterId());
+                        json_visitModel.addProperty("IssueSeedArea", fieldVisitModel.getIssueSeedArea());
+                        json_visitModel.addProperty("ProductionCode", fieldVisitModel.getProductionCode());
+                        json_visitModel.addProperty("VillageId", fieldVisitModel.getVillageId());
+                        json_visitModel.addProperty("CountryId", fieldVisitModel.getCountryId());
+                        json_visitModel.addProperty("ExisitingArea", fieldVisitModel.getExisitingArea());
+                        json_visitModel.addProperty("IsSeedReceipt", fieldVisitModel.getIsSeedReceipt());
+                        json_visitModel.addProperty("Reason", fieldVisitModel.getReason());
+                        json_visitModel.addProperty("BatchNo", fieldVisitModel.getBatchNo());
+                        json_visitModel.addProperty("ReceiptBatchNo", fieldVisitModel.getReceiptBatchNo());
+                        json_visitModel.addProperty("Yeildinkg", fieldVisitModel.getYeildinkg());
+                        json_visitModel.addProperty("Noofbags", fieldVisitModel.getNoofbags());
+                        json_visitModel.addProperty("Weightinkg", fieldVisitModel.getWeightinkg());
+                        json_visitModel.addProperty("Serviceprovider", fieldVisitModel.getServiceprovider());
+                        json_visitModel.addProperty("BankName", fieldVisitModel.getBankName());
+                        json_visitModel.addProperty("IFSCCode", fieldVisitModel.getIFSCCode());
+                        json_visitModel.addProperty("AccountNo", fieldVisitModel.getAccountNo());
+                        json_visitModel.addProperty("GrowerMobileNo", fieldVisitModel.getGrowerMobileNo());
+                        json_visitModel.addProperty("FieldVisitDt", fieldVisitModel.getFieldVisitDt());
+                        json_visitModel.addProperty("ExtraCol1", fieldVisitModel.getExtraCol1());
+                        json_visitModel.addProperty("ExtraCol2", fieldVisitModel.getExtraCol2());
+                        json_visitModel.addProperty("Address", fieldVisitModel.getAddress());
+                        json_visitModel.addProperty("CreatedBy", fieldVisitModel.getCreatedBy());
+
 
                         jsonArray.add(json_visitModel);
                     } catch (Exception e) {

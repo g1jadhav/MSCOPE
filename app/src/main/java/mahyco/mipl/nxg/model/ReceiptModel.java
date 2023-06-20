@@ -10,177 +10,224 @@ public class ReceiptModel {
         TempId = tempId;
     }
 
-    int TempId;
-    public String getGrowerId() {
+    public int getGrowerId() {
         return GrowerId;
     }
 
-    public void setGrowerId(String growerId) {
+    public void setGrowerId(int growerId) {
         GrowerId = growerId;
     }
 
-    public String getGrowerName() {
-        return GrowerName;
+    public int getProductionClusterId() {
+        return ProductionClusterId;
     }
 
-    public void setGrowerName(String growerName) {
-        GrowerName = growerName;
+    public void setProductionClusterId(int productionClusterId) {
+        ProductionClusterId = productionClusterId;
     }
 
-    public String getIssued_seed_area() {
-        return issued_seed_area;
+    public double getIssueSeedArea() {
+        return IssueSeedArea;
     }
 
-    public void setIssued_seed_area(String issued_seed_area) {
-        this.issued_seed_area = issued_seed_area;
+    public void setIssueSeedArea(double issueSeedArea) {
+        IssueSeedArea = issueSeedArea;
     }
 
-    public String getProduction_code() {
-        return production_code;
+    public String getProductionCode() {
+        return ProductionCode;
     }
 
-    public void setProduction_code(String production_code) {
-        this.production_code = production_code;
+    public void setProductionCode(String productionCode) {
+        ProductionCode = productionCode;
     }
 
-    public String getVillage() {
-        return village;
+    public int getVillageId() {
+        return VillageId;
     }
 
-    public void setVillage(String village) {
-        this.village = village;
+    public void setVillageId(int villageId) {
+        VillageId = villageId;
     }
 
-    public String getExisting_area() {
-        return existing_area;
+    public int getCountryId() {
+        return CountryId;
     }
 
-    public void setExisting_area(String existing_area) {
-        this.existing_area = existing_area;
+    public void setCountryId(int countryId) {
+        CountryId = countryId;
     }
 
-    public String getArea_loss() {
-        return area_loss;
+    public double getExisitingArea() {
+        return ExisitingArea;
     }
 
-    public void setArea_loss(String area_loss) {
-        this.area_loss = area_loss;
+    public void setExisitingArea(double exisitingArea) {
+        ExisitingArea = exisitingArea;
     }
 
-    public String getReason_for_area_loss() {
-        return reason_for_area_loss;
+    public String getIsSeedReceipt() {
+        return IsSeedReceipt;
     }
 
-    public void setReason_for_area_loss(String reason_for_area_loss) {
-        this.reason_for_area_loss = reason_for_area_loss;
+    public void setIsSeedReceipt(String isSeedReceipt) {
+        IsSeedReceipt = isSeedReceipt;
     }
 
-    public String getYeildinkg() {
-        return yeildinkg;
+    public String getReason() {
+        return Reason;
     }
 
-    public void setYeildinkg(String yeildinkg) {
-        this.yeildinkg = yeildinkg;
+    public void setReason(String reason) {
+        Reason = reason;
     }
 
-    public String getBatchno() {
-        return batchno;
+    public String getBatchNo() {
+        return BatchNo;
     }
 
-    public void setBatchno(String batchno) {
-        this.batchno = batchno;
+    public void setBatchNo(String batchNo) {
+        BatchNo = batchNo;
     }
 
-    public String getNoofbags() {
-        return noofbags;
+    public String getReceiptBatchNo() {
+        return ReceiptBatchNo;
     }
 
-    public void setNoofbags(String noofbags) {
-        this.noofbags = noofbags;
+    public void setReceiptBatchNo(String receiptBatchNo) {
+        ReceiptBatchNo = receiptBatchNo;
     }
 
-    public String getWeightinkg() {
-        return weightinkg;
+    public int getYeildinkg() {
+        return Yeildinkg;
     }
 
-    public void setWeightinkg(String weightinkg) {
-        this.weightinkg = weightinkg;
+    public void setYeildinkg(int yeildinkg) {
+        Yeildinkg = yeildinkg;
+    }
+
+    public int getNoofbags() {
+        return Noofbags;
+    }
+
+    public void setNoofbags(int noofbags) {
+        Noofbags = noofbags;
+    }
+
+    public int getWeightinkg() {
+        return Weightinkg;
+    }
+
+    public void setWeightinkg(int weightinkg) {
+        Weightinkg = weightinkg;
     }
 
     public String getServiceprovider() {
-        return serviceprovider;
+        return Serviceprovider;
     }
 
     public void setServiceprovider(String serviceprovider) {
-        this.serviceprovider = serviceprovider;
+        Serviceprovider = serviceprovider;
     }
 
-    public String getGrower_mobile_no_edittext() {
-        return grower_mobile_no_edittext;
+    public String getBankName() {
+        return BankName;
     }
 
-    public void setGrower_mobile_no_edittext(String grower_mobile_no_edittext) {
-        this.grower_mobile_no_edittext = grower_mobile_no_edittext;
+    public void setBankName(String bankName) {
+        BankName = bankName;
     }
 
-    public String getDate_of_field_visit_textview() {
-        return date_of_field_visit_textview;
+    public String getIFSCCode() {
+        return IFSCCode;
     }
 
-    public void setDate_of_field_visit_textview(String date_of_field_visit_textview) {
-        this.date_of_field_visit_textview = date_of_field_visit_textview;
+    public void setIFSCCode(String IFSCCode) {
+        this.IFSCCode = IFSCCode;
     }
 
-    public String getStaff_name_textview() {
-        return staff_name_textview;
+    public String getAccountNo() {
+        return AccountNo;
     }
 
-    public void setStaff_name_textview(String staff_name_textview) {
-        this.staff_name_textview = staff_name_textview;
+    public void setAccountNo(String accountNo) {
+        AccountNo = accountNo;
     }
 
-    public String getStaffID() {
-        return StaffID;
+    public String getGrowerMobileNo() {
+        return GrowerMobileNo;
     }
 
-    public void setStaffID(String staffID) {
-        StaffID = staffID;
-    }
-    String GrowerId;
-    String GrowerName;
-    String issued_seed_area;
-    String production_code;
-    String village;
-    String existing_area;
-    String area_loss;
-    String reason_for_area_loss;
-    String yeildinkg;
-    String batchno;
-    String noofbags;
-    String weightinkg;
-    String serviceprovider;
-    String grower_mobile_no_edittext;
-    String date_of_field_visit_textview;
-    String staff_name_textview;
-    String StaffID;
-
-    public String getReceiptBatchno() {
-        return ReceiptBatchno;
+    public void setGrowerMobileNo(String growerMobileNo) {
+        GrowerMobileNo = growerMobileNo;
     }
 
-    public void setReceiptBatchno(String receiptBatchno) {
-        ReceiptBatchno = receiptBatchno;
+    public String getFieldVisitDt() {
+        return FieldVisitDt;
     }
 
-    String ReceiptBatchno;
-
-    public String getCountryID() {
-        return CountryID;
+    public void setFieldVisitDt(String fieldVisitDt) {
+        FieldVisitDt = fieldVisitDt;
     }
 
-    public void setCountryID(String countryID) {
-        CountryID = countryID;
+    public String getExtraCol1() {
+        return ExtraCol1;
     }
 
-    String CountryID;
+    public void setExtraCol1(String extraCol1) {
+        ExtraCol1 = extraCol1;
+    }
+
+    public String getExtraCol2() {
+        return ExtraCol2;
+    }
+
+    public void setExtraCol2(String extraCol2) {
+        ExtraCol2 = extraCol2;
+    }
+
+    public String getAddress() {
+        return Address;
+    }
+
+    public void setAddress(String address) {
+        Address = address;
+    }
+
+    public String getCreatedBy() {
+        return CreatedBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        CreatedBy = createdBy;
+    }
+
+    int TempId;
+    int GrowerId;//": 0,
+            int ProductionClusterId;//": 0,
+            double IssueSeedArea;//": 0,
+            String ProductionCode;//": "string",
+            int VillageId;//": 0,
+            int CountryId;//": 0,
+            double ExisitingArea;//": 0,
+    String IsSeedReceipt;//": "string",
+    String Reason;//": "string",
+    String BatchNo;//": "string",
+    String ReceiptBatchNo;//": "string",
+            int Yeildinkg;//": 0,
+            int Noofbags;//": 0,
+            int Weightinkg;//": 0,
+    String Serviceprovider;//": "string",
+    String BankName;//": "string",
+    String IFSCCode;//": "string",
+    String AccountNo;//": "string",
+    String GrowerMobileNo;//": "string",
+    String FieldVisitDt;//": "2023-06-20T07:30:04.969Z",
+    String ExtraCol1;//": "string",
+    String ExtraCol2;//": "string",
+    String Address;//": "string",
+    String CreatedBy;//": "string"
+
+
+
 }

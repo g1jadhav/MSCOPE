@@ -164,7 +164,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
                 /*Commented ended here by jeevan 28-11-2022*/
 
                 /*Added by jeevan 28-11-2022*/
-               new GetRegistrationAsyncTaskList().execute();
+                new GetRegistrationAsyncTaskList().execute();
                 /*Added ended here by jeevan 28-11-2022*/
                 break;
             case R.id.download_crop_master_layout:
@@ -194,7 +194,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
                 break;
             case R.id.download_visit_master_layout:
 
-                    downloadVistMsaterData();
+                downloadVistMsaterData();
 
                 break;
             case R.id.download_village_master_layout:
@@ -202,7 +202,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
                 downloadVillageMasterData();
 
                 break;
-                case R.id.download_seedreceipt_master_layout:
+            case R.id.download_seedreceipt_master_layout:
 
                 downloadReceiptMasterData();
 
@@ -211,12 +211,12 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
     }
 
     private void downloadVillageMasterData() {
-        try{
+        try {
 
 
             if (checkInternetConnection(mContext)) {
                 try {
-                    int loginid=Integer.parseInt(Preferences.get(mContext,Preferences.LOGINID).trim());
+                    int loginid = Integer.parseInt(Preferences.get(mContext, Preferences.LOGINID).trim());
                     mJsonObjectCategory = null;
                     mJsonObjectCategory = new JsonObject();
                     mJsonObjectCategory.addProperty("filterValue", loginid);
@@ -230,8 +230,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
             }
 
 
-        }catch(Exception e)
-        {
+        } catch (Exception e) {
 
         }
     }
@@ -250,7 +249,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
                     database.close();
                 }
             }
-            if(list != null) {
+            if (list != null) {
                 return list.size();
             } else {
                 return 0;
@@ -259,8 +258,8 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
 
         @Override
         protected void onPostExecute(Integer size) {
-          //  Log.e("temporary"," size "+ size);
-            if(size == 0){
+            //  Log.e("temporary"," size "+ size);
+            if (size == 0) {
                 downloadGrowerMasterData();
             } else {
                 showNoInternetDialog(mContext, "You have stored data in Grower/Coordinator registration, first upload that data.");
@@ -402,75 +401,61 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
 
     @Override
     public void onListAllVisitData(FieldVisitServerModel result) {
-        try{
-            if(result!=null)
-            {
+        try {
+            if (result != null) {
 
-                   new AddVisitMasterDataLocally(mContext,result.getFieldVisitModel()).execute();
-                    Toast.makeText(mContext, ""+result.getFieldVisitModel().size(), Toast.LENGTH_SHORT).show();
-                }else
-                {
-                    Toast.makeText(mContext, "Data Not Available.", Toast.LENGTH_SHORT).show();
-                }
+                new AddVisitMasterDataLocally(mContext, result.getFieldVisitModel()).execute();
+                Toast.makeText(mContext, "" + result.getFieldVisitModel().size(), Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(mContext, "Data Not Available.", Toast.LENGTH_SHORT).show();
+            }
 
-            
-            
-        }catch (Exception e)
-        {
-            
+
+        } catch (Exception e) {
+
         }
     }
 
     @Override
     public void onListAllVillageData(List<VillageModel> result) {
-        try{
+        try {
 
-            Toast.makeText(mContext, "Length : "+result.size(), Toast.LENGTH_SHORT).show();
-            try{
-                if(result!=null)
-                {
-                    new AddVillageMasterDataLocally(mContext,result).execute();
-                    Toast.makeText(mContext, ""+result.size(), Toast.LENGTH_SHORT).show();
-                }else
-                {
+            Toast.makeText(mContext, "Length : " + result.size(), Toast.LENGTH_SHORT).show();
+            try {
+                if (result != null) {
+                    new AddVillageMasterDataLocally(mContext, result).execute();
+                    Toast.makeText(mContext, "" + result.size(), Toast.LENGTH_SHORT).show();
+                } else {
                     Toast.makeText(mContext, "Data Not Available.", Toast.LENGTH_SHORT).show();
                 }
 
 
-
-            }catch (Exception e)
-            {
+            } catch (Exception e) {
 
             }
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
 
         }
     }
 
     @Override
     public void onAllSeedReceiptData(List<ReceiptModelServer> result) {
-        try{
+        try {
 
-            Toast.makeText(mContext, "Length : "+result.size(), Toast.LENGTH_SHORT).show();
-            try{
-                if(result!=null)
-                {
-                    new AddReceiptDataLocally(mContext,result).execute();
-                    Toast.makeText(mContext, ""+result.size(), Toast.LENGTH_SHORT).show();
-                }else
-                {
+            Toast.makeText(mContext, "Length : " + result.size(), Toast.LENGTH_SHORT).show();
+            try {
+                if (result != null) {
+                    new AddReceiptDataLocally(mContext, result).execute();
+                    Toast.makeText(mContext, "" + result.size(), Toast.LENGTH_SHORT).show();
+                } else {
                     Toast.makeText(mContext, "Data Not Available.", Toast.LENGTH_SHORT).show();
                 }
 
 
-
-            }catch (Exception e)
-            {
+            } catch (Exception e) {
 
             }
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
 
         }
     }
@@ -807,13 +792,13 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
                         database = new SqlightDatabase(mContext);
                         database.trucateTable("tbl_allseeddistributionmaster");
                         // database.trucateTable("tbl_parentSeedDistribution");
-                       // Log.e("temporary", "before mGetAllSeedDistributionList " + mGetAllSeedDistributionList.size());
+                        // Log.e("temporary", "before mGetAllSeedDistributionList " + mGetAllSeedDistributionList.size());
                         Preferences.save(mContext, Preferences.DISTRIBUTION_LIST_DOWNLOAD, "");
                         for (GetAllSeedDistributionModel param : mGetAllSeedDistributionList) {
                             database.addAllSeedDistributionList(param);
                         }
 
-                       // Log.e("temporary", "after mGetAllSeedDistributionList " + mGetAllSeedDistributionList.size());
+                        // Log.e("temporary", "after mGetAllSeedDistributionList " + mGetAllSeedDistributionList.size());
 
                         if (mGetAllSeedDistributionList.size() > 0) {
                             Preferences.save(mContext, Preferences.DISTRIBUTION_LIST_DOWNLOAD, "Yes");
@@ -821,7 +806,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
                         break;
                 }
             } catch (Exception e) {
-                Log.e("temporary","Something went wrong try again." + e.getMessage());
+                Log.e("temporary", "Something went wrong try again." + e.getMessage());
             } finally {
                 switch (mDatabaseName) {
                     case LOCATION_MASTER_DATABASE:
@@ -867,7 +852,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
 
         @Override
         protected void onPostExecute(Void unused) {
-          //  Log.e("temporary", "onPostExecute is true " + mDatabaseName.equalsIgnoreCase(GET_ALL_SEED_DISTRIBUTION_MASTER_DATABASE));
+            //  Log.e("temporary", "onPostExecute is true " + mDatabaseName.equalsIgnoreCase(GET_ALL_SEED_DISTRIBUTION_MASTER_DATABASE));
             if (mDatabaseName.equalsIgnoreCase(GET_ALL_SEED_DISTRIBUTION_MASTER_DATABASE)) {
                 new StoreAreaAsyncTask().execute();
             }
@@ -881,7 +866,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
             try {
                 SqlightDatabase database = new SqlightDatabase(mContext);
                 database.trucateTable("tbl_storestributiondata");
-              //  Log.e("temporary", "doInBackground mGetAllSeedDistributionList " + mGetAllSeedDistributionList.size());
+                //  Log.e("temporary", "doInBackground mGetAllSeedDistributionList " + mGetAllSeedDistributionList.size());
                 for (int i = 0; i < mGetAllSeedDistributionList.size(); i++) {
                     StoreAreaModel storeAreaModel = new StoreAreaModel(mGetAllSeedDistributionList.get(i).getPlantingYear(), mGetAllSeedDistributionList.get(i).getProductionCode(),
                             mGetAllSeedDistributionList.get(i).getFemaleBatchNo(), mGetAllSeedDistributionList.get(i).getMaleBatchNo(),
@@ -893,11 +878,11 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
                             mGetAllSeedDistributionList.get(i).getProductionClusterId(),
                             /*Added by Jeevan 9-12-2022*/
                             mGetAllSeedDistributionList.get(i).getGrowerId());
-                           /*Added by Jeevan 9-12-2022 ended here*/
+                    /*Added by Jeevan 9-12-2022 ended here*/
                     database.addAreaData(storeAreaModel);
                 }
             } finally {
-              //  Log.e("temporary", "finally mGetAllSeedDistributionList " + mGetAllSeedDistributionList.size());
+                //  Log.e("temporary", "finally mGetAllSeedDistributionList " + mGetAllSeedDistributionList.size());
                 mGetAllSeedDistributionList.clear();
             }
             return null;
@@ -918,121 +903,22 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
     }
 
 
-
-
-
-class AddVisitMasterDataLocally extends AsyncTask
-{
-    ProgressDialog progressDialog;
-    List<FieldVisitModel_Server> fieldVisitModel_server;
-    Context context;
-    SqlightDatabase database;
-    AddVisitMasterDataLocally(Context context,List<FieldVisitModel_Server> fieldVisitModel_server)
-    {
-        this.context=context;
-        this.fieldVisitModel_server=fieldVisitModel_server;
-    }
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-        database=new SqlightDatabase(context);
-        progressDialog=new ProgressDialog(context);
-        progressDialog.setMessage("Sync data in progress.Please wait..");
-        progressDialog.show();
-    }
-
-    @Override
-    protected String doInBackground(Object[] objects) {
-
-       try{
-           database.trucateTable("tbl_visit_master");
-           for(FieldVisitModel_Server f:fieldVisitModel_server)
-           {
-               Log.i("Data",""+f.getFieldVisitId());
-               Log.i("Saved Status",""+database.addVisitMaster(f));
-           }
-
-       }catch (Exception exception)
-       {
-
-       }
-
-
-        return null;
-    }
-
-    @Override
-    protected void onPostExecute(Object o) {
-        super.onPostExecute(o);
-        progressDialog.dismiss();
-        showNoInternetDialog(mContext, "Visit Master Downloaded Successfully.");
-    }
-}
-
-class AddVillageMasterDataLocally extends AsyncTask
-{
-    ProgressDialog progressDialog;
-    List<VillageModel> villageModel;
-    Context context;
-    SqlightDatabase database;
-    AddVillageMasterDataLocally(Context context,List<VillageModel> villageModel)
-    {
-        this.context=context;
-        this.villageModel=villageModel;
-    }
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-        database=new SqlightDatabase(context);
-        progressDialog=new ProgressDialog(context);
-        progressDialog.setMessage("Sync data in progress.Please wait..");
-        progressDialog.show();
-    }
-
-    @Override
-    protected String doInBackground(Object[] objects) {
-
-        try{
-            database.trucateTable("tbl_focusedvillage");
-            for(VillageModel f:villageModel)
-            {
-                Log.i("Data",""+f.getADD());
-                Log.i("Saved Status",""+database.addFocusVillage(f));
-            }
-
-        }catch (Exception exception)
-        {
-
-        }
-        return null;
-    }
-
-    @Override
-    protected void onPostExecute(Object o) {
-        super.onPostExecute(o);
-        progressDialog.dismiss();
-        showNoInternetDialog(mContext, "Village Master Downloaded Successfully.");
-
-    }
-}
-
-
-    class AddReceiptDataLocally extends AsyncTask
-    {
+    class AddVisitMasterDataLocally extends AsyncTask {
         ProgressDialog progressDialog;
-        List<ReceiptModelServer> fieldVisitModel_server;
+        List<FieldVisitModel_Server> fieldVisitModel_server;
         Context context;
         SqlightDatabase database;
-        AddReceiptDataLocally(Context context,List<ReceiptModelServer> fieldVisitModel_server)
-        {
-            this.context=context;
-            this.fieldVisitModel_server=fieldVisitModel_server;
+
+        AddVisitMasterDataLocally(Context context, List<FieldVisitModel_Server> fieldVisitModel_server) {
+            this.context = context;
+            this.fieldVisitModel_server = fieldVisitModel_server;
         }
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            database=new SqlightDatabase(context);
-            progressDialog=new ProgressDialog(context);
+            database = new SqlightDatabase(context);
+            progressDialog = new ProgressDialog(context);
             progressDialog.setMessage("Sync data in progress.Please wait..");
             progressDialog.show();
         }
@@ -1040,16 +926,106 @@ class AddVillageMasterDataLocally extends AsyncTask
         @Override
         protected String doInBackground(Object[] objects) {
 
-            try{
-                database.trucateTable("tbl_seedreceipt_server");
-                for(ReceiptModelServer f:fieldVisitModel_server)
-                {
-                    Log.i("Data",""+f.getBatchno());
-                    Log.i("Saved Status",""+database.addReceiptDetails_Server(f));
+            try {
+                database.trucateTable("tbl_visit_master");
+                for (FieldVisitModel_Server f : fieldVisitModel_server) {
+                    Log.i("Data", "" + f.getFieldVisitId());
+                    Log.i("Saved Status", "" + database.addVisitMaster(f));
                 }
 
-            }catch (Exception exception)
-            {
+            } catch (Exception exception) {
+
+            }
+
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            progressDialog.dismiss();
+            showNoInternetDialog(mContext, "Visit Master Downloaded Successfully.");
+        }
+    }
+
+    class AddVillageMasterDataLocally extends AsyncTask {
+        ProgressDialog progressDialog;
+        List<VillageModel> villageModel;
+        Context context;
+        SqlightDatabase database;
+
+        AddVillageMasterDataLocally(Context context, List<VillageModel> villageModel) {
+            this.context = context;
+            this.villageModel = villageModel;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            database = new SqlightDatabase(context);
+            progressDialog = new ProgressDialog(context);
+            progressDialog.setMessage("Sync data in progress.Please wait..");
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(Object[] objects) {
+
+            try {
+                database.trucateTable("tbl_focusedvillage");
+                for (VillageModel f : villageModel) {
+                    Log.i("Data", "" + f.getADD());
+                    Log.i("Saved Status", "" + database.addFocusVillage(f));
+                }
+
+            } catch (Exception exception) {
+
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            progressDialog.dismiss();
+            showNoInternetDialog(mContext, "Village Master Downloaded Successfully.");
+
+        }
+    }
+
+
+    class AddReceiptDataLocally extends AsyncTask {
+        ProgressDialog progressDialog;
+        List<ReceiptModelServer> fieldVisitModel_server;
+        Context context;
+        SqlightDatabase database;
+
+        AddReceiptDataLocally(Context context, List<ReceiptModelServer> fieldVisitModel_server) {
+            this.context = context;
+            this.fieldVisitModel_server = fieldVisitModel_server;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            database = new SqlightDatabase(context);
+            progressDialog = new ProgressDialog(context);
+            progressDialog.setMessage("Sync data in progress.Please wait..");
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(Object[] objects) {
+
+            try {
+                database.trucateTable("tbl_seedreceiptmaster_server");
+                for (ReceiptModelServer f : fieldVisitModel_server) {
+                    Log.i("Data", "" + f.getBatchNo());
+                    Log.i("Saved Status", "" + database.addReceiptDetails_Server(f));
+                }
+
+            } catch (Exception exception) {
 
             }
 

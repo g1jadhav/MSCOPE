@@ -16,16 +16,16 @@ import java.util.ArrayList;
 
 import static android.content.ContentValues.TAG;
 
-public class databaseHelper extends SQLiteOpenHelper {
+public class databaseHelper extends   SQLiteOpenHelper{
 
     private static final String DATABASE_NAME = "mipl.db";
-
     static databaseHelper sInstance;
-    public databaseHelper(Context context) {
-        super(context, DATABASE_NAME,null , 12);
 
+    public databaseHelper(Context context) {
+        super(context, DATABASE_NAME,null , 13);
         SQLiteDatabase db = getWritableDatabase();
     }
+
     public static synchronized databaseHelper getInstance(Context context) {
         // Use the application context, which will ensure that you
         // don't accidentally leak an Activity's context.
@@ -35,6 +35,7 @@ public class databaseHelper extends SQLiteOpenHelper {
         }
         return sInstance;
     }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
 

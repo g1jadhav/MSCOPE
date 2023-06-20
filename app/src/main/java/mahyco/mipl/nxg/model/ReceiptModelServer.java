@@ -2,53 +2,68 @@ package mahyco.mipl.nxg.model;
 
 public class ReceiptModelServer {
 
+    public int getTempId() {
+        return TempId;
+    }
 
-    public String getGrowerId() {
+    public void setTempId(int tempId) {
+        TempId = tempId;
+    }
+
+    public int getGrowerId() {
         return GrowerId;
     }
 
-    public void setGrowerId(String growerId) {
+    public void setGrowerId(int growerId) {
         GrowerId = growerId;
     }
 
-    public String getGrowerName() {
-        return GrowerName;
+    public int getProductionClusterId() {
+        return ProductionClusterId;
     }
 
-    public void setGrowerName(String growerName) {
-        GrowerName = growerName;
+    public void setProductionClusterId(int productionClusterId) {
+        ProductionClusterId = productionClusterId;
     }
 
-    public String getIssued_seed_area() {
-        return Issued_seed_area;
+    public double getIssueSeedArea() {
+        return IssueSeedArea;
     }
 
-    public void setIssued_seed_area(String issued_seed_area) {
-        Issued_seed_area = issued_seed_area;
+    public void setIssueSeedArea(double issueSeedArea) {
+        IssueSeedArea = issueSeedArea;
     }
 
-    public String getProduction_code() {
-        return Production_code;
+    public String getProductionCode() {
+        return ProductionCode;
     }
 
-    public void setProduction_code(String production_code) {
-        Production_code = production_code;
+    public void setProductionCode(String productionCode) {
+        ProductionCode = productionCode;
     }
 
-    public String getVillage() {
-        return Village;
+    public int getVillageId() {
+        return VillageId;
     }
 
-    public void setVillage(String village) {
-        Village = village;
+    public void setVillageId(int villageId) {
+        VillageId = villageId;
     }
 
-    public String getExisting_area() {
-        return Existing_area;
+    public int getCountryId() {
+        return CountryId;
     }
 
-    public void setExisting_area(String existing_area) {
-        Existing_area = existing_area;
+    public void setCountryId(int countryId) {
+        CountryId = countryId;
+    }
+
+    public double getExisitingArea() {
+        return ExisitingArea;
+    }
+
+    public void setExisitingArea(double exisitingArea) {
+        ExisitingArea = exisitingArea;
     }
 
     public String getIsSeedReceipt() {
@@ -67,35 +82,43 @@ public class ReceiptModelServer {
         Reason = reason;
     }
 
-    public String getBatchno() {
-        return Batchno;
+    public String getBatchNo() {
+        return BatchNo;
     }
 
-    public void setBatchno(String batchno) {
-        Batchno = batchno;
+    public void setBatchNo(String batchNo) {
+        BatchNo = batchNo;
     }
 
-    public String getYeildinkg() {
+    public String getReceiptBatchNo() {
+        return ReceiptBatchNo;
+    }
+
+    public void setReceiptBatchNo(String receiptBatchNo) {
+        ReceiptBatchNo = receiptBatchNo;
+    }
+
+    public int getYeildinkg() {
         return Yeildinkg;
     }
 
-    public void setYeildinkg(String yeildinkg) {
+    public void setYeildinkg(int yeildinkg) {
         Yeildinkg = yeildinkg;
     }
 
-    public String getNoofbags() {
+    public int getNoofbags() {
         return Noofbags;
     }
 
-    public void setNoofbags(String noofbags) {
+    public void setNoofbags(int noofbags) {
         Noofbags = noofbags;
     }
 
-    public String getWeightinkg() {
+    public int getWeightinkg() {
         return Weightinkg;
     }
 
-    public void setWeightinkg(String weightinkg) {
+    public void setWeightinkg(int weightinkg) {
         Weightinkg = weightinkg;
     }
 
@@ -107,73 +130,104 @@ public class ReceiptModelServer {
         Serviceprovider = serviceprovider;
     }
 
-    public String getGrower_mobile_no() {
-        return Grower_mobile_no;
+    public String getBankName() {
+        return BankName;
     }
 
-    public void setGrower_mobile_no(String grower_mobile_no) {
-        Grower_mobile_no = grower_mobile_no;
+    public void setBankName(String bankName) {
+        BankName = bankName;
     }
 
-    public String getDate_of_field_visit() {
-        return Date_of_field_visit;
+    public String getIFSCCode() {
+        return IFSCCode;
     }
 
-    public void setDate_of_field_visit(String date_of_field_visit) {
-        Date_of_field_visit = date_of_field_visit;
+    public void setIFSCCode(String IFSCCode) {
+        this.IFSCCode = IFSCCode;
     }
 
-    public String getStaff_name() {
-        return Staff_name;
+    public String getAccountNo() {
+        return AccountNo;
     }
 
-    public void setStaff_name(String staff_name) {
-        Staff_name = staff_name;
+    public void setAccountNo(String accountNo) {
+        AccountNo = accountNo;
     }
 
-    public String getStaffID() {
-        return StaffID;
+    public String getGrowerMobileNo() {
+        return GrowerMobileNo;
     }
 
-    public void setStaffID(String staffID) {
-        StaffID = staffID;
+    public void setGrowerMobileNo(String growerMobileNo) {
+        GrowerMobileNo = growerMobileNo;
     }
 
-    public String getCountryID() {
-        return CountryID;
+    public String getFieldVisitDt() {
+        return FieldVisitDt;
     }
 
-    public void setCountryID(String countryID) {
-        CountryID = countryID;
+    public void setFieldVisitDt(String fieldVisitDt) {
+        FieldVisitDt = fieldVisitDt;
     }
 
-    String GrowerId;//": 132,
-    String GrowerName;//": "2-132 CHIDEYA CHIEF(3rd Visit.)",
-    String Issued_seed_area;//": "0.10",
-    String Production_code;//": "COTTON 101",
-    String Village;//": "CHIMPAMBANA, NYAKAMBA, DOLO, CHIKWAWA, SHIRE VALLEY,CHIMPAMBANA FP SCHOOL",
-    String Existing_area;//": "0.01",
-    String IsSeedReceipt;//": "Yes",
-    String Reason;//": "",
-    String Batchno;//": "AMW000001",
-    String Yeildinkg;//": "10",
-    String Noofbags;//": "200",
-    String Weightinkg;//": "567",
-    String Serviceprovider;//": "A",
-    String Grower_mobile_no;//": "0883767642",
-    String Date_of_field_visit;//": "5/19/2023 12:00:00 AM",
-    String Staff_name;//": "CHINSISI LOGEYAH",
-    String StaffID;//": "UMW07",
-    String CountryID;//": 1
-
-    public String getReceiptBatchno() {
-        return ReceiptBatchno;
+    public String getExtraCol1() {
+        return ExtraCol1;
     }
 
-    public void setReceiptBatchno(String receiptBatchno) {
-        ReceiptBatchno = receiptBatchno;
+    public void setExtraCol1(String extraCol1) {
+        ExtraCol1 = extraCol1;
     }
 
-    String ReceiptBatchno;//": 1
+    public String getExtraCol2() {
+        return ExtraCol2;
+    }
+
+    public void setExtraCol2(String extraCol2) {
+        ExtraCol2 = extraCol2;
+    }
+
+    public String getAddress() {
+        return Address;
+    }
+
+    public void setAddress(String address) {
+        Address = address;
+    }
+
+    public String getCreatedBy() {
+        return CreatedBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        CreatedBy = createdBy;
+    }
+
+    int TempId;
+    int GrowerId;//": 0,
+    int ProductionClusterId;//": 0,
+    double IssueSeedArea;//": 0,
+    String ProductionCode;//": "string",
+    int VillageId;//": 0,
+    int CountryId;//": 0,
+    double ExisitingArea;//": 0,
+    String IsSeedReceipt;//": "string",
+    String Reason;//": "string",
+    String BatchNo;//": "string",
+    String ReceiptBatchNo;//": "string",
+    int Yeildinkg;//": 0,
+    int Noofbags;//": 0,
+    int Weightinkg;//": 0,
+    String Serviceprovider;//": "string",
+    String BankName;//": "string",
+    String IFSCCode;//": "string",
+    String AccountNo;//": "string",
+    String GrowerMobileNo;//": "string",
+    String FieldVisitDt;//": "2023-06-20T07:30:04.969Z",
+    String ExtraCol1;//": "string",
+    String ExtraCol2;//": "string",
+    String Address;//": "string",
+    String CreatedBy;//": "string"
+
+
 
 }
