@@ -1026,11 +1026,11 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                     f.setTempId(cursorCourses.getInt(0));
                             f.setGrowerId(cursorCourses.getInt(1));
                             f.setProductionClusterId(cursorCourses.getInt(2));
-                            f.setIssueSeedArea(cursorCourses.getInt(3));
+                            f.setIssueSeedArea(cursorCourses.getDouble(3));
                             f.setProductionCode(cursorCourses.getString(4));
                             f.setVillageId(cursorCourses.getInt(5));
                             f.setCountryId(cursorCourses.getInt(6));
-                            f.setExisitingArea(cursorCourses.getInt(7));
+                            f.setExisitingArea(cursorCourses.getDouble(7));
                             f.setIsSeedReceipt(cursorCourses.getString(8));
                             f.setReason(cursorCourses.getString(9));
                             f.setBatchNo(cursorCourses.getString(10));

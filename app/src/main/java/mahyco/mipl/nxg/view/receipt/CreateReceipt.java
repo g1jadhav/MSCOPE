@@ -85,10 +85,8 @@ public class CreateReceipt extends BaseActivity {
             staff_name_textview,
 
     et_bankname,
-    et_bankifsc,
-    et_bankaccount
-
-    ;
+            et_bankifsc,
+            et_bankaccount;
 
     CCFSerachSpinner
             field_ratings_for_spinner, area_lost_spinner, sp_serviceprovider;
@@ -115,10 +113,8 @@ public class CreateReceipt extends BaseActivity {
             str_date_of_field_visit_textview,
             str_staff_name_textview,
             str_bankname,
-    str_bankaccount,
-    str_bankifsc
-
-    ;
+            str_bankaccount,
+            str_bankifsc;
 
     Context context;
 
@@ -146,11 +142,11 @@ public class CreateReceipt extends BaseActivity {
     int receiptcount = 0;
 
 
-    LinearLayout ll_bankname,ll_bankaccountno,ll_bankifsc;
+    LinearLayout ll_bankname, ll_bankaccountno, ll_bankifsc;
     AppCompatTextView lbl_bankname;
-    int serviceprovidertype=0;  // 0= selected predefine SP , 1 - Bank , 2 -  Other SP (SP-Service Provider)
-    int clusterid=0;
-    int villageid=0;
+    int serviceprovidertype = 0;  // 0= selected predefine SP , 1 - Bank , 2 -  Other SP (SP-Service Provider)
+    int clusterid = 0;
+    int villageid = 0;
 
     @Override
     protected int getLayout() {
@@ -195,13 +191,13 @@ public class CreateReceipt extends BaseActivity {
         sp_serviceprovider = findViewById(R.id.sp_serviceprovider);
 
 
-        et_bankname= findViewById(R.id.et_bankname);
-                et_bankifsc= findViewById(R.id.et_bankifsc);
-                et_bankaccount= findViewById(R.id.et_bankaccountnumber);
-        ll_bankname=findViewById(R.id.ll_bank);
-        ll_bankifsc=findViewById(R.id.ll_bankifsc);
-        ll_bankaccountno=findViewById(R.id.ll_bankaccount);
-        lbl_bankname=findViewById(R.id.lbl_bankname);
+        et_bankname = findViewById(R.id.et_bankname);
+        et_bankifsc = findViewById(R.id.et_bankifsc);
+        et_bankaccount = findViewById(R.id.et_bankaccountnumber);
+        ll_bankname = findViewById(R.id.ll_bank);
+        ll_bankifsc = findViewById(R.id.ll_bankifsc);
+        ll_bankaccountno = findViewById(R.id.ll_bankaccount);
+        lbl_bankname = findViewById(R.id.lbl_bankname);
 
 
         btn_save = findViewById(R.id.save_login);
@@ -212,32 +208,27 @@ public class CreateReceipt extends BaseActivity {
         sp_serviceprovider.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String strname=sp_serviceprovider.getSelectedItem().toString().trim();
-                if(strname.toLowerCase().contains("bank"))
-                {
+                String strname = sp_serviceprovider.getSelectedItem().toString().trim();
+                if (strname.toLowerCase().contains("bank")) {
                     ll_bankname.setVisibility(View.VISIBLE);
                     ll_bankifsc.setVisibility(View.VISIBLE);
                     ll_bankaccountno.setVisibility(View.VISIBLE);
                     lbl_bankname.setText("Bank Name");
-                    serviceprovidertype=1;
-                }
-                else  if(strname.toLowerCase().contains("other"))
-                {
+                    serviceprovidertype = 1;
+                } else if (strname.toLowerCase().contains("other")) {
 
                     ll_bankname.setVisibility(View.VISIBLE);
                     ll_bankifsc.setVisibility(View.GONE);
                     ll_bankaccountno.setVisibility(View.GONE);
                     lbl_bankname.setText("Other Service Provider");
-                    serviceprovidertype=2;
+                    serviceprovidertype = 2;
 
-                }
-                else
-                {
+                } else {
                     ll_bankname.setVisibility(View.GONE);
                     ll_bankifsc.setVisibility(View.GONE);
                     ll_bankaccountno.setVisibility(View.GONE);
                     lbl_bankname.setText("Bank Name");
-                    serviceprovidertype=0;
+                    serviceprovidertype = 0;
                 }
             }
 
@@ -272,8 +263,8 @@ public class CreateReceipt extends BaseActivity {
 
         prevExistingArea = Double.parseDouble(Preferences.get(context, Preferences.SELECTEVISITEXISITINGAREA));
 
-        clusterid= Integer.parseInt(Preferences.get(context,Preferences.SELECTED_CLUSTERIDFORSEEDRECEIPT).trim());
-        villageid=Integer.parseInt(Preferences.get(context,Preferences.SELECTEDCOUNTRYMASTERID).trim());
+        clusterid = Integer.parseInt(Preferences.get(context, Preferences.SELECTED_CLUSTERIDFORSEEDRECEIPT).trim());
+        villageid = Integer.parseInt(Preferences.get(context, Preferences.SELECTEDCOUNTRYMASTERID).trim());
 
         if (Preferences.get(context, Preferences.SELECTEDBATCHID) != null) {
             BatchNo = Preferences.get(context, Preferences.SELECTEDBATCHID);
@@ -283,8 +274,6 @@ public class CreateReceipt extends BaseActivity {
         receiptcount = 0;
         if (Preferences.get(context, Preferences.TOTALRECEIPTCOUNT) != null) {
             receiptcount = Integer.parseInt(Preferences.get(context, Preferences.TOTALRECEIPTCOUNT).toString().trim());
-
-
         }
         switch (receiptcount + 1) {
             case 1:
@@ -538,8 +527,22 @@ public class CreateReceipt extends BaseActivity {
             str_bankaccount = et_bankaccount.getText().toString().trim();
 
             if (validation()) {
+                String strtotalfemale = Preferences.get(context, Preferences.PREVTOTAL_FEMALE_PLANTS).trim();
+                if (receiptcount > 0) {
+                    int k = str_et_batchnoreceipt.length();
+                    String s = str_et_batchnoreceipt.substring(k - 1, k);
+                    if (s.equals("A")) {
+                        //  If it is first receipt then we are adding all the predefine paramters , like Existing ,issued , total female plants ...etc  to API Otherwise we will keep it zero .
+                    } else {
+                        str_issued_seed_area_textview = "0";
+                        str_existing_area_ha_edittext = "0";
+                        str_et_yeildinkg = "0";
+                        strtotalfemale = "0";
+                    }
+                }
 
                 receiptModel = new ReceiptModel();
+
 
                 receiptModel.setGrowerId(userid);
                 receiptModel.setProductionClusterId(clusterid);
@@ -561,8 +564,8 @@ public class CreateReceipt extends BaseActivity {
                 receiptModel.setAccountNo(str_bankaccount);
                 receiptModel.setGrowerMobileNo(str_grower_mobile_no_edittext);
                 receiptModel.setFieldVisitDt(str_date_of_field_visit_textview);
-                receiptModel.setExtraCol1(""+Preferences.get(context,Preferences.SELECTED_PARENTSEEDDISTRIBUTIONID).trim());
-                receiptModel.setExtraCol2(""+str_grower_name_textview);
+                receiptModel.setExtraCol1("" + Preferences.get(context, Preferences.SELECTED_PARENTSEEDDISTRIBUTIONID).trim());
+                receiptModel.setExtraCol2("" + strtotalfemale);
                 receiptModel.setAddress(str_village_textview);
                 receiptModel.setCreatedBy(staffcode);
 
@@ -724,40 +727,32 @@ public class CreateReceipt extends BaseActivity {
                 cnt++;
             }
 
-                if(serviceprovidertype==1)
-                {
-                    if(str_bankname.trim().equals(""))
-                    {
-                        cnt++;
-                        et_bankname.setError("Required");
-                    }
-                    if(str_bankaccount.trim().equals(""))
-                    {
-                        cnt++;
-                        et_bankaccount.setError("Required");
-                    }
-                    if(str_bankifsc.trim().equals(""))
-                    {
-                        cnt++;
-                        et_bankifsc.setError("Required");
-                    }
+            if (serviceprovidertype == 1) {
+                if (str_bankname.trim().equals("")) {
+                    cnt++;
+                    et_bankname.setError("Required");
                 }
-                if(serviceprovidertype==2)
-                {
-                    if(str_bankname.trim().equals(""))
-                    {
-                        cnt++;
-                        et_bankname.setError("Required");
-                    }
+                if (str_bankaccount.trim().equals("")) {
+                    cnt++;
+                    et_bankaccount.setError("Required");
                 }
+                if (str_bankifsc.trim().equals("")) {
+                    cnt++;
+                    et_bankifsc.setError("Required");
+                }
+            }
+            if (serviceprovidertype == 2) {
+                if (str_bankname.trim().equals("")) {
+                    cnt++;
+                    et_bankname.setError("Required");
+                }
+            }
 
-                if(serviceprovidertype==0)
-                {
-                    str_bankifsc="";
-                    str_bankaccount="";
-                    str_bankname="";
-                }
-
+            if (serviceprovidertype == 0) {
+                str_bankifsc = "";
+                str_bankaccount = "";
+                str_bankname = "";
+            }
 
 
             //Toast.makeText(context, "Total Validation " + cnt, Toast.LENGTH_SHORT).show();

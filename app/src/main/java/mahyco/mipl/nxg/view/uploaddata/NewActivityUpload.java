@@ -298,7 +298,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                         //Log.e("temporary"," after "+ lastClickTime);
                         /*14-12-2022 Added by Jeevan ended here*/
 
-
+                        field_visit_1st_upload.setEnabled(false);
                         uploadFirstVisit();
                     } else {
                         showNoInternetDialog(mContext, "No data available to upload");
@@ -322,8 +322,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                         lastClickTime = SystemClock.elapsedRealtime();
                         //Log.e("temporary"," after "+ lastClickTime);
                         /*14-12-2022 Added by Jeevan ended here*/
-
-
+                        seed_receipt_upload.setEnabled(false);
                         uplaodSeedReceipt();
                     } else {
                         showNoInternetDialog(mContext, "No data available to upload");
@@ -546,7 +545,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
         try {
             if (result.isResultFlag()) {
                 database.trucateTable("tbl_firstVisit");
-
+                field_visit_1st_upload.setEnabled(true);
                 showNoInternetDialog(mContext, totalFirstVisit + " Records Uploaded Successfully.");
                 totalFirstVisit = database.getAllFirstFieldVisit1().size();
                 field_visit_1st_no_of_records.setText(getString(R.string.no_of_records_for_upload, totalFirstVisit));
@@ -567,10 +566,12 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                 }
 
             } else {
+                field_visit_1st_upload.setEnabled(true);
                 showNoInternetDialog(mContext, "Result : " + result.getStatus() + "\nDetails :" + result.getComment());
             }
             Log.i("Result", result.getStatus() + "" + result.toString());
         } catch (Exception e) {
+            field_visit_1st_upload.setEnabled(true);
             Toast.makeText(mContext, "error" + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
@@ -579,15 +580,20 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
     public void onSeedReceiptDone(SuccessModel result) {
         try {
             if (result.isResultFlag()) {
+                seed_receipt_upload.setEnabled(true);
                 int k = database.getAllSeedReceipt().size();
                 database.trucateTable("tbl_seedreceipt");
                 showNoInternetDialog(mContext, k + " Records Uploaded Successfully.");
                 seed_receipt.setText(getString(R.string.no_of_records_for_upload, database.getAllSeedReceipt().size()));
             } else {
+                seed_receipt_upload.setEnabled(true);
+
                 showNoInternetDialog(mContext, "Result : " + result.getStatus() + "\nDetails :" + result.getComment());
             }
             Log.i("Result", result.getStatus() + "" + result.toString());
         } catch (Exception e) {
+            seed_receipt_upload.setEnabled(true);
+
             Toast.makeText(mContext, "error" + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 

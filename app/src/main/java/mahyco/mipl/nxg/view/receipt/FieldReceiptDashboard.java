@@ -89,6 +89,7 @@ public class FieldReceiptDashboard extends AppCompatActivity implements View.OnC
 
 
 
+
             currentStage = serverModel.getMandatoryFieldVisitId();
             Toast.makeText(mContext, "Selected Visit " + currentStage, Toast.LENGTH_SHORT).show();
 
