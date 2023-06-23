@@ -247,7 +247,7 @@ public class ReceiptGrowerAdapter extends RecyclerView.Adapter<ReceiptGrowerAdap
                                                 Preferences.save(context, Preferences.TOTALRECEIPTCOUNT, "" + s1);
                                                 Preferences.save(context,Preferences.SELECTED_CLUSTERIDFORSEEDRECEIPT, ""+model.getProductionClusterId());
                                                 Preferences.save(context,Preferences.SELECTED_PARENTSEEDDISTRIBUTIONID, ""+model.getParentSeedDistributionId());
-
+                                              //  Toast.makeText(context, ""+model.getProductionClusterId(), Toast.LENGTH_SHORT).show();
                                                 Intent intent = new Intent(context, FieldReceiptDashboard.class);
                                                 context.startActivity(intent);
 
@@ -272,6 +272,8 @@ public class ReceiptGrowerAdapter extends RecyclerView.Adapter<ReceiptGrowerAdap
                                 Preferences.save(context, Preferences.SELECTED_GROWERUNIQUECODE, "" + model.getGrowerUniqueCode());
                                 Preferences.save(context, Preferences.SELECTEDCROPECODE, "" + model.getCropCode());
                                 Preferences.save(context, Preferences.TOTALRECEIPTCOUNT, "" + s1);
+                                Preferences.save(context,Preferences.SELECTED_CLUSTERIDFORSEEDRECEIPT, ""+model.getProductionClusterId());
+                                Preferences.save(context,Preferences.SELECTED_PARENTSEEDDISTRIBUTIONID, ""+model.getParentSeedDistributionId());
 
                                 Intent intent = new Intent(context, FieldReceiptDashboard.class);
                                 context.startActivity(intent);
@@ -287,6 +289,9 @@ public class ReceiptGrowerAdapter extends RecyclerView.Adapter<ReceiptGrowerAdap
                                             Preferences.save(context, Preferences.SELECTED_GROWERPRODUCTIONCODE, "" + model.getProductionCode());
                                             Preferences.save(context, Preferences.SELECTED_GROWERUNIQUECODE, "" + model.getGrowerUniqueCode());
                                             Preferences.save(context, Preferences.SELECTEDCROPECODE, "" + model.getCropCode());
+                                            Preferences.save(context, Preferences.TOTALRECEIPTCOUNT, "" + s1);
+                                            Preferences.save(context,Preferences.SELECTED_CLUSTERIDFORSEEDRECEIPT, ""+model.getProductionClusterId());
+                                            Preferences.save(context,Preferences.SELECTED_PARENTSEEDDISTRIBUTIONID, ""+model.getParentSeedDistributionId());
 
                                             Intent intent = new Intent(context, FieldReceiptDashboard.class);
                                             context.startActivity(intent);

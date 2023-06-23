@@ -22,7 +22,7 @@ public class databaseHelper extends   SQLiteOpenHelper{
     static databaseHelper sInstance;
 
     public databaseHelper(Context context) {
-        super(context, DATABASE_NAME,null , 13);
+        super(context, DATABASE_NAME,null , 12);
         SQLiteDatabase db = getWritableDatabase();
     }
 

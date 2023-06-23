@@ -40,7 +40,7 @@ import mahyco.mipl.nxg.model.VisitDetailCoutModel;
 public class SqlightDatabase extends SQLiteOpenHelper {
 
     final static String DBName = "mipl.db";
-    final static int version = 13;
+    final static int version = 12;
     long count = 0;
     final String tbl_categorymaster = "tbl_categorymaster";
     final String tbl_locationmaster = "tbl_locationmaster";
@@ -523,9 +523,9 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                 "Reason text,\n" +
                 "BatchNo text,\n" +
                 "ReceiptBatchNo text,\n" +
-                "Yeildinkg  INTEGER,\n" +
+                "Yeildinkg  TEXT,\n" +
                 "Noofbags INTEGER,\n" +
-                "Weightinkg INTEGER,\n" +
+                "Weightinkg TEXT,\n" +
                 "Serviceprovider text,\n" +
                 "BankName text,\n" +
                 "IFSCCode text,\n" +
@@ -557,9 +557,9 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                 "Reason text,\n" +
                 "BatchNo text,\n" +
                 "ReceiptBatchNo text,\n" +
-                "Yeildinkg  INTEGER,\n" +
+                "Yeildinkg  TEXT,\n" +
                 "Noofbags INTEGER,\n" +
-                "Weightinkg INTEGER,\n" +
+                "Weightinkg TEXT,\n" +
                 "Serviceprovider text,\n" +
                 "BankName text,\n" +
                 "IFSCCode text,\n" +
@@ -1035,10 +1035,10 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                             f.setReason(cursorCourses.getString(9));
                             f.setBatchNo(cursorCourses.getString(10));
                             f.setReceiptBatchNo(cursorCourses.getString(11));
-                            f.setYeildinkg(cursorCourses.getInt(12));
+                            f.setYeildinkg(cursorCourses.getDouble(12));
                             f.setNoofbags(cursorCourses.getInt(13));
-                            f.setWeightinkg(cursorCourses.getInt(14));
-                            f.setServiceprovider(cursorCourses.getString(14));
+                            f.setWeightinkg(cursorCourses.getDouble(14));
+                            f.setServiceprovider(cursorCourses.getString(15));
                             f.setBankName(cursorCourses.getString(16));
                             f.setIFSCCode(cursorCourses.getString(17));
                             f.setAccountNo(cursorCourses.getString(18));
@@ -3293,7 +3293,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
         SQLiteDatabase myDb = null;
         try {
             myDb = this.getReadableDatabase();
-            String q = "select count(*)as cnt from tbl_seedreceiptmaster_server where GrowerId=" + userid+" and area_loss='No'";
+            String q = "select count(*)as cnt from tbl_seedreceiptmaster_server where GrowerId=" + userid+" and IsSeedReceipt='No'";
             Cursor cursorCourses = myDb.rawQuery(q, null);
             if (cursorCourses.moveToFirst()) {
                 cursorCourses.getInt(0);

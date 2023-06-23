@@ -98,13 +98,7 @@ public class ReceiptModel {
         ReceiptBatchNo = receiptBatchNo;
     }
 
-    public int getYeildinkg() {
-        return Yeildinkg;
-    }
 
-    public void setYeildinkg(int yeildinkg) {
-        Yeildinkg = yeildinkg;
-    }
 
     public int getNoofbags() {
         return Noofbags;
@@ -114,13 +108,7 @@ public class ReceiptModel {
         Noofbags = noofbags;
     }
 
-    public int getWeightinkg() {
-        return Weightinkg;
-    }
 
-    public void setWeightinkg(int weightinkg) {
-        Weightinkg = weightinkg;
-    }
 
     public String getServiceprovider() {
         return Serviceprovider;
@@ -214,9 +202,26 @@ public class ReceiptModel {
     String Reason;//": "string",
     String BatchNo;//": "string",
     String ReceiptBatchNo;//": "string",
-            int Yeildinkg;//": 0,
+            double Yeildinkg;//": 0,
             int Noofbags;//": 0,
-            int Weightinkg;//": 0,
+
+    public double getYeildinkg() {
+        return Yeildinkg;
+    }
+
+    public void setYeildinkg(double yeildinkg) {
+        Yeildinkg = yeildinkg;
+    }
+
+    public double getWeightinkg() {
+        return Weightinkg;
+    }
+
+    public void setWeightinkg(double weightinkg) {
+        Weightinkg = weightinkg;
+    }
+
+    double Weightinkg;//": 0,
     String Serviceprovider;//": "string",
     String BankName;//": "string",
     String IFSCCode;//": "string",

@@ -262,8 +262,14 @@ public class CreateReceipt extends BaseActivity {
         totalMalePlants = Integer.parseInt(Preferences.get(context, Preferences.PREVTOTAL_MALE_PLANTS));
 
         prevExistingArea = Double.parseDouble(Preferences.get(context, Preferences.SELECTEVISITEXISITINGAREA));
-
-        clusterid = Integer.parseInt(Preferences.get(context, Preferences.SELECTED_CLUSTERIDFORSEEDRECEIPT).trim());
+        if(Preferences.get(context, Preferences.SELECTED_CLUSTERIDFORSEEDRECEIPT).trim().equals(""))
+        {
+            clusterid=0;
+            Toast.makeText(context, "Cluster id is EMPTY", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            clusterid = Integer.parseInt(Preferences.get(context, Preferences.SELECTED_CLUSTERIDFORSEEDRECEIPT).trim());
+        }
         villageid = Integer.parseInt(Preferences.get(context, Preferences.SELECTEDCOUNTRYMASTERID).trim());
 
         if (Preferences.get(context, Preferences.SELECTEDBATCHID) != null) {
@@ -555,9 +561,9 @@ public class CreateReceipt extends BaseActivity {
                 receiptModel.setReason(str_reason_for_area_loss_spinner);
                 receiptModel.setBatchNo(str_et_batchno);
                 receiptModel.setReceiptBatchNo(str_et_batchnoreceipt);
-                receiptModel.setYeildinkg(Integer.parseInt(str_et_yeildinkg));
+                receiptModel.setYeildinkg(Double.parseDouble(str_et_yeildinkg));
                 receiptModel.setNoofbags(Integer.parseInt(str_et_noofbags));
-                receiptModel.setWeightinkg(Integer.parseInt(str_et_weightinkg));
+                receiptModel.setWeightinkg(Double.parseDouble(str_et_weightinkg));
                 receiptModel.setServiceprovider(str_sp_serviceprovider);
                 receiptModel.setBankName(str_bankname);
                 receiptModel.setIFSCCode(str_bankifsc);
