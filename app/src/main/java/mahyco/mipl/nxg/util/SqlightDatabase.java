@@ -522,7 +522,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                 "IsSeedReceipt text,\n" +
                 "Reason text,\n" +
                 "BatchNo text,\n" +
-                "ReceiptBatchNo text,\n" +
+                "ReceiptBatchNo text UNIQUE,\n" +
                 "Yeildinkg  TEXT,\n" +
                 "Noofbags INTEGER,\n" +
                 "Weightinkg TEXT,\n" +
@@ -3270,7 +3270,23 @@ public class SqlightDatabase extends SQLiteOpenHelper {
             myDb.close();
         }
     }
-
+    public int isReceiptBatchNumberExists(String batchnumber) {
+        SQLiteDatabase myDb = null;
+        try {
+            myDb = this.getReadableDatabase();
+            String q = "select count(*)as cnt from tbl_seedreceipt where ReceiptBatchNo='"+batchnumber+"'";
+            Cursor cursorCourses = myDb.rawQuery(q, null);
+            if (cursorCourses.moveToFirst()) {
+                cursorCourses.getInt(0);
+                return cursorCourses.getInt(0);
+            }
+            return 0;
+        } catch (Exception e) {
+            return 0;
+        } finally {
+            myDb.close();
+        }
+    }
     public int isServerReceiptDone(int userid) {
         SQLiteDatabase myDb = null;
         try {

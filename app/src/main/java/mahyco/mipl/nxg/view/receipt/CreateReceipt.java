@@ -594,38 +594,53 @@ public class CreateReceipt extends BaseActivity {
 //                receiptModel.setStaff_name_textview(str_staff_name_textview);
 //                receiptModel.setStaffID(staffcode);
 //                receiptModel.setReceiptBatchno(str_et_batchnoreceipt);
+              if(database.isReceiptBatchNumberExists(str_et_batchnoreceipt)>0)
+              {
+                  new AlertDialog.Builder(context)
+                          .setMessage("Receipt batch number already exists.")
+                          .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                              @Override
+                              public void onClick(DialogInterface dialog, int which) {
+                                  dialog.dismiss();
+                                 // finish();
 
-                if (database.addReceiptDetails(receiptModel)) {
-                    // Toast.makeText(context, "Data Saved Successfully..", Toast.LENGTH_SHORT).show();
+                              }
+                          })
+                          .setTitle("Receipt details.")
+                          .show();
+              }else
+              {
+                  if (database.addReceiptDetails(receiptModel)) {
+                      // Toast.makeText(context, "Data Saved Successfully..", Toast.LENGTH_SHORT).show();
 
-                    new AlertDialog.Builder(context)
-                            .setMessage("Data Saved Successfully")
-                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                    finish();
+                      new AlertDialog.Builder(context)
+                              .setMessage("Data Saved Successfully")
+                              .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                  @Override
+                                  public void onClick(DialogInterface dialog, int which) {
+                                      dialog.dismiss();
+                                      finish();
 
-                                }
-                            })
-                            .setTitle("Receipt details.")
-                            .show();
-                } else {
-                    // Toast.makeText(context, "Data Not Saved", Toast.LENGTH_SHORT).show();
-                    new AlertDialog.Builder(context)
-                            .setMessage("Something went wrong.")
-                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                    //finish();
+                                  }
+                              })
+                              .setTitle("Receipt details.")
+                              .show();
+                  } else {
+                      // Toast.makeText(context, "Data Not Saved", Toast.LENGTH_SHORT).show();
+                      new AlertDialog.Builder(context)
+                              .setMessage("Something went wrong.")
+                              .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                  @Override
+                                  public void onClick(DialogInterface dialog, int which) {
+                                      dialog.dismiss();
+                                      //finish();
 
-                                }
-                            })
-                            .setTitle("Receipt details.")
-                            .show();
-                }
-
+                                  }
+                              })
+                              .setTitle("Receipt details.")
+                              .show();
+                  }
+              }
                 Log.i("Values", str_grower_name_textview);
                 Log.i("Values", str_issued_seed_area_textview);
                 Log.i("Values", str_production_code_textview);
