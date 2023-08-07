@@ -141,7 +141,7 @@ public class ProductionCreateGrowerListActivity extends BaseActivity implements 
         ArrayList<String> mYearList = new ArrayList<>();
 
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Parent Seed Distribution");
+        toolbar.setTitle("Seed Production Registration");
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
