@@ -48,7 +48,9 @@ import mahyco.mipl.nxg.model.ReceiptModel;
 import mahyco.mipl.nxg.model.ReceiptModelServer;
 import mahyco.mipl.nxg.model.SeasonModel;
 import mahyco.mipl.nxg.model.SeedBatchNoModel;
+import mahyco.mipl.nxg.model.SeedProductionRegistrationServerModel;
 import mahyco.mipl.nxg.model.SeedReceiptModel;
+import mahyco.mipl.nxg.model.SeedRegistraionLocalModel;
 import mahyco.mipl.nxg.model.StoreAreaModel;
 import mahyco.mipl.nxg.model.SuccessModel;
 import mahyco.mipl.nxg.model.VillageModel;
@@ -74,6 +76,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
     private AppCompatButton mDistributionUploadBtn;
     private AppCompatButton field_visit_1st_upload;
     private AppCompatButton seed_receipt_upload;
+    private AppCompatButton seed_registration_upload;
 
     private Context mContext;
     private List<GrowerModel> mGrowerList;
@@ -86,6 +89,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
     private TextView mSeedDistributionRecords;
     private TextView field_visit_1st_no_of_records;
     private TextView seed_receipt;
+    private TextView seed_registration_Records;
 
     private int stid = 0;
     private GrowerRegistrationAPI registrationAPI;
@@ -133,6 +137,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
 
         field_visit_1st_upload = findViewById(R.id.field_visit_1st_upload);
         seed_receipt_upload = findViewById(R.id.seed_receipt_upload);
+        seed_registration_upload = findViewById(R.id.seed_registration_upload);
         //  txt_visit_count = findViewById(R.id.txt_visit_count);
         txt1 = findViewById(R.id.txt1);
         txt2 = findViewById(R.id.txt2);
@@ -143,6 +148,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
 
         field_visit_1st_upload.setOnClickListener(this);
         seed_receipt_upload.setOnClickListener(this);
+        seed_registration_upload.setOnClickListener(this);
 
         mOrganizerRegistrationBtn = findViewById(R.id.organizer_registration_upload);
         mOrganizerRegistrationBtn.setOnClickListener(this);
@@ -156,6 +162,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
         mSeedDistributionRecords = findViewById(R.id.seed_distribution_no_of_records);
         field_visit_1st_no_of_records = findViewById(R.id.field_visit_1st_no_of_records);
         seed_receipt = findViewById(R.id.seed_receipt);
+        seed_registration_Records = findViewById(R.id.seed_registration);
 
 
         mGrowerRecords.setText(getString(R.string.no_of_records_for_upload, 0));
@@ -163,6 +170,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
         mSeedDistributionRecords.setText(getString(R.string.no_of_records_for_upload, 0));
         field_visit_1st_no_of_records.setText(getString(R.string.no_of_records_for_upload, database.getAllFirstFieldVisit1().size()));
         seed_receipt.setText(getString(R.string.no_of_records_for_upload, database.getAllSeedReceipt().size()));
+        seed_registration_Records.setText(getString(R.string.no_of_records_for_upload, database.getProductionRegistration().size()));
         //  txt_visit_count.setText(database.getCount());
 
         String data = database.getCount();
@@ -324,6 +332,30 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                         /*14-12-2022 Added by Jeevan ended here*/
                         seed_receipt_upload.setEnabled(false);
                         uplaodSeedReceipt();
+                    } else {
+                        showNoInternetDialog(mContext, "No data available to upload");
+                    }
+                } else {
+                    showNoInternetDialog(mContext, "Please check your internet connection");
+                }
+                break;
+
+            case R.id.seed_registration_upload:
+                if (checkInternetConnection(mContext)) {
+                    int k = database.getProductionRegistration().size();
+                    if (k > 0) {
+                        /*14-12-2022 Added by Jeevan*/
+                      /*  Log.e("temporary"," before SystemClock.elapsedRealtime() "+ SystemClock.elapsedRealtime() +
+                                " lastClickTime " + lastClickTime +" = " +
+                                (SystemClock.elapsedRealtime() - lastClickTime));*/
+                        if (SystemClock.elapsedRealtime() - lastClickTime < 5500) {
+                            return;
+                        }
+                        lastClickTime = SystemClock.elapsedRealtime();
+                        //Log.e("temporary"," after "+ lastClickTime);
+                        /*14-12-2022 Added by Jeevan ended here*/
+                        seed_registration_upload.setEnabled(false);
+                        uplaodProductionRegistration();
                     } else {
                         showNoInternetDialog(mContext, "No data available to upload");
                     }
@@ -597,6 +629,28 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
             Toast.makeText(mContext, "error" + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    @Override
+    public void onProductionRegistrationReceiptDone(SuccessModel result) {
+        try {
+            if (result.isResultFlag()) {
+                seed_registration_upload.setEnabled(true);
+                int k = database.getProductionRegistration().size();
+                database.trucateTable("tbl_seed_registration");
+                showNoInternetDialog(mContext, k + " Records Uploaded Successfully.");
+                seed_registration_Records.setText(getString(R.string.no_of_records_for_upload, database.getProductionRegistration().size()));
+            } else {
+                seed_registration_upload.setEnabled(true);
+
+                showNoInternetDialog(mContext, "Result : " + result.getStatus() + "\nDetails :" + result.getComment());
+            }
+            Log.i("Result", result.getStatus() + "" + result.toString());
+        } catch (Exception e) {
+            seed_registration_upload.setEnabled(true);
+
+            Toast.makeText(mContext, "error" + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private class GetRegistrationAsyncTaskList extends AsyncTask<Void, Void, Void> {
@@ -1331,6 +1385,11 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
     }
 
     @Override
+    public void onAllSeedRegistrationData(List<SeedProductionRegistrationServerModel> result) {
+
+    }
+
+    @Override
     public void onListSeedReceiptNoResponse(List<SeedReceiptModel> lst) {
         if (mParentSeedReceiptList != null) {
             mParentSeedReceiptList.clear();
@@ -1644,5 +1703,68 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
         }
     }
 
+    void uplaodProductionRegistration() {
+        ArrayList<SeedRegistraionLocalModel> f = database.getProductionRegistration();
+        if (f.size() > 0) {
+            try {
 
+
+                JsonObject jsonObject_registration = new JsonObject();
+                JsonArray jsonArray = new JsonArray();
+                for (SeedRegistraionLocalModel fieldVisitModel : f) {
+                    try {
+                        JsonObject json_visitModel = new JsonObject();
+/*
+                        json_visitModel.addProperty("GrowerId", fieldVisitModel.getGrowerId());
+                        json_visitModel.addProperty("GrowerName", fieldVisitModel.getGrowerName());
+                        json_visitModel.addProperty("Issued_seed_area", fieldVisitModel.getIssued_seed_area());
+                        json_visitModel.addProperty("Production_code", fieldVisitModel.getProduction_code());
+                        json_visitModel.addProperty("Village", fieldVisitModel.getVillage());
+                        json_visitModel.addProperty("Existing_area", fieldVisitModel.getExisting_area());
+                        json_visitModel.addProperty("IsSeedReceipt", fieldVisitModel.getArea_loss());
+                        json_visitModel.addProperty("Reason", fieldVisitModel.getReason_for_area_loss());
+                        json_visitModel.addProperty("Yeildinkg", fieldVisitModel.getYeildinkg());
+                        json_visitModel.addProperty("Batchno", fieldVisitModel.getBatchno());
+                        json_visitModel.addProperty("Noofbags", fieldVisitModel.getNoofbags());
+                        json_visitModel.addProperty("Weightinkg", fieldVisitModel.getWeightinkg());
+                        json_visitModel.addProperty("Serviceprovider", fieldVisitModel.getServiceprovider());
+                        json_visitModel.addProperty("Grower_mobile_no", fieldVisitModel.getGrower_mobile_no_edittext());
+                        json_visitModel.addProperty("Date_of_field_visit", fieldVisitModel.getDate_of_field_visit_textview());
+                        json_visitModel.addProperty("Staff_name", fieldVisitModel.getStaff_name_textview());
+                        json_visitModel.addProperty("StaffID", fieldVisitModel.getStaffID());
+                        json_visitModel.addProperty("CountryID", Preferences.get(mContext, Preferences.COUNTRYCODE));
+                        json_visitModel.addProperty("ReceiptBatchno", fieldVisitModel.getReceiptBatchno());
+*/
+
+                        json_visitModel.addProperty("GrowerId", fieldVisitModel.getGrowerid());//: 0,
+                        json_visitModel.addProperty("CountryId", Preferences.get(mContext, Preferences.COUNTRYCODE));//; 0,
+                        json_visitModel.addProperty("SeasonId", fieldVisitModel.getSeasonid());//: 0,
+                        json_visitModel.addProperty("CropId", fieldVisitModel.getCropid());//: 0,
+                        json_visitModel.addProperty("ProductionClusterId", fieldVisitModel.getClusterid());//: 0,
+                        json_visitModel.addProperty("PlantingYear", fieldVisitModel.getPlantingyear());//: 0,: "string",
+                        json_visitModel.addProperty("SeedProductionArea", fieldVisitModel.getSeedarea());//: 0,: 0,
+                        json_visitModel.addProperty("MobileNo", fieldVisitModel.getMobile());//: 0,: "string",
+                        json_visitModel.addProperty("SeedRegDt", fieldVisitModel.getIssuedate());//: 0,: "2023-08-01T10:03:47.723Z",
+                        json_visitModel.addProperty("CreatedBy", fieldVisitModel.getCreatedbyid());//: 0,: "string"
+
+
+                        jsonArray.add(json_visitModel);
+                    } catch (Exception e) {
+                        Log.i("Getting Error ", e.getMessage());
+                    }
+                }
+                jsonObject_registration.add("seedProductionRegistrationModels", jsonArray);
+
+                registrationAPI.createProductionRegistration(jsonObject_registration);
+                Log.i("Final Json R :", jsonObject_registration.toString());
+
+
+            } catch (Exception e) {
+                Log.i("JsonDataError : ", e.getMessage());
+            }
+        } else {
+            showNoInternetDialog(mContext, "No Records Found.");
+
+        }
+    }
 }

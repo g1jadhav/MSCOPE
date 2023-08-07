@@ -354,6 +354,7 @@
     <string name="expected_date_of_despatching">Expected date of despatching<font color='#FF0000'>*</font></string>
     <string name="male_parent_uprooted">Male parent uprooted<font color='#FF0000'>*</font></string>
     <string name="field_ratings_for_quality">Field ratings for quality<font color='#FF0000'>*</font></string>
+    <string name="productionseedcreate">Production Seed Registration</string>
 
     <string-array name="country_array">
         <item>Select Country</item>

@@ -3,9 +3,9 @@ package mahyco.mipl.nxg.util;
 public class Constants {
     //Live Server
   //  public static final String BASE_URL = "http://10.80.50.26/MIPL/api/";
-  public static final String BASE_URL = "https://mscope.mahyco.com/api/";
+  //public static final String BASE_URL = "https://mscope.mahyco.com/api/";
   // Test Server
-  //public static final String BASE_URL = "http://10.80.50.153/MIPL/api/";
+  public static final String BASE_URL = "http://10.80.50.153/MIPL/api/";
 
     public static final String CREATEUSER ="staffUser/create" ;
     public static final String GETCATEGORY = "countryCategory/getall";
@@ -17,7 +17,9 @@ public class Constants {
     public static final String GETALL_VILLAGEVISIT = "parentSeedDistributionVillages/getall";
     public static final String CHANAGE_PASSWORD ="staffUser/changePassword" ;
   public static final String SUBMIT_SEEDRECEIPT = "seedReceipt/create";
+  public static final String SUBMIT_PRODUCTIONREGISTRATION = "seedProductionRegistration/create";
     public static final String GETALLSEEDRECEIPTDATA = "seedReceipt/getall";
+    public static final String GETALLSEEDREGISTRATIONDATA = "seedProductionRegistration/getall";
     static final String CHECK_LOGIN="customToken/customToken";
     public static final String GET_SEASON = "season/getall";
     public static final String GET_CROP = "crop/getall";

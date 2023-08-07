@@ -605,6 +605,11 @@ public class NewGrowerRegistration extends BaseActivity implements Listener, Vie
 
     }
 
+    @Override
+    public void onProductionRegistrationReceiptDone(SuccessModel result) {
+
+    }
+
     public void front(View v) {
         try {
             PickImageDialog.build(new PickSetup())

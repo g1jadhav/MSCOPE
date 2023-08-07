@@ -26,6 +26,7 @@ import mahyco.mipl.nxg.model.ReceiptModel;
 import mahyco.mipl.nxg.model.ReceiptModelServer;
 import mahyco.mipl.nxg.model.SeasonModel;
 import mahyco.mipl.nxg.model.SeedBatchNoModel;
+import mahyco.mipl.nxg.model.SeedProductionRegistrationServerModel;
 import mahyco.mipl.nxg.model.SeedReceiptModel;
 import mahyco.mipl.nxg.model.VillageModel;
 import mahyco.mipl.nxg.util.Preferences;
@@ -611,6 +612,49 @@ public class DownloadCategoryApi {
 
                 @Override
                 public void onFailure(Call<List<ReceiptModelServer>> call, Throwable t) {
+                    if (progressDialog.isShowing())
+                        progressDialog.dismiss();
+                    Log.e("Error is", t.getMessage());
+                }
+            });
+        } catch (Exception e) {
+
+        }
+    }
+
+    public void getAllSeedProductionRegistrtaion(JsonObject s) {
+
+        try {
+            if (!progressDialog.isShowing())
+                progressDialog.show();
+
+
+            Call<List<SeedProductionRegistrationServerModel>> call = null;
+            call = RetrofitClient.getInstance().getMyApi().getAllProductionRegistration(s);
+            call.enqueue(new Callback<List<SeedProductionRegistrationServerModel>>() {
+                @Override
+                public void onResponse(Call<List<SeedProductionRegistrationServerModel>> call, Response<List<SeedProductionRegistrationServerModel>> response) {
+
+                    if (progressDialog.isShowing())
+                        progressDialog.dismiss();
+
+                    if (response.body() != null) {
+                        List<SeedProductionRegistrationServerModel> result = response.body();
+                        try {
+                            resultOutput.onAllSeedRegistrationData(result);
+                        } catch (NullPointerException e) {
+                            Toast.makeText(context, "Error is " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            Toast.makeText(context, "Error is " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    } else {
+                        // Preferences.save(context,Preferences.DISTRIBUTION_LIST_DOWNLOAD,"emptyList");
+                        Toast.makeText(context, "List is Empty", Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<SeedProductionRegistrationServerModel>> call, Throwable t) {
                     if (progressDialog.isShowing())
                         progressDialog.dismiss();
                     Log.e("Error is", t.getMessage());

@@ -54,6 +54,7 @@ import mahyco.mipl.nxg.view.fieldreport.FiledMonitoringReportEntry;
 import mahyco.mipl.nxg.view.fieldreport.FiledReportDashboard;
 import mahyco.mipl.nxg.view.growerregistration.NewGrowerRegistration;
 import mahyco.mipl.nxg.view.login.Login;
+import mahyco.mipl.nxg.view.prod_seed_create.ProductionCreateGrowerListActivity;
 import mahyco.mipl.nxg.view.receipt.ReceiptGrowerSelectionActivity;
 import mahyco.mipl.nxg.view.seeddistribution.OldGrowerSeedDistribution;
 import mahyco.mipl.nxg.view.uploaddata.NewActivityUpload;
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     String plantid, roleid;
 
     CardView card_downlaodMaster, card_upload_data_layout, card_grower, card_organizer,
-            card_parent_seed_distributin_layout,card_receipt;
+            card_parent_seed_distributin_layout,card_receipt,card_production_seed_create;
     /*Added by jeevan 7-12-2022*/
     CardView mFieldMonitoringReportEntryLayout;
     /*Added by jeevan 7-12-2022 ended here*/
@@ -130,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mFieldMonitoringReportEntryLayout.setOnClickListener(this);
         /*Added by jeevan 7-12-2022 ended here*/
         card_receipt = (CardView) findViewById(R.id.seedreceipts);
+        card_production_seed_create = (CardView) findViewById(R.id.production_seed_create);
 
         card_receipt.setOnClickListener(this);
         card_parent_seed_distributin_layout.setOnClickListener(this);
@@ -137,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         card_upload_data_layout.setOnClickListener(this);
         card_grower.setOnClickListener(this);
         card_organizer.setOnClickListener(this);
+        card_production_seed_create.setOnClickListener(this);
 
         /*Added by Jeevan 28-11-2022*/
         mainActivityAPI.getAppUpdate(getPackageName());
@@ -383,6 +386,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 } else {
                     Toast.makeText(context, "Please download seed distribution master data in download master data first", Toast.LENGTH_SHORT).show();
                 }
+                break;
+                case R.id.production_seed_create:
+
+                        Intent intent = new Intent(context, ProductionCreateGrowerListActivity.class);
+                        startActivity(intent);
+
                 break;
         }
     }

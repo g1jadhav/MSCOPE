@@ -19,4 +19,5 @@ public interface Listener {
     void onFirstVisitRegister(SuccessModel result);
 
     void onSeedReceiptDone(SuccessModel result);
+    void onProductionRegistrationReceiptDone(SuccessModel result);
 }

@@ -31,7 +31,9 @@ import mahyco.mipl.nxg.model.ReceiptModel;
 import mahyco.mipl.nxg.model.ReceiptModelServer;
 import mahyco.mipl.nxg.model.SeasonModel;
 import mahyco.mipl.nxg.model.SeedBatchNoModel;
+import mahyco.mipl.nxg.model.SeedProductionRegistrationServerModel;
 import mahyco.mipl.nxg.model.SeedReceiptModel;
+import mahyco.mipl.nxg.model.SeedRegistraionLocalModel;
 import mahyco.mipl.nxg.model.StoreAreaModel;
 import mahyco.mipl.nxg.model.VillageModel;
 import mahyco.mipl.nxg.model.VisitDetailCoutModel;
@@ -541,9 +543,6 @@ public class SqlightDatabase extends SQLiteOpenHelper {
         db.execSQL(tbl_receiptmaster);
 
 
-
-
-
         String tbl_receiptmaster_server = "Create TABLE tbl_seedreceiptmaster_server \n" +
                 "(\n" +
                 "GrowerId INTEGER,\n" +
@@ -573,6 +572,71 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                 ")";
 
         db.execSQL(tbl_receiptmaster_server);
+
+        String tbl_seed_registration = "Create Table tbl_seedregistration\n" +
+                "(\n" +
+                "tempid INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                "growerid INTEGER UNIQUE,\n" +
+                "growername text,\n" +
+                "nationalis text,\n" +
+                "address text,\n" +
+                "plantingyear text,\n" +
+                "seasonid INTEGER,\n" +
+                "seasonnmae text,\n" +
+                "cropid INTEGER,\n" +
+                "cropname text,\n" +
+                "clusterid INTEGER,\n" +
+                "clustername text,\n" +
+                "seedarea text,\n" +
+                "mobile text,\n" +
+                "issuedate text,\n" +
+                "createdbyid text,\n" +
+                "createdbyname TEXT\n" +
+                ")\n";
+
+        db.execSQL(tbl_seed_registration);
+
+        String tbl_seed_production_reg_server = "Create table tbl_seed_production_reg_server\n" +
+                "(\n" +
+                "SeedProductionRegId INTEGER,\n" +
+                "GrowerId  INTEGER,\n" +
+                "CountryId  INTEGER,\n" +
+                "SeasonId  INTEGER,\n" +
+                "CropId  INTEGER,\n" +
+                "ProductionClusterId  INTEGER,\n" +
+                "PlantingYear TEXT,\n" +
+                "SeedProductionArea TEXT,\n" +
+                "MobileNo TEXT,\n" +
+                "SeedRegDt TEXT,\n" +
+                "IsDelete TEXT,\n" +
+                "CreatedBy TEXT,\n" +
+                "CreatedDt TEXT,\n" +
+                "ModifiedBy TEXT,\n" +
+                "ModifiedDt TEXT,\n" +
+                "UserId INTEGER,\n" +
+                "LoginId INTEGER,\n" +
+                "CountryMasterId INTEGER,\n" +
+                "UniqueId TEXT,\n" +
+                "UserType TEXT,\n" +
+                "LandMark TEXT,\n" +
+                "Addr TEXT,\n" +
+                "FullName TEXT,\n" +
+                "DOB TEXT,\n" +
+                "Gender TEXT,\n" +
+                "UniqueCode TEXT,\n" +
+                "IdProofFrontCopy TEXT,\n" +
+                "IdProofBackCopy TEXT,\n" +
+                "UploadPhoto TEXT,\n" +
+                "RegDt TEXT,\n" +
+                "CountryName TEXT,\n" +
+                "CategoryName TEXT,\n" +
+                "KeyValue TEXT,\n" +
+                "KeyCode TEXT,\n" +
+                "UserName TEXT,\n" +
+                "UserCode TEXT\n" +
+                ")";
+
+        db.execSQL(tbl_seed_production_reg_server);
 
     }
 
@@ -1024,30 +1088,30 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                     ReceiptModel f = new ReceiptModel();
 
                     f.setTempId(cursorCourses.getInt(0));
-                            f.setGrowerId(cursorCourses.getInt(1));
-                            f.setProductionClusterId(cursorCourses.getInt(2));
-                            f.setIssueSeedArea(cursorCourses.getDouble(3));
-                            f.setProductionCode(cursorCourses.getString(4));
-                            f.setVillageId(cursorCourses.getInt(5));
-                            f.setCountryId(cursorCourses.getInt(6));
-                            f.setExisitingArea(cursorCourses.getDouble(7));
-                            f.setIsSeedReceipt(cursorCourses.getString(8));
-                            f.setReason(cursorCourses.getString(9));
-                            f.setBatchNo(cursorCourses.getString(10));
-                            f.setReceiptBatchNo(cursorCourses.getString(11));
-                            f.setYeildinkg(cursorCourses.getDouble(12));
-                            f.setNoofbags(cursorCourses.getInt(13));
-                            f.setWeightinkg(cursorCourses.getDouble(14));
-                            f.setServiceprovider(cursorCourses.getString(15));
-                            f.setBankName(cursorCourses.getString(16));
-                            f.setIFSCCode(cursorCourses.getString(17));
-                            f.setAccountNo(cursorCourses.getString(18));
-                            f.setGrowerMobileNo(cursorCourses.getString(19));
-                            f.setFieldVisitDt(cursorCourses.getString(20));
-                            f.setExtraCol1(cursorCourses.getString(21));
-                            f.setExtraCol2(cursorCourses.getString(22));
-                            f.setAddress(cursorCourses.getString(23));
-                            f.setCreatedBy(cursorCourses.getString(24));
+                    f.setGrowerId(cursorCourses.getInt(1));
+                    f.setProductionClusterId(cursorCourses.getInt(2));
+                    f.setIssueSeedArea(cursorCourses.getDouble(3));
+                    f.setProductionCode(cursorCourses.getString(4));
+                    f.setVillageId(cursorCourses.getInt(5));
+                    f.setCountryId(cursorCourses.getInt(6));
+                    f.setExisitingArea(cursorCourses.getDouble(7));
+                    f.setIsSeedReceipt(cursorCourses.getString(8));
+                    f.setReason(cursorCourses.getString(9));
+                    f.setBatchNo(cursorCourses.getString(10));
+                    f.setReceiptBatchNo(cursorCourses.getString(11));
+                    f.setYeildinkg(cursorCourses.getDouble(12));
+                    f.setNoofbags(cursorCourses.getInt(13));
+                    f.setWeightinkg(cursorCourses.getDouble(14));
+                    f.setServiceprovider(cursorCourses.getString(15));
+                    f.setBankName(cursorCourses.getString(16));
+                    f.setIFSCCode(cursorCourses.getString(17));
+                    f.setAccountNo(cursorCourses.getString(18));
+                    f.setGrowerMobileNo(cursorCourses.getString(19));
+                    f.setFieldVisitDt(cursorCourses.getString(20));
+                    f.setExtraCol1(cursorCourses.getString(21));
+                    f.setExtraCol2(cursorCourses.getString(22));
+                    f.setAddress(cursorCourses.getString(23));
+                    f.setCreatedBy(cursorCourses.getString(24));
 /*
                     f.setTempId(cursorCourses.getInt(0));
                     f.setGrowerId(cursorCourses.getString(1));
@@ -3221,18 +3285,18 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                     "'" + receiptModel.getReason() + "'," +
                     "'" + receiptModel.getBatchNo() + "'," +
                     "'" + receiptModel.getReceiptBatchNo() + "'," +
-                    "'" + receiptModel.getYeildinkg()+ "'," +
+                    "'" + receiptModel.getYeildinkg() + "'," +
                     "'" + receiptModel.getNoofbags() + "'," +
                     "'" + receiptModel.getWeightinkg() + "'," +
                     "'" + receiptModel.getServiceprovider() + "'," +
                     "'" + receiptModel.getBankName() + "'," +
-                    "'" + receiptModel.getIFSCCode()+ "'," +
-                    "'" + receiptModel.getAccountNo()+ "'," +
-                    "'" + receiptModel.getGrowerMobileNo()+ "'," +
-                    "'" + receiptModel.getFieldVisitDt()+ "'," +
-                    "'" + receiptModel.getExtraCol1()+ "'," +
-                    "'" + receiptModel.getExtraCol2()+ "'," +
-                    "'" + receiptModel.getAddress()+ "'," +
+                    "'" + receiptModel.getIFSCCode() + "'," +
+                    "'" + receiptModel.getAccountNo() + "'," +
+                    "'" + receiptModel.getGrowerMobileNo() + "'," +
+                    "'" + receiptModel.getFieldVisitDt() + "'," +
+                    "'" + receiptModel.getExtraCol1() + "'," +
+                    "'" + receiptModel.getExtraCol2() + "'," +
+                    "'" + receiptModel.getAddress() + "'," +
                     "'" + receiptModel.getCreatedBy() + "'" +
                     ")";
 
@@ -3270,11 +3334,12 @@ public class SqlightDatabase extends SQLiteOpenHelper {
             myDb.close();
         }
     }
+
     public int isReceiptBatchNumberExists(String batchnumber) {
         SQLiteDatabase myDb = null;
         try {
             myDb = this.getReadableDatabase();
-            String q = "select count(*)as cnt from tbl_seedreceipt where ReceiptBatchNo='"+batchnumber+"'";
+            String q = "select count(*)as cnt from tbl_seedreceipt where ReceiptBatchNo='" + batchnumber + "'";
             Cursor cursorCourses = myDb.rawQuery(q, null);
             if (cursorCourses.moveToFirst()) {
                 cursorCourses.getInt(0);
@@ -3287,6 +3352,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
             myDb.close();
         }
     }
+
     public int isServerReceiptDone(int userid) {
         SQLiteDatabase myDb = null;
         try {
@@ -3309,7 +3375,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
         SQLiteDatabase myDb = null;
         try {
             myDb = this.getReadableDatabase();
-            String q = "select count(*)as cnt from tbl_seedreceiptmaster_server where GrowerId=" + userid+" and IsSeedReceipt='No'";
+            String q = "select count(*)as cnt from tbl_seedreceiptmaster_server where GrowerId=" + userid + " and IsSeedReceipt='No'";
             Cursor cursorCourses = myDb.rawQuery(q, null);
             if (cursorCourses.moveToFirst()) {
                 cursorCourses.getInt(0);
@@ -3365,18 +3431,18 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                     "'" + receiptModel.getReason() + "'," +
                     "'" + receiptModel.getBatchNo() + "'," +
                     "'" + receiptModel.getReceiptBatchNo() + "'," +
-                    "'" + receiptModel.getYeildinkg()+ "'," +
+                    "'" + receiptModel.getYeildinkg() + "'," +
                     "'" + receiptModel.getNoofbags() + "'," +
                     "'" + receiptModel.getWeightinkg() + "'," +
                     "'" + receiptModel.getServiceprovider() + "'," +
                     "'" + receiptModel.getBankName() + "'," +
-                    "'" + receiptModel.getIFSCCode()+ "'," +
-                    "'" + receiptModel.getAccountNo()+ "'," +
-                    "'" + receiptModel.getGrowerMobileNo()+ "'," +
-                    "'" + receiptModel.getFieldVisitDt()+ "'," +
-                    "'" + receiptModel.getExtraCol1()+ "'," +
-                    "'" + receiptModel.getExtraCol2()+ "'," +
-                    "'" + receiptModel.getAddress()+ "'," +
+                    "'" + receiptModel.getIFSCCode() + "'," +
+                    "'" + receiptModel.getAccountNo() + "'," +
+                    "'" + receiptModel.getGrowerMobileNo() + "'," +
+                    "'" + receiptModel.getFieldVisitDt() + "'," +
+                    "'" + receiptModel.getExtraCol1() + "'," +
+                    "'" + receiptModel.getExtraCol2() + "'," +
+                    "'" + receiptModel.getAddress() + "'," +
                     "'" + receiptModel.getCreatedBy() + "'" +
                     ")";
 
@@ -3393,7 +3459,238 @@ public class SqlightDatabase extends SQLiteOpenHelper {
             //  return false;
 
         }
+    }
 
 
+    public String AddSeedRegistration(SeedRegistraionLocalModel registraionLocalModel) {
+
+
+        SQLiteDatabase mydb = null;
+        try {
+            String str = "insert into tbl_seedregistration(" +
+                    "tempid," +
+                    " growerid," +
+                    " growername," +
+                    " nationalis," +
+                    " address," +
+                    " plantingyear," +
+                    " seasonid," +
+                    " seasonnmae," +
+                    " cropid," +
+                    " cropname," +
+                    " clusterid," +
+                    " clustername," +
+                    " seedarea," +
+                    " mobile," +
+                    " issuedate," +
+                    " createdbyid," +
+                    " createdbyname) Values " +
+                    "('"+registraionLocalModel.getTempid()+"'," +
+                    "'"+registraionLocalModel.getGrowerid()+"',"+
+                    "'"+registraionLocalModel.getGrowername()+"',"+
+                    "'"+registraionLocalModel.getNationalis()+"',"+
+                    "'"+registraionLocalModel.getAddress()+"',"+
+                    "'"+registraionLocalModel.getPlantingyear()+"',"+
+                    "'"+registraionLocalModel.getSeasonid()+"',"+
+                    "'"+registraionLocalModel.getSeasonnmae()+"',"+
+                    "'"+registraionLocalModel.getCropid()+"',"+
+                    "'"+registraionLocalModel.getCropname()+"',"+
+                    "'"+registraionLocalModel.getClusterid()+"',"+
+                    "'"+registraionLocalModel.getClustername()+"',"+
+                    "'"+registraionLocalModel.getSeedarea()+"',"+
+                    "'"+registraionLocalModel.getMobile()+"',"+
+                    "'"+registraionLocalModel.getIssuedate()+"',"+
+                    "'"+registraionLocalModel.getCreatedbyid()+"',"+
+                    "'"+registraionLocalModel.getCreatedbyname()+"'"+
+                    ")";
+
+            mydb = this.getReadableDatabase();
+            String q = str;
+            Log.e("temporary", "Receipt Query is  " + q);
+            mydb.execSQL(q);
+            return ""+true;
+        } catch (Exception e) {
+            Log.e("temporary", "Receipt Error is : " + e.getMessage());
+            return ""+e.getMessage();
+        } finally {
+            mydb.close();
+            //  return false;
+
+        }
+
+
+
+    }
+    public ArrayList<SeedRegistraionLocalModel> getProductionRegistration() {
+        SQLiteDatabase myDb = null;
+        try {
+            myDb = this.getReadableDatabase();
+            String q = "SELECT  * FROM tbl_seedregistration";
+            Cursor cursorCourses = myDb.rawQuery(q, null);
+            ArrayList<SeedRegistraionLocalModel> fieldLocationArrayList = new ArrayList<>();
+            if (cursorCourses.moveToFirst()) {
+                do {
+
+                    SeedRegistraionLocalModel f = new SeedRegistraionLocalModel();
+
+                    f.setGrowerid(cursorCourses.getString(1));// INTEGER UNIQUE,
+                    f.setGrowername(cursorCourses.getString(2));//;// text,
+                    f.setNationalis(cursorCourses.getString(3));//;// text,
+                    f.setAddress(cursorCourses.getString(4));//;// text,
+                    f.setPlantingyear(cursorCourses.getString(5));//;// text,
+                    f.setSeasonid(cursorCourses.getInt(6));//;// INTEGER,
+                    f.setSeasonnmae(cursorCourses.getString(7));//;// text,
+                    f.setCropid(cursorCourses.getInt(8));//;// INTEGER,
+                    f.setCropname(cursorCourses.getString(9));//;// text,
+                    f.setClusterid(cursorCourses.getInt(10));//;// INTEGER,
+                    f.setClustername(cursorCourses.getString(11));//;// text,
+                    f.setSeedarea(cursorCourses.getString(12));//;// text,
+                    f.setMobile(cursorCourses.getString(13));//;// text,
+                    f.setIssuedate(cursorCourses.getString(14));//;// text,
+                    f.setCreatedbyid(cursorCourses.getString(15));//;// text,
+                    f.setCreatedbyname(cursorCourses.getString(16));//;// TEXT
+
+
+                    fieldLocationArrayList.add(f);
+                } while (cursorCourses.moveToNext());
+            }
+            return fieldLocationArrayList;
+        } catch (Exception e) {
+            return null;
+        } finally {
+            myDb.close();
+        }
+    }
+
+
+
+
+
+    public boolean addSeedRegistration_Server(SeedProductionRegistrationServerModel f) {
+
+        SQLiteDatabase mydb = null;
+        try {
+            String str = "insert into tbl_seed_production_reg_server(SeedProductionRegId,\n" +
+                    "GrowerId,\n" +
+                    "CountryId,\n" +
+                    "SeasonId,\n" +
+                    "CropId,\n" +
+                    "ProductionClusterId,\n" +
+                    "PlantingYear,\n" +
+                    "SeedProductionArea,\n" +
+                    "MobileNo,\n" +
+                    "SeedRegDt,\n" +
+                    "IsDelete,\n" +
+                    "CreatedBy,\n" +
+                    "CreatedDt,\n" +
+                    "ModifiedBy,\n" +
+                    "ModifiedDt,\n" +
+                    "UserId,\n" +
+                    "LoginId,\n" +
+                    "CountryMasterId,\n" +
+                    "UniqueId,\n" +
+                    "UserType,\n" +
+                    "LandMark,\n" +
+                    "Addr,\n" +
+                    "FullName,\n" +
+                    "DOB,\n" +
+                    "Gender,\n" +
+                    "UniqueCode,\n" +
+                    "IdProofFrontCopy,\n" +
+                    "IdProofBackCopy,\n" +
+                    "UploadPhoto,\n" +
+                    "RegDt,\n" +
+                    "CountryName,\n" +
+                    "CategoryName,\n" +
+                    "KeyValue,\n" +
+                    "KeyCode,\n" +
+                    "UserName,\n" +
+                    "UserCode\n) Values " +
+                    "(" +
+                    "'" + f.getSeedProductionRegId()+ "'," +
+                    "'" + f.getGrowerId()+ "'," +
+                    "'" + f.getCountryId()+ "'," +
+                    "'" + f.getSeasonId()+ "'," +
+                    "'" + f.getCropId()+ "'," +
+                    "'" + f.getProductionClusterId()+ "'," +
+                    "'" + f.getPlantingYear()+ "'," +
+                    "'" + f.getSeedProductionArea()+ "'," +
+                    "'" + f.getMobileNo()+ "'," +
+                    "'" + f.getSeedRegDt()+ "'," +
+                    "'" + f.getIsDelete()+ "'," +
+                    "'" + f.getCreatedBy()+ "'," +
+                    "'" + f.getCreatedDt()+ "'," +
+                    "'" + f.getModifiedBy()+ "'," +
+                    "'" + f.getModifiedDt()+ "'," +
+                    "'" + f.getUserId()+ "'," +
+                    "'" + f.getLoginId()+ "'," +
+                    "'" + f.getCountryMasterId()+ "'," +
+                    "'" + f.getUniqueId()+ "'," +
+                    "'" + f.getUserType()+ "'," +
+                    "'" + f.getLandMark()+ "'," +
+                    "'" + f.getAddr()+ "'," +
+                    "'" + f.getFullName()+ "'," +
+                    "'" + f.getDOB()+ "'," +
+                    "'" + f.getGender()+ "'," +
+                    "'" + f.getUniqueCode()+ "'," +
+                    "'" + f.getIdProofFrontCopy()+ "'," +
+                    "'" + f.getIdProofBackCopy()+ "'," +
+                    "'" + f.getUploadPhoto()+ "'," +
+                    "'" + f.getRegDt()+ "'," +
+                    "'" + f.getCountryName()+ "'," +
+                    "'" + f.getCategoryName()+ "'," +
+                    "'" + f.getKeyValue()+ "'," +
+                    "'" + f.getKeyCode()+ "'," +
+                    "'" + f.getUserName()+ "'," +
+                    "'" + f.getUserCode()+ "'" +
+                    ")";
+
+            mydb = this.getReadableDatabase();
+            String q = str;
+            Log.e("temporary", "Receipt Query is  " + q);
+            mydb.execSQL(q);
+            return true;
+        } catch (Exception e) {
+            Log.e("temporary", "Receipt Error is : " + e.getMessage());
+            return false;
+        } finally {
+            mydb.close();
+            //  return false;
+
+        }
+    }
+    public int getSeedRegistrationCountServer(int userid) {
+        SQLiteDatabase myDb = null;
+        try {
+            int cnt = 0;
+            myDb = this.getReadableDatabase();
+            String q = "SELECT  count(*)as cnt FROM tbl_seed_production_reg_server where GrowerId=" + userid;
+            Cursor cursorCourses = myDb.rawQuery(q, null);
+            if (cursorCourses.moveToFirst()) {
+                cnt = cursorCourses.getInt(0);
+            }
+            return cnt;
+        } catch (Exception e) {
+            return 0;
+        } finally {
+            myDb.close();
+        }
+    }
+    public int getSeedRegistrationCountLocal(int userid) {
+        SQLiteDatabase myDb = null;
+        try {
+            int cnt = 0;
+            myDb = this.getReadableDatabase();
+            String q = "SELECT  count(*)as cnt FROM tbl_seedregistration where growerid=" + userid;
+            Cursor cursorCourses = myDb.rawQuery(q, null);
+            if (cursorCourses.moveToFirst()) {
+                cnt = cursorCourses.getInt(0);
+            }
+            return cnt;
+        } catch (Exception e) {
+            return 0;
+        } finally {
+            myDb.close();
+        }
     }
 }

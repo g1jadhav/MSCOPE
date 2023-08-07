@@ -15,6 +15,7 @@ import mahyco.mipl.nxg.model.ReceiptModel;
 import mahyco.mipl.nxg.model.ReceiptModelServer;
 import mahyco.mipl.nxg.model.SeasonModel;
 import mahyco.mipl.nxg.model.SeedBatchNoModel;
+import mahyco.mipl.nxg.model.SeedProductionRegistrationServerModel;
 import mahyco.mipl.nxg.model.SeedReceiptModel;
 import mahyco.mipl.nxg.model.VillageModel;
 
@@ -36,4 +37,6 @@ public interface DownloadCategoryListListener {
     void onListAllVillageData(List<VillageModel> result);
 
     void onAllSeedReceiptData(List<ReceiptModelServer> result);
+
+    void onAllSeedRegistrationData(List<SeedProductionRegistrationServerModel> result);
 }

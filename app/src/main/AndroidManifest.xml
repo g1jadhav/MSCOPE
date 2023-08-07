@@ -24,19 +24,28 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MahycoMarketDemo"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.changepassword.ChangePasswordActivity" android:exported="false" android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".view.prod_seed_create.ProductionCreateGrowerListActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".view.changepassword.ChangePasswordActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.fieldreport.FiledReportDashboard"
-            android:screenOrientation="portrait"
+            android:exported="false"
             android:noHistory="true"
-            android:exported="false" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.AndroidDatabaseManager"
             android:exported="false" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".view.AreaTagingActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.growerregistration.NewGrowerRegistration"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
@@ -95,72 +104,63 @@
         <activity
             android:name=".view.fieldreport.FieldVisitFirst"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:screenOrientation="portrait"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar" >
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".view.fieldreport.FieldVisitSecond"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:screenOrientation="portrait"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.fieldreport.FieldVisitThird"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:screenOrientation="portrait"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.fieldreport.FieldVisitFourth"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:screenOrientation="portrait"
             android:exported="false"
-
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
-
         <activity
             android:name=".view.receipt.CreateReceipt"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:screenOrientation="portrait"
             android:exported="false"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
-       <activity
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".view.receipt.FieldReceiptDashboard"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:screenOrientation="portrait"
             android:exported="false"
-        />
-
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.receipt.ReceiptGrowerSelectionActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:screenOrientation="portrait"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
-
         <activity
             android:name=".view.fieldreport.OptionalVisit"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:screenOrientation="portrait"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".view.fieldreport.FiledMonitoringReportEntry"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-            android:screenOrientation="portrait"
             android:exported="false"
-
-
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <provider

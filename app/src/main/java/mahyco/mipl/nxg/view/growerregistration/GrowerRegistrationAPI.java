@@ -229,7 +229,44 @@ public class GrowerRegistrationAPI {
 
         }
     }
+    public void createProductionRegistration(JsonObject jsonObject) {
+        try {
+            if (!progressDialog.isShowing())
+                progressDialog.show();
 
+            Call<SuccessModel> call = null;
+            call = RetrofitClient.getInstance().getMyApi().submitProductionRegistration(jsonObject);
+            call.enqueue(new Callback<SuccessModel>() {
+                @Override
+                public void onResponse(Call<SuccessModel> call, Response<SuccessModel> response) {
+
+                    if (progressDialog.isShowing())
+                        progressDialog.dismiss();
+                    //  Toast.makeText(CourseList.this, "Calling..", Toast.LENGTH_SHORT).show();
+
+                    if (response.body() != null) {
+                        SuccessModel result = response.body();
+                        try {
+                            resultOutput.onProductionRegistrationReceiptDone(result);
+                        } catch (NullPointerException e) {
+                            Toast.makeText(context, "Error is " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            Toast.makeText(context, "Error is " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<SuccessModel> call, Throwable t) {
+                    if (progressDialog.isShowing())
+                        progressDialog.dismiss();
+                    Log.e("Error is", t.getMessage());
+                }
+            });
+        } catch (Exception e) {
+
+        }
+    }
   /*      public void getPendingActions(JsonObject jsonObject)
         {
             *//*try {

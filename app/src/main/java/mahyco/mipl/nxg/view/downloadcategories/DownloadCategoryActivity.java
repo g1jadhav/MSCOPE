@@ -32,6 +32,7 @@ import mahyco.mipl.nxg.model.ReceiptModel;
 import mahyco.mipl.nxg.model.ReceiptModelServer;
 import mahyco.mipl.nxg.model.SeasonModel;
 import mahyco.mipl.nxg.model.SeedBatchNoModel;
+import mahyco.mipl.nxg.model.SeedProductionRegistrationServerModel;
 import mahyco.mipl.nxg.model.SeedReceiptModel;
 import mahyco.mipl.nxg.model.StoreAreaModel;
 import mahyco.mipl.nxg.model.VillageModel;
@@ -56,6 +57,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
     private CardView mGetAllVisitMaster;
     private CardView mGetAllVillageMaster;
     private CardView download_seedreceipt_master_layout;
+    private CardView download_productionreg_master_layout;
 
     private JsonObject mJsonObjectCategory;
 
@@ -126,6 +128,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
         mGetAllVisitMaster = findViewById(R.id.download_visit_master_layout);
         mGetAllVillageMaster = findViewById(R.id.download_village_master_layout);
         download_seedreceipt_master_layout = findViewById(R.id.download_seedreceipt_master_layout);
+        download_productionreg_master_layout = findViewById(R.id.download_productionreg_master_layout);
 
         mCategoryMaster.setOnClickListener(this);
         mLocationMaster.setOnClickListener(this);
@@ -142,6 +145,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
         mGetAllVisitMaster.setOnClickListener(this);
         mGetAllVillageMaster.setOnClickListener(this);
         download_seedreceipt_master_layout.setOnClickListener(this);
+        download_productionreg_master_layout.setOnClickListener(this);
 
         mDownloadCategoryApi = new DownloadCategoryApi(mContext, this);
     }
@@ -205,6 +209,11 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
             case R.id.download_seedreceipt_master_layout:
 
                 downloadReceiptMasterData();
+
+                break;
+            case R.id.download_productionreg_master_layout:
+
+                download_production_registration();
 
                 break;
         }
@@ -446,6 +455,28 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
             try {
                 if (result != null) {
                     new AddReceiptDataLocally(mContext, result).execute();
+                    Toast.makeText(mContext, "" + result.size(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(mContext, "Data Not Available.", Toast.LENGTH_SHORT).show();
+                }
+
+
+            } catch (Exception e) {
+
+            }
+        } catch (Exception e) {
+
+        }
+    }
+
+    @Override
+    public void onAllSeedRegistrationData(List<SeedProductionRegistrationServerModel> result) {
+        try {
+
+            Toast.makeText(mContext, "Length : " + result.size(), Toast.LENGTH_SHORT).show();
+            try {
+                if (result != null) {
+                   new AddSeedProductionRegistrationDataLocally(mContext, result).execute();
                     Toast.makeText(mContext, "" + result.size(), Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(mContext, "Data Not Available.", Toast.LENGTH_SHORT).show();
@@ -1040,4 +1071,69 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
             showNoInternetDialog(mContext, "Seed Receipt Master Downloaded Successfully.");
         }
     }
+
+    void download_production_registration() {
+
+           if (checkInternetConnection(mContext)) {
+                try {
+                    mJsonObjectCategory = null;
+                    mJsonObjectCategory = new JsonObject();
+                    mJsonObjectCategory.addProperty("filterValue", Preferences.get(mContext, Preferences.COUNTRYCODE));
+                    mJsonObjectCategory.addProperty("FilterOption", "CountryId");
+                    mDownloadCategoryApi.getAllSeedProductionRegistrtaion(mJsonObjectCategory);
+                } catch (Exception e) {
+                }
+            } else {
+                showNoInternetDialog(mContext, "Please check your internet connection");
+            }
+
+    }
+
+    class AddSeedProductionRegistrationDataLocally extends AsyncTask {
+        ProgressDialog progressDialog;
+        List<SeedProductionRegistrationServerModel> fieldVisitModel_server;
+        Context context;
+        SqlightDatabase database;
+
+        AddSeedProductionRegistrationDataLocally(Context context, List<SeedProductionRegistrationServerModel> fieldVisitModel_server) {
+            this.context = context;
+            this.fieldVisitModel_server = fieldVisitModel_server;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            database = new SqlightDatabase(context);
+            progressDialog = new ProgressDialog(context);
+            progressDialog.setMessage("Sync data in progress.Please wait..");
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(Object[] objects) {
+
+            try {
+                database.trucateTable("tbl_seed_production_reg_server");
+                for (SeedProductionRegistrationServerModel f : fieldVisitModel_server) {
+                    Log.i("Data", "" + f.getGrowerId());
+                    Log.i("Saved Status", "" + database.addSeedRegistration_Server(f));
+                }
+
+            } catch (Exception exception) {
+
+            }
+
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            progressDialog.dismiss();
+            showNoInternetDialog(mContext, "Seed Production Registration Master Downloaded Successfully.");
+        }
+    }
+
+
 }

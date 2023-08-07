@@ -23,6 +23,7 @@ import mahyco.mipl.nxg.model.ReceiptModel;
 import mahyco.mipl.nxg.model.ReceiptModelServer;
 import mahyco.mipl.nxg.model.SeasonModel;
 import mahyco.mipl.nxg.model.SeedBatchNoModel;
+import mahyco.mipl.nxg.model.SeedProductionRegistrationServerModel;
 import mahyco.mipl.nxg.model.SeedReceiptModel;
 import mahyco.mipl.nxg.model.SuccessModel;
 import mahyco.mipl.nxg.model.UserTypeModel;
@@ -118,8 +119,16 @@ public interface Api {
     @POST(Constants.SUBMIT_SEEDRECEIPT)
     Call<SuccessModel> submitSeedReceiptDetails(@Body JsonArray jsonObject);
 
+    @POST(Constants.SUBMIT_PRODUCTIONREGISTRATION)
+    Call<SuccessModel> submitProductionRegistration(@Body JsonObject jsonObject);
+
     @POST(Constants.GETALLSEEDRECEIPTDATA)
     Call<List<ReceiptModelServer>> getSeedReceiptData(@Query("CountryID") String s);
+
+    @POST(Constants.GETALLSEEDREGISTRATIONDATA)
+    Call<List<SeedProductionRegistrationServerModel>> getAllProductionRegistration(@Body JsonObject s);
+
+
 
     /*Added by jeevan ended here 28-11-2022*/
 }
