@@ -637,7 +637,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
             if (result.isResultFlag()) {
                 seed_registration_upload.setEnabled(true);
                 int k = database.getProductionRegistration().size();
-                database.trucateTable("tbl_seed_registration");
+                database.trucateTable("tbl_seedregistration");
                 showNoInternetDialog(mContext, k + " Records Uploaded Successfully.");
                 seed_registration_Records.setText(getString(R.string.no_of_records_for_upload, database.getProductionRegistration().size()));
             } else {

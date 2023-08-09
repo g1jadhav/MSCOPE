@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatEditText;
@@ -140,6 +141,7 @@ public class OldGrowerSeedDistribution extends BaseActivity implements View.OnCl
         });
 
         mContext = this;
+        Toast.makeText(mContext, "Hii", Toast.LENGTH_SHORT).show();
         AppCompatTextView mVersionTextView = findViewById(R.id.registration_version_code);
         mVersionTextView.setText(getString(R.string.version_code, BuildConfig.VERSION_CODE));
         mRadioGroup = findViewById(R.id.direct_or_organizer_radio_group);
@@ -1251,7 +1253,8 @@ public class OldGrowerSeedDistribution extends BaseActivity implements View.OnCl
             ArrayList<DownloadGrowerModel> actionModels;
             try {
                 database = new SqlightDatabase(mContext);
-                actionModels = database.getDownloadedGrowerMaster();
+                actionModels = database.getDownloadedGrowerMasterForRegister();
+
             } finally {
                 if (database != null) {
                     database.close();

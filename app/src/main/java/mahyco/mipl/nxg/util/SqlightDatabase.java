@@ -2948,7 +2948,9 @@ public class SqlightDatabase extends SQLiteOpenHelper {
             /*Commented by Jeevan 09-12-2022 ended here*/
 
             /*Added by Jeevan 09-12-2022*/
-            String q = "SELECT  *, IFNULL ((SELECT SUM(SeedProductionArea) from tbl_storestributiondata where GrowerId = UserId), 0) as area from tbl_growermaster";
+         //This Old Query For
+               String q = "SELECT  *, IFNULL ((SELECT SUM(SeedProductionArea) from tbl_storestributiondata where GrowerId = UserId), 0) as area from tbl_growermaster";
+          //  String q = "SELECT  *, IFNULL ((SELECT SUM(SeedProductionArea) from tbl_storestributiondata where GrowerId = UserId), 0) as area,(Select count(*) from tbl_seed_production_reg_server where GrowerId=g.UserId)as cnt from tbl_growermaster g where (Upper(UserType) = 'ORGANIZER' or (Select count(*) from tbl_seed_production_reg_server where GrowerId=g.UserId)>0)";
             /*Added by Jeevan 09-12-2022 ended here*/
             Cursor cursorCourses = myDb.rawQuery(q, null);
             ArrayList<DownloadGrowerModel> courseModalArrayList = new ArrayList<>();
@@ -2988,6 +2990,56 @@ public class SqlightDatabase extends SQLiteOpenHelper {
         }
     }
 
+    public ArrayList<DownloadGrowerModel> getDownloadedGrowerMasterForRegister() {
+        SQLiteDatabase myDb = null;
+        try {
+            myDb = this.getReadableDatabase();
+            /*Commented by Jeevan 09-12-2022*/
+            /* String q = "SELECT  * FROM tbl_growermaster";*/
+            /*Commented by Jeevan 09-12-2022 ended here*/
+
+            /*Added by Jeevan 09-12-2022*/
+            //This Old Query For
+           // String q = "SELECT  *, IFNULL ((SELECT SUM(SeedProductionArea) from tbl_storestributiondata where GrowerId = UserId), 0) as area from tbl_growermaster";
+              String q = "SELECT  *, IFNULL ((SELECT SUM(SeedProductionArea) from tbl_storestributiondata where GrowerId = UserId), 0) as area,(Select count(*) from tbl_seed_production_reg_server where GrowerId=g.UserId)as cnt from tbl_growermaster g where (Upper(UserType) = 'ORGANIZER' or (Select count(*) from tbl_seed_production_reg_server where GrowerId=g.UserId)>0)";
+            /*Added by Jeevan 09-12-2022 ended here*/
+            Cursor cursorCourses = myDb.rawQuery(q, null);
+            ArrayList<DownloadGrowerModel> courseModalArrayList = new ArrayList<>();
+            if (cursorCourses.moveToFirst()) {
+                do {
+                    courseModalArrayList.add(new DownloadGrowerModel(cursorCourses.getInt(1),
+                            cursorCourses.getInt(2),
+                            cursorCourses.getInt(3),
+                            cursorCourses.getInt(4),
+                            cursorCourses.getString(5),
+                            cursorCourses.getString(6),
+                            cursorCourses.getString(7),
+                            cursorCourses.getString(8),
+                            cursorCourses.getString(9),
+                            cursorCourses.getString(10),
+                            cursorCourses.getString(11),
+                            cursorCourses.getString(12),
+                            cursorCourses.getString(13),
+                            cursorCourses.getString(14),
+                            cursorCourses.getString(15),
+                            cursorCourses.getString(16),
+                            cursorCourses.getString(17),
+                            cursorCourses.getString(18),
+                            cursorCourses.getString(19),
+                            cursorCourses.getString(20),
+                            cursorCourses.getString(21),
+                            cursorCourses.getString(22),
+                            cursorCourses.getString(23),
+                            cursorCourses.getString(24)));
+                } while (cursorCourses.moveToNext());
+            }
+            return courseModalArrayList;
+        } catch (Exception e) {
+            return null;
+        } finally {
+            myDb.close();
+        }
+    }
 
     public boolean isGrowerRegister(String uniqueID) {
         SQLiteDatabase myDb = null;
