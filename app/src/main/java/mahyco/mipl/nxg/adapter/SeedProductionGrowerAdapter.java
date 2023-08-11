@@ -117,7 +117,6 @@ public class SeedProductionGrowerAdapter extends RecyclerView.Adapter<SeedProduc
             if (model.getUniqueCode()!= null)
                 holder.txt_nationalid.setText("" + model.getUniqueCode());
 
-
             int lcnt=database.getSeedRegistrationCountLocal(model.getUserId());
             int scnt=database.getSeedRegistrationCountServer(model.getUserId());
 
@@ -126,14 +125,14 @@ public class SeedProductionGrowerAdapter extends RecyclerView.Adapter<SeedProduc
                 holder.txt_arealoss.setVisibility(View.VISIBLE);
                 holder.txt_arealoss.setTextColor(Color.GREEN);
                 holder.txt_arealoss.setText("Pending for upload.");
-
             }
             if(scnt>0)
             {
                 holder.txt_arealoss.setVisibility(View.VISIBLE);
                 holder.txt_arealoss.setText("Grower registered.");
-
             }
+            if((lcnt+scnt)==0)
+                holder.txt_arealoss.setVisibility(View.GONE);
 
 
          //   holder.txt_arealoss.setVisibility(View.GONE);

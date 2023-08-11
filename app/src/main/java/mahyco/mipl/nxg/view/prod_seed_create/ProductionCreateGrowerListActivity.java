@@ -1719,7 +1719,6 @@ public class ProductionCreateGrowerListActivity extends BaseActivity implements 
                 @Override
                 public void onClick(View v) {
 
-
                     dialog_growerlist.dismiss();
                 }
             });
@@ -1737,7 +1736,7 @@ public class ProductionCreateGrowerListActivity extends BaseActivity implements 
                 @Override
                 public void afterTextChanged(Editable s) {
 
-                    //filter(s.toString().trim());
+                    filter(s.toString().trim());
                 }
             });
             rc_list.setLayoutManager(mManager);
@@ -1770,6 +1769,29 @@ public class ProductionCreateGrowerListActivity extends BaseActivity implements 
             Toast.makeText(mContext, "Error is " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
+    private void filter(String text) {
+        // creating a new array list to filter our data.
+        ArrayList<DownloadGrowerModel> filteredlist = new ArrayList<DownloadGrowerModel>();
 
+        // running a for loop to compare elements.
+        for (DownloadGrowerModel item : mGrowerList) {
+            // checking if the entered string matched with any item of our recycler view.
+            if (item.getFullName().toLowerCase().contains(text.toLowerCase())) {
+                // if the item is matched we are
+                // adding it to our filtered list.
+                filteredlist.add(item);
+            }
+        }
+        if (filteredlist.isEmpty()) {
+            // if no item is added in filtered list we are
+            // displaying a toast message as no data found.
+            Toast.makeText(this, "No Data Found..", Toast.LENGTH_SHORT).show();
+
+        } else {
+            // at last we are passing that filtered
+            // list to our adapter class.
+            visitGrowerAdapter.filterList(filteredlist);
+        }
+    }
 
 }
