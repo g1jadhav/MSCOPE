@@ -171,7 +171,7 @@ public class FiledMonitoringReportEntry extends BaseActivity implements Recycler
     protected void init() {
         try {
             AppCompatTextView mVersionTextView = findViewById(R.id.registration_version_code);
-            mVersionTextView.setText(getString(R.string.version_code, BuildConfig.VERSION_CODE));
+            mVersionTextView.setText(getString(R.string.version_code, ""+BuildConfig.VERSION_CODE));
 
             mContext = this;
             database = new SqlightDatabase(mContext);

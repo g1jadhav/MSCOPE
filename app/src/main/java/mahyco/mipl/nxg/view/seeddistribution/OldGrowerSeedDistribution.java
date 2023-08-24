@@ -48,7 +48,9 @@ import mahyco.mipl.nxg.model.OldGrowerSeedDistributionModel;
 import mahyco.mipl.nxg.model.ProductionClusterModel;
 import mahyco.mipl.nxg.model.SeasonModel;
 import mahyco.mipl.nxg.model.SeedBatchNoModel;
+import mahyco.mipl.nxg.model.SeedProductionRegistrationServerModel;
 import mahyco.mipl.nxg.model.SeedReceiptModel;
+import mahyco.mipl.nxg.model.SeedRegistraionLocalModel;
 import mahyco.mipl.nxg.model.StoreAreaModel;
 import mahyco.mipl.nxg.spinner.CCFSerachSpinner;
 import mahyco.mipl.nxg.util.BaseActivity;
@@ -108,7 +110,14 @@ public class OldGrowerSeedDistribution extends BaseActivity implements View.OnCl
     private boolean mOrganizerSpinnerFirstTimeSelected = false;
     private boolean mGrowerRadioBtnSelected = true;
     private AppCompatTextView mMaleBatchNoTextView;
-
+    SqlightDatabase database;
+    String selectedClusterid="0";
+    String selectedCropid="0";
+    String selectedYear="0";
+    String selectedArea="0";
+    String selectedSeason="0";
+    String selectedMobile="";
+    SeedProductionRegistrationServerModel localModel=null;
     private androidx.appcompat.widget.Toolbar toolbar;
 
     @Override
@@ -141,9 +150,10 @@ public class OldGrowerSeedDistribution extends BaseActivity implements View.OnCl
         });
 
         mContext = this;
-        Toast.makeText(mContext, "Hii", Toast.LENGTH_SHORT).show();
+        database=new SqlightDatabase(mContext);
+       // Toast.makeText(mContext, "Hii", Toast.LENGTH_SHORT).show();
         AppCompatTextView mVersionTextView = findViewById(R.id.registration_version_code);
-        mVersionTextView.setText(getString(R.string.version_code, BuildConfig.VERSION_CODE));
+        mVersionTextView.setText(getString(R.string.version_code, ""+BuildConfig.VERSION_CODE));
         mRadioGroup = findViewById(R.id.direct_or_organizer_radio_group);
         mRadioGroup.setOnCheckedChangeListener((radioGroup, i) -> {
             switch (i) {
@@ -196,6 +206,58 @@ public class OldGrowerSeedDistribution extends BaseActivity implements View.OnCl
                     mUniqueCode.setText(mGrowerList.get(i).getUniqueCode());
                     mAddressTextView.setText(mGrowerList.get(i).getLandMark() + ", " +
                             mGrowerList.get(i).getCountryName());
+                   int selectedID=0;
+                   int checkID=0;
+                   localModel=database.getSeedRegistrationDetailsById(mGrowerList.get(i).getUserId());
+
+
+                    checkID=localModel.getSeasonId();
+
+                    for(int ii=0;ii<mSeasonList.size();ii++)
+                    {
+                        if(mSeasonList.get(ii).getSeasonId()==checkID)
+                            selectedID=ii;
+                    }
+                    mSeasonSpinner.setSelection(selectedID);
+                    mSeasonSpinner.setEnabled(false);
+
+                    int selectedcrop=0;
+                   for(int ii=0;ii<mCropList.size();ii++)
+                    {
+                        if(mCropList.get(ii).getCropId()==localModel.getCropId())
+                            selectedcrop=ii;
+                    }
+                    mCropSpinner.setSelection(selectedcrop);
+                  // mCropSpinner.setEnabled(false);
+                   try {
+                       selectedID = 0;
+                       checkID = Integer.parseInt(localModel.getProductionClusterId().toString().trim());
+                       for (int ii = 0; ii < mProdClusterList.size(); ii++) {
+                           if (mProdClusterList.get(ii).getProductionClusterId() == checkID) {
+                               selectedID = ii;
+                               break;
+                           }
+                       }
+
+
+                       mClusterSpinner.setSelection(selectedID);
+                    //   mClusterSpinner.setEnabled(false);
+                       mPlantingYearSpinner.setEnabled(false);
+
+
+                   }catch (Exception e)
+                   {
+                       Log.i("Error is",e.getMessage());
+                   }
+
+                  mAreaEditText.setText(localModel.getSeedProductionArea());
+                    selectedClusterid=localModel.getProductionClusterId();
+                     selectedCropid=""+localModel.getCropId();
+                     selectedYear=localModel.getPlantingYear();
+                     selectedArea=localModel.getSeedProductionArea();
+                     selectedSeason=""+localModel.getSeasonId();
+                     selectedMobile=localModel.getMobileNo();
+                    Toast.makeText(mContext, localModel.getGrowerId()+" = "+mGrowerList.get(i).getUserId(), Toast.LENGTH_SHORT).show();
                 } else {
                     mGrowerName.setText("");
                     mUniqueCode.setText("");
@@ -1283,6 +1345,10 @@ public class OldGrowerSeedDistribution extends BaseActivity implements View.OnCl
                 }
                 if (mGrowerList.size() > 0) {
                     // GrowerAdapter adapter = new GrowerAdapter(mContext, R.layout.spinner_rows, mGrowerList);
+                    DownloadGrowerModel downloadGrowerModel = new DownloadGrowerModel();
+                    downloadGrowerModel.setFullName("Select");
+                    downloadGrowerModel.setUniqueCode("");
+                    mGrowerList.add(0, downloadGrowerModel);
                     ArrayAdapter<DownloadGrowerModel> adapter = new ArrayAdapter<>(mContext, R.layout.spinner_rows, mGrowerList);
                     mSearchByIdNameSpinner.setAdapter(adapter);
                 }
@@ -1471,12 +1537,25 @@ public class OldGrowerSeedDistribution extends BaseActivity implements View.OnCl
             }
             if (result != null && result.size() > 0) {
                 mProdClusterList = result;
+
                 mClusterSpinnerFirstTimeCalled = false;
                 // ProductionClusterAdapter adapter = new ProductionClusterAdapter(mContext, R.layout.spinner_rows, mProdClusterList);
                 ArrayAdapter<ProductionClusterModel> adapter = new ArrayAdapter<>(mContext, R.layout.spinner_rows,
                         mProdClusterList);
                 new GetProductionCodeMasterAsyncTask().execute();
                 mClusterSpinner.setAdapter(adapter);
+
+                if(localModel!=null) {
+                    int checkID = Integer.parseInt(localModel.getProductionClusterId().toString().trim());
+                    for (int ii = 0; ii < mProdClusterList.size(); ii++) {
+                        if (mProdClusterList.get(ii).getProductionClusterId() == checkID) {
+                            // selectedID = ii;
+                            mClusterSpinner.setSelection(ii);
+                            break;
+                        }
+                    }
+                }
+
                 super.onPostExecute(result);
             }
         }

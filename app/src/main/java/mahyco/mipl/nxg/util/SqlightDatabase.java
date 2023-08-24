@@ -42,7 +42,7 @@ import mahyco.mipl.nxg.model.VisitDetailCoutModel;
 public class SqlightDatabase extends SQLiteOpenHelper {
 
     final static String DBName = "mipl.db";
-    final static int version = 12;
+    final static int version = 13;
     long count = 0;
     final String tbl_categorymaster = "tbl_categorymaster";
     final String tbl_locationmaster = "tbl_locationmaster";
@@ -2938,6 +2938,66 @@ public class SqlightDatabase extends SQLiteOpenHelper {
             mydb.close();
         }
     }
+    public ArrayList<DownloadGrowerModel> getFocussedVillageGrower(int type,String value) {
+        SQLiteDatabase myDb = null;
+        try {
+            myDb = this.getReadableDatabase();
+            String q="";
+            if(type==1) // all focussed Village
+            {
+                q="SELECT  *, IFNULL ((SELECT SUM(SeedProductionArea) from tbl_storestributiondata where GrowerId = UserId), 0) as area from tbl_growermaster g where (select count(*) from tbl_focusedvillage where CountryMasterId=g.CountryMasterId)>0";
+            }
+
+            else if(type==2) { // for Specific Village
+                q = "SELECT  *, IFNULL ((SELECT SUM(SeedProductionArea) from tbl_storestributiondata where GrowerId = UserId), 0) as area from tbl_growermaster g where (select count(*) from tbl_focusedvillage where CountryMasterId=g.CountryMasterId)>0 and upper(g.LandMark) like '"+value+",%'";
+            }
+            else // for all
+            {
+                q = "SELECT  *, IFNULL ((SELECT SUM(SeedProductionArea) from tbl_storestributiondata where GrowerId = UserId), 0) as area from tbl_growermaster g";
+
+            }
+            Log.i("Query",q);
+            Cursor cursorCourses = myDb.rawQuery(q, null);
+            Log.i("Query count",""+cursorCourses.getCount());
+            ArrayList<DownloadGrowerModel> courseModalArrayList = new ArrayList<>();
+            if (cursorCourses.moveToFirst()) {
+                do {
+                    Log.i("First Value",cursorCourses.getString(0));
+                    courseModalArrayList.add(new DownloadGrowerModel(cursorCourses.getInt(1),
+                            cursorCourses.getInt(2),
+                            cursorCourses.getInt(3),
+                            cursorCourses.getInt(4),
+                            cursorCourses.getString(5),
+                            cursorCourses.getString(6),
+                            cursorCourses.getString(7),
+                            cursorCourses.getString(8),
+                            cursorCourses.getString(9),
+                            cursorCourses.getString(10),
+                            cursorCourses.getString(11),
+                            cursorCourses.getString(12),
+                            cursorCourses.getString(13),
+                            cursorCourses.getString(14),
+                            cursorCourses.getString(15),
+                            cursorCourses.getString(16),
+                            cursorCourses.getString(17),
+                            cursorCourses.getString(18),
+                            cursorCourses.getString(19),
+                            cursorCourses.getString(20),
+                            cursorCourses.getString(21),
+                            cursorCourses.getString(22),
+                            cursorCourses.getString(23),
+                            cursorCourses.getString(24)));
+                } while (cursorCourses.moveToNext());
+            }
+            Log.i("Final Count ",""+courseModalArrayList.size());
+            return courseModalArrayList;
+        } catch (Exception e) {
+            Log.i("Error is ",e.getMessage());
+            return null;
+        } finally {
+            myDb.close();
+        }
+    }
 
     public ArrayList<DownloadGrowerModel> getDownloadedGrowerMaster() {
         SQLiteDatabase myDb = null;
@@ -3002,7 +3062,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
             //This Old Query For
            // String q = "SELECT  *, IFNULL ((SELECT SUM(SeedProductionArea) from tbl_storestributiondata where GrowerId = UserId), 0) as area from tbl_growermaster";
               String q = "SELECT  *, IFNULL ((SELECT SUM(SeedProductionArea) from tbl_storestributiondata where GrowerId = UserId), 0) as area,(Select count(*) from tbl_seed_production_reg_server where GrowerId=g.UserId)as cnt from tbl_growermaster g where (Upper(UserType) = 'ORGANIZER' or (Select count(*) from tbl_seed_production_reg_server where GrowerId=g.UserId)>0)";
-            /*Added by Jeevan 09-12-2022 ended here*/
+            /* Added by Jeevan 09-12-2022 ended here */
             Cursor cursorCourses = myDb.rawQuery(q, null);
             ArrayList<DownloadGrowerModel> courseModalArrayList = new ArrayList<>();
             if (cursorCourses.moveToFirst()) {
@@ -3622,7 +3682,8 @@ public class SqlightDatabase extends SQLiteOpenHelper {
 
         SQLiteDatabase mydb = null;
         try {
-            String str = "insert into tbl_seed_production_reg_server(SeedProductionRegId,\n" +
+            String str = "insert into tbl_seed_production_reg_server(" +
+                    "SeedProductionRegId,\n" +
                     "GrowerId,\n" +
                     "CountryId,\n" +
                     "SeasonId,\n" +
@@ -3741,6 +3802,60 @@ public class SqlightDatabase extends SQLiteOpenHelper {
             return cnt;
         } catch (Exception e) {
             return 0;
+        } finally {
+            myDb.close();
+        }
+    }
+    public SeedProductionRegistrationServerModel getSeedRegistrationDetailsById(int userid) {
+        SQLiteDatabase myDb = null;
+        SeedProductionRegistrationServerModel localModel=new SeedProductionRegistrationServerModel();
+        try {
+            int cnt = 0;
+            myDb = this.getReadableDatabase();
+            String q = "SELECT  * FROM tbl_seed_production_reg_server where GrowerId=" + userid;
+            Cursor cursorCourses = myDb.rawQuery(q, null);
+            if (cursorCourses.moveToFirst()) {
+
+                localModel.setSeedProductionRegId(cursorCourses.getString(0));
+                localModel.setGrowerId(cursorCourses.getInt(1));
+                localModel.setCountryId (cursorCourses.getInt(2));
+                localModel.setSeasonId (cursorCourses.getInt(3));
+                localModel.setCropId (cursorCourses.getInt(4));
+                localModel.setProductionClusterId(cursorCourses.getString(5));
+                localModel.setPlantingYear (cursorCourses.getString(6));
+                localModel.setSeedProductionArea(cursorCourses.getString(7));
+                localModel.setMobileNo (cursorCourses.getString(8));
+                localModel.setSeedRegDt (cursorCourses.getString(9));
+                localModel.setIsDelete (cursorCourses.getString(10));
+                localModel.setCreatedBy (cursorCourses.getString(11));
+                localModel.setCreatedDt (cursorCourses.getString(12));
+                localModel.setModifiedBy (cursorCourses.getString(13));
+                localModel.setModifiedDt (cursorCourses.getString(14));
+                localModel.setUserId (cursorCourses.getString(15));
+                localModel.setLoginId (cursorCourses.getString(16));
+                localModel.setCountryMasterId(cursorCourses.getString(17));
+                localModel.setUniqueId (cursorCourses.getString(18));
+                localModel.setUserType (cursorCourses.getString(19));
+                localModel.setLandMark (cursorCourses.getString(20));
+                localModel.setAddr (cursorCourses.getString(21));
+                localModel.setFullName(cursorCourses.getString(22));
+                localModel.setDOB (cursorCourses.getString(23));
+                localModel.setGender (cursorCourses.getString(24));
+                localModel.setUniqueCode(cursorCourses.getString(25));
+                localModel.setIdProofFrontCopy(cursorCourses.getString(26));
+                localModel.setIdProofBackCopy (cursorCourses.getString(27));
+                localModel.setUploadPhoto (cursorCourses.getString(28));
+                localModel.setRegDt (cursorCourses.getString(29));
+                localModel.setCountryName(cursorCourses.getString(30));
+                localModel.setCategoryName (cursorCourses.getString(31));
+                localModel.setKeyValue (cursorCourses.getString(32));
+                localModel.setKeyCode (cursorCourses.getString(33));
+                localModel.setUserName (cursorCourses.getString(34));
+                localModel.setUserCode(cursorCourses.getString(35));
+            }
+            return localModel;
+        } catch (Exception e) {
+            return null;
         } finally {
             myDb.close();
         }

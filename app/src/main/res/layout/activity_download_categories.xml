@@ -646,7 +646,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_centerInParent="true"
-                                            android:text="Download Seed Receipt Data"
+                                            android:text="Download Seed Receipt"
                                             android:textColor="@color/white"
                                             android:textSize="16sp"
                                             android:textStyle="bold" />
@@ -687,7 +687,7 @@
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_centerInParent="true"
-                                            android:text="Download Seed Production \nRegistration Data"
+                                            android:text="Download Seed Production \nRegistration"
                                             android:textColor="@color/white"
                                             android:textSize="16sp"
                                             android:textStyle="bold" />

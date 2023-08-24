@@ -26,6 +26,7 @@ import android.text.InputFilter;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -65,6 +66,7 @@ import mahyco.mipl.nxg.model.SeedBatchNoModel;
 import mahyco.mipl.nxg.model.SeedReceiptModel;
 import mahyco.mipl.nxg.model.SeedRegistraionLocalModel;
 import mahyco.mipl.nxg.model.StoreAreaModel;
+import mahyco.mipl.nxg.model.VillageModel;
 import mahyco.mipl.nxg.spinner.CCFSerachSpinner;
 import mahyco.mipl.nxg.util.BaseActivity;
 import mahyco.mipl.nxg.util.Preferences;
@@ -83,7 +85,7 @@ public class ProductionCreateGrowerListActivity extends BaseActivity implements 
     private CCFSerachSpinner mOrganizerNameSpinner;
     private CCFSerachSpinner mSearchByIdNameSpinner;
     // private SearchableSpinner mCropTypeSpinner;
-
+    private ArrayList<VillageModel> mSpinnerFocussVillageList;
     private ArrayList<CropModel> mCropList = new ArrayList<>();
     private ArrayList<DownloadGrowerModel> mGrowerList = new ArrayList<>();
     private ArrayList<DownloadGrowerModel> mOrganizerNameList = new ArrayList<>();
@@ -124,6 +126,7 @@ public class ProductionCreateGrowerListActivity extends BaseActivity implements 
     private boolean mOrganizerSpinnerFirstTimeSelected = false;
     private boolean mGrowerRadioBtnSelected = true;
     private AppCompatTextView mMaleBatchNoTextView;
+    CCFSerachSpinner sp_focusvillage;
 
     private androidx.appcompat.widget.Toolbar toolbar;
     int selectedGrowerId = 0;
@@ -159,10 +162,10 @@ public class ProductionCreateGrowerListActivity extends BaseActivity implements 
 
         mContext = this;
         AppCompatTextView mVersionTextView = findViewById(R.id.registration_version_code);
-        mVersionTextView.setText(getString(R.string.version_code, BuildConfig.VERSION_CODE));
+        mVersionTextView.setText(getString(R.string.version_code, ""+BuildConfig.VERSION_CODE));
         // Log.e("temporary", "is check called grower");
 
-
+        sp_focusvillage = findViewById(R.id.sp_focusvillage);
         grower_searchlbl = findViewById(R.id.grower_searchlbl);
         mMaleBatchNoTextView = findViewById(R.id.male_batch_no_textview);
         mPlantingYearSpinner = findViewById(R.id.planting_year_drop_down);
@@ -1714,6 +1717,7 @@ public class ProductionCreateGrowerListActivity extends BaseActivity implements 
             dialog_growerlist.setContentView(R.layout.growerlist_dialog);
             RecyclerView rc_list = dialog_growerlist.findViewById(R.id.rc_list);
             EditText et_search = dialog_growerlist.findViewById(R.id.et_search);
+            sp_focusvillage = dialog_growerlist.findViewById(R.id.sp_focusvillage);
             ImageView imageButton3 = dialog_growerlist.findViewById(R.id.imageButton3);
             imageButton3.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1722,6 +1726,94 @@ public class ProductionCreateGrowerListActivity extends BaseActivity implements 
                     dialog_growerlist.dismiss();
                 }
             });
+
+            try{
+                mSpinnerFocussVillageList=new SqlightDatabase(mContext).getAllFocusVillage();
+//                VillageModel vv=new VillageModel();
+//                vv.setVillage("Select");
+
+                VillageModel vv1=new VillageModel();
+                vv1.setVillage("All Growers");
+                vv1.setVillageCode("0");
+
+
+                VillageModel vv2=new VillageModel();
+                vv2.setVillage("All Focused Village Growers");
+                vv2.setVillageCode("-1");
+
+            //    mSpinnerFocussVillageList.add(0,vv);
+                mSpinnerFocussVillageList.add(0,vv1);
+                mSpinnerFocussVillageList.add(1,vv2);
+                if(mSpinnerFocussVillageList!=null && mSpinnerFocussVillageList.size()>0)
+                {
+                    ArrayAdapter<VillageModel> adapter = new ArrayAdapter<>(mContext, R.layout.spinner_rows,
+                            mSpinnerFocussVillageList);
+                    sp_focusvillage.setAdapter(adapter);
+                }else {
+                    showNoInternetDialog(
+                            mContext,"Please download focused village."
+                    );
+                }
+
+                sp_focusvillage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        try{
+                            VillageModel villageModel=(VillageModel) parent.getSelectedItem();
+                            mGrowerList=new ArrayList<DownloadGrowerModel>();
+
+                            if (villageModel.getVillage() != null &&  !villageModel.getVillage().contains("Select")) {
+                                Log.i("Selected Type ",villageModel.getVillageCode());
+                                if(villageModel.getVillageCode().trim().equals("0"))
+                                {
+                                    // this is for all
+                                    mGrowerList=getGrowerData(0,"All");
+                                    Toast.makeText(mContext, "All Growers ", Toast.LENGTH_SHORT).show();
+                                }
+                                else if(villageModel.getVillageCode().trim().equals("-1"))
+                                {
+                                    mGrowerList=getGrowerData(1,"allfocussed");
+                                    // this is for all focussed villages
+                                    Toast.makeText(mContext, "All Focused Growers ", Toast.LENGTH_SHORT).show();
+                                }
+                                else
+                                {
+                                    Toast.makeText(mContext, "Specific Village Growers ", Toast.LENGTH_SHORT).show();
+                                    mGrowerList=getGrowerData(2,villageModel.getVillage().trim());
+                                    // this for selected focussed village
+                                  //  Toast.makeText(mContext, ""+getGrowerData(2,villageModel.getVillage().trim()), Toast.LENGTH_SHORT).show();
+                                }
+                                
+                                if(mGrowerList!=null) {
+                                    Toast.makeText(mContext, "Total Growers" + mGrowerList.size(), Toast.LENGTH_SHORT).show();
+
+                                    rc_list.setAdapter(null);
+                                   // rc_list.notify();
+                                    visitGrowerAdapter = new SeedProductionGrowerAdapter((ArrayList) mGrowerList, mContext, ProductionCreateGrowerListActivity.this);
+                                    rc_list.setAdapter(visitGrowerAdapter);
+                                    //Toast.makeText(mContext, "Selected Village is " + villageModel.getVillage(), Toast.LENGTH_SHORT).show();
+                                }else
+                                {
+                                    Toast.makeText(mContext, "List is null", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }catch (Exception e)
+                        {
+                            Log.i("Error is # ",e.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+
+
+            }catch (Exception e)
+            {
+
+            }
             et_search.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -1776,7 +1868,8 @@ public class ProductionCreateGrowerListActivity extends BaseActivity implements 
         // running a for loop to compare elements.
         for (DownloadGrowerModel item : mGrowerList) {
             // checking if the entered string matched with any item of our recycler view.
-            if (item.getFullName().toLowerCase().contains(text.toLowerCase())) {
+            String data=item.getFullName().toLowerCase()+" "+item.getUniqueCode().toLowerCase();
+            if (data.contains(text.toLowerCase())) {
                 // if the item is matched we are
                 // adding it to our filtered list.
                 filteredlist.add(item);
@@ -1791,6 +1884,32 @@ public class ProductionCreateGrowerListActivity extends BaseActivity implements 
             // at last we are passing that filtered
             // list to our adapter class.
             visitGrowerAdapter.filterList(filteredlist);
+        }
+    }
+    ArrayList<DownloadGrowerModel> getGrowerData(int type,String value)
+    {
+        //type
+        // 0 = all  1= all focussed village 2= selected focus village
+
+        SqlightDatabase database = null;
+        ArrayList<DownloadGrowerModel> actionModels;
+        try {
+            database = new SqlightDatabase(mContext);
+
+            actionModels = database.getFocussedVillageGrower(type,value);
+           // Toast.makeText(mContext, " Count From Data base "+actionModels.size(), Toast.LENGTH_SHORT).show();
+            return actionModels;
+        }catch (Exception e)
+        {
+            Log.i("Error is123 ",e.getMessage());
+            return null;
+
+        }
+            finally {
+            if (database != null) {
+                database.close();
+            }
+
         }
     }
 

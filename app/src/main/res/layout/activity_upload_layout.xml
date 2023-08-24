@@ -667,7 +667,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:padding="5dp"
-                        android:text="Seed Receipt "
+                        android:text="UNP Seed Receipt "
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -727,7 +727,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:padding="5dp"
-                        android:text="Seed Registration"
+                        android:text="Seed Production Registration"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:textStyle="bold" />
