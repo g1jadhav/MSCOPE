@@ -377,7 +377,7 @@
                 android:background="@drawable/login_screen_edittext"
                 android:ellipsize="end"
                 android:hint="@string/enter_farmer_name"
-                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                 android:inputType="textCapCharacters"
                 android:maxLines="1"
                 android:paddingStart="10dp"

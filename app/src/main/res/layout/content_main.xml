@@ -39,7 +39,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="0dp"
                         android:gravity="center"
                         android:orientation="vertical"
                         android:padding="10dp">
@@ -156,6 +156,7 @@
 
                                     </RelativeLayout>
                                 </androidx.cardview.widget.CardView>
+
                                 <androidx.cardview.widget.CardView
                                     android:id="@+id/production_seed_create"
                                     android:layout_width="match_parent"
@@ -449,6 +450,7 @@
 
                                     </RelativeLayout>
                                 </androidx.cardview.widget.CardView>
+
                                 <androidx.cardview.widget.CardView
                                     android:id="@+id/seedreceipts"
                                     android:layout_width="match_parent"
@@ -496,6 +498,14 @@
                         </LinearLayout>
 
                     </LinearLayout>
+
+                    <mahyco.mipl.nxg.util.GridRecyclerView
+                        android:id="@+id/gridView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:numColumns="2" />
                 </LinearLayout>
             </ScrollView>
             <LinearLayout

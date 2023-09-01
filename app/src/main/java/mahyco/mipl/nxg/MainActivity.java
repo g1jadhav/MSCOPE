@@ -1,6 +1,7 @@
 package mahyco.mipl.nxg;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,6 +16,8 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -32,6 +35,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,9 +47,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 import mahyco.mipl.nxg.model.CategoryModel;
 import mahyco.mipl.nxg.model.ForceUpdateModel;
+import mahyco.mipl.nxg.util.GetClickedPosition;
+import mahyco.mipl.nxg.util.GridViewAdapter1;
+import mahyco.mipl.nxg.util.ItemOffsetDecoration;
 import mahyco.mipl.nxg.util.Preferences;
 import mahyco.mipl.nxg.util.SqlightDatabase;
 import mahyco.mipl.nxg.view.AndroidDatabaseManager;
@@ -61,7 +69,7 @@ import mahyco.mipl.nxg.view.uploaddata.NewActivityUpload;
 import retrofit2.Response;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, MainActivityListListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, MainActivityListListener , GetClickedPosition {
     RelativeLayout rl_fragment_container;
     MainActivityAPI mainActivityAPI;
     Context context;
@@ -85,6 +93,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private Dialog mDialog = null;
 
+    //  New Design Varibles Declaration
+
+    RecyclerView gridView;
+    public String[] prgmNameList;
+    public String[] ImageList;
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,8 +121,44 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         init();
         requestStoragePermission();
 
-    }
 
+        // New Design Intitalization
+
+        gridView = (RecyclerView) findViewById(R.id.gridView);
+        gridView.setLayoutManager(new GridLayoutManager(this, 2));
+
+        prgmNameList = new String[]{"New Grower Registration",
+                "New Coordinator Registration", "Production Seed Registration", "Parent Seed Distribution", "Field Monitoring",
+                "Data Upload", "Download Master Data", "Seed Receipt",
+        };
+
+        ImageList = new String[]{"growerregistration.png", "coordinatiorregistration.png", "prodseedregist.png", "parentseeddistribution.png", "fieldmonitoring.png",
+                "uploaddata.png", "downloadmasterdata.png", "seedreceipt.png"
+        };
+
+        final int spacing = 4;
+        gridView.setAdapter(null);
+        gridView.setAdapter(new GridViewAdapter1(this, prgmNameList, ImageList, this));
+        gridView.addItemDecoration(new ItemOffsetDecoration(spacing));
+        runLayoutAnimation(gridView);
+
+    }
+    @SuppressLint("NotifyDataSetChanged")
+    private void runLayoutAnimation(final RecyclerView recyclerView) {
+        try {
+            final Context context = recyclerView.getContext();
+
+            final LayoutAnimationController controller =
+                    AnimationUtils.loadLayoutAnimation(context, R.anim.grid_layout_animation_from_bottom);
+
+            recyclerView.setLayoutAnimation(controller);
+            Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
+            recyclerView.scheduleLayoutAnimation();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
     public void init() {
 
         TextView versionTextView = findViewById(R.id.textView8);
@@ -521,6 +574,148 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mAlertDialog.show();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void getPosition(int position) {
+        Intent intent;
+        switch (position) {
+            // New Grower Registration Activity
+            case 0:
+                if (!checkCategoryDataDownloaded()) {
+                    Toast.makeText(context, "Please download category master data in download master data first", Toast.LENGTH_SHORT).show();
+                } else if (!checkLocationMasterDataDownloaded()) {
+                    Toast.makeText(context, "Please download location master data in download master data first", Toast.LENGTH_SHORT).show();
+                } else if (Preferences.get(context, Preferences.GROWER_DOWNLOAD).equalsIgnoreCase("")) {
+                    Toast.makeText(context, "Please download grower master data in download master data first", Toast.LENGTH_SHORT).show();
+                } /*else if (Preferences.get(context, Preferences.GROWER_DOWNLOAD).equalsIgnoreCase("emptyList")) {
+                    if (!Preferences.get(context, Preferences.CURRENT_DATE_FOR_GROWER_DOWNLOAD).equalsIgnoreCase(getCurrentDate())) {
+                        Toast.makeText(context, "Please download grower master data in download master data first", Toast.LENGTH_SHORT).show();
+                    } else if (checkAutoTimeEnabledOrNot()) {
+                        Intent intent = new Intent(context, NewGrowerRegistration.class);
+                        intent.putExtra("title", "Grower");
+                        startActivity(intent);
+                    } else {
+                        showAutomaticTimeMessage("Please update time setting to automatic");
+                    }
+                } else if (!Preferences.get(context, Preferences.CURRENT_DATE_FOR_GROWER_DOWNLOAD).equalsIgnoreCase(getCurrentDate())) {
+                    Toast.makeText(context, "Please download grower master data in download master data first", Toast.LENGTH_SHORT).show();
+                } */else {
+                    if (checkAutoTimeEnabledOrNot()) {
+                         intent = new Intent(context, NewGrowerRegistration.class);
+                        intent.putExtra("title", "Grower");
+                        startActivity(intent);
+                    } else {
+                        showAutomaticTimeMessage("Please update time setting to automatic");
+                    }
+                }
+
+                break;
+            // New Coordinator Registration Activity
+            case 1:
+                if (!checkCategoryDataDownloaded()) {
+                    Toast.makeText(context, "Please download category master data in download master data first", Toast.LENGTH_SHORT).show();
+                } else if (!checkLocationMasterDataDownloaded()) {
+                    Toast.makeText(context, "Please download location master data in download master data first", Toast.LENGTH_SHORT).show();
+                } /*else if (Preferences.get(context, Preferences.GROWER_DOWNLOAD).equalsIgnoreCase("")) {
+                    Toast.makeText(context, "Please download grower master data in download master data first", Toast.LENGTH_SHORT).show();
+                } else if (Preferences.get(context, Preferences.GROWER_DOWNLOAD).equalsIgnoreCase("emptyList")) {
+                    if (!Preferences.get(context, Preferences.CURRENT_DATE_FOR_GROWER_DOWNLOAD).equalsIgnoreCase(getCurrentDate())) {
+                        Toast.makeText(context, "Please download grower master data in download master data first", Toast.LENGTH_SHORT).show();
+                    } else if (checkAutoTimeEnabledOrNot()) {
+                        Intent intent = new Intent(context, NewGrowerRegistration.class);
+                        intent.putExtra("title", "Organizer");
+                        startActivity(intent);
+                    } else {
+                        showAutomaticTimeMessage("Please update time setting to automatic");
+                    }
+                } else if (!Preferences.get(context, Preferences.CURRENT_DATE_FOR_GROWER_DOWNLOAD).equalsIgnoreCase(getCurrentDate())) {
+                    Toast.makeText(context, "Please download grower master data in download master data first", Toast.LENGTH_SHORT).show();
+                } */else {
+                    if (checkAutoTimeEnabledOrNot()) {
+                         intent = new Intent(context, NewGrowerRegistration.class);
+                        intent.putExtra("title", "Organizer");
+                        startActivity(intent);
+                    } else {
+                        showAutomaticTimeMessage("Please update time setting to automatic");
+                    }
+                }
+                break;
+            // Production Seed Registration Activity
+            case 2:
+                 intent = new Intent(context, ProductionCreateGrowerListActivity.class);
+                startActivity(intent);
+                break;
+            // Parent Seed Distribution Activity
+            case 3:
+                if (!Preferences.get(context, Preferences.DISTRIBUTION_LIST_DOWNLOAD).equalsIgnoreCase("")) {
+                    if (checkAutoTimeEnabledOrNot()) {
+                         intent = new Intent(context, OldGrowerSeedDistribution.class);
+                        startActivity(intent);
+                    } else {
+                        showAutomaticTimeMessage("Please update time setting to automatic");
+                    }
+                } else {
+                    Toast.makeText(context, "Please download seed distribution master data in download master data first", Toast.LENGTH_SHORT).show();
+                }
+
+                break;
+            // Parent Field Monitoring Activity
+            case 4:{
+                /*if (!checkCategoryDataDownloaded()) {
+                    Toast.makeText(context, "Please download category master data in download master data first", Toast.LENGTH_SHORT).show();
+                } else if (!checkLocationMasterDataDownloaded()) {
+                    Toast.makeText(context, "Please download location master data in download master data first", Toast.LENGTH_SHORT).show();
+                } else if (Preferences.get(context, Preferences.GROWER_DOWNLOAD).equalsIgnoreCase("")) {
+                    Toast.makeText(context, "Please download grower master data in download master data first", Toast.LENGTH_SHORT).show();
+                } else if (Preferences.get(context, Preferences.GROWER_DOWNLOAD).equalsIgnoreCase("emptyList")) {
+                    if (!Preferences.get(context, Preferences.CURRENT_DATE_FOR_GROWER_DOWNLOAD).equalsIgnoreCase(getCurrentDate())) {
+                        Toast.makeText(context, "Please download grower master data in download master data first", Toast.LENGTH_SHORT).show();
+                    } else if (checkAutoTimeEnabledOrNot()) {
+                        Intent intent = new Intent(context, FiledMonitoringReportEntry.class);
+                        startActivity(intent);
+                    } else {
+                        showAutomaticTimeMessage("Please update time setting to automatic");
+                    }
+                } else if (!Preferences.get(context, Preferences.CURRENT_DATE_FOR_GROWER_DOWNLOAD).equalsIgnoreCase(getCurrentDate())) {
+                    Toast.makeText(context, "Please download grower master data in download master data first", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (checkAutoTimeEnabledOrNot()) {
+                        Intent intent = new Intent(context, FiledMonitoringReportEntry.class);
+                        startActivity(intent);
+                    } else {
+                        showAutomaticTimeMessage("Please update time setting to automatic");
+                    }
+                }*/
+                 intent = new Intent(context, FiledMonitoringReportEntry.class);
+                startActivity(intent);
+        }
+                break;
+            // Data Upload Activity
+            case 5:
+                //downloadLocationData();
+                Intent upload = new Intent(context, /*ActivityUpload*/NewActivityUpload.class);
+                startActivity(upload);
+                break;
+            // Download Master Data Activity
+            case 6:
+                 intent = new Intent(context, DownloadCategoryActivity.class);
+                startActivity(intent);
+                break;
+            // Seed ReceiptActivity
+            case 7:
+                if (!Preferences.get(context, Preferences.DISTRIBUTION_LIST_DOWNLOAD).equalsIgnoreCase("")) {
+                    if (checkAutoTimeEnabledOrNot()) {
+                         intent = new Intent(context, ReceiptGrowerSelectionActivity.class);
+                        startActivity(intent);
+                    } else {
+                        showAutomaticTimeMessage("Please update time setting to automatic");
+                    }
+                } else {
+                    Toast.makeText(context, "Please download seed distribution master data in download master data first", Toast.LENGTH_SHORT).show();
+                }
+                break;
         }
     }
     /*Added by Jeevan ended here 28-11-2022*/

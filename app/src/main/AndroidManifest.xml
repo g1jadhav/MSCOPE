@@ -25,6 +25,9 @@
         android:theme="@style/Theme.MahycoMarketDemo"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".view.prod_seed_create.SeedProductionVillageFilterActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.prod_seed_create.ProductionCreateGrowerListActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:exported="false"

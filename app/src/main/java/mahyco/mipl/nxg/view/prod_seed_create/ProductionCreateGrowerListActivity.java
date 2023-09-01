@@ -1728,22 +1728,24 @@ public class ProductionCreateGrowerListActivity extends BaseActivity implements 
             });
 
             try{
-                mSpinnerFocussVillageList=new SqlightDatabase(mContext).getAllFocusVillage();
+                mSpinnerFocussVillageList=new SqlightDatabase(mContext).getAllVillageMaster();
 //                VillageModel vv=new VillageModel();
 //                vv.setVillage("Select");
 
                 VillageModel vv1=new VillageModel();
                 vv1.setVillage("All Growers");
                 vv1.setVillageCode("0");
+                vv1.setADD("0");
 
 
-                VillageModel vv2=new VillageModel();
-                vv2.setVillage("All Focused Village Growers");
-                vv2.setVillageCode("-1");
+//                VillageModel vv2=new VillageModel();
+//                vv2.setVillage("All Focused Village Growers");
+//                vv2.setVillageCode("-1");
+//                vv2.setADD("-1");
 
             //    mSpinnerFocussVillageList.add(0,vv);
                 mSpinnerFocussVillageList.add(0,vv1);
-                mSpinnerFocussVillageList.add(1,vv2);
+              //  mSpinnerFocussVillageList.add(1,vv2);
                 if(mSpinnerFocussVillageList!=null && mSpinnerFocussVillageList.size()>0)
                 {
                     ArrayAdapter<VillageModel> adapter = new ArrayAdapter<>(mContext, R.layout.spinner_rows,
@@ -1751,7 +1753,7 @@ public class ProductionCreateGrowerListActivity extends BaseActivity implements 
                     sp_focusvillage.setAdapter(adapter);
                 }else {
                     showNoInternetDialog(
-                            mContext,"Please download focused village."
+                            mContext,"Please Download Location Master."
                     );
                 }
 
@@ -1779,7 +1781,7 @@ public class ProductionCreateGrowerListActivity extends BaseActivity implements 
                                 else
                                 {
                                     Toast.makeText(mContext, "Specific Village Growers ", Toast.LENGTH_SHORT).show();
-                                    mGrowerList=getGrowerData(2,villageModel.getVillage().trim());
+                                    mGrowerList=getGrowerData(2,villageModel.getADD().trim());
                                     // this for selected focussed village
                                   //  Toast.makeText(mContext, ""+getGrowerData(2,villageModel.getVillage().trim()), Toast.LENGTH_SHORT).show();
                                 }
@@ -1812,7 +1814,7 @@ public class ProductionCreateGrowerListActivity extends BaseActivity implements 
 
             }catch (Exception e)
             {
-
+                Toast.makeText(mContext, "Error is "+e.getMessage(), Toast.LENGTH_SHORT).show();
             }
             et_search.addTextChangedListener(new TextWatcher() {
                 @Override

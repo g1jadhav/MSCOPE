@@ -1212,6 +1212,58 @@ public class SqlightDatabase extends SQLiteOpenHelper {
         }
     }
 
+    public ArrayList<VillageModel> getAllVillageMaster() {
+        SQLiteDatabase myDb = null;
+        try {
+            myDb = this.getReadableDatabase();
+            String q = "select CountryMasterId,ParentId,KeyValue,CategoryName,DisplayTitle,KeyValue||','||(select (CategoryName || '-' || KeyValue) from tbl_locationmaster where CountryMasterId=l.ParentId )as taluka from tbl_locationmaster l where CategoryName='Village'";
+            Cursor cursorCourses = myDb.rawQuery(q, null);
+            ArrayList<VillageModel> focuseVillageList = new ArrayList<>();
+            if (cursorCourses.moveToFirst()) {
+                do {
+                    VillageModel f = new VillageModel();
+                    f.setVillageAllocationId(cursorCourses.getInt(0));
+              //      f.setLoginId(cursorCourses.getInt(2));
+              //      f.setCountryId(cursorCourses.getInt(3));
+                    f.setCountryMasterId(cursorCourses.getInt(0));
+                  //  f.setPLantingYear(cursorCourses.getInt(5));
+                    //f.isDelete=(false);
+                    //f.setCreatedBy(cursorCourses.getString(7));
+                   // f.setCreatedDt(cursorCourses.getString(8));
+                  //  f.setModifiedBy(cursorCourses.getString(9));
+                //    f.setModifiedDt(cursorCourses.getString(10));
+                    f.setCountryName(cursorCourses.getString(1));
+               //    f.setCountryCode(cursorCourses.getString(12));
+                    f.setVillage(cursorCourses.getString(5));
+                    f.setVillageCode(cursorCourses.getString(0));
+                   // f.setSection(cursorCourses.getString(15));
+                 //   f.setSectionCode(cursorCourses.getString(16));
+                  //  f.setEPA(cursorCourses.getString(17));
+                  //  f.setEPACode(cursorCourses.getString(18));
+                 //   f.setDistrict(cursorCourses.getString(19));
+                 //   f.setDistrictCode(cursorCourses.getString(20));
+                    f.setADD(cursorCourses.getString(2));
+                 //   f.setADDCode(cursorCourses.getString(22));
+                  //  f.setUserName(cursorCourses.getString(23));
+                  //  f.setUserCode(cursorCourses.getString(24));
+                  //  f.setNoofGrowers(cursorCourses.getInt(25));
+                  //  f.setAreaHAC(cursorCourses.getInt(26));
+
+                    focuseVillageList.add(f);
+                } while (cursorCourses.moveToNext());
+            }
+            return focuseVillageList;
+        } catch (Exception e) {
+            Log.i("Exception in LDB",e.getMessage());
+            return null;
+        } finally {
+            myDb.close();
+        }
+    }
+
+
+
+
     public ArrayList<FirstVisitLocalModel> getAllFirstFieldVisit() {
         SQLiteDatabase myDb = null;
         try {
@@ -2945,11 +2997,11 @@ public class SqlightDatabase extends SQLiteOpenHelper {
             String q="";
             if(type==1) // all focussed Village
             {
-                q="SELECT  *, IFNULL ((SELECT SUM(SeedProductionArea) from tbl_storestributiondata where GrowerId = UserId), 0) as area from tbl_growermaster g where (select count(*) from tbl_focusedvillage where CountryMasterId=g.CountryMasterId)>0";
+                q="SELECT  *, IFNULL ((SELECT SUM(SeedProductionArea) from tbl_storestributiondata where GrowerId = UserId), 0) as area from tbl_growermaster g ";
             }
 
             else if(type==2) { // for Specific Village
-                q = "SELECT  *, IFNULL ((SELECT SUM(SeedProductionArea) from tbl_storestributiondata where GrowerId = UserId), 0) as area from tbl_growermaster g where (select count(*) from tbl_focusedvillage where CountryMasterId=g.CountryMasterId)>0 and upper(g.LandMark) like '"+value+",%'";
+                q = "SELECT  *, IFNULL ((SELECT SUM(SeedProductionArea) from tbl_storestributiondata where GrowerId = UserId), 0) as area from tbl_growermaster g where upper(g.LandMark) like '"+value+",%'";
             }
             else // for all
             {
