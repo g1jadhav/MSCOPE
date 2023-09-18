@@ -5,18 +5,22 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.cardview.widget.CardView;
 
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import mahyco.mipl.nxg.BuildConfig;
 import mahyco.mipl.nxg.R;
+import mahyco.mipl.nxg.adapter.SeedDistrPlantingYearAdapter;
 import mahyco.mipl.nxg.model.CategoryChildModel;
 import mahyco.mipl.nxg.model.CategoryModel;
 import mahyco.mipl.nxg.model.CropModel;
@@ -58,6 +62,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
     private CardView mGetAllVillageMaster;
     private CardView download_seedreceipt_master_layout;
     private CardView download_productionreg_master_layout;
+    private AppCompatSpinner mPlantingYearSpinner;
 
     private JsonObject mJsonObjectCategory;
 
@@ -90,6 +95,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
     final String GET_ALL_SEED_DISTRIBUTION_MASTER_DATABASE = "GetAllSeedDistributionMaster";
 
     private androidx.appcompat.widget.Toolbar toolbar;
+    String selectedYear="";
 
     @Override
     protected int getLayout() {
@@ -103,7 +109,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
         setSupportActionBar(toolbar);
 
         TextView versionTextView = findViewById(R.id.textView8);
-        versionTextView.setText(getString(R.string.version_code, BuildConfig.VERSION_CODE));
+        versionTextView.setText(getString(R.string.version_code,""+ BuildConfig.VERSION_CODE));
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -129,7 +135,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
         mGetAllVillageMaster = findViewById(R.id.download_village_master_layout);
         download_seedreceipt_master_layout = findViewById(R.id.download_seedreceipt_master_layout);
         download_productionreg_master_layout = findViewById(R.id.download_productionreg_master_layout);
-
+        mPlantingYearSpinner = findViewById(R.id.planting_year_drop_down);
         mCategoryMaster.setOnClickListener(this);
         mLocationMaster.setOnClickListener(this);
         mSeasonMaster.setOnClickListener(this);
@@ -148,6 +154,36 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
         download_productionreg_master_layout.setOnClickListener(this);
 
         mDownloadCategoryApi = new DownloadCategoryApi(mContext, this);
+
+
+        ArrayList<String> mYearList = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.add(Calendar.YEAR, +1);
+        mYearList.add(String.valueOf(calendar.get(Calendar.YEAR)));
+
+        calendar.add(Calendar.YEAR, -1);
+        mYearList.add(String.valueOf(calendar.get(Calendar.YEAR)));
+
+        calendar.add(Calendar.YEAR, -1);
+        mYearList.add(String.valueOf(calendar.get(Calendar.YEAR)));
+
+        SeedDistrPlantingYearAdapter adapter = new SeedDistrPlantingYearAdapter(mContext, R.layout.planting_year_rows, mYearList);
+        mPlantingYearSpinner.setAdapter(adapter);
+        mPlantingYearSpinner.setSelection(1);
+        mPlantingYearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                selectedYear=mPlantingYearSpinner.getSelectedItem().toString();
+                Toast.makeText(mContext, ""+selectedYear, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     @Override
@@ -632,7 +668,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
             try {
                 mJsonObjectCategory = null;
                 mJsonObjectCategory = new JsonObject();
-                mJsonObjectCategory.addProperty("filterValue", Preferences.get(mContext, Preferences.COUNTRYCODE));
+                mJsonObjectCategory.addProperty("filterValue", Preferences.get(mContext, Preferences.COUNTRYCODE)+","+selectedYear);
                 mJsonObjectCategory.addProperty("FilterOption", "CountryId");
                 mDownloadCategoryApi.getSeedReceiptNo(mJsonObjectCategory);
             } catch (Exception e) {
@@ -647,7 +683,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
             try {
                 mJsonObjectCategory = null;
                 mJsonObjectCategory = new JsonObject();
-                mJsonObjectCategory.addProperty("filterValue", Preferences.get(mContext, Preferences.COUNTRYCODE));
+                mJsonObjectCategory.addProperty("filterValue", Preferences.get(mContext, Preferences.COUNTRYCODE)+","+selectedYear);
                 mJsonObjectCategory.addProperty("FilterOption", "CountryId");
                 mDownloadCategoryApi.getAllSeedDistributionList(mJsonObjectCategory);
             } catch (Exception e) {
@@ -663,7 +699,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
         if (checkInternetConnection(mContext)) {
             try {
 
-                mDownloadCategoryApi.getAllSeedReceipt(Preferences.get(mContext, Preferences.COUNTRYCODE));
+                mDownloadCategoryApi.getAllSeedReceipt(Preferences.get(mContext, Preferences.COUNTRYCODE)+","+selectedYear);
             } catch (Exception e) {
             }
         } else {
@@ -678,7 +714,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
             try {
                 mJsonObjectCategory = null;
                 mJsonObjectCategory = new JsonObject();
-                mJsonObjectCategory.addProperty("filterValue", Preferences.get(mContext, Preferences.COUNTRYCODE));
+                mJsonObjectCategory.addProperty("filterValue", Preferences.get(mContext, Preferences.COUNTRYCODE)+","+selectedYear);
                 mJsonObjectCategory.addProperty("FilterOption", "CountryId");
                 mDownloadCategoryApi.getAllVisitList(mJsonObjectCategory);
             } catch (Exception e) {
@@ -1078,7 +1114,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
                 try {
                     mJsonObjectCategory = null;
                     mJsonObjectCategory = new JsonObject();
-                    mJsonObjectCategory.addProperty("filterValue", Preferences.get(mContext, Preferences.COUNTRYCODE));
+                    mJsonObjectCategory.addProperty("filterValue", Preferences.get(mContext, Preferences.COUNTRYCODE)+","+selectedYear);
                     mJsonObjectCategory.addProperty("FilterOption", "CountryId");
                     mDownloadCategoryApi.getAllSeedProductionRegistrtaion(mJsonObjectCategory);
                 } catch (Exception e) {

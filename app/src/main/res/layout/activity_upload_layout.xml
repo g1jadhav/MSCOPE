@@ -38,6 +38,7 @@
             android:orientation="vertical">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_reg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="@color/white"
@@ -65,18 +66,27 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="10dp"
                         android:orientation="horizontal"
-                        android:weightSum="2">
+                        android:weightSum="3">
+
+                        <ImageView
+                            android:id="@+id/imageView89"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:padding="10dp"
+                            android:scaleType="fitCenter"
+                            app:srcCompat="@drawable/growerregistration" />
 
                         <TextView
                             android:id="@+id/grower_registration_no_of_records"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:gravity="center_horizontal"
+                            android:gravity="center|center_horizontal"
                             android:padding="5dp"
                             android:text="@string/no_of_records_for_upload"
                             android:textColor="@color/black"
-                            android:textSize="16sp"
+                            android:textSize="24sp"
                             android:textStyle="bold" />
 
                         <androidx.appcompat.widget.AppCompatButton
@@ -86,6 +96,7 @@
                             android:layout_margin="10dp"
                             android:layout_weight="1"
                             android:background="@color/yellow"
+                            android:drawableRight="@drawable/ic_baseline_cloud_upload_24"
                             android:gravity="center"
                             android:padding="5dp"
                             android:text="@string/upload"
@@ -97,6 +108,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_coordinate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -125,18 +137,27 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="10dp"
                         android:orientation="horizontal"
-                        android:weightSum="2">
+                        android:weightSum="3">
+
+                        <ImageView
+                            android:id="@+id/imageView1"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:padding="10dp"
+                            android:scaleType="fitCenter"
+                            app:srcCompat="@drawable/coordinatiorregistration" />
 
                         <TextView
                             android:id="@+id/organizer_registration_no_of_records"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:gravity="center_horizontal"
+                            android:gravity="center|center_horizontal"
                             android:padding="5dp"
                             android:text="@string/no_of_records_for_upload"
                             android:textColor="@color/black"
-                            android:textSize="16sp"
+                            android:textSize="24sp"
                             android:textStyle="bold" />
 
                         <androidx.appcompat.widget.AppCompatButton
@@ -146,6 +167,7 @@
                             android:layout_margin="10dp"
                             android:layout_weight="1"
                             android:background="@color/yellow"
+                            android:drawableRight="@drawable/ic_baseline_cloud_upload_24"
                             android:gravity="center"
                             android:padding="5dp"
                             android:text="@string/upload"
@@ -157,6 +179,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_distribute"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -185,18 +208,27 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="10dp"
                         android:orientation="horizontal"
-                        android:weightSum="2">
+                        android:weightSum="3">
+
+                        <ImageView
+                            android:id="@+id/imageView"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:padding="10dp"
+                            android:scaleType="fitCenter"
+                            app:srcCompat="@drawable/parentseeddistribution" />
 
                         <TextView
                             android:id="@+id/seed_distribution_no_of_records"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:gravity="center_horizontal"
+                            android:gravity="center|center_horizontal"
                             android:padding="5dp"
                             android:text="@string/no_of_records_for_upload"
                             android:textColor="@color/black"
-                            android:textSize="16sp"
+                            android:textSize="24sp"
                             android:textStyle="bold" />
 
                         <androidx.appcompat.widget.AppCompatButton
@@ -206,6 +238,7 @@
                             android:layout_margin="10dp"
                             android:layout_weight="1"
                             android:background="@color/yellow"
+                            android:drawableRight="@drawable/ic_baseline_cloud_upload_24"
                             android:gravity="center"
                             android:padding="5dp"
                             android:text="@string/upload"
@@ -217,6 +250,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_visit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -371,18 +405,27 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="10dp"
                         android:orientation="horizontal"
-                        android:weightSum="2">
+                        android:weightSum="3">
+
+                        <ImageView
+                            android:id="@+id/imageView77"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:padding="10dp"
+                            android:scaleType="fitCenter"
+                            app:srcCompat="@drawable/fieldmonitoring" />
 
                         <TextView
                             android:id="@+id/field_visit_1st_no_of_records"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:gravity="center_horizontal"
+                            android:gravity="center|center_horizontal"
                             android:padding="5dp"
                             android:text="@string/no_of_records_for_upload"
                             android:textColor="@color/black"
-                            android:textSize="16sp"
+                            android:textSize="24sp"
                             android:textStyle="bold" />
 
                         <androidx.appcompat.widget.AppCompatButton
@@ -392,6 +435,7 @@
                             android:layout_margin="10dp"
                             android:layout_weight="1"
                             android:background="@color/yellow"
+                            android:drawableRight="@drawable/ic_baseline_cloud_upload_24"
                             android:gravity="center"
                             android:padding="5dp"
                             android:text="@string/upload"
@@ -649,6 +693,7 @@
 
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_receipt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -677,18 +722,27 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="10dp"
                         android:orientation="horizontal"
-                        android:weightSum="2">
+                        android:weightSum="3">
+
+                        <ImageView
+                            android:id="@+id/imageView4"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:padding="10dp"
+                            android:scaleType="fitCenter"
+                            app:srcCompat="@drawable/seedreceipt" />
 
                         <TextView
                             android:id="@+id/seed_receipt"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:gravity="center_horizontal"
+                            android:gravity="center|center_horizontal"
                             android:padding="5dp"
                             android:text="@string/no_of_records_for_upload"
                             android:textColor="@color/black"
-                            android:textSize="16sp"
+                            android:textSize="24sp"
                             android:textStyle="bold" />
 
                         <androidx.appcompat.widget.AppCompatButton
@@ -698,6 +752,7 @@
                             android:layout_margin="10dp"
                             android:layout_weight="1"
                             android:background="@color/yellow"
+                            android:drawableRight="@drawable/ic_baseline_cloud_upload_24"
                             android:gravity="center"
                             android:padding="5dp"
                             android:text="@string/upload"
@@ -709,9 +764,11 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_seedregistration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="30dp"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="5dp">
@@ -737,18 +794,27 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="10dp"
                         android:orientation="horizontal"
-                        android:weightSum="2">
+                        android:weightSum="3">
+
+                        <ImageView
+                            android:id="@+id/imageView34"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:padding="10dp"
+                            android:scaleType="fitCenter"
+                            app:srcCompat="@drawable/prodseedregist" />
 
                         <TextView
                             android:id="@+id/seed_registration"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:gravity="center_horizontal"
+                            android:gravity="center|center_horizontal"
                             android:padding="5dp"
                             android:text="@string/no_of_records_for_upload"
                             android:textColor="@color/black"
-                            android:textSize="16sp"
+                            android:textSize="24sp"
                             android:textStyle="bold" />
 
                         <androidx.appcompat.widget.AppCompatButton
@@ -758,6 +824,7 @@
                             android:layout_margin="10dp"
                             android:layout_weight="1"
                             android:background="@color/yellow"
+                            android:drawableRight="@drawable/ic_baseline_cloud_upload_24"
                             android:gravity="center"
                             android:padding="5dp"
                             android:text="@string/upload"

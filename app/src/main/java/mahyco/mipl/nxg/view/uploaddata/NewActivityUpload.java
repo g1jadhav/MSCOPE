@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.cardview.widget.CardView;
 
 
 import com.google.gson.Gson;
@@ -105,6 +106,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
     int totalFirstVisit = 0;
     // TextView txt_visit_count;
     TextView txt1, txt2, txt3, txt4, txt5;
+    CardView cardViewGrower,cardViewCoordinator,cardViewDistribute,cardViewReceipt,cardViewSeedProductionRegistration,cardViewVisit;
 
     @Override
     protected int getLayout() {
@@ -164,6 +166,24 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
         seed_receipt = findViewById(R.id.seed_receipt);
         seed_registration_Records = findViewById(R.id.seed_registration);
 
+        int a1,a2,a3,a4,a5,a6;
+        a1=a2=a3=a4=a5=a6=0;
+        a1=database.getAllRegistration().size();
+        a2=database.getAllRegistration().size();
+        a3=database.getParentSeedDistributionList().size();
+
+        a4=database.getAllFirstFieldVisit1().size();
+        a5=database.getAllSeedReceipt().size();
+        a6=database.getProductionRegistration().size();
+
+        cardViewGrower=findViewById(R.id.card_reg);
+                cardViewCoordinator=findViewById(R.id.card_coordinate);
+        cardViewDistribute=findViewById(R.id.card_distribute);
+                cardViewReceipt=findViewById(R.id.card_receipt);
+        cardViewSeedProductionRegistration=findViewById(R.id.card_seedregistration);
+        cardViewVisit=findViewById(R.id.card_visit);
+
+
 
         mGrowerRecords.setText(getString(R.string.no_of_records_for_upload, 0));
         mOrganizerRecords.setText(getString(R.string.no_of_records_for_upload, 0));
@@ -172,6 +192,20 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
         seed_receipt.setText(getString(R.string.no_of_records_for_upload, database.getAllSeedReceipt().size()));
         seed_registration_Records.setText(getString(R.string.no_of_records_for_upload, database.getProductionRegistration().size()));
         //  txt_visit_count.setText(database.getCount());
+
+        if(a1<=0)
+            cardViewGrower.setVisibility(View.GONE);
+        if(a2<=0)
+            cardViewCoordinator.setVisibility(View.GONE);
+        if(a3<=0)
+            cardViewDistribute.setVisibility(View.GONE);
+        if(a4<=0)
+            cardViewVisit.setVisibility(View.GONE);
+        if(a5<=0)
+            cardViewReceipt.setVisibility(View.GONE);
+        if(a6<=0)
+            cardViewSeedProductionRegistration.setVisibility(View.GONE);
+
 
         String data = database.getCount();
 

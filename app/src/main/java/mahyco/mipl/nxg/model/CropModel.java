@@ -10,6 +10,16 @@ public class CropModel {
     private  String ModifiedBy;
     private  String ModifiedDt;
 
+    public boolean isDelete() {
+        return IsDelete;
+    }
+
+    public void setDelete(boolean delete) {
+        IsDelete = delete;
+    }
+
+    boolean IsDelete;
+
     public CropModel(){}
 
     public CropModel(int cropId, String cropCode, String cropName, String createdBy, String createdDt, String modifiedBy, String modifiedDt) {

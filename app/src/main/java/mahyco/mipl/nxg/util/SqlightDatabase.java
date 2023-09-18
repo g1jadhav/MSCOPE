@@ -1811,7 +1811,8 @@ public class SqlightDatabase extends SQLiteOpenHelper {
                     "'" + cropModel.getCreatedBy() + "'," +
                     "'" + cropModel.getCreatedDt() + "'," +
                     "'" + cropModel.getModifiedBy() + "'," +
-                    "'" + cropModel.getModifiedDt() + "')";
+                    "'" + cropModel.isDelete() + "')";
+
             // Log.i("Query is -------> ", "" + q);
             mydb.execSQL(q);
             return true;
@@ -1827,7 +1828,7 @@ public class SqlightDatabase extends SQLiteOpenHelper {
         SQLiteDatabase myDb = null;
         try {
             myDb = this.getReadableDatabase();
-            String q = "SELECT  * FROM tbl_cropmaster";
+            String q = "SELECT  * FROM tbl_cropmaster where upper(ModifiedDt)='FALSE'";
             Cursor cursorCourses = myDb.rawQuery(q, null);
             ArrayList<CropModel> courseModalArrayList = new ArrayList<>();
             if (cursorCourses.moveToFirst()) {
