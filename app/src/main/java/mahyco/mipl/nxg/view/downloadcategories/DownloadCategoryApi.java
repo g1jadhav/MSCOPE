@@ -580,7 +580,7 @@ public class DownloadCategoryApi {
         }
     }
 
-    public void getAllSeedReceipt(String s) {
+    public void getAllSeedReceipt(JsonObject s) {
 
         try {
             if (!progressDialog.isShowing())

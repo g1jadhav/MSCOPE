@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
@@ -46,6 +47,7 @@ import java.util.Locale;
 
 import mahyco.mipl.nxg.BuildConfig;
 import mahyco.mipl.nxg.R;
+import mahyco.mipl.nxg.adapter.SeedDistrPlantingYearAdapter;
 import mahyco.mipl.nxg.model.FieldMonitoringModels;
 import mahyco.mipl.nxg.model.FieldPlantLaneModels;
 import mahyco.mipl.nxg.model.FieldVisitFruitsCobModel;
@@ -58,7 +60,7 @@ import mahyco.mipl.nxg.util.Preferences;
 import mahyco.mipl.nxg.util.SqlightDatabase;
 
 public class FieldVisitSecond extends BaseActivity {
-
+    private AppCompatSpinner mPlantingYearSpinner;
     EditText grower_name_textview,
             issued_seed_area_textview,
             production_code_textview,
@@ -135,7 +137,7 @@ public class FieldVisitSecond extends BaseActivity {
     int totalMalePlants = 0;
     LinearLayout layout_losslayout,layout_existarea,image_layout;
     int lossStatus=0;
-
+    String selectedYear="";
     @Override
     protected int getLayout() {
         return R.layout.field_visit_second;
@@ -287,7 +289,35 @@ public class FieldVisitSecond extends BaseActivity {
                 submit();
             }
         });
+        mPlantingYearSpinner = findViewById(R.id.planting_year_drop_down);
+        ArrayList<String> mYearList = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
 
+        calendar.add(Calendar.YEAR, +1);
+        mYearList.add(String.valueOf(calendar.get(Calendar.YEAR)));
+
+        calendar.add(Calendar.YEAR, -1);
+        mYearList.add(String.valueOf(calendar.get(Calendar.YEAR)));
+
+        calendar.add(Calendar.YEAR, -1);
+        mYearList.add(String.valueOf(calendar.get(Calendar.YEAR)));
+
+        SeedDistrPlantingYearAdapter adapter = new SeedDistrPlantingYearAdapter(context, R.layout.planting_year_rows, mYearList);
+        mPlantingYearSpinner.setAdapter(adapter);
+        mPlantingYearSpinner.setSelection(1);
+        mPlantingYearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                selectedYear=mPlantingYearSpinner.getSelectedItem().toString();
+                Toast.makeText(context, ""+selectedYear, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         national_id_photo_front_side_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -656,7 +686,9 @@ public class FieldVisitSecond extends BaseActivity {
 
 
                 if (validation()) {
-                fieldVisitModel.setUserId(userid);// 1,
+                    fieldVisitModel.setPlantingYear(mPlantingYearSpinner.getSelectedItem().toString().trim());
+
+                    fieldVisitModel.setUserId(userid);// 1,
                 fieldVisitModel.setCountryId(countryId);// 1,
                 fieldVisitModel.setCountryMasterId(countryCode);// 90,
                 fieldVisitModel.setMandatoryFieldVisitId(2);// 1,

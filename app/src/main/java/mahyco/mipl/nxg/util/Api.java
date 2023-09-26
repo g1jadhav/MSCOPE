@@ -122,8 +122,10 @@ public interface Api {
     @POST(Constants.SUBMIT_PRODUCTIONREGISTRATION)
     Call<SuccessModel> submitProductionRegistration(@Body JsonObject jsonObject);
 
-    @POST(Constants.GETALLSEEDRECEIPTDATA)
-    Call<List<ReceiptModelServer>> getSeedReceiptData(@Query("CountryID") String s);
+   /* @POST(Constants.GETALLSEEDRECEIPTDATA)
+    Call<List<ReceiptModelServer>> getSeedReceiptData(@Query("CountryID") String s);*/
+  @POST(Constants.GETALLSEEDRECEIPTDATA)
+    Call<List<ReceiptModelServer>> getSeedReceiptData(@Body JsonObject  s);
 
     @POST(Constants.GETALLSEEDREGISTRATIONDATA)
     Call<List<SeedProductionRegistrationServerModel>> getAllProductionRegistration(@Body JsonObject s);

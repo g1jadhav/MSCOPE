@@ -264,7 +264,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
                     int loginid = Integer.parseInt(Preferences.get(mContext, Preferences.LOGINID).trim());
                     mJsonObjectCategory = null;
                     mJsonObjectCategory = new JsonObject();
-                    mJsonObjectCategory.addProperty("filterValue", loginid);
+                    mJsonObjectCategory.addProperty("filterValue", loginid+","+selectedYear);
                     mJsonObjectCategory.addProperty("FilterOption", "LoginId");
                     mDownloadCategoryApi.getAllVillageList(mJsonObjectCategory);
                 } catch (Exception e) {
@@ -638,7 +638,7 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
             try {
                 mJsonObjectCategory = null;
                 mJsonObjectCategory = new JsonObject();
-                mJsonObjectCategory.addProperty("filterValue", Preferences.get(mContext, Preferences.COUNTRYCODE));
+                mJsonObjectCategory.addProperty("filterValue", Preferences.get(mContext, Preferences.COUNTRYCODE)+","+selectedYear);
                 mJsonObjectCategory.addProperty("FilterOption", "CountryId");
                 mDownloadCategoryApi.getSeedBatchNo(mJsonObjectCategory);
             } catch (Exception e) {
@@ -698,8 +698,12 @@ public class DownloadCategoryActivity extends BaseActivity implements View.OnCli
 
         if (checkInternetConnection(mContext)) {
             try {
+                mJsonObjectCategory = null;
+                mJsonObjectCategory = new JsonObject();
+                mJsonObjectCategory.addProperty("filterValue", Preferences.get(mContext, Preferences.COUNTRYCODE)+","+selectedYear);
+                mJsonObjectCategory.addProperty("FilterOption", "CountryId");
 
-                mDownloadCategoryApi.getAllSeedReceipt(Preferences.get(mContext, Preferences.COUNTRYCODE)+","+selectedYear);
+                mDownloadCategoryApi.getAllSeedReceipt(mJsonObjectCategory);
             } catch (Exception e) {
             }
         } else {

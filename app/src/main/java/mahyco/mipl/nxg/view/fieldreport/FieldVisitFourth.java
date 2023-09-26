@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
@@ -49,6 +50,7 @@ import java.util.Locale;
 
 import mahyco.mipl.nxg.BuildConfig;
 import mahyco.mipl.nxg.R;
+import mahyco.mipl.nxg.adapter.SeedDistrPlantingYearAdapter;
 import mahyco.mipl.nxg.model.FieldMonitoringModels;
 import mahyco.mipl.nxg.model.FieldPlantLaneModels;
 import mahyco.mipl.nxg.model.FieldVisitFruitsCobModel;
@@ -105,7 +107,7 @@ public class FieldVisitFourth extends BaseActivity {
     CCFSerachSpinner male_parent_uprooted_spinner,
             crop_stage_spinner,
             field_ratings_for_spinner,area_lost_spinner;
-
+    private AppCompatSpinner mPlantingYearSpinner;
     Button btn_save;
     ImageView
             capture_photo_image_view;
@@ -185,7 +187,7 @@ LinearLayout image_layout;
     int totalMalePlants = 0;
     LinearLayout layout_losslayout, layout_existarea;
     int lossStatus = 0;
-
+    String selectedYear="";
 
     @Override
     protected int getLayout() {
@@ -207,7 +209,35 @@ LinearLayout image_layout;
                 finish();
             }
         });
+        mPlantingYearSpinner = findViewById(R.id.planting_year_drop_down);
+        ArrayList<String> mYearList = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
 
+        calendar.add(Calendar.YEAR, +1);
+        mYearList.add(String.valueOf(calendar.get(Calendar.YEAR)));
+
+        calendar.add(Calendar.YEAR, -1);
+        mYearList.add(String.valueOf(calendar.get(Calendar.YEAR)));
+
+        calendar.add(Calendar.YEAR, -1);
+        mYearList.add(String.valueOf(calendar.get(Calendar.YEAR)));
+
+        SeedDistrPlantingYearAdapter adapter = new SeedDistrPlantingYearAdapter(context, R.layout.planting_year_rows, mYearList);
+        mPlantingYearSpinner.setAdapter(adapter);
+        mPlantingYearSpinner.setSelection(1);
+        mPlantingYearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                selectedYear=mPlantingYearSpinner.getSelectedItem().toString();
+                Toast.makeText(context, ""+selectedYear, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         image_layout = findViewById(R.id.image_layout);
         grower_name_textview = findViewById(R.id.grower_name_textview);
         issued_seed_area_textview = findViewById(R.id.issued_seed_area_textview);
@@ -1412,6 +1442,7 @@ LinearLayout image_layout;
             }
 
             if (validation()) {
+                fieldVisitModel.setPlantingYear(mPlantingYearSpinner.getSelectedItem().toString().trim());
                 fieldVisitModel.setUserId(userid);// 1,
                 fieldVisitModel.setCountryId(countryId);// 1,
                 fieldVisitModel.setCountryMasterId(countryCode);// 90,

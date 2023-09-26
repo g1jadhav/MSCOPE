@@ -18,7 +18,8 @@ public class Constants {
     public static final String CHANAGE_PASSWORD ="staffUser/changePassword" ;
   public static final String SUBMIT_SEEDRECEIPT = "seedReceipt/create";
   public static final String SUBMIT_PRODUCTIONREGISTRATION = "seedProductionRegistration/create";
-    public static final String GETALLSEEDRECEIPTDATA = "seedReceipt/getall";
+  //  public static final String GETALLSEEDRECEIPTDATA = "seedReceipt/getall";
+    public static final String GETALLSEEDRECEIPTDATA = "seedReceipt/getDetailReport";
     public static final String GETALLSEEDREGISTRATIONDATA = "seedProductionRegistration/getall";
     static final String CHECK_LOGIN="customToken/customToken";
     public static final String GET_SEASON = "season/getall";

@@ -127,9 +127,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         gridView = (RecyclerView) findViewById(R.id.gridView);
         gridView.setLayoutManager(new GridLayoutManager(this, 2));
 
-        prgmNameList = new String[]{"New Grower Registration",
-                "New Coordinator Registration", "Production Seed Registration", "Parent Seed Distribution", "Field Monitoring",
-                "Data Upload", "Download Master Data", "Seed Receipt",
+        prgmNameList = new String[]{"New Grower \nRegistration",
+                "New Coordinator \nRegistration", "Seed Production \nRegistration", "Parent Seed \nDistribution", "Field \nMonitoring",
+                "Data \nUpload", "Master Data\n Download ", "Seed Receipt\n",
         };
 
         ImageList = new String[]{"growerregistration.png", "coordinatiorregistration.png", "prodseedregist.png", "parentseeddistribution.png", "fieldmonitoring.png",

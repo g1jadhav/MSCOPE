@@ -495,6 +495,7 @@ public class NewActivityUpload extends BaseActivity implements View.OnClickListe
                         json_visitModel.addProperty("ExpectedDtOfDespatching", fieldVisitModel.getExpectedDtOfDespatching());
                         json_visitModel.addProperty("MaleParentUprooted", fieldVisitModel.getMaleParentUprooted());
                         json_visitModel.addProperty("AreaLossStatus", fieldVisitModel.getAreaLossStatus());
+                        json_visitModel.addProperty("PlantingYear", fieldVisitModel.getPlantingYear());
                         if (fieldVisitModel.getAverageNoofExistingbolls() != null && !(fieldVisitModel.getAverageNoofExistingbolls().trim().equals("")))
                             json_visitModel.addProperty("AverageNoofExistingbolls", Double.parseDouble(fieldVisitModel.getAverageNoofExistingbolls().trim()));
                         else

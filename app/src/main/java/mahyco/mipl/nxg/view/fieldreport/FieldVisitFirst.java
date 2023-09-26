@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -63,6 +64,7 @@ import java.util.Locale;
 
 import mahyco.mipl.nxg.BuildConfig;
 import mahyco.mipl.nxg.R;
+import mahyco.mipl.nxg.adapter.SeedDistrPlantingYearAdapter;
 import mahyco.mipl.nxg.model.FieldLocation;
 import mahyco.mipl.nxg.model.FieldMaster;
 import mahyco.mipl.nxg.model.FieldMonitoringModels;
@@ -183,6 +185,8 @@ public class FieldVisitFirst extends BaseActivity {
     private FusedLocationProviderClient fusedLocationClient;
     int cropcode = 0, cropcategory = 0;
     String croptype = "";
+    private AppCompatSpinner mPlantingYearSpinner;
+    String selectedYear="";
 
     @Override
     protected int getLayout() {
@@ -217,7 +221,35 @@ public class FieldVisitFirst extends BaseActivity {
                 startActivity(intent);
             }
         });
+        mPlantingYearSpinner = findViewById(R.id.planting_year_drop_down);
+        ArrayList<String> mYearList = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
 
+        calendar.add(Calendar.YEAR, +1);
+        mYearList.add(String.valueOf(calendar.get(Calendar.YEAR)));
+
+        calendar.add(Calendar.YEAR, -1);
+        mYearList.add(String.valueOf(calendar.get(Calendar.YEAR)));
+
+        calendar.add(Calendar.YEAR, -1);
+        mYearList.add(String.valueOf(calendar.get(Calendar.YEAR)));
+
+        SeedDistrPlantingYearAdapter adapter = new SeedDistrPlantingYearAdapter(context, R.layout.planting_year_rows, mYearList);
+        mPlantingYearSpinner.setAdapter(adapter);
+        mPlantingYearSpinner.setSelection(1);
+        mPlantingYearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                selectedYear=mPlantingYearSpinner.getSelectedItem().toString();
+                Toast.makeText(context, ""+selectedYear, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         date_of_field_visit_textview = findViewById(R.id.date_of_field_visit_textview);
         national_id_photo_front_side_btn = findViewById(R.id.national_id_photo_front_side_btn);
@@ -748,6 +780,7 @@ public class FieldVisitFirst extends BaseActivity {
                 Toast.makeText(context, "Validation Error", Toast.LENGTH_SHORT).show();
                 showNoInternetDialog(context, "Some fields are empty.Please check. ");
             } else {
+                fieldVisitModel.setPlantingYear(mPlantingYearSpinner.getSelectedItem().toString().trim());
 
                 fieldVisitModel.setUserId(userid);// 1,
                 fieldVisitModel.setCountryId(countryId);// 1,

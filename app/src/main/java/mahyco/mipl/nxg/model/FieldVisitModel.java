@@ -40,10 +40,20 @@ public class FieldVisitModel {
     String AreaLossInHa;
     String NoOfRoguedFemalePlants;
 
+    public String getPlantingYear() {
+        return PlantingYear;
+    }
+
+    public void setPlantingYear(String plantingYear) {
+        PlantingYear = plantingYear;
+    }
+
+    String PlantingYear;
 
 
     String AreaLossStatus;
     String AverageNoofExistingbolls;
+
 
     public String getAverageNoofExistingbolls() {
         return AverageNoofExistingbolls;

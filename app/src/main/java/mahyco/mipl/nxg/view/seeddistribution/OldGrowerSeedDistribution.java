@@ -219,7 +219,7 @@ public class OldGrowerSeedDistribution extends BaseActivity implements View.OnCl
                             selectedID=ii;
                     }
                     mSeasonSpinner.setSelection(selectedID);
-                    mSeasonSpinner.setEnabled(false);
+                   // mSeasonSpinner.setEnabled(false);
 
                     int selectedcrop=0;
                    for(int ii=0;ii<mCropList.size();ii++)
@@ -242,7 +242,7 @@ public class OldGrowerSeedDistribution extends BaseActivity implements View.OnCl
 
                        mClusterSpinner.setSelection(selectedID);
                     //   mClusterSpinner.setEnabled(false);
-                       mPlantingYearSpinner.setEnabled(false);
+                     //  mPlantingYearSpinner.setEnabled(false);
 
 
                    }catch (Exception e)
